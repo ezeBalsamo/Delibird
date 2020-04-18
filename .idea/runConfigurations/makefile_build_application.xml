@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="makefile_build_application" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tp-2020-1c-El-Kuelgue" TARGET_NAME="makefile_build_target" CONFIG_NAME="makefile_build_target">
+    <method v="2">
+      <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+    </method>
+  </configuration>
+</component>
