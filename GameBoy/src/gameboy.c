@@ -1,4 +1,6 @@
 #include "../include/entry_point_validator.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(int arguments_amount, char* arguments[]){
 
@@ -18,36 +20,3 @@ int main(int arguments_amount, char* arguments[]){
 
     assert_valid_operation_arguments(process_code, operation_code, arguments_amount, arguments);
 }
-/*
-        case TEAM:{
-
-            request = armar_request_team(operacion, argumentos);
-            ip = get_from_config();
-            puerto = get_from_config();
-            break;
-        };
-
-        case BROKER:{
-
-            request = armar_request_broker(operacion, argumentos);
-            ip = get_from_config();
-            puerto = get_from_config();
-            break;
-        };
-
-        case GAMECARD:{
-
-            request = armar_request_gamecard(operacion, argumentos);
-            ip = get_from_config();
-            puerto = get_from_config();
-        };
-
-        default:
-            printf("No se ingresó un proceso correcto del sistema.");
-            return 0;
-    }
-
-    int socket_fd = connect_to(ip, puerto);
-    send_structure(request, socket_fd);
-}
-*/
