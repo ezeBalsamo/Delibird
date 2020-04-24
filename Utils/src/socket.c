@@ -7,8 +7,9 @@
 #include <string.h>
 #include <zconf.h>
 #include <pthread.h>
-
 #include "../include/socket.h"
+#include <stdint.h>
+#include <stdio.h>
 
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
