@@ -25,4 +25,22 @@ typedef struct AppearedPokemonArguments{
 }appearedPokemonArguments;
 
 
+typedef struct NewPokemon{
+    char* pokemon;
+    uint32_t posx;
+    uint32_t posy;
+    uint32_t cantidad;
+    uint32_t id_mensaje;
+}newPokemonArguments;
+
+typedef struct catchPokemon{
+    char* pokemon;
+    uint32_t posx;
+    uint32_t posy;
+    uint32_t id_mensaje;
+}catchPokemonArguments;
+
+
+
+
 #endif //COMMON_STRUCTURES_H
