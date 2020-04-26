@@ -1,20 +1,23 @@
 CC = gcc
-CFLAGS = -fPIC -g -Wall -Wextra --coverage
-LDFLAGS = -shared
-LIBS = -lcommons -pthread
+CFLAGS = -g -Wall -Wextra --coverage
+LIBS = -lcommons -lutils
 
 SOURCE_DIR = src
 INCLUDE_DIR = include
 TARGET_DIR = target
 
-APPLICATIONS = utils
+SHARED_DIR = ../Utils
+USER_SHARED_LIBS_DIR = $(SHARED_DIR)/$(TARGET_DIR)
+USER_SHARED_LIBS_INCLUDE_DIR = $(SHARED_DIR)/$(INCLUDE_DIR)
+
+APPLICATIONS = gameboy
 
 OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(TARGET_DIR)/%.o, $(wildcard $(SOURCE_DIR)/*.c))
 HEADERS = $(wildcard $(INCLUDE_DIR)/*.h)
 
-.PHONY : buildDirectoryCreation all clean
+.PHONY : buildDirectoryCreation all clean export_ld_library_path unset_ld_library_path
 
-all : buildDirectoryCreation $(APPLICATIONS)
+all : buildDirectoryCreation $(APPLICATIONS) install
 
 buildDirectoryCreation:
 	@echo "About to create $(TARGET_DIR)/ (if it doesn't exist) ..."
@@ -22,11 +25,12 @@ buildDirectoryCreation:
 
 $(TARGET_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
 	@echo "About to compile $< ..."
-	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+	$(CC) $(CFLAGS) -I$(USER_SHARED_LIBS_INCLUDE_DIR) -I$(INCLUDE_DIR) -c $< -o $@
+	@echo "Created output of $< named $@"
 
 $(APPLICATIONS): $(OBJECTS)
 	@echo "About to link $(OBJECTS) with $(LIBS) and create $(APPLICATIONS) ..."
-	$(CC) $(LDFLAGS) $(CFLAGS) $(OBJECTS) $(LIBS) -o $(TARGET_DIR)/lib$@.so
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBS) -L$(USER_SHARED_LIBS_DIR) -o $(TARGET_DIR)/$@
 
 clean:
 	@echo "About to delete $(TARGET_DIR)/ ..."

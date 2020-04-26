@@ -9,7 +9,6 @@
 #include <pthread.h>
 #include "../include/socket.h"
 #include <stdint.h>
-#include <stdio.h>
 
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
@@ -28,12 +27,13 @@ char* get_local_ip_address() {
         exit(EXIT_FAILURE);
     }
 
-    for (interface_addresses; interface_addresses != NULL; interface_addresses = interface_addresses->ifa_next) {
+    while(interface_addresses != NULL) {
 
         if (found_local_ip_address_in(interface_addresses)) {
             af_inet_address_interface = (struct sockaddr_in*) interface_addresses -> ifa_addr;
             local_ip_address = inet_ntoa(af_inet_address_interface -> sin_addr);
         }
+        interface_addresses = interface_addresses->ifa_next;
     }
 
     freeifaddrs(interface_addresses);
@@ -181,7 +181,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
     }
 }
 
-void send_structure(request* request, int socket_fd){
+void send_structure(t_request* request, int socket_fd){
 
     void** serialized_request = malloc(0);
     uint32_t amount_of_bytes;

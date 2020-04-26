@@ -1,0 +1,10 @@
+add_library(entry_point_validator src/entry_point_validator.c include/entry_point_validator.h)
+add_library(entry_point_connection_builder src/entry_point_connection_builder.c include/entry_point_connection_builder.h)
+
+target_link_libraries(entry_point_validator common_structures processes_information  -lcommons)
+target_link_libraries(entry_point_connection_builder common_structures entry_point_validator configuration_manager -lcommons)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
+add_executable(gameboy src/gameboy.c)
+
+target_link_libraries(gameboy entry_point_validator entry_point_connection_builder sockets)

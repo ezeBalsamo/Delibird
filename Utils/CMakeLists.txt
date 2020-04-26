@@ -1,3 +1,12 @@
-add_library(sockets SHARED src/socket.c src/operation_serialization.c)
+add_library(configuration_manager src/configuration_manager.c include/configuration_manager.h)
+add_library(operation_serialization src/operation_serialization.c include/operation_serialization.h)
+add_library(operation_deserialization src/operation_deserialization.c include/operation_deserialization.h)
+add_library(common_structures src/common_structures.c include/common_structures.h)
+add_library(processes_information src/processes_information.c include/processes_information.h)
+add_library(sockets SHARED src/socket.c)
 
+target_link_libraries(operation_serialization common_structures processes_information)
+target_link_libraries(operation_deserialization common_structures processes_information)
+target_link_libraries(processes_information common_structures operation_serialization operation_deserialization -lcommons)
+target_link_libraries(configuration_manager -lcommons)
 target_link_libraries(sockets PUBLIC pthread)

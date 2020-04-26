@@ -1,25 +1,25 @@
 SHARED_MODULE = Utils
-MODULES = Team Broker GameCard GameBoy
+MODULES = Team Broker Gamecard Gameboy
 
 .PHONY: $(SHARED_MODULE) $(MODULES)
 
 all: $(SHARED_MODULE) $(MODULES)
 
-utils:
+Utils:
 	$(MAKE) -C $@
 
-team:
+Team:
 	$(MAKE) -C $@
 
-broker:
+Broker:
 	$(MAKE) -C $@
 
-gamecard:
+Gamecard:
 	$(MAKE) -C $@
 
-gameboy:
+Gameboy:
 	$(MAKE) -C $@
 
 clean:
 	$(MAKE) -C $(SHARED_MODULE) clean
-	$(foreach module, $(MODULES), $(MAKE) -C $(module) clean)
+	$(foreach module, $(MODULES), $(MAKE) -C $(module) clean &&) true

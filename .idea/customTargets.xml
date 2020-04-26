@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CLionExternalBuildManager">
-    <target id="41db2aed-c81e-4247-bd60-decd7bd711d0" name="makefile_build_target" projectName="tp-2020-1c-El-Kuelgue">
+    <target id="41db2aed-c81e-4247-bd60-decd7bd711d0" name="makefile_build_target" projectName="gameboy_exe">
       <configuration id="f130a9c9-57ae-48ec-9956-15c2530332f5" name="makefile_build_target">
         <build type="TOOL">
           <tool actionId="Tool_External Tools_build" />
