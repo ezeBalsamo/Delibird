@@ -4,7 +4,6 @@
 #include "common_structures.h"
 
 void serialize(t_request* request , void** serialized_structure, uint32_t* amount_of_bytes);
-
 void serialize_appeared_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes);
 void serialize_new_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes);
 void serialize_catch_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes);
