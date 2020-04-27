@@ -30,7 +30,7 @@ $(TARGET_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
 
 $(APPLICATIONS): $(OBJECTS)
 	@echo "About to link $(OBJECTS) with $(LIBS) and create $(APPLICATIONS) ..."
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIBS) -L$(USER_SHARED_LIBS_DIR) -Wl,-rpath=$(USER_SHARED_LIBS_DIR) -o $(TARGET_DIR)/$@
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBS) -L$(USER_SHARED_LIBS_DIR) -o $(TARGET_DIR)/$@
 
 clean:
 	@echo "About to delete $(TARGET_DIR)/ ..."

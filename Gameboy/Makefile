@@ -15,9 +15,9 @@ APPLICATIONS = gameboy
 OBJECTS = $(patsubst $(SOURCE_DIR)/%.c, $(TARGET_DIR)/%.o, $(wildcard $(SOURCE_DIR)/*.c))
 HEADERS = $(wildcard $(INCLUDE_DIR)/*.h)
 
-.PHONY : buildDirectoryCreation all clean export_ld_library_path unset_ld_library_path
+.PHONY : buildDirectoryCreation all clean
 
-all : buildDirectoryCreation $(APPLICATIONS) install
+all : buildDirectoryCreation $(APPLICATIONS)
 
 buildDirectoryCreation:
 	@echo "About to create $(TARGET_DIR)/ (if it doesn't exist) ..."
