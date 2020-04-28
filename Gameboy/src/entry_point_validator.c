@@ -60,7 +60,7 @@ t_operation_information* valid_chosen_operation(){
         unknown_operation_error_for(process_information_found -> name, gameboy_arguments[2]);
     }
 
-    if((operation_information_found -> max_arguments_amount - gameboy_arguments_amount) > 1){
+    if(abs((operation_information_found -> max_arguments_amount - gameboy_arguments_amount)) > 1){
         incorrect_arguments_amount_error();
     }
 

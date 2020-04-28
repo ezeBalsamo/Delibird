@@ -130,10 +130,6 @@ t_process_information* process_information_named(char* process_name){
     return list_find(processes_information, _is_valid_process);
 }
 
-t_list* operations_from_process(void* process_information){
-    return ((t_process_information*) process_information) -> operations;
-}
-
 t_list* all_operations(){
     t_list* operations = list_create();
 

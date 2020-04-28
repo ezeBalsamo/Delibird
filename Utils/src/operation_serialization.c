@@ -33,7 +33,7 @@ uint32_t amount_of_bytes_of_get(char** arguments){
            + strlen(arguments[0]) + 1;    	//Pokemon name
 }
 
-uint32_t amount_of_bytes_of_caught(char** arguments){
+uint32_t amount_of_bytes_of_caught(){
     return sizeof(uint32_t)                 //id_mensaje
            + sizeof(uint32_t);              //acknowledgment
 }
@@ -192,7 +192,7 @@ void serialize_get_pokemon(char** arguments, void** serialized_structure, uint32
 
 void serialize_caught_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
 
-    uint32_t amount_of_bytes_of_caught_pokemon = amount_of_bytes_of_caught(arguments);
+    uint32_t amount_of_bytes_of_caught_pokemon = amount_of_bytes_of_caught();
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
