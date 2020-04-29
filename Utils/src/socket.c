@@ -187,6 +187,8 @@ void send_structure(t_request* request, int socket_fd){
     uint32_t amount_of_bytes;
     serialize(request, serialized_request, &amount_of_bytes);
     send_all(socket_fd, *serialized_request, amount_of_bytes);
+    free(*serialized_request);
+    free(serialized_request);
 }
 
 void* receive_structure(int socket_fd){
