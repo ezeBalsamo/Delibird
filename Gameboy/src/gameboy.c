@@ -17,9 +17,11 @@ int main(int arguments_amount, char* arguments[]) {
 
     free(ip);
     free(port);
-    free_request(request);
+    free((void*)request);
+/*    free_request(request);
+      
     free_entry_point_validator();
     free_entry_point_connection_builder();
-
+*/
     return 0;
 }
