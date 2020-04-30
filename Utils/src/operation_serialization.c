@@ -38,24 +38,24 @@ uint32_t amount_of_bytes_of_caught(){
            + sizeof(uint32_t);              //acknowledgment
 }
 
-void serialize(t_request* request, void** serialized_request, uint32_t* amount_of_bytes){
+t_serialization_information* serialize(t_request* request){
 
     t_operation_information* operation_information = operation_information_with_code(request -> operation);
-    (*(operation_information -> serialize_function)) ((char**) request -> structure, serialized_request, amount_of_bytes);
+    return (*(operation_information -> serialize_function)) ((char**) request -> structure);
 }
 
-void serialize_appeared_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
+t_serialization_information* serialize_appeared_pokemon(char** arguments){
 
     uint32_t amount_of_bytes_of_appeared_pokemon = amount_of_bytes_of_appeared(arguments);
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_appeared_pokemon;  // structure
-    *amount_of_bytes =
+    uint32_t amount_of_bytes =
             sizeof(uint32_t)                        // total amount (used by socket)
             + amount_of_bytes_of_request;
 
-    *serialized_structure = malloc(*amount_of_bytes);
+    void* serialized_request = malloc(amount_of_bytes);
 
     uint32_t operation = APPEARED_POKEMON;
     uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
@@ -65,35 +65,40 @@ void serialize_appeared_pokemon(char** arguments, void** serialized_structure, u
 
     uint32_t offset = 0;
 
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &operation, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_appeared_pokemon, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_appeared_pokemon, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pokemon_name_length, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, arguments[0], pokemon_name_length);
+    memcpy(serialized_request + offset, arguments[0], pokemon_name_length);
     offset += pokemon_name_length;
-    memcpy(*serialized_structure + offset, &pos_x, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_x, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pos_y, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_y, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &message_id, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &message_id, sizeof(uint32_t));
+
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> serialized_request = serialized_request;
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    return serialization_information;
 }
 
-void serialize_new_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
+t_serialization_information* serialize_new_pokemon(char** arguments){
 
     uint32_t amount_of_bytes_of_new_pokemon = amount_of_bytes_of_new(arguments);
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                    // operation
             + sizeof(uint32_t)                  // structure size
             + amount_of_bytes_of_new_pokemon;   // structure
-    *amount_of_bytes =
+    uint32_t amount_of_bytes =
             sizeof(uint32_t)                    // total amount (used by socket)
             + amount_of_bytes_of_request;
 
-    *serialized_structure = malloc(*amount_of_bytes);
+    void* serialized_request = malloc(amount_of_bytes);
 
     uint32_t operation = NEW_POKEMON;
     uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
@@ -104,37 +109,42 @@ void serialize_new_pokemon(char** arguments, void** serialized_structure, uint32
 
     uint32_t offset = 0;
 
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &operation, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_new_pokemon, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_new_pokemon, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pokemon_name_length, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, arguments[0], pokemon_name_length);
+    memcpy(serialized_request + offset, arguments[0], pokemon_name_length);
     offset += pokemon_name_length;
-    memcpy(*serialized_structure + offset, &pos_x, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_x, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pos_y, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_y, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &quantity, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &quantity, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &message_id, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &message_id, sizeof(uint32_t));
+
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> serialized_request = serialized_request;
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    return serialization_information;
 }
 
-void serialize_catch_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
+t_serialization_information* serialize_catch_pokemon(char** arguments){
 
     uint32_t amount_of_bytes_of_catch_pokemon = amount_of_bytes_of_catch(arguments);
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_catch_pokemon;     // structure
-    *amount_of_bytes =
+    uint32_t amount_of_bytes =
             sizeof(uint32_t)                        // total amount (used by socket)
             + amount_of_bytes_of_request;
 
-    *serialized_structure = malloc(*amount_of_bytes);
+    void* serialized_request = malloc(amount_of_bytes);
 
     uint32_t operation = CATCH_POKEMON;
     uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
@@ -144,78 +154,93 @@ void serialize_catch_pokemon(char** arguments, void** serialized_structure, uint
 
     uint32_t offset = 0;
 
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &operation, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &amount_of_bytes_of_catch_pokemon, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_catch_pokemon, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pokemon_name_length, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, arguments[0], pokemon_name_length);
+    memcpy(serialized_request + offset, arguments[0], pokemon_name_length);
     offset += pokemon_name_length;
-    memcpy(*serialized_structure + offset, &pos_x, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_x, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &pos_y, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &pos_y, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(*serialized_structure + offset, &message_id, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &message_id, sizeof(uint32_t));
+
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> serialized_request = serialized_request;
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    return serialization_information;
 }
 
-void serialize_get_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
+t_serialization_information* serialize_get_pokemon(char** arguments){
 
     uint32_t amount_of_bytes_of_get_pokemon = amount_of_bytes_of_get(arguments);
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_get_pokemon;  		// structure
-    *amount_of_bytes =
+    uint32_t amount_of_bytes =
             sizeof(uint32_t)                        // total amount (used by socket)
             + amount_of_bytes_of_request;
 
-    *serialized_structure = malloc(*amount_of_bytes);
+    void* serialized_request = malloc(amount_of_bytes);
 
-   uint32_t operation = GET_POKEMON;
-   uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
+    uint32_t operation = GET_POKEMON;
+    uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
 
-   uint32_t offset = 0;
+    uint32_t offset = 0;
 
-   memcpy(*serialized_structure + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &operation, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &amount_of_bytes_of_get_pokemon, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &pokemon_name_length, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, arguments[0], pokemon_name_length);
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &amount_of_bytes_of_get_pokemon, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, arguments[0], pokemon_name_length);
+
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> serialized_request = serialized_request;
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    return serialization_information;
 }
 
-void serialize_caught_pokemon(char** arguments, void** serialized_structure, uint32_t* amount_of_bytes){
+t_serialization_information* serialize_caught_pokemon(char** arguments){
 
     uint32_t amount_of_bytes_of_caught_pokemon = amount_of_bytes_of_caught();
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_caught_pokemon;  		// structure
-    *amount_of_bytes =
+    uint32_t amount_of_bytes =
             sizeof(uint32_t)                        // total amount (used by socket)
             + amount_of_bytes_of_request;
 
-    *serialized_structure = malloc(*amount_of_bytes);
+    void* serialized_request = malloc(amount_of_bytes);
 
-   uint32_t operation = CAUGHT_POKEMON;
-   uint32_t message_id = atoi(arguments[0]);
-   uint32_t acknowledgement = atoi(arguments[1]);
+    uint32_t operation = CAUGHT_POKEMON;
+    uint32_t message_id = atoi(arguments[0]);
+    uint32_t acknowledgement = atoi(arguments[1]);
 
-   uint32_t offset = 0;
+    uint32_t offset = 0;
 
-   memcpy(*serialized_structure + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &operation, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &amount_of_bytes_of_caught_pokemon, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &message_id, sizeof(uint32_t));
-   offset += sizeof(uint32_t);
-   memcpy(*serialized_structure + offset, &acknowledgement, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &amount_of_bytes_of_caught_pokemon, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &message_id, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &acknowledgement, sizeof(uint32_t));
+
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> serialized_request = serialized_request;
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    return serialization_information;
 }

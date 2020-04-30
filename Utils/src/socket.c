@@ -183,12 +183,9 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
 
 void send_structure(t_request* request, int socket_fd){
 
-    void** serialized_request = malloc(0);
-    uint32_t amount_of_bytes;
-    serialize(request, serialized_request, &amount_of_bytes);
-    send_all(socket_fd, *serialized_request, amount_of_bytes);
-    free(*serialized_request);
-    free(serialized_request);
+    t_serialization_information* serialization_information = serialize(request);
+    send_all(socket_fd, serialization_information -> serialized_request, serialization_information -> amount_of_bytes);
+    free_serialization_information(serialization_information);
 }
 
 void* receive_structure(int socket_fd){

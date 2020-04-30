@@ -3,8 +3,7 @@
 
 #include "common_structures.h"
 
-void serialize(t_request* request, void** serialized_structure, uint32_t* amount_of_bytes);
-
+t_serialization_information* serialize(t_request* request);
 void* deserialize(void* serialized_request);
 
 #endif //SERIALIZATION_INTERFACE_H
