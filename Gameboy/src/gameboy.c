@@ -1,6 +1,7 @@
 #include "../include/entry_point_connection_builder.h"
 #include "../include/entry_point_validator.h"
 #include "../../Utils/include/socket.h"
+#include "../../Utils/include/configuration_manager.h"
 #include <stdlib.h>
 
 int main(int arguments_amount, char* arguments[]) {
@@ -21,6 +22,6 @@ int main(int arguments_amount, char* arguments[]) {
 
     free_entry_point_validator();
     free_entry_point_connection_builder();
-
+    free_configuration_manager();
     return 0;
 }

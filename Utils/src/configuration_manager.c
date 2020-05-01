@@ -19,3 +19,7 @@ int config_get_int_at(char* key){
 char* config_get_string_at(char* key){
     return config_get_string_value(config, key);
 }
+
+void free_configuration_manager(){
+    config_destroy(config);
+}
