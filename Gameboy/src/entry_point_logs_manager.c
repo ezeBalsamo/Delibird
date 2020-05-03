@@ -30,6 +30,7 @@ void log_successful_connection(){
     string_append(&message, "Conexión establecida al proceso ");
     string_append(&message, valid_chosen_process() -> name);
     log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
