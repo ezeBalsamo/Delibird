@@ -47,5 +47,5 @@ char* process_port(){
 }
 
 void free_entry_point_connection_builder(){
-    //TODO
+    free_configuration_manager();
 }
