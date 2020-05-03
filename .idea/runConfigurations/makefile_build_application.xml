@@ -1,5 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="makefile_build_application" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="tp-2020-1c-El-Kuelgue" TARGET_NAME="makefile_build_target" CONFIG_NAME="makefile_build_target">
+  <configuration default="false" name="makefile_build_application" type="CLionExternalRunConfiguration" factoryName="Application" PROGRAM_PARAMS="team appeared_pokemon cubone 5 3" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="gameboy_exe" TARGET_NAME="makefile_build_target" CONFIG_NAME="makefile_build_target" RUN_PATH="$PROJECT_DIR$/Gameboy/target/gameboy">
+    <envs>
+      <env name="LD_LIBRARY_PATH" value="$PROJECT_DIR$/../tp-2020-1c-El-Kuelgue/Utils/target" />
+    </envs>
     <method v="2">
       <option name="CLION.EXTERNAL.BUILD" enabled="true" />
     </method>

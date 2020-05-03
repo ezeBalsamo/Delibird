@@ -1,0 +1,10 @@
+[INFO] 00:11:20:531 Gameboy/(30884:30884): Gameboy has succesfully started!
+
+[INFO] 00:11:20:531 Gameboy/(30884:30884): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: charmander 3 2 
+
+[INFO] 00:11:20:531 Gameboy/(30884:30884): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: charmander 3 2 
+
