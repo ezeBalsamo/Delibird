@@ -1,33 +1,17 @@
 #include <commons/collections/list.h>
 #include <commons/string.h>
 #include "../include/entry_point_validator.h"
+#include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/processes_information.h"
-#include <stdlib.h>
 #include <stdio.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
 
-void unknown_process_error_for(char* process_name){
-    printf("%s no está registrado como un proceso válido.\n", process_name);
-    exit(EXIT_FAILURE);
-}
-
-void unknown_operation_error_for(char* process_name, char* operation_name){
-    printf("%s no está registrada como una operación válida para %s.\n", operation_name, process_name);
-    exit(EXIT_FAILURE);
-}
-
-void incorrect_arguments_amount_error(){
-    printf("La cantidad de argumentos ingresada es incorrecta.\n");
-    exit(EXIT_FAILURE);
-}
-
 void initialize_entry_point_validator(int arguments_amount, char** arguments){
 
     if (arguments_amount < 3) {
         incorrect_arguments_amount_error();
-        exit(EXIT_FAILURE);
     }
 
     gameboy_arguments = arguments;
@@ -60,7 +44,9 @@ t_operation_information* valid_chosen_operation(){
         unknown_operation_error_for(process_information_found -> name, gameboy_arguments[2]);
     }
 
-    if(abs((operation_information_found -> max_arguments_amount - gameboy_arguments_amount)) > 1){
+    int arguments_amount_difference = operation_information_found -> max_arguments_amount - gameboy_arguments_amount;
+
+    if(arguments_amount_difference < 0 || arguments_amount_difference > 1){
         incorrect_arguments_amount_error();
     }
 
