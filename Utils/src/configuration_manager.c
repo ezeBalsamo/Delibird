@@ -20,6 +20,10 @@ char* config_get_string_at(char* key){
     return config_get_string_value(config, key);
 }
 
+char** config_get_char_array_at(char* key){
+    return config_get_array_value(config, key);
+}
+
 void free_configuration_manager(){
     config_destroy(config);
 }

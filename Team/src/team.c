@@ -1,3 +1,4 @@
+#include "../include/team_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/processes_information.h"
@@ -9,6 +10,7 @@ char* port(){
 void initialize_team(){
     initialize_processes_information();
     initialize_configuration_manager_named("team-RR");
+    initialize_team_manager();
     multithreaded_server_listening_at(port());
 }
 
