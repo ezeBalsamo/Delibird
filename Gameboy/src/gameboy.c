@@ -21,6 +21,5 @@ int main(int arguments_amount, char* arguments[]) {
 
     free_entry_point_validator();
     free_entry_point_connection_builder();
-
     return 0;
 }
