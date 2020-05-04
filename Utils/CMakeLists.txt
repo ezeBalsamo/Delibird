@@ -4,6 +4,7 @@ add_library(operation_deserialization src/operation_deserialization.c include/op
 add_library(common_structures src/common_structures.c include/common_structures.h)
 add_library(processes_information src/processes_information.c include/processes_information.h)
 add_library(logger src/logger.c include/logger.h)
+add_library(matrix src/matrix.c include/matrix.h)
 add_library(sockets SHARED src/socket.c)
 
 target_link_libraries(operation_serialization common_structures processes_information)
