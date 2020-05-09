@@ -11,6 +11,11 @@ typedef struct Trainer{
     t_list* desired_pokemons;
 }t_trainer;
 
-void initialize_team_manager();
+typedef struct Objective{
+    char* pokemon_name;
+    uint32_t amount_to_catch;
+}t_objective;
 
+void initialize_team_manager();
+void *get_team_global_objective();
 #endif //DELIBIRD_TEAM_MANAGER_H
