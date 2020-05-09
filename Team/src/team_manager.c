@@ -7,8 +7,6 @@
 
 t_list* trainers;
 
-bool pokemon_objective_exists(t_objective objective, t_list *objectives);
-
 t_trainer* parsed_trainer_from(char* positions, char* current_pokemons, char* desired_pokemons){
     t_trainer* trainer = malloc(sizeof(t_trainer));
 
@@ -68,11 +66,42 @@ void *get_team_actual_global_objective(){
         }
         list_add(team_objective,trainer_objective);
     }
-
+    //TODO: 1. aplanar lista, 2. buscar repetidos y "combinarlos",  3. devolver lista final :)
     return team_objective;
 }
-
 void *get_actual_trainer_objective(t_trainer *trainer){
+    t_list *trainer_objectives = get_trainer_objective(trainer);
+    t_list *trainer_current_pokemons = trainer->current_pokemons;
+    //para cada pokemon que el trainer tiene, se lo voy a restar a sus objetivos
+    //puede pasar de querer restar algo que no tengo, por lo que debo crear un nuevo objetito
+    for(int i = 0;i < list_size(trainer_current_pokemons);i++){
+
+        char* pokemon_name = list_get(trainer_current_pokemons,i);
+        //busco el objetivo donde efectivamente esta el pokemon
+        for (int j=0;j<list_size(trainer_objectives);j++){
+
+            t_objective *pokemon_objective = list_get(trainer_objectives,j);
+
+            if (pokemon_objective != NULL && pokemon_name == pokemon_objective->pokemon_name){
+                int  amount =pokemon_objective->amount_to_catch;
+                pokemon_objective->amount_to_catch = amount--;
+                list_replace(trainer_objectives,j,pokemon_objective);
+                //since we found the pokemon on our objectives and updated it, break the loop
+                break;
+            }
+            //if its the last iteration, and we didnt break yet
+            //means that there was no objective associated to this pokemon
+            //so we create it WITH -1 because its a pokemon i NEED
+            if (j==list_size(trainer_objectives)){
+                pokemon_objective ->pokemon_name = pokemon_name;
+                pokemon_objective->amount_to_catch= -1;
+                list_add(trainer_objectives,pokemon_objective);
+            }
+        }
+    }
+    return trainer_objectives;
+}
+void *get_trainer_objective(t_trainer *trainer){
     //creo lista de objetivos. esto es lo que devuelvo al final
     t_list *trainer_objectives = list_create();
 
@@ -107,7 +136,4 @@ void *get_actual_trainer_objective(t_trainer *trainer){
         }
     }
     return trainer_objectives;
-}
-bool pokemon_exists(void* trainer_objs){
-    return false;
 }

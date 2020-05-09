@@ -18,4 +18,5 @@ typedef struct Objective{
 
 void initialize_team_manager();
 void *get_team_global_objective();
+void *get_trainer_objective();
 #endif //DELIBIRD_TEAM_MANAGER_H
