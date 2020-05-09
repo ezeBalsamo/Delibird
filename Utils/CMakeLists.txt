@@ -5,11 +5,13 @@ add_library(common_structures src/common_structures.c include/common_structures.
 add_library(processes_information src/processes_information.c include/processes_information.h)
 add_library(logger src/logger.c include/logger.h)
 add_library(matrix src/matrix.c include/matrix.h)
+add_library(t_list_extension src/t_list_extension.c include/t_list_extension.h)
 add_library(sockets SHARED src/socket.c)
 
 target_link_libraries(operation_serialization common_structures processes_information)
 target_link_libraries(operation_deserialization common_structures processes_information)
 target_link_libraries(processes_information common_structures operation_serialization operation_deserialization -lcommons)
 target_link_libraries(configuration_manager -lcommons)
+target_link_libraries(t_list_extension -lcommons)
 target_link_libraries(logger -lcommons)
 target_link_libraries(sockets PUBLIC pthread)
