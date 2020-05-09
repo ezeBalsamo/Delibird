@@ -60,12 +60,14 @@ void *get_team_actual_global_objective(){
     //para cada trainer
     for (int i = 0;i<list_size(trainers);i++){
         //get si no hay nada devuelve null
-        t_objective *trainer_objective = list_get(trainers,i);
+        t_trainer *trainer = list_get(trainers,i);
+        t_list *trainer_objective = get_actual_trainer_objective(trainer);
         if(trainer_objective == NULL){
             //romper porque en teoria estamos en el rango de trainers
         }
         list_add(team_objective,trainer_objective);
     }
+
     //TODO: 1. aplanar lista, 2. buscar repetidos y "combinarlos",  3. devolver lista final :)
     return team_objective;
 }
