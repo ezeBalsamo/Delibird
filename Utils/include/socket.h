@@ -3,9 +3,13 @@
 
 #include "serialization_interface.h"
 
+void close_connection_strategy(int socket_fd);
+
+int reconnect(int socket_fd);
+
 int listen_at(char* port);
 
-int connect_to(char* ip, char* port);
+int connect_to(char* ip, char* port, void (*disconnection_strategy) (int));
 
 int accept_incoming_connections_on(int socket_fd);
 

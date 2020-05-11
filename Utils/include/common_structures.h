@@ -19,8 +19,9 @@ enum Process {
 };
 
 enum Operation {
-    APPEARED_POKEMON, CATCH_POKEMON, CAUGHT_POKEMON,
-    GET_POKEMON, NEW_POKEMON
+    NEW_POKEMON, APPEARED_POKEMON,
+    GET_POKEMON, LOCALIZED_POKEMON,
+    CATCH_POKEMON, CAUGHT_POKEMON
 };
 
 typedef struct Operation_information{

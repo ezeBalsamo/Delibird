@@ -10,6 +10,8 @@
 #include "../include/socket.h"
 #include <stdint.h>
 
+struct addrinfo* address_interface;
+
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
     return (interface_address -> ifa_addr -> sa_family == AF_INET) &&
@@ -46,9 +48,9 @@ char* get_local_ip_address() {
     return local_ip_address;
 }
 
-struct addrinfo* build_address_interface(char* ip, char* port){
+void build_address_interface(char* ip, char* port){
     int addrinfo_status;
-    struct addrinfo hints, *address_interface;
+    struct addrinfo hints;
 
     memset(&hints, 0, sizeof(hints)); // initialize struct
     hints.ai_family = AF_INET;           // set IPv4
@@ -58,16 +60,14 @@ struct addrinfo* build_address_interface(char* ip, char* port){
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(addrinfo_status));
         exit(EXIT_FAILURE);
     }
-
-    return address_interface;
 }
 
-int get_socket_fd_using(struct addrinfo* address_interface){
+int get_socket_fd(){
     int socket_fd;
 
-    if ((socket_fd = socket(address_interface->ai_family,
-                            address_interface->ai_socktype,
-                            address_interface->ai_protocol)) == -1) {
+    if ((socket_fd = socket(address_interface -> ai_family,
+                            address_interface -> ai_socktype,
+                            address_interface -> ai_protocol)) == -1) {
         perror("socket error");
         freeaddrinfo(address_interface);
         exit(EXIT_FAILURE);
@@ -76,7 +76,7 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     return socket_fd;
 }
 
-void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
+void allow_port_reusability_for(int socket_fd){
     int reuse_ports = 1;
 
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_ports, sizeof(int)) == -1) {
@@ -87,9 +87,9 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
     }
 }
 
-void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
+void bind_port_to(int socket_fd){
 
-    if (bind(socket_fd, address_interface->ai_addr, address_interface->ai_addrlen) == -1) {
+    if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
         perror("bind error");
         fprintf(stderr, "server failed to bind\n");
@@ -107,13 +107,21 @@ void listen_with(int socket_fd){
     }
 }
 
-void establish_connection(int socket_fd, struct addrinfo* address_interface){
+int reconnect(int socket_fd){
+    return connect(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen);
+}
 
-    if (connect(socket_fd, address_interface->ai_addr, address_interface->ai_addrlen) == -1) {
-        close(socket_fd);
-        perror("connect error");
-        freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+void close_connection_strategy(int socket_fd){
+    close(socket_fd);
+    perror("connect error");
+    freeaddrinfo(address_interface);
+    exit(EXIT_FAILURE);
+}
+
+void establish_connection(int socket_fd, void (*disconnection_strategy) (int)){
+
+    if (connect(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
+        (*disconnection_strategy) (socket_fd);
     }
 }
 
@@ -137,11 +145,11 @@ int accept_incoming_connections_on(int socket_fd){
 int listen_at(char* port) {
 
     char* ip = get_local_ip_address();
-    struct addrinfo* address_interface = build_address_interface(ip, port);
+    build_address_interface(ip, port);
 
-    int socket_fd = get_socket_fd_using(address_interface);
-    allow_port_reusability(socket_fd, address_interface);
-    bind_port_to_socket(socket_fd, address_interface);
+    int socket_fd = get_socket_fd();
+    allow_port_reusability_for(socket_fd);
+    bind_port_to(socket_fd);
 
     freeaddrinfo(address_interface);
 
@@ -150,12 +158,12 @@ int listen_at(char* port) {
     return socket_fd;
 }
 
-int connect_to(char* ip, char* port) {
+int connect_to(char* ip, char* port, void (*disconnection_strategy) (int)) {
 
-    struct addrinfo* address_interface = build_address_interface(ip, port);
+    build_address_interface(ip, port);
 
-    int socket_fd = get_socket_fd_using(address_interface);
-    establish_connection(socket_fd, address_interface);
+    int socket_fd = get_socket_fd();
+    establish_connection(socket_fd, disconnection_strategy);
 
     freeaddrinfo(address_interface);
     return socket_fd;

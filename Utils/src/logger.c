@@ -21,7 +21,7 @@ void log_errorful_message(t_log* logger, char* message){
 }
 
 void create_log(char* log_name, char* program_name){
-    t_log* logger = log_create(log_name, program_name, false, LOG_LEVEL_DEBUG);
+    t_log* logger = log_create(log_name, program_name, true, LOG_LEVEL_DEBUG);
     dictionary_put(loggers_by_name, log_name, (void*) logger);
 }
 
