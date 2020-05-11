@@ -153,5 +153,5 @@ t_operation_information* operation_information_with_code(uint32_t operation_code
 }
 
 void free_processes_information(){
-    //TODO
+    list_destroy_and_destroy_elements(processes_information, (void (*)(void *)) free_process_information);
 }

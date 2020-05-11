@@ -21,13 +21,11 @@ int main(int arguments_amount, char* arguments[]) {
     send_structure(request, socket_fd);
     log_request_sent(request);
 
-    free(ip);
-    free(port);
     free(request);
 
     free_entry_point_validator();
-    free_entry_point_connection_builder();
     free_entry_point_logs_manager();
+    free_entry_point_connection_builder();
 
     return 0;
 }

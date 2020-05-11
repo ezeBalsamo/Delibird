@@ -16,7 +16,6 @@ t_request* safe_request(){
     request -> operation =  chosen_operation -> code;
     request -> structure = (void*) operation_arguments();
 
-    free_operation_information(chosen_operation);
     return request;
 }
 
@@ -28,7 +27,6 @@ char* process_ip(){
     string_append(&process_ip, process_information -> name);
     char* ip = config_get_string_at(process_ip);
 
-    free_process_information(process_information);
     free(process_ip);
     return ip;
 }
@@ -41,7 +39,6 @@ char* process_port(){
     string_append(&process_port, process_information -> name);
     char* port = config_get_string_at(process_port);
 
-    free_process_information(process_information);
     free(process_port);
     return port;
 }
