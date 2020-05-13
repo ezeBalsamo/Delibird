@@ -62,8 +62,11 @@ void *get_team_actual_global_objective(){
         //get si no hay nada devuelve null
         t_trainer *trainer = list_get(trainers,i);
         t_list *trainer_objective = get_actual_trainer_objective(trainer);
-        if(trainer_objective == NULL){
+        if(list_size(trainer_objective)==0){
             //romper porque en teoria estamos en el rango de trainers
+            //TODO: cuando este el log manager:
+            //log_errorful_message();
+            exit(EXIT_FAILURE);
         }
         list_add(team_objective,trainer_objective);
     }
@@ -71,70 +74,58 @@ void *get_team_actual_global_objective(){
     //TODO: 1. aplanar lista, 2. buscar repetidos y "combinarlos",  3. devolver lista final :)
     return team_objective;
 }
-void *get_actual_trainer_objective(t_trainer *trainer){
-    t_list *trainer_objectives = get_trainer_objective(trainer);
-    t_list *trainer_current_pokemons = trainer->current_pokemons;
-    //para cada pokemon que el trainer tiene, se lo voy a restar a sus objetivos
-    //puede pasar de querer restar algo que no tengo, por lo que debo crear un nuevo objetito
-    for(int i = 0;i < list_size(trainer_current_pokemons);i++){
 
-        char* pokemon_name = list_get(trainer_current_pokemons,i);
-        //busco el objetivo donde efectivamente esta el pokemon
-        for (int j=0;j<list_size(trainer_objectives);j++){
-
-            t_objective *pokemon_objective = list_get(trainer_objectives,j);
-
-            if (pokemon_objective != NULL && pokemon_name == pokemon_objective->pokemon_name){
-                int  amount =pokemon_objective->amount_to_catch;
-                pokemon_objective->amount_to_catch = amount--;
-                list_replace(trainer_objectives,j,pokemon_objective);
-                //since we found the pokemon on our objectives and updated it, break the loop
-                break;
-            }
-            //if its the last iteration, and we didnt break yet
-            //means that there was no objective associated to this pokemon
-            //so we create it WITH -1 because its a pokemon i NEED
-            if (j==list_size(trainer_objectives)){
-                pokemon_objective ->pokemon_name = pokemon_name;
-                pokemon_objective->amount_to_catch= -1;
-                list_add(trainer_objectives,pokemon_objective);
-            }
-        }
-    }
-    return trainer_objectives;
-}
+//basicamente, por cada pokemon que "quiere",
+// hacer 1 objetito con su nombre y la cantidad de veces que lo quiere
 void *get_trainer_objective(t_trainer *trainer){
     //creo lista de objetivos. esto es lo que devuelvo al final
     t_list *trainer_objectives = list_create();
 
     t_list *trainer_desired_pokemons = trainer->desired_pokemons;
 
-    for (int i = 0; i<list_size(trainer_desired_pokemons);i++){
+    for (int i = 0; i<list_size(trainer_desired_pokemons);i++) {
         //get pokemon name
-        char* pokemon_name = list_get(trainer_desired_pokemons,i);
-        //create objective
+        char *pokemon_name = list_get(trainer_desired_pokemons, i);
+        //defino funcion para encontrar este pokemon en particular
+        bool pokemon_is_equal_pokemon(void *elemento) {
+            return is_equal_pokemon(pokemon_name, elemento);
+        }
+        //trato de encontrar si ya existe el objetito, si no está (NULL) lo creo
+        t_pokemon_objective *pokemon_objective = list_find(trainer_desired_pokemons, pokemon_is_equal_pokemon);
+        if (pokemon_objective == NULL) {
+            pokemon_objective->pokemon_name = pokemon_name;
+            pokemon_objective->amount_to_catch = 1;
+        } else {
+            uint32_t amount = pokemon_objective->amount_to_catch;
+            pokemon_objective->amount_to_catch = amount++;
+        }
+    }
 
-        //check if exists,then increase amount or add new objective
-        for (int j=0;j<list_size(trainer_objectives);j++){
+    return trainer_objectives;
+}
+bool is_equal_pokemon(char* pokemon, void *pokemon_objective){
+    return string_equals_ignore_case(((t_pokemon_objective*) pokemon_objective) -> pokemon_name, pokemon);
+}
 
-            t_objective *pokemon_objective = list_get(trainer_objectives,j);
+void *get_actual_trainer_objective(t_trainer *trainer){
+    t_list *trainer_objectives = get_trainer_objective(trainer);
+    t_list *trainer_current_pokemons = trainer->current_pokemons;
+    //para cada pokemon que el trainer tiene, se lo voy a restar a sus objetivos
+    //puede pasar de querer restar algo que no tengo, por lo que debo crear un nuevo objetito
+    for(int i = 0;i < list_size(trainer_current_pokemons);i++){
+        char *pokemon_name = list_get(trainer_current_pokemons,i);
 
-            if (pokemon_objective != NULL && pokemon_name == pokemon_objective->pokemon_name){
-                int  amount =pokemon_objective->amount_to_catch;
-                pokemon_objective->amount_to_catch = amount++;
-                list_replace(trainer_objectives,j,pokemon_objective);
-                //since we found the pokemon on our objectives and updated it, break the loop
-                break;
-            }
-            //if its the last iteration, and we didnt break yet
-            //means that there was no objective associated to this pokemon
-            //so we create it
-            if (j==list_size(trainer_objectives)){
-                pokemon_objective ->pokemon_name = pokemon_name;
-                pokemon_objective->amount_to_catch= 1;
-                list_add(trainer_objectives,pokemon_objective);
-            }
+        bool pokemon_is_equal_pokemon(void *pokemon_objective){
+            return (is_equal_pokemon(pokemon_name, elemento);
+        }
 
+        t_pokemon_objective *pokemon_objective = list_find(trainer_current_pokemons, pokemon_is_equal_pokemon);
+        if (pokemon_objective == NULL) {
+            pokemon_objective->pokemon_name = pokemon_name;
+            pokemon_objective->amount_to_catch = -1;
+        } else {
+            int32_t amount = pokemon_objective->amount_to_catch;
+            pokemon_objective->amount_to_catch = amount--;
         }
     }
     return trainer_objectives;
