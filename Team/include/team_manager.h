@@ -14,7 +14,7 @@ typedef struct Trainer{
 typedef struct Pokemon_Objective{
     char* pokemon_name;
     int32_t amount_to_catch;
-}t_pokemon_objective;
+}t_trainer_objective;
 
 void initialize_team_manager();
 void *get_team_global_objective();
