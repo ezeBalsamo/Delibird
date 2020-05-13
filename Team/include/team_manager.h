@@ -18,6 +18,6 @@ typedef struct Pokemon_Objective{
 
 void initialize_team_manager();
 void *get_team_global_objective();
-void *get_trainer_objective();
+void *get_trainer_objective(t_trainer *trainer);
 void *get_actual_trainer_objective(t_trainer *trainer);
 #endif //DELIBIRD_TEAM_MANAGER_H
