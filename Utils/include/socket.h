@@ -3,13 +3,18 @@
 
 #include "serialization_interface.h"
 
-void close_connection_strategy(int socket_fd);
+typedef struct Connection_Information{
+    int socket_fd;
+    struct addrinfo* address_interface;
+}t_connection_information;
 
-int reconnect(int socket_fd);
+void close_connection_strategy(t_connection_information* connection_information);
+
+int reconnect(t_connection_information* connection_information);
 
 int listen_at(char* port);
 
-int connect_to(char* ip, char* port, void (*disconnection_strategy) (int));
+int connect_to(char* ip, char* port, void (*disconnection_strategy) (t_connection_information*));
 
 int accept_incoming_connections_on(int socket_fd);
 

@@ -24,23 +24,24 @@ void sleep_for(int reconnection_time_in_seconds){
     }
 }
 
-void* retry_connection_thread(void* socket_fd){
+void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker();
     int reconnection_time_in_seconds = config_get_int_at("TIEMPO_RECONEXION");
 
-    if(reconnect(*((int*) socket_fd)) == -1){
+    if(reconnect((t_connection_information*) connection_information) == -1){
         log_failed_retry_of_communication_with_broker();
         sleep_for(reconnection_time_in_seconds);
-        retry_connection_thread(socket_fd);
+        retry_connection_thread(connection_information);
     }
     else{
         log_succesful_retry_of_communication_with_broker();
     }
+
 }
 
-void reconnection_strategy(int socket_fd){
+void reconnection_strategy(t_connection_information* connection_information){
     log_failed_attempt_to_communicate_with_broker();
-    pthread_t reconnection_thread = thread_create(retry_connection_thread, (void*) &socket_fd, default_thread_create_error_response_strategy);
+    pthread_t reconnection_thread = thread_create(retry_connection_thread, (void*) connection_information, default_thread_create_error_response_strategy);
     thread_join(reconnection_thread);
 }
 
