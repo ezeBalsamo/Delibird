@@ -50,8 +50,6 @@ t_operation_information* valid_chosen_operation(){
         incorrect_arguments_amount_error();
     }
 
-    free_process_information(process_information_found);
-
     return operation_information_found;
 }
 
@@ -60,6 +58,5 @@ char** operation_arguments(){
 }
 
 void free_entry_point_validator(){
-    free_char_array(gameboy_arguments);
     free_processes_information();
 }
