@@ -48,7 +48,8 @@ char* get_local_ip_address() {
 
 struct addrinfo* build_address_interface(char* ip, char* port){
     int addrinfo_status;
-    struct addrinfo hints, *address_interface;
+    struct addrinfo hints;
+    struct addrinfo* address_interface;
 
     memset(&hints, 0, sizeof(hints)); // initialize struct
     hints.ai_family = AF_INET;           // set IPv4
@@ -65,9 +66,9 @@ struct addrinfo* build_address_interface(char* ip, char* port){
 int get_socket_fd_using(struct addrinfo* address_interface){
     int socket_fd;
 
-    if ((socket_fd = socket(address_interface->ai_family,
-                            address_interface->ai_socktype,
-                            address_interface->ai_protocol)) == -1) {
+    if ((socket_fd = socket(address_interface -> ai_family,
+                            address_interface -> ai_socktype,
+                            address_interface -> ai_protocol)) == -1) {
         perror("socket error");
         freeaddrinfo(address_interface);
         exit(EXIT_FAILURE);
@@ -89,7 +90,7 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
 
 void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
 
-    if (bind(socket_fd, address_interface->ai_addr, address_interface->ai_addrlen) == -1) {
+    if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
         perror("bind error");
         fprintf(stderr, "server failed to bind\n");
@@ -107,13 +108,27 @@ void listen_with(int socket_fd){
     }
 }
 
-void establish_connection(int socket_fd, struct addrinfo* address_interface){
+int reconnect(t_connection_information* connection_information){
+    return connect(connection_information -> socket_fd,
+            connection_information -> address_interface -> ai_addr,
+            connection_information -> address_interface -> ai_addrlen);
+}
 
-    if (connect(socket_fd, address_interface->ai_addr, address_interface->ai_addrlen) == -1) {
-        close(socket_fd);
-        perror("connect error");
-        freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+void close_connection_strategy(t_connection_information* connection_information){
+    close(connection_information -> socket_fd);
+    perror("connect error");
+    freeaddrinfo(connection_information -> address_interface);
+    free(connection_information);
+    exit(EXIT_FAILURE);
+}
+
+void establish_connection(t_connection_information* connection_information, void (*disconnection_strategy) (t_connection_information*)){
+
+    if (connect(connection_information -> socket_fd,
+                connection_information -> address_interface -> ai_addr,
+                connection_information -> address_interface -> ai_addrlen) == -1) {
+
+        (*disconnection_strategy) (connection_information);
     }
 }
 
@@ -150,14 +165,19 @@ int listen_at(char* port) {
     return socket_fd;
 }
 
-int connect_to(char* ip, char* port) {
+int connect_to(char* ip, char* port, void (*disconnection_strategy) (t_connection_information*)) {
 
     struct addrinfo* address_interface = build_address_interface(ip, port);
-
     int socket_fd = get_socket_fd_using(address_interface);
-    establish_connection(socket_fd, address_interface);
+
+    t_connection_information* connection_information = malloc(sizeof(t_connection_information*));
+    connection_information -> socket_fd = socket_fd;
+    connection_information -> address_interface = address_interface;
+
+    establish_connection(connection_information, disconnection_strategy);
 
     freeaddrinfo(address_interface);
+    free(connection_information);
     return socket_fd;
 }
 

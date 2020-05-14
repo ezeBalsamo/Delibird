@@ -94,6 +94,10 @@ t_matrix* matrix_create(uint32_t amount_of_rows, uint32_t amount_of_columns, boo
     return matrix;
 }
 
+t_matrix* matrix_create_of_size(uint32_t matrix_size, bool should_be_expandable, bool should_be_squared){
+    return matrix_create(matrix_size, matrix_size, should_be_expandable, should_be_squared);
+}
+
 void insert_matrix_element_at(t_matrix* self, void* element, uint32_t row_index, uint32_t column_index){
 
     assert_strictly_positive_indexes(row_index, column_index);
