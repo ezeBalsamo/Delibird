@@ -15,7 +15,7 @@ int main(int arguments_amount, char* arguments[]) {
     char* ip = process_ip();
     char* port = process_port();
 
-    int socket_fd = connect_to(ip, port);
+    int socket_fd = connect_to(ip, port, close_connection_strategy);
     log_successful_connection();
     log_about_to_send_request(request);
     send_structure(request, socket_fd);
