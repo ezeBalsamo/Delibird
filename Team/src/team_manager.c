@@ -55,7 +55,7 @@ void initialize_team_manager(){
 
 
 void *get_team_actual_global_objective(){
-    t_list *team_objective;
+    t_list *team_objective = list_create();
 
     //para cada trainer
     for (int i = 0;i<list_size(trainers);i++){
@@ -64,7 +64,6 @@ void *get_team_actual_global_objective(){
         t_list *trainer_objective = get_actual_trainer_objective(trainer);
         if(list_is_empty(trainer_objective)){
             //romper porque en teoria estamos en el rango de trainers
-            //TODO: cuando este el log manager:
             //log_errorful_message();
             exit(EXIT_FAILURE);
         }

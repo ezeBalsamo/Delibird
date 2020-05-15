@@ -14,7 +14,7 @@ void initialize_team(){
     initialize_configuration_manager_named("team-RR");
     initialize_team_manager();
     multithreaded_server_listening_at(port());
-    t_list* team_global_objective = get_team_global_objective();
+    t_list* team_global_objective = get_team_actual_global_objective();
 }
 
 int main(void){
