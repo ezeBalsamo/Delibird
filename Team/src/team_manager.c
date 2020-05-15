@@ -2,13 +2,16 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <commons/string.h>
 #include <commons/collections/dictionary.h>
 
 t_list* trainers;
+t_list* global_goal;
 
-t_trainer* parsed_trainer_from(char* positions, char* current_pokemons, char* desired_pokemons){
+t_trainer* parsed_trainer_from(uint32_t sequential_number, char* positions, char* current_pokemons, char* desired_pokemons){
     t_trainer* trainer = malloc(sizeof(t_trainer));
+    trainer -> sequential_number = sequential_number;
 
     char** splitted_positions = string_split(positions, "|");
     trainer -> pos_x = atoi(splitted_positions[0]);
@@ -33,13 +36,14 @@ t_trainer* parsed_trainer_from(char* positions, char* current_pokemons, char* de
     return trainer;
 }
 
-void initialize_trainers(){
+void parse_trainers(){
     char** positions = config_get_char_array_at("POSICIONES_ENTRENADORES");
     char** current_pokemons = config_get_char_array_at("POKEMON_ENTRENADORES");
     char** desired_pokemons = config_get_char_array_at("OBJETIVOS_ENTRENADORES");
 
-    for(int i=0; positions[i] != NULL; i++){
-        t_trainer* trainer = parsed_trainer_from(positions[i], current_pokemons[i], desired_pokemons[i]);
+    for(uint32_t sequential_number = 0; positions[sequential_number] != NULL; sequential_number++){
+        t_trainer* trainer = parsed_trainer_from(sequential_number, positions[sequential_number],
+                                                 current_pokemons[sequential_number], desired_pokemons[sequential_number]);
         list_add(trainers, (void*) trainer);
     }
 
@@ -48,9 +52,15 @@ void initialize_trainers(){
     free_char_array(desired_pokemons);
 }
 
+void calculate_global_goal(){
+    //TODO lógica de fran para calcular el objetivo global del equipo
+}
+
 void initialize_team_manager(){
     trainers = list_create();
-    initialize_trainers();
+    global_goal = list_create();
+    parse_trainers();
+    calculate_global_goal();
 }
 
 
@@ -71,7 +81,7 @@ void *get_team_actual_global_objective(){
     }
 
     //TODO: 1. aplanar lista, 2. buscar repetidos y "combinarlos",  3. devolver lista final :)
-    return team_objective;
+    //return team_objective;
 }
 
 //basicamente, por cada pokemon que "quiere",
@@ -91,17 +101,17 @@ t_list *get_trainer_objective(t_trainer *trainer){
         }
         //defino funcion para encontrar este pokemon en particular
         bool pokemon_is_equal_pokemon(void *pokemon_objective){
-            return string_equals_ignore_case(((t_pokemon_objective*) pokemon_objective) -> pokemon_name, pokemon_name);
+            return string_equals_ignore_case(((t_pokemon_goal*) pokemon_objective) -> pokemon_name, pokemon_name);
         }
         //trato de encontrar si ya existe el objetito, si no está (NULL) lo creo
-        t_pokemon_objective *pokemon_objective = list_find(trainer_desired_pokemons, pokemon_is_equal_pokemon);
+        t_pokemon_goal *pokemon_objective = list_find(trainer_desired_pokemons, pokemon_is_equal_pokemon);
         if (pokemon_objective == NULL) {
             pokemon_objective->pokemon_name = pokemon_name;
-            pokemon_objective->amount_to_catch = 1;
+            pokemon_objective->quantity = 1;
             list_add(trainer_objective,pokemon_objective);
         } else {
-            int32_t amount = pokemon_objective->amount_to_catch;
-            pokemon_objective->amount_to_catch = amount++;
+            int32_t amount = pokemon_objective->quantity;
+            pokemon_objective->quantity = amount++;
             list_replace(trainer_objective,i,pokemon_objective);
         }
     }
@@ -119,20 +129,44 @@ t_list *get_actual_trainer_objective(t_trainer *trainer){
         char *pokemon_name = list_get(trainer_current_pokemons,i);
 
         bool pokemon_is_equal_pokemon(void *pokemon_objective){
-            return string_equals_ignore_case(((t_pokemon_objective*) pokemon_objective) -> pokemon_name, pokemon_name);
+            return string_equals_ignore_case(((t_pokemon_goal*) pokemon_objective) -> pokemon_name, pokemon_name);
         }
 
-        t_pokemon_objective *pokemon_objective = list_find(trainer_objective, pokemon_is_equal_pokemon);
+        t_pokemon_goal *pokemon_objective = list_find(trainer_objective, pokemon_is_equal_pokemon);
         if (pokemon_objective == NULL) {
             pokemon_objective->pokemon_name = pokemon_name;
-            pokemon_objective->amount_to_catch = -1;
+            pokemon_objective->quantity = -1;
             list_add(trainer_objective,pokemon_objective);
         } else {
-            int32_t amount = pokemon_objective->amount_to_catch;
-            pokemon_objective->amount_to_catch = amount--;
+            int32_t amount = pokemon_objective->quantity;
+            pokemon_objective->quantity = amount--;
             list_replace(trainer_objective,i,pokemon_objective);
         }
     }
     list_destroy(trainer_current_pokemons);
     return trainer_objective;
+}
+
+t_list* trainers_x_positions(){
+    void* _x_position_of(void* trainer){
+        return (void*) &(((t_trainer*) trainer) -> pos_x);
+    }
+
+    return list_map(trainers, _x_position_of);
+}
+
+t_list* trainers_y_positions(){
+    void* _y_position_of(void* trainer){
+        return (void*) &(((t_trainer*) trainer) -> pos_y);
+    }
+
+    return list_map(trainers, _y_position_of);
+}
+
+void with_trainers_do(void (*closure) (t_trainer*)){
+    list_iterate(trainers, (void (*)(void *)) closure);
+}
+
+void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
+    list_iterate(global_goal, (void (*)(void *)) closure);
 }

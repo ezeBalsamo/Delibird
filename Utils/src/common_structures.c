@@ -7,12 +7,14 @@ void free_request(t_request* request){
 }
 
 void free_process_information(t_process_information* process_information){
-    //TODO
+    list_destroy_and_destroy_elements(process_information -> operations, (void (*)(void *)) free_operation_information);
+    free(process_information);
 }
 
 void free_operation_information(t_operation_information* operation_information){
-    //TODO
+    free(operation_information);
 }
+
 void free_char_array(char** char_array){
     //itero hasta que lo que apunta char array sea null, en cuyo caso null evalua como false
     for (int i = 0; char_array[i]; i++ ){
