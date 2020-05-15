@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <commons/string.h>
-#include <commons/collections/dictionary.h>
 
 t_list* trainers;
 t_list* global_goal;
