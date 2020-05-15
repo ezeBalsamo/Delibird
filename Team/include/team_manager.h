@@ -11,13 +11,13 @@ typedef struct Trainer{
     t_list* desired_pokemons;
 }t_trainer;
 
-typedef struct Pokemon_Objective{
+typedef struct PokemonObjective{
     char* pokemon_name;
     int32_t amount_to_catch;
-}t_trainer_objective;
+}t_pokemon_objective;
 
 void initialize_team_manager();
 void *get_team_global_objective();
-void *get_trainer_objective(t_trainer *trainer);
-void *get_actual_trainer_objective(t_trainer *trainer);
+t_list *get_trainer_objective(t_trainer *trainer);
+t_list *get_actual_trainer_objective(t_trainer *trainer);
 #endif //DELIBIRD_TEAM_MANAGER_H

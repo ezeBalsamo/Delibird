@@ -62,7 +62,7 @@ void *get_team_actual_global_objective(){
         //get si no hay nada devuelve null
         t_trainer *trainer = list_get(trainers,i);
         t_list *trainer_objective = get_actual_trainer_objective(trainer);
-        if(list_size(trainer_objective)==0){
+        if(list_is_empty(trainer_objective)){
             //romper porque en teoria estamos en el rango de trainers
             //TODO: cuando este el log manager:
             //log_errorful_message();
@@ -77,9 +77,9 @@ void *get_team_actual_global_objective(){
 
 //basicamente, por cada pokemon que "quiere",
 // hacer 1 objetito con su nombre y la cantidad de veces que lo quiere
-void *get_trainer_objective(t_trainer *trainer){
+t_list *get_trainer_objective(t_trainer *trainer){
     //creo lista de objetivos. esto es lo que devuelvo al final
-    t_list *trainer_objectives = list_create();
+    t_list *trainer_objective = list_create();
 
     t_list *trainer_desired_pokemons = trainer->desired_pokemons;
 
@@ -87,36 +87,32 @@ void *get_trainer_objective(t_trainer *trainer){
         //get pokemon name
         char *pokemon_name = list_get(trainer_desired_pokemons, i);
         if (pokemon_name==NULL){
-            //TODO: cuando este el log manager:
             //log_errorful_message();
             exit(EXIT_FAILURE);
         }
         //defino funcion para encontrar este pokemon en particular
-        bool pokemon_is_equal_pokemon(void *elemento) {
-            return is_equal_pokemon(pokemon_name, elemento);
+        bool pokemon_is_equal_pokemon(void *pokemon_objective){
+            return string_equals_ignore_case(((t_pokemon_objective*) pokemon_objective) -> pokemon_name, pokemon_name);
         }
         //trato de encontrar si ya existe el objetito, si no está (NULL) lo creo
-        t_trainer_objective *trainer_objective = list_find(trainer_desired_pokemons, pokemon_is_equal_pokemon);
-        if (trainer_objective == NULL) {
-            trainer_objective->pokemon_name = pokemon_name;
-            trainer_objective->amount_to_catch = 1;
-            list_add(trainer_objectives,trainer_objective);
+        t_pokemon_objective *pokemon_objective = list_find(trainer_desired_pokemons, pokemon_is_equal_pokemon);
+        if (pokemon_objective == NULL) {
+            pokemon_objective->pokemon_name = pokemon_name;
+            pokemon_objective->amount_to_catch = 1;
+            list_add(trainer_objective,pokemon_objective);
         } else {
-            uint32_t amount = trainer_objective->amount_to_catch;
-            trainer_objective->amount_to_catch = amount++;
-            list_replace(trainer_objectives,i,trainer_objective);
+            int32_t amount = pokemon_objective->amount_to_catch;
+            pokemon_objective->amount_to_catch = amount++;
+            list_replace(trainer_objective,i,pokemon_objective);
         }
     }
 
     list_destroy(trainer_desired_pokemons);
-    return trainer_objectives;
-}
-bool is_equal_pokemon(char* pokemon, void *pokemon_objective){
-    return string_equals_ignore_case(((t_trainer_objective*) pokemon_objective) -> pokemon_name, pokemon);
+    return trainer_objective;
 }
 
-void *get_actual_trainer_objective(t_trainer *trainer){
-    t_list *trainer_objectives = get_trainer_objective(trainer);
+t_list *get_actual_trainer_objective(t_trainer *trainer){
+    t_list *trainer_objective = get_trainer_objective(trainer);
     t_list *trainer_current_pokemons = trainer->current_pokemons;
     //para cada pokemon que el trainer tiene, se lo voy a restar a sus objetivos
     //puede pasar de querer restar algo que no tengo, por lo que debo crear un nuevo objetito
@@ -124,20 +120,20 @@ void *get_actual_trainer_objective(t_trainer *trainer){
         char *pokemon_name = list_get(trainer_current_pokemons,i);
 
         bool pokemon_is_equal_pokemon(void *pokemon_objective){
-            return (is_equal_pokemon(pokemon_name, elemento);
+            return string_equals_ignore_case(((t_pokemon_objective*) pokemon_objective) -> pokemon_name, pokemon_name);
         }
 
-        t_trainer_objective *trainer_objective = list_find(trainer_current_pokemons, pokemon_is_equal_pokemon);
-        if (trainer_objective == NULL) {
-            trainer_objective->pokemon_name = pokemon_name;
-            trainer_objective->amount_to_catch = -1;
-            list_add(trainer_objectives,trainer_objective);
+        t_pokemon_objective *pokemon_objective = list_find(trainer_objective, pokemon_is_equal_pokemon);
+        if (pokemon_objective == NULL) {
+            pokemon_objective->pokemon_name = pokemon_name;
+            pokemon_objective->amount_to_catch = -1;
+            list_add(trainer_objective,pokemon_objective);
         } else {
-            int32_t amount = trainer_objective->amount_to_catch;
-            trainer_objective->amount_to_catch = amount--;
-            list_replace(trainer_objectives,i,trainer_objective);
+            int32_t amount = pokemon_objective->amount_to_catch;
+            pokemon_objective->amount_to_catch = amount--;
+            list_replace(trainer_objective,i,pokemon_objective);
         }
     }
     list_destroy(trainer_current_pokemons);
-    return trainer_objectives;
+    return trainer_objective;
 }
