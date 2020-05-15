@@ -64,7 +64,7 @@ void initialize_team_manager(){
 }
 
 
-void *get_team_actual_global_objective(){
+t_list *get_team_actual_global_objective(){
     t_list *team_objective = list_create();
 
     //para cada trainer
