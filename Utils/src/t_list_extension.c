@@ -49,3 +49,11 @@ t_list* list_difference(t_list* self, t_list* other, bool (*comparer) (void*, vo
 
     return result;
 }
+void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destroyer)(void*)){
+    for(int i = 0; i < list_size(self); i++){
+        t_list* internal_list = (t_list*) list_get(self, i);
+        list_clean_and_destroy_elements(internal_list, element_destroyer);
+    }
+
+    list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
+}

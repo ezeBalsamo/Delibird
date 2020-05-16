@@ -57,23 +57,6 @@ void parse_trainers(){
     free_char_array(desired_pokemons);
 }
 
-void calculate_global_goal(){
-    t_list *team_objective = list_create();
-
-    for (int i = 0;i<list_size(trainers);i++){
-        //get si no hay nada devuelve null
-        t_trainer *trainer = list_get(trainers,i);
-
-        t_list *trainer_objective = get_trainer_objective(trainer,team_objective);
-
-        list_add(team_objective,trainer_objective);
-    }
-    t_list *team_objective_flattened = list_flat(team_objective);
-
-    //logica para unificar objetivos con pokemones repetidos...
-    unify_pokemon_goals(team_objective_flattened);
-
-}
 
 
 void initialize_team_manager(){
@@ -91,8 +74,7 @@ t_list *get_trainer_objective(t_trainer *trainer, t_list *team_objective){
     t_list *trainer_objective = list_create();
 
     //required = desired - current (A-B resta de conjuntos)
-    t_list *trainer_required_pokemons = list_create();
-    trainer_required_pokemons = requirements_from_trainer(trainer);
+    t_list *trainer_required_pokemons = requirements_from_trainer(trainer);
 
     for (int i = 0; i<list_size(trainer_required_pokemons);i++) {
         //get pokemon name
@@ -112,7 +94,6 @@ t_list *get_trainer_objective(t_trainer *trainer, t_list *team_objective){
         } else {
             uint32_t amount = pokemon_objective->quantity;
             pokemon_objective->quantity = amount++;
-            list_replace(trainer_objective,i,(void*) pokemon_objective);
         }
     }
 
@@ -163,8 +144,37 @@ void unify_pokemon_goals(t_list* pokemon_goals_flattened) {
         } else {
             uint32_t sum = global_pok_goal->quantity;
             global_pok_goal->quantity = sum + trainer_pok_goal->quantity;
-            list_replace(global_goal, j, (void *) global_pok_goal);
         }
     }
 
+}
+
+void calculate_global_goal(){
+    t_list *team_objective = list_create();
+
+    for (int i = 0;i<list_size(trainers);i++){
+        //get si no hay nada devuelve null
+        t_trainer *trainer = list_get(trainers,i);
+
+        t_list *trainer_objective = get_trainer_objective(trainer,team_objective);
+
+        list_add(team_objective,trainer_objective);
+    }
+    t_list *team_objective_flattened = list_flat(team_objective);
+
+    //logica para unificar objetivos con pokemones repetidos...
+    unify_pokemon_goals(team_objective_flattened);
+
+    list_of_lists_destroy_and_destroy_elements(team_objective, (void (*)(void *)) free);
+    list_destroy(team_objective_flattened);
+
+}
+void free_trainer(t_trainer *trainer){
+    list_destroy_and_destroy_elements(trainer->desired_pokemons,free);
+    list_destroy_and_destroy_elements(trainer->current_pokemons,free);
+    free(trainer);
+}
+void free_team_manager(){
+    list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
+    list_destroy_and_destroy_elements(trainers, (void (*)(void *)) free_trainer);
 }

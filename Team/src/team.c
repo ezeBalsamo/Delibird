@@ -21,4 +21,6 @@ int main(void){
 
     thread_join(broker_connection_handler_thread);
     thread_join(gameboy_connection_handler_thread);
+
+    free_team_manager();
 }
