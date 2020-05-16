@@ -18,9 +18,9 @@ typedef struct PokemonGoal{
 }t_pokemon_goal;
 
 void initialize_team_manager();
-t_list *get_team_actual_global_objective();
-t_list *get_trainer_objective(t_trainer *trainer);
-t_list *get_actual_trainer_objective(t_trainer *trainer);
+void calculate_global_goal();
+t_list *get_trainer_objective(t_trainer *trainer, t_list *team_objective);
+void unify_pokemon_goals(t_list* pokemon_goals_flattened);
 
 void with_trainers_do(void (*closure) (t_trainer*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));

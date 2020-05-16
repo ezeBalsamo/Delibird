@@ -10,11 +10,8 @@
 int main(void){
     initialize_team_logs_manager();
     initialize_processes_information();
-    //TODO: entry point log manager
-    //initialize_entry_point_logs_manager();
     initialize_configuration_manager_named("team-RR");
     initialize_team_manager();
-    t_list* team_global_objective = get_team_actual_global_objective();
 
     initialize_map();
     log_succesful_start_up();
