@@ -55,7 +55,7 @@ t_request* handshake_request_for(uint32_t queue_operation_identifier){
     memcpy(structure + offset, &queue_operation_identifier, sizeof(uint32_t));
 
     t_request* request = malloc(sizeof(t_request));
-    request -> operation = SUSCRIPTOR;
+    request -> operation = SUSCRIBE_ME;
     request -> structure = structure;
 
     return request;
@@ -65,7 +65,7 @@ void subscribe_to_queue(int* socket_fd, uint32_t queue_operation_identifier){
 
     t_request* request = handshake_request_for(queue_operation_identifier);
     *socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
-    send_structure(request, *socket_fd);
+    serialize_and_send_structure(request, *socket_fd);
 }
 
 void subscribe_to_queues(){
@@ -82,7 +82,7 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     request -> structure = (void*) (pokemon_goal -> pokemon_name);
 
     int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
-    send_structure(request, socket_fd);
+    serialize_and_send_structure(request, socket_fd);
     free(request);
 }
 

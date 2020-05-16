@@ -63,6 +63,17 @@ t_operation_information* get_pokemon_information(){
     return operation_information;
 }
 
+t_operation_information* suscribe_me_information() {
+    t_operation_information *operation_information = malloc(sizeof(t_operation_information));
+    operation_information->code = SUSCRIBE_ME;
+    operation_information->name = "SUSCRIBE_ME";
+    operation_information->max_arguments_amount = 1;
+    operation_information->serialize_function = serialize_suscribe_me;
+    operation_information->deserialize_function = deserialize_suscribe_me;
+
+    return operation_information;
+}
+
 t_list* team_operation_information(){
     t_list* operations = list_create();
     list_add(operations, appeared_pokemon_information());
@@ -76,6 +87,7 @@ t_list* broker_operation_information(){
     list_add(operations, catch_pokemon_information());
     list_add(operations, caught_pokemon_information());
     list_add(operations, get_pokemon_information());
+    list_add(operations, suscribe_me_information());
     return operations;
 }
 

@@ -1,26 +1,7 @@
 #include "../include/operation_deserialization.h"
-#include "../include/processes_information.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-void* deserialize(void* serialized_request){
-    uint32_t operation;
-    void* serialized_structure;
-    uint32_t serialized_structure_size;
-
-    int offset = 0;
-
-    memcpy(&operation, serialized_request + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(&serialized_structure_size, serialized_request + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    serialized_structure = malloc(serialized_structure_size);
-    memcpy(serialized_structure, serialized_request + offset, serialized_structure_size);
-
-    t_operation_information* operation_information = operation_information_with_code(operation);
-    (*(operation_information -> deserialize_function)) (serialized_structure);
-}
 
 t_request* deserialize_appeared_pokemon(void* serialized_structure) {
 
@@ -133,4 +114,15 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
     printf("request deserialized!\n");
     printf("request operation number: %d\n", GET_POKEMON);
     printf("request structure: pokemon: %s.\n", pokemon_name);
+}
+
+
+t_request* deserialize_suscribe_me(void* serialized_structure){
+    uint32_t operation_queue;
+
+    memcpy(&operation_queue, serialized_structure, sizeof(uint32_t));
+
+    printf("request deserialized!\n");
+    printf("request operation number: %d\n", SUSCRIBE_ME);
+    printf("operation queue: %d\n", operation_queue);
 }
