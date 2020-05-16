@@ -12,6 +12,7 @@ int main(void){
     initialize_processes_information();
     initialize_configuration_manager_named("team-RR");
     initialize_team_manager();
+
     initialize_map();
     log_succesful_start_up();
 
@@ -20,4 +21,6 @@ int main(void){
 
     thread_join(broker_connection_handler_thread);
     thread_join(gameboy_connection_handler_thread);
+
+    free_team_manager();
 }

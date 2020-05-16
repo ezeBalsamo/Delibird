@@ -5,7 +5,7 @@ add_library(broker_connection_handler src/broker_connection_handler.c include/br
 add_library(gameboy_connection_handler src/gameboy_connection_handler.c include/gameboy_connection_handler.h)
 
 target_link_libraries(team_logs_manager logger)
-target_link_libraries(team_manager -lcommons configuration_manager common_structures)
+target_link_libraries(team_manager -lcommons configuration_manager common_structures t_list_extension)
 target_link_libraries(map -lcommons team_manager matrix)
 target_link_libraries(broker_connection_handler configuration_manager sockets team_manager -lcommons -pthread)
 target_link_libraries(gameboy_connection_handler configuration_manager sockets)
