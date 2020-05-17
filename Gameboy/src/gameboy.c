@@ -1,8 +1,7 @@
 #include "../include/entry_point_connection_builder.h"
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
-#include "../../Utils/include/socket.h"
-#include <stdlib.h>
+#include "../include/entry_point_executor.h"
 
 int main(int arguments_amount, char* arguments[]) {
 

@@ -2,11 +2,13 @@
 #include <commons/string.h>
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
+#include "../include/role_mode_strategy.h"
 #include "../../Utils/include/processes_information.h"
 #include <stdio.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
+t_role_mode* role_mode;
 
 void initialize_entry_point_validator(int arguments_amount, char** arguments){
 
@@ -17,10 +19,19 @@ void initialize_entry_point_validator(int arguments_amount, char** arguments){
     gameboy_arguments = arguments;
     gameboy_arguments_amount = arguments_amount;
     initialize_processes_information();
+    role_mode = role_mode_for(gameboy_arguments[1]);
 }
 
 bool is_valid_operation(void* operation_information){
-    return string_equals_ignore_case(((t_operation_information*) operation_information) -> name, gameboy_arguments[2]);
+    return (*(role_mode -> is_valid_operation_function)) ((t_operation_information*) operation_information);
+}
+
+bool is_valid_publisher_operation(t_operation_information* operation_information){
+    return string_equals_ignore_case(operation_information -> name, gameboy_arguments[2]);
+}
+
+bool is_valid_subscriber_operation(t_operation_information* operation_information){
+    //TODO: agregar cuando se hayan hecho los cambios de processes_information y operation_information
 }
 
 t_process_information* valid_chosen_process(){

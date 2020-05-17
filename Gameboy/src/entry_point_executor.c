@@ -2,8 +2,10 @@
 #include "../include/entry_point_connection_builder.h"
 #include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/socket.h"
+#include "../../Utils/include/pthread_wrapper.h"
+#include <stdlib.h>
 
-void* queue_listener_thread(void* null_argument){
+void* queue_listener_thread(){
 
     t_request* request = safe_request();
     char* ip = process_ip();
@@ -21,6 +23,10 @@ void* queue_listener_thread(void* null_argument){
     free(request);
 
     return NULL;
+}
+
+bool is_subscriber_mode(){
+    return false; //TODO: lo dejamos hasta la siguiente iteración para que compile
 }
 
 void execute(){
