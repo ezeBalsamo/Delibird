@@ -6,11 +6,7 @@
 
 t_list* broker_operation_information();
 
-t_process_information* team_process_information();
-
 t_process_information* broker_process_information();
-
-t_process_information* gamecard_process_information();
 
 void initialize_processes_information();
 
