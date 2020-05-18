@@ -21,14 +21,15 @@ enum Process {
 enum Operation {
     NEW_POKEMON, APPEARED_POKEMON,
     GET_POKEMON, LOCALIZED_POKEMON,
-    CATCH_POKEMON, CAUGHT_POKEMON
+    CATCH_POKEMON, CAUGHT_POKEMON,
+    SUBSCRIBE_ME
 };
 
 typedef struct Operation_information{
     uint32_t code;
     char* name;
     int max_arguments_amount;
-    t_serialization_information* (*serialize_function) (char** arguments);
+    t_serialization_information* (*serialize_function) (void* structure);
     t_request* (*deserialize_function) (void* serialized_structure);
 }t_operation_information;
 

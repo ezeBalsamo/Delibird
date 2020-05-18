@@ -4,7 +4,7 @@
 #include "../include/broker_connection_handler.h"
 #include "../include/gameboy_connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
-#include "../../Utils/include/processes_information.h"
+#include "../../Utils/include/operations_information.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
 int main(void){
