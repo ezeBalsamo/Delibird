@@ -9,6 +9,7 @@ t_serialization_information* serialize_new_pokemon(void* structure);
 t_serialization_information* serialize_catch_pokemon(void* structure);
 t_serialization_information* serialize_caught_pokemon(void* structure);
 t_serialization_information* serialize_get_pokemon(void* structure);
-t_serialization_information* serialize_suscribe_me(void* structure);
+t_serialization_information* serialize_localized_pokemon(void* structure);
+t_serialization_information* serialize_subscribe_me(void* structure);
 
 #endif //DELIBIRD_OPERATION_SERIALIZATION_H
