@@ -12,7 +12,7 @@ typedef struct Trainer{
     t_list* desired_pokemons;
 }t_trainer;
 
-typedef struct PokemonGoal{
+typedef struct Pokemon_goal{
     char* pokemon_name;
     uint32_t quantity;
 }t_pokemon_goal;
