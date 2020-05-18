@@ -5,11 +5,14 @@
 #include "../../Utils/include/common_structures.h"
 
 typedef struct Role_mode_strategy{
-    bool (*can_handle_function) (char* process_name);
+    bool (*can_handle_function) (uint32_t process_code);
     bool (*is_valid_operation_function) (t_operation_information*);
+    void* (*operation_arguments_function) ();
+    char* process_name_for_connection;
+    bool is_subscriber_mode;
 }t_role_mode;
 
-t_role_mode* role_mode_for(char* process_name);
+t_role_mode* role_mode_for(uint32_t process_code);
 
 void free_role_mode_strategy();
 

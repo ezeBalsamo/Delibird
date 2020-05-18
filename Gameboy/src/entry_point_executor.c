@@ -1,5 +1,6 @@
 #include "../include/entry_point_executor.h"
 #include "../include/entry_point_connection_builder.h"
+#include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
@@ -23,10 +24,6 @@ void* queue_listener_thread(){
     free(request);
 
     return NULL;
-}
-
-bool is_subscriber_mode(){
-    return false; //TODO: lo dejamos hasta la siguiente iteración para que compile
 }
 
 void execute(){

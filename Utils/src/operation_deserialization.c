@@ -1,5 +1,5 @@
 #include "../include/operation_deserialization.h"
-#include "../include/processes_information.h"
+#include "../include/operations_information.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -134,3 +134,11 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
     printf("request operation number: %d\n", GET_POKEMON);
     printf("request structure: pokemon: %s.\n", pokemon_name);
 }
+
+t_request* deserialize_localized_pokemon(void* serialized_structure){
+    //TODO: implementar deserializacion de LOCALIZED
+};
+
+t_request* deserialize_subscribe_me(void* serialized_structure){
+    //TODO: implementar deserializacion de SUBSCRIBE_ME
+};

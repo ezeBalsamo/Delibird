@@ -1,5 +1,5 @@
 #include "../include/operation_serialization.h"
-#include "../include/processes_information.h"
+#include "../include/operations_information.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -44,7 +44,9 @@ t_serialization_information* serialize(t_request* request){
     return (*(operation_information -> serialize_function)) ((char**) request -> structure);
 }
 
-t_serialization_information* serialize_appeared_pokemon(char** arguments){
+t_serialization_information* serialize_appeared_pokemon(void* structure){
+
+    char** arguments = (char**) structure;
 
     uint32_t amount_of_bytes_of_appeared_pokemon = amount_of_bytes_of_appeared(arguments);
     uint32_t amount_of_bytes_of_request =
@@ -87,7 +89,9 @@ t_serialization_information* serialize_appeared_pokemon(char** arguments){
     return serialization_information;
 }
 
-t_serialization_information* serialize_new_pokemon(char** arguments){
+t_serialization_information* serialize_new_pokemon(void* structure){
+
+    char** arguments = (char**) structure;
 
     uint32_t amount_of_bytes_of_new_pokemon = amount_of_bytes_of_new(arguments);
     uint32_t amount_of_bytes_of_request =
@@ -133,7 +137,9 @@ t_serialization_information* serialize_new_pokemon(char** arguments){
     return serialization_information;
 }
 
-t_serialization_information* serialize_catch_pokemon(char** arguments){
+t_serialization_information* serialize_catch_pokemon(void* structure){
+
+    char** arguments = (char**) structure;
 
     uint32_t amount_of_bytes_of_catch_pokemon = amount_of_bytes_of_catch(arguments);
     uint32_t amount_of_bytes_of_request =
@@ -176,7 +182,9 @@ t_serialization_information* serialize_catch_pokemon(char** arguments){
     return serialization_information;
 }
 
-t_serialization_information* serialize_get_pokemon(char** arguments){
+t_serialization_information* serialize_get_pokemon(void* structure){
+
+    char** arguments = (char**) structure;
 
     uint32_t amount_of_bytes_of_get_pokemon = amount_of_bytes_of_get(arguments);
     uint32_t amount_of_bytes_of_request =
@@ -191,6 +199,7 @@ t_serialization_information* serialize_get_pokemon(char** arguments){
 
     uint32_t operation = GET_POKEMON;
     uint32_t pokemon_name_length = strlen(arguments[0]) + 1;
+    uint32_t message_id;
 
     uint32_t offset = 0;
 
@@ -203,6 +212,8 @@ t_serialization_information* serialize_get_pokemon(char** arguments){
     memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, arguments[0], pokemon_name_length);
+    offset += pokemon_name_length;
+    memcpy(serialized_request + offset, &message_id, sizeof(uint32_t));
 
     t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
@@ -210,7 +221,9 @@ t_serialization_information* serialize_get_pokemon(char** arguments){
     return serialization_information;
 }
 
-t_serialization_information* serialize_caught_pokemon(char** arguments){
+t_serialization_information* serialize_caught_pokemon(void* structure){
+
+    char** arguments = (char**) structure;
 
     uint32_t amount_of_bytes_of_caught_pokemon = amount_of_bytes_of_caught();
     uint32_t amount_of_bytes_of_request =
@@ -243,4 +256,13 @@ t_serialization_information* serialize_caught_pokemon(char** arguments){
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes;
     return serialization_information;
+}
+
+t_serialization_information* serialize_localized_pokemon(void* structure){
+    //TODO: implementar serializacion de LOCALIZED
+}
+
+t_serialization_information* serialize_subscribe_me(void* structure){
+
+//TODO:implementar serializacion de SUBSCRIBE_ME
 }

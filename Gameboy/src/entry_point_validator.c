@@ -2,9 +2,11 @@
 #include <commons/string.h>
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
+#include "../include/entry_point_processes_information.h"
 #include "../include/role_mode_strategy.h"
-#include "../../Utils/include/processes_information.h"
+#include "../../Utils/include/operations_information.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
@@ -19,7 +21,8 @@ void initialize_entry_point_validator(int arguments_amount, char** arguments){
     gameboy_arguments = arguments;
     gameboy_arguments_amount = arguments_amount;
     initialize_processes_information();
-    role_mode = role_mode_for(gameboy_arguments[1]);
+    uint32_t process_code = process_information_code_of(gameboy_arguments[1]);
+    role_mode = role_mode_for(process_code);
 }
 
 bool is_valid_operation(void* operation_information){
@@ -31,7 +34,7 @@ bool is_valid_publisher_operation(t_operation_information* operation_information
 }
 
 bool is_valid_subscriber_operation(t_operation_information* operation_information){
-    //TODO: agregar cuando se hayan hecho los cambios de processes_information y operation_information
+    return exists_queue_named(gameboy_arguments[2]);
 }
 
 t_process_information* valid_chosen_process(){
@@ -64,8 +67,28 @@ t_operation_information* valid_chosen_operation(){
     return operation_information_found;
 }
 
-char** operation_arguments(){
-    return &gameboy_arguments[3];
+void* operation_arguments(){
+    return (role_mode -> operation_arguments_function)();
+}
+
+void* publisher_operation_arguments(){
+    return (void*) &gameboy_arguments[3];
+}
+
+void* subscriber_operation_arguments(){
+    char* queue_name = gameboy_arguments[2];
+    uint32_t* queue_code = malloc(sizeof(uint32_t));
+    *queue_code = queue_code_of(queue_name);
+
+    return (void*) queue_code;
+}
+
+char* valid_process_name_for_connection(){
+    return role_mode -> process_name_for_connection;
+}
+
+bool is_subscriber_mode(){
+    return role_mode -> is_subscriber_mode;
 }
 
 void free_entry_point_validator(){
