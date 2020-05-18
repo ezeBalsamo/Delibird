@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void default_thread_create_error_response_strategy(){
+void default_thread_create_error_response(){
     unsigned int process_id = process_getpid();
     printf("An error occurred while creating a new thread for process: %u\n", process_id);
     exit(EXIT_FAILURE);

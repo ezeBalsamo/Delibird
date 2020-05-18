@@ -16,8 +16,10 @@ int main(void){
     initialize_map();
     log_succesful_start_up();
 
-    pthread_t broker_connection_handler_thread = thread_create(initialize_broker_connection_handler, NULL, default_thread_create_error_response_strategy);
-    pthread_t gameboy_connection_handler_thread = thread_create(initialize_gameboy_connection_handler, NULL, default_thread_create_error_response_strategy);
+    pthread_t broker_connection_handler_thread = thread_create(initialize_broker_connection_handler, NULL,
+                                                               default_thread_create_error_response);
+    pthread_t gameboy_connection_handler_thread = thread_create(initialize_gameboy_connection_handler, NULL,
+                                                                default_thread_create_error_response);
 
     thread_join(broker_connection_handler_thread);
     thread_join(gameboy_connection_handler_thread);
