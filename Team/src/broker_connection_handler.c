@@ -4,13 +4,8 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include <commons/process.h>
 #include <stdlib.h>
 #include <string.h>
-
-int appeared_queue_socket_fd;
-int caught_queue_socket_fd;
-int localized_queue_socket_fd;
 
 char* broker_ip;
 char* broker_port;
@@ -47,28 +42,15 @@ void reconnection_strategy(t_connection_information* connection_information){
     thread_join(reconnection_thread);
 }
 
-t_request* handshake_request_for(uint32_t queue_operation_identifier){
-
-    uint32_t process_id = process_getpid();
-    void* structure = malloc(sizeof(uint32_t) * 2);
-    uint32_t offset = 0;
-    memcpy(structure + offset, &process_id, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(structure + offset, &queue_operation_identifier, sizeof(uint32_t));
-
+void* subscriber_thread(void* queue_operation_identifier){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
-    request -> structure = structure;
-
-    return request;
-}
-
-void* subscriber_thread(void* queue_operation_identifier){
-    uint32_t cast_queue_operation_identifier = *((uint32_t*) queue_operation_identifier);
-    t_request* request = handshake_request_for(cast_queue_operation_identifier);
+    request -> structure = queue_operation_identifier;
 
     int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
     serialize_and_send_structure(request, socket_fd);
+
+    //TODO: Lógica para escuchar
 }
 
 void subscribe_to_queue(uint32_t queue_operation_identifier){
