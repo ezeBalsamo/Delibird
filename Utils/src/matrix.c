@@ -15,11 +15,11 @@ void add_column(t_matrix* self){
     //A cada fila, le reasigno espacio considerando que ahora tienen una columna más
     //A su vez, designo nuevo espacio de memoria para la cantidad actual de columnas
     //Muevo los punteros de lugar y libero el espacio de la columna vieja
-    for(int row_index = 1; row_index <= self -> amount_of_rows; row_index++){
+    for(uint32_t row_index = 1; row_index <= self -> amount_of_rows; row_index++){
         void** old_column = (self -> data)[row_index - 1];
         (self -> data)[row_index - 1] = calloc(self -> amount_of_columns, sizeof(void*));
 
-        for(int column_index = 1; column_index <= (self -> amount_of_columns) - 1; column_index++){
+        for(uint32_t column_index = 1; column_index <= (self -> amount_of_columns) - 1; column_index++){
             void* element = old_column[column_index - 1];
             insert_matrix_element_at(self, element, row_index, column_index);
         }
@@ -85,7 +85,7 @@ t_matrix* matrix_create(uint32_t amount_of_rows, uint32_t amount_of_columns, boo
     matrix -> amount_of_columns = amount_of_columns;
 
     matrix -> data = malloc(amount_of_rows * sizeof(void**));
-    for(int row_index = 0; row_index < matrix -> amount_of_rows; row_index++){
+    for(uint32_t row_index = 0; row_index < matrix -> amount_of_rows; row_index++){
         (matrix -> data)[row_index] = calloc(amount_of_columns, sizeof(void*));
     }
 
