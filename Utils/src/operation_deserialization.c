@@ -136,7 +136,7 @@ void* deserialize_subscribe_me(void* serialized_structure){
     printf("request operation number: %d\n", SUBSCRIBE_ME);
     printf("operation queue: %d\n", operation_queue);
 
-    return NULL;
+    return (uint32_t*) operation_queue;
 }
 
 void* deserialize_localized_pokemon(void* serialized_structure){
