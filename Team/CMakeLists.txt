@@ -1,5 +1,13 @@
 include_directories(include)
-file(GLOB SOURCES "src/*.c")
+set(SOURCES
+        src/broker_connection_handler.c
+        src/gameboy_connection_handler.c
+        src/map.c
+        src/team.c
+        src/team_deserialization.c
+        src/team_logs_manager.c
+        src/team_manager.c
+        src/team_operations_information.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

@@ -1,6 +1,17 @@
 include_directories(include)
-file(GLOB SOURCES "src/*.c")
+set(SOURCES
+        src/common_structures.c
+        src/configuration_manager.c
+        src/logger.c
+        src/matrix.c
+        src/operation_deserialization.c
+        src/operation_serialization.c
+        src/operations_information.c
+        src/pthread_wrapper.c
+        src/socket.c
+        src/t_list_extension.c)
 
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_library(utils SHARED ${SOURCES})
 
 target_link_libraries(utils -lcommons pthread)
