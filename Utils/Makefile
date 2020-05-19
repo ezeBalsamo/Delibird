@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -fPIC -g -Wall -Wextra --coverage
+CFLAGS = -fPIC -g -rdynamic -Wall -Wextra --coverage
 LDFLAGS = -shared
 LIBS = -lcommons -pthread
 
