@@ -34,4 +34,4 @@ $(APPLICATIONS): $(OBJECTS)
 
 clean:
 	@echo "About to delete $(TARGET_DIR)/ ..."
-	rm -r -f $(TARGET_DIR)
+	rm -r -f $(TARGET_DIR)/*

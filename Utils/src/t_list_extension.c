@@ -40,7 +40,7 @@ t_list* list_difference(t_list* self, t_list* other, bool (*comparer) (void*, vo
         if(list_contains(self, element_to_find, comparer)){
 
             bool _comparer(void* element_to_compare){
-                (*comparer) (element_to_compare, element_to_find);
+                return (*comparer) (element_to_compare, element_to_find);
             }
 
             list_remove_by_condition(result, _comparer);

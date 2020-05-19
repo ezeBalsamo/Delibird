@@ -37,6 +37,7 @@ void* retry_connection_thread(void* connection_information){
         log_succesful_retry_of_communication_with_broker();
     }
 
+    return NULL;
 }
 
 void reconnection_strategy(t_connection_information* connection_information){
@@ -55,7 +56,7 @@ t_request* handshake_request_for(uint32_t queue_operation_identifier){
     memcpy(structure + offset, &queue_operation_identifier, sizeof(uint32_t));
 
     t_request* request = malloc(sizeof(t_request));
-    request -> operation = SUSCRIBE_ME;
+    request -> operation = SUBSCRIBE_ME;
     request -> structure = structure;
 
     return request;

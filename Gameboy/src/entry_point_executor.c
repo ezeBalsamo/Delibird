@@ -16,7 +16,7 @@ void* queue_listener_thread(){
     log_successful_connection();
     log_about_to_send_request(request);
 
-    send_structure(request, socket_fd);
+    serialize_and_send_structure(request, socket_fd);
     log_request_sent(request);
 
     //TODO: logica
@@ -41,7 +41,7 @@ void execute(){
         log_successful_connection();
         log_about_to_send_request(request);
 
-        send_structure(request, socket_fd);
+        serialize_and_send_structure(request, socket_fd);
         log_request_sent(request);
 
         free(request);

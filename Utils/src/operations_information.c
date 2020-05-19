@@ -131,7 +131,7 @@ bool exists_queue_named(void* queue_name){
 
     bool _is_for(void* operation_information){
         t_operation_information* cast_operation_information = (t_operation_information*) operation_information;
-        return string_equals_ignore_case(cast_operation_information -> name, queue_name);
+        return string_equals_ignore_case(cast_operation_information -> name, cast_queue_name);
     }
 
     bool queue_exists = list_any_satisfy(queue_operations, _is_for);

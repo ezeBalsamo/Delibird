@@ -253,7 +253,7 @@ t_serialization_information* serialize_caught_pokemon(void* structure){
     return serialization_information;
 }
 
-t_serialization_information* serialize_suscribe_me(void* structure){
+t_serialization_information* serialize_subscribe_me(void* structure){
 
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
@@ -262,7 +262,7 @@ t_serialization_information* serialize_suscribe_me(void* structure){
     uint32_t amount_of_bytes = sizeof(uint32_t) + amount_of_bytes_of_request;
     void* serialized_request = malloc(amount_of_bytes);
 
-    uint32_t operation = SUSCRIBE_ME;
+    uint32_t operation = SUBSCRIBE_ME;
 
     uint32_t offset = 0;
 
@@ -282,4 +282,5 @@ t_serialization_information* serialize_suscribe_me(void* structure){
 
 t_serialization_information* serialize_localized_pokemon(void* structure){
     //TODO: implementar serializacion de LOCALIZED
+    return NULL;
 }

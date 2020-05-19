@@ -34,6 +34,7 @@ bool is_valid_publisher_operation(t_operation_information* operation_information
 }
 
 bool is_valid_subscriber_operation(t_operation_information* operation_information){
+    (void) operation_information; // Se utiliza para suprimir warning debido a double-dispatch
     return exists_queue_named(gameboy_arguments[2]);
 }
 

@@ -30,7 +30,7 @@ typedef struct Operation_information{
     char* name;
     int max_arguments_amount;
     t_serialization_information* (*serialize_function) (void* structure);
-    t_request* (*deserialize_function) (void* serialized_structure);
+    void* (*deserialize_function) (void* serialized_structure);
 }t_operation_information;
 
 typedef struct Process_information{
