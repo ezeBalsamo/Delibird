@@ -201,14 +201,18 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
     }
 }
 
-void send_structure(t_request* request, int socket_fd){
+void send_structure(t_serialization_information* serialization_information, int socket_fd){
+    send_all(socket_fd, serialization_information -> serialized_request, serialization_information -> amount_of_bytes);
+}
+
+void serialize_and_send_structure(t_request* request, int socket_fd){
 
     t_serialization_information* serialization_information = serialize(request);
-    send_all(socket_fd, serialization_information -> serialized_request, serialization_information -> amount_of_bytes);
+    send_structure(serialization_information, socket_fd);
     free_serialization_information(serialization_information);
 }
 
-void* receive_structure(int socket_fd){
+t_serialization_information* receive_structure(int socket_fd){
 
     void* serialized_request;
     uint32_t amount_of_bytes;
@@ -227,10 +231,14 @@ void* receive_structure(int socket_fd){
         exit(EXIT_FAILURE);
     }
 
-    return serialized_request;
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    serialization_information -> serialized_request = serialized_request;
+
+    return serialization_information;
 }
 
-void multithreaded_server_listening_at(char* port){
+void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument)){
     int server_socket_fd = listen_at(port);
 
     while(1){
@@ -238,7 +246,7 @@ void multithreaded_server_listening_at(char* port){
         void* serialized_request = receive_structure(connection_fd);
         pthread_t tid;
 
-        if(pthread_create(&tid, NULL, deserialize, serialized_request) != 0){
+        if(pthread_create(&tid, NULL, thread_function, serialized_request) != 0){
             printf("An error occurred while creating a new thread for attending an incoming connection\n");
             close(server_socket_fd);
             close(connection_fd);
@@ -249,3 +257,4 @@ void multithreaded_server_listening_at(char* port){
         close(connection_fd);
     }
 }
+

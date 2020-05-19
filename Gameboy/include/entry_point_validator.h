@@ -9,7 +9,19 @@ t_operation_information* valid_chosen_operation();
 
 t_process_information* valid_chosen_process();
 
-char** operation_arguments();
+bool is_valid_publisher_operation(t_operation_information* operation_information);
+
+bool is_valid_subscriber_operation(t_operation_information* operation_information);
+
+void* publisher_operation_arguments();
+
+void* subscriber_operation_arguments();
+
+char* valid_process_name_for_connection();
+
+void* operation_arguments();
+
+bool is_subscriber_mode();
 
 void free_entry_point_validator();
 
