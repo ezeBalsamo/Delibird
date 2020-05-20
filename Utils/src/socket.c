@@ -145,8 +145,6 @@ int accept_incoming_connections_on(int socket_fd){
         exit(EXIT_FAILURE);
     }
 
-    printf("Incoming connection accepted with socket file descriptor %d\n", connection_fd);
-
     return connection_fd;
 }
 
@@ -236,31 +234,24 @@ void* receive_structure(int socket_fd){
 }
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument)){
     int server_socket_fd = listen_at(port);
-    pthread_mutex_t lock;
-
-    if(pthread_mutex_init(&lock, NULL) != 0){
-        printf("mutex init failed");
-        exit(EXIT_FAILURE);
-    }
 
     while(1){
 
-        pthread_mutex_lock(&lock);
-        int connection_fd = accept_incoming_connections_on(server_socket_fd);
+        int* client_socket_fd = malloc(sizeof(int));
+        *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
 
         void _client_thread_error_response(){
             printf("An error occurred while creating a new thread for attending an incoming connection\n");
             close(server_socket_fd);
-            close(connection_fd);
+            close(*client_socket_fd);
+            free(client_socket_fd);
             exit(EXIT_FAILURE);
         }
-        pthread_t tid = thread_create(thread_function, (void*) &connection_fd, _client_thread_error_response);
-
-        pthread_mutex_unlock(&lock);
-    //    thread_join(tid);
+        thread_create(thread_function, (void*) client_socket_fd, _client_thread_error_response);
     }
 }
 
-void close_connection(int socket_fd){
-    close(socket_fd);
+void free_and_close_connection(void* socket_fd){
+    close(*((int*) socket_fd));
+    free(socket_fd);
 }

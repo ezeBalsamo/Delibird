@@ -26,6 +26,6 @@ void start_multithreaded_server(char* port, void* (*thread_function) (void* thre
 
 void* receive_structure(int socket_fd);
 
-void close_connection(int socket_fd);
+void free_and_close_connection(void* socket_fd);
 
 #endif //SOCKET_H
