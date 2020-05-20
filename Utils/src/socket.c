@@ -9,6 +9,7 @@
 #include <pthread.h>
 #include "../include/socket.h"
 #include <stdint.h>
+#include <pthread_wrapper.h> //TODO probar esto con el makefile
 
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
@@ -144,8 +145,6 @@ int accept_incoming_connections_on(int socket_fd){
         exit(EXIT_FAILURE);
     }
 
-    printf("Incoming connection accepted with socket file descriptor %d\n", connection_fd);
-
     return connection_fd;
 }
 
@@ -211,8 +210,8 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
     send_structure(serialization_information, socket_fd);
     free_serialization_information(serialization_information);
 }
-/*
-t_serialization_information* receive_structure(int socket_fd){
+
+void* receive_structure(int socket_fd){
 
     void* serialized_request;
     uint32_t amount_of_bytes;
@@ -231,57 +230,28 @@ t_serialization_information* receive_structure(int socket_fd){
         exit(EXIT_FAILURE);
     }
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
-    serialization_information -> amount_of_bytes = amount_of_bytes;
-    serialization_information -> serialized_request = serialized_request;
-
-    return serialization_information;
-}*/
-
-t_serialization_information* receive_structure(int socket_fd){
-
-    void* serialized_request;
-    uint32_t amount_of_bytes;
-
-    if(recv(socket_fd, &amount_of_bytes, sizeof(uint32_t), MSG_WAITALL) == -1){
-        perror("recv amount of bytes error");
-        close(socket_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    serialized_request = malloc(amount_of_bytes);
-
-    if(recv(socket_fd, serialized_request, amount_of_bytes, MSG_WAITALL) == -1){
-        perror("recv serialized structure error");
-        close(socket_fd);
-        exit(EXIT_FAILURE);
-    }
-
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
-    serialization_information -> amount_of_bytes = amount_of_bytes;
-    serialization_information -> socket_fd = socket_fd;
-    serialization_information -> serialized_request = serialized_request;
-
-    return serialization_information;
+    return serialized_request;
 }
-
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument)){
     int server_socket_fd = listen_at(port);
 
     while(1){
-        int connection_fd = accept_incoming_connections_on(server_socket_fd);
-        void* serialized_request = receive_structure(connection_fd);
-        pthread_t tid;
 
-        if(pthread_create(&tid, NULL, thread_function, serialized_request) != 0){
+        int* client_socket_fd = malloc(sizeof(int));
+        *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
+
+        void _client_thread_error_response(){
             printf("An error occurred while creating a new thread for attending an incoming connection\n");
             close(server_socket_fd);
-            close(connection_fd);
+            close(*client_socket_fd);
+            free(client_socket_fd);
             exit(EXIT_FAILURE);
         }
-
-        pthread_join(tid, NULL);
-        close(connection_fd);
+        thread_create(thread_function, (void*) client_socket_fd, _client_thread_error_response);
     }
 }
 
+void free_and_close_connection(void* socket_fd){
+    close(*((int*) socket_fd));
+    free(socket_fd);
+}

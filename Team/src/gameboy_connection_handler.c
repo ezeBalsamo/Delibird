@@ -7,9 +7,15 @@ char* port(){
     return config_get_string_at("PUERTO");
 }
 
-void* main_thread_handler(void* serialized_request){
-    //TODO: lógica al recibir
-    return deserialize(serialized_request);
+void* main_thread_handler(void* connection_fd){
+    int cast_connection_fd = *((int*) connection_fd);
+    void* serialized_request = receive_structure(cast_connection_fd);
+    void* serialized_structure = deserialize(serialized_request);
+
+    free_and_close_connection(connection_fd);
+    free(serialized_request);
+
+    return serialized_structure;
 }
 
 void* initialize_gameboy_connection_handler(){
