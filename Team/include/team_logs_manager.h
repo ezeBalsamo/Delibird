@@ -8,7 +8,9 @@ void log_failed_attempt_to_communicate_with_broker();
 void log_initiating_communication_retry_process_with_broker();
 void log_failed_retry_of_communication_with_broker();
 void log_succesful_retry_of_communication_with_broker();
-
 void log_thread_sleep_time_configuration_error();
+void log_queue_thread_create_error();
+
+void free_team_logs_manager();
 
 #endif //DELIBIRD_TEAM_LOGS_MANAGER_H
