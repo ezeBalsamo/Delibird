@@ -4,13 +4,8 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include <commons/process.h>
 #include <stdlib.h>
 #include <string.h>
-
-int appeared_queue_socket_fd;
-int caught_queue_socket_fd;
-int localized_queue_socket_fd;
 
 char* broker_ip;
 char* broker_port;
@@ -42,38 +37,32 @@ void* retry_connection_thread(void* connection_information){
 
 void reconnection_strategy(t_connection_information* connection_information){
     log_failed_attempt_to_communicate_with_broker();
-    pthread_t reconnection_thread = thread_create(retry_connection_thread, (void*) connection_information, default_thread_create_error_response_strategy);
+    pthread_t reconnection_thread = thread_create(retry_connection_thread, (void *) connection_information,
+                                                  default_thread_create_error_response);
     thread_join(reconnection_thread);
 }
 
-t_request* handshake_request_for(uint32_t queue_operation_identifier){
-
-    uint32_t process_id = process_getpid();
-    void* structure = malloc(sizeof(uint32_t) * 2);
-    uint32_t offset = 0;
-    memcpy(structure + offset, &process_id, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    memcpy(structure + offset, &queue_operation_identifier, sizeof(uint32_t));
-
+void* subscriber_thread(void* queue_operation_identifier){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
-    request -> structure = structure;
+    request -> structure = queue_operation_identifier;
 
-    return request;
+    int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
+    serialize_and_send_structure(request, socket_fd);
+
+    //TODO: Lógica para escuchar
 }
 
-void subscribe_to_queue(int* socket_fd, uint32_t queue_operation_identifier){
-
-    t_request* request = handshake_request_for(queue_operation_identifier);
-    *socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
-    serialize_and_send_structure(request, *socket_fd);
+void subscribe_to_queue(uint32_t queue_operation_identifier){
+    pthread_t queue_tid = thread_create(subscriber_thread, (void*) &queue_operation_identifier, log_queue_thread_create_error);
+    thread_join(queue_tid);
 }
 
 void subscribe_to_queues(){
 
-    subscribe_to_queue(&appeared_queue_socket_fd, APPEARED_POKEMON);
-    subscribe_to_queue(&localized_queue_socket_fd, LOCALIZED_POKEMON);
-    subscribe_to_queue(&caught_queue_socket_fd, CAUGHT_POKEMON);
+    subscribe_to_queue(APPEARED_POKEMON);
+    subscribe_to_queue(LOCALIZED_POKEMON);
+    subscribe_to_queue(CAUGHT_POKEMON);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){

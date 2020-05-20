@@ -48,4 +48,22 @@ void log_thread_sleep_time_configuration_error(){
     log_errorful_message(process_execution_logger(), message);
 
     free(message);
+    free_team_logs_manager();
+    exit(EXIT_FAILURE);
+}
+
+void log_queue_thread_create_error(){
+    char* message = string_new();
+    string_append(&message, "Falló la creación del hilo para escuchar una cola del Broker: ");
+    string_append(&message, strerror(errno));
+
+    log_errorful_message(process_execution_logger(), message);
+
+    free(message);
+    free_team_logs_manager();
+    exit(EXIT_FAILURE);
+}
+
+void free_team_logs_manager(){
+    free_loggers();
 }
