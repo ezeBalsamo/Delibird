@@ -2,6 +2,7 @@
 #include "commons/collections/queue.h"
 #include "../include/broker_deserialization.h"
 #include "../../Utils/include/socket.h"
+#include "../include/broker_logs_manager.h"
 #include <stdlib.h>
 
 //son queues con estructuras del tipo: connection_request.
@@ -26,7 +27,9 @@ void initialize_messages_queue(){
 
 void initialize_queue_message_manager(){
     initialize_messages_queue();
+    log_succesful_queues_creation();
     subscribers = list_create();
+    log_succesful_subscribers_list_creation()
 }
 
 void subscribe_process(t_connection_request* connection_request){
@@ -47,30 +50,45 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
 
         case APPEARED_POKEMON :
             queue_push(appeared_queue, connection_request -> serialized_request);
+            log_succesful_new_message_pushed_to_a_queue(); //log main
+            log_pushed_message(); //log nuestro
             break;
 
         case NEW_POKEMON :
             queue_push(new_queue, connection_request -> serialized_request); //accedemos a esto para que en un futuro
             // directamente en la cola enviamos la serialized request que es un void*.
+            log_succesful_new_message_pushed_to_a_queue();
+            log_pushed_message();
             break;
 
         case CATCH_POKEMON :
             queue_push(catch_queue, connection_request -> serialized_request);
+            log_succesful_new_message_pushed_to_a_queue();
+            log_pushed_message();
             break;
 
         case CAUGHT_POKEMON :
             queue_push(caught_queue, connection_request -> serialized_request);
+            log_succesful_new_message_pushed_to_a_queue();
+            log_pushed_message();
             break;
 
         case GET_POKEMON :
             queue_push(get_queue, connection_request -> serialized_request);
+            log_succesful_new_message_pushed_to_a_queue();
+            log_pushed_message();
             break;
 
         case LOCALIZED_POKEMON :
             queue_push(localized_queue, connection_request -> serialized_request);
+            log_succesful_new_message_pushed_to_a_queue();
+            log_pushed_message();
+            break;
 
         case SUBSCRIBE_ME :
             subscribe_process(connection_request);
+            log_succesful_subscription_process(); //log main
+            log_succesful_subscription(); //log nuestro
             break;
 
         default: ;
