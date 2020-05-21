@@ -128,15 +128,16 @@ void* deserialize_get_pokemon(void* serialized_structure){
 
 
 void* deserialize_subscribe_me(void* serialized_structure){
-    uint32_t operation_queue;
 
-    memcpy(&operation_queue, serialized_structure, sizeof(uint32_t));
+    uint32_t* operation_queue = malloc(sizeof(uint32_t));
+
+    memcpy(operation_queue, serialized_structure, sizeof(uint32_t));
 
     printf("request deserialized!\n");
     printf("request operation number: %d\n", SUBSCRIBE_ME);
-    printf("operation queue: %d\n", operation_queue);
+    printf("operation queue: %d\n", *operation_queue);
 
-    return (uint32_t*) operation_queue;
+    return (void*) operation_queue;
 }
 
 void* deserialize_localized_pokemon(void* serialized_structure){

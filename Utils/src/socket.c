@@ -211,7 +211,7 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
     free_serialization_information(serialization_information);
 }
 
-void* receive_structure(int socket_fd){
+t_serialization_information* receive_structure(int socket_fd){
 
     void* serialized_request;
     uint32_t amount_of_bytes;
@@ -230,8 +230,13 @@ void* receive_structure(int socket_fd){
         exit(EXIT_FAILURE);
     }
 
-    return serialized_request;
+    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information -> amount_of_bytes = amount_of_bytes;
+    serialization_information -> serialized_request = serialized_request;
+
+    return serialization_information;
 }
+
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument)){
     int server_socket_fd = listen_at(port);
 

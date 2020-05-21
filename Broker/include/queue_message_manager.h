@@ -9,8 +9,10 @@ typedef struct Subscriber{
     int socket_fd;
 }t_subscriber;
 
-void initialize_message_manager();
+void initialize_queue_message_manager();
 
-void move_to_queue(uint32_t operation, t_connection_request* connection_request);
+void push_to_queue(uint32_t operation, t_connection_request* connection_request);
+
+void publish(uint32_t queue, t_serialization_information* serialization_information);
 
 #endif //TP_2020_1C_EL_KUELGUE_QUEUE_MESSAGE_MANAGER_H

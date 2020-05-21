@@ -8,17 +8,10 @@ typedef struct Request{
     uint32_t operation;
     void* structure;
 }t_request;
-/*
-typedef struct Serialization_information{
-    void* serialized_request;
-    uint32_t amount_of_bytes;
-}t_serialization_information;
-*/
 
 typedef struct Serialization_information{
     void* serialized_request;
     uint32_t amount_of_bytes;
-    int socket_fd;
 }t_serialization_information;
 
 typedef struct Connection_request{

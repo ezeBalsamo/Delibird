@@ -12471,3 +12471,84 @@ Argumentos: charmander 55 55
 
 [INFO] 18:17:41:622 Gameboy/(19425:19425): Gameboy has succesfully started!
 
+[INFO] 00:08:13:773 Gameboy/(16756:16756): Gameboy has succesfully started!
+
+[INFO] 00:09:39:28 Gameboy/(16946:16946): Gameboy has succesfully started!
+
+[INFO] 00:09:39:28 Gameboy/(16946:16946): Conexión establecida al proceso BROKER
+[INFO] 00:09:39:28 Gameboy/(16946:16946): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:09:39:28 Gameboy/(16946:16946): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:55:38:472 Gameboy/(19466:19466): Gameboy has succesfully started!
+
+[INFO] 00:55:38:473 Gameboy/(19466:19466): Conexión establecida al proceso BROKER
+[INFO] 00:55:38:473 Gameboy/(19466:19466): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:55:38:473 Gameboy/(19466:19466): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:56:16:849 Gameboy/(19476:19476): Gameboy has succesfully started!
+
+[INFO] 00:56:16:850 Gameboy/(19476:19476): Conexión establecida al proceso BROKER
+[INFO] 00:56:16:850 Gameboy/(19476:19476): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:56:16:850 Gameboy/(19476:19476): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:58:42:119 Gameboy/(19546:19546): Gameboy has succesfully started!
+
+[INFO] 00:58:42:119 Gameboy/(19546:19546): Conexión establecida al proceso BROKER
+[INFO] 00:58:42:119 Gameboy/(19546:19546): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 00:58:42:119 Gameboy/(19546:19546): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:01:00:142 Gameboy/(19614:19614): Gameboy has succesfully started!
+
+[INFO] 01:01:00:142 Gameboy/(19614:19614): Conexión establecida al proceso BROKER
+[INFO] 01:01:00:142 Gameboy/(19614:19614): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:01:00:142 Gameboy/(19614:19614): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:07:09:257 Gameboy/(20118:20118): Gameboy has succesfully started!
+
+[INFO] 01:07:09:257 Gameboy/(20118:20118): Conexión establecida al proceso BROKER
+[INFO] 01:07:09:257 Gameboy/(20118:20118): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:07:09:257 Gameboy/(20118:20118): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:14:52:815 Gameboy/(20351:20351): Gameboy has succesfully started!
+
+[INFO] 01:15:36:95 Gameboy/(20394:20394): Gameboy has succesfully started!
+
+[INFO] 01:15:36:95 Gameboy/(20394:20394): Conexión establecida al proceso TEAM
+[INFO] 01:15:36:95 Gameboy/(20394:20394): Pedido de enviar:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+
+[INFO] 01:15:36:95 Gameboy/(20394:20394): Pedido enviado:
+Operación: APPEARED_POKEMON
+Argumentos: pikachu 1 20 
+

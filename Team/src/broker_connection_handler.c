@@ -50,6 +50,9 @@ void* subscriber_thread(void* queue_operation_identifier){
     int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
     serialize_and_send_structure(request, socket_fd);
 
+    t_serialization_information* serialization_information = receive_structure(socket_fd);
+
+    deserialize(serialization_information -> serialized_request);
     //TODO: Lógica para escuchar
 }
 
@@ -61,8 +64,8 @@ void subscribe_to_queue(uint32_t queue_operation_identifier){
 void subscribe_to_queues(){
 
     subscribe_to_queue(APPEARED_POKEMON);
-    subscribe_to_queue(LOCALIZED_POKEMON);
-    subscribe_to_queue(CAUGHT_POKEMON);
+//    subscribe_to_queue(LOCALIZED_POKEMON);
+//    subscribe_to_queue(CAUGHT_POKEMON);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
@@ -81,7 +84,7 @@ void* initialize_broker_connection_handler(){
     broker_port = config_get_string_at("PUERTO_BROKER");
 
     subscribe_to_queues();
-    with_global_goal_do(send_get_pokemon_request_of);
+//    with_global_goal_do(send_get_pokemon_request_of);
 
     return NULL;
 }

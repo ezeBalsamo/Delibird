@@ -1,21 +1,15 @@
-#include "../../Utils/include/socket.h"
 #include "../include/queue_message_manager.h"
+#include "../../Utils/include/pthread_wrapper.h"
+#include "../include/connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
-
-char* port(){
-    return config_get_string_at("PUERTO_BROKER");
-}
-
-void main_thread_handler(void* serialized_request){
-
-    deserialize(serialized_request);
-
-}
 
 int main() {
 
-    initialize_message_manager();
+    initialize_configuration_manager_named("broker");
+    initialize_queue_message_manager();
 
-    start_multithreaded_server(port(), main_thread_handler);
+    pthread_t connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
+
+    thread_join(connection_handler_thread);
 
 }
