@@ -29,8 +29,8 @@ void log_initiating_communication_retry_process_with_broker(){
 
 void log_succesful_retry_of_communication_with_broker(){
     char* message = "El proceso de reintento de comunicación con el Broker ha sido exitoso.";
-    log_errorful_message(main_logger(), message);
-    log_errorful_message(process_execution_logger(), message);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
 }
 
 void log_failed_retry_of_communication_with_broker(){
