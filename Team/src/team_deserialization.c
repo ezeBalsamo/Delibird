@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void* deserialize(void* serialized_request){
+t_printable_object* deserialize(void* serialized_request){
     uint32_t operation;
     void* serialized_structure;
     uint32_t serialized_structure_size;

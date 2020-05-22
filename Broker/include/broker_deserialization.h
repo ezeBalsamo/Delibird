@@ -3,7 +3,7 @@
 
 #include "../../Utils/include/serialization_interface.h"
 
-void* deserialize(void* serialized_request);
+t_printable_object* deserialize(void* serialized_request);
 
 uint32_t get_operation_from(void* serialized_request);
 

@@ -6,6 +6,7 @@
 #include "../include/gameboy_connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include <stdio.h>
 
 int main(void){
     initialize_team_logs_manager();
@@ -20,6 +21,7 @@ int main(void){
     pthread_t gameboy_connection_handler_thread = default_safe_thread_create(initialize_gameboy_connection_handler, NULL);
 
     thread_join(broker_connection_handler_thread);
+    printf("no me hizo caso el join.\n");
     thread_join(gameboy_connection_handler_thread);
 
     free_team_manager();

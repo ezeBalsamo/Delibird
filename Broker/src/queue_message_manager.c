@@ -28,17 +28,18 @@ void initialize_messages_queue(){
 void initialize_queue_message_manager(){
     initialize_messages_queue();
     log_succesful_queues_creation();
+
     subscribers = list_create();
-    log_succesful_subscribers_list_creation()
+    log_succesful_subscribers_list_creation();
 }
 
 void subscribe_process(t_connection_request* connection_request){
 
-    void* deserialized_suscribed_queue = deserialize(connection_request->serialized_request); //me devuelve la cola a la cual esta suscripto.
-    uint32_t suscribed_queue = *((uint32_t*) deserialized_suscribed_queue);
+    t_printable_object* deserialized_suscribe_me = deserialize(connection_request->serialized_request);
+    t_subscribe_me* suscribe_me = (t_subscribe_me*) deserialized_suscribe_me->object;
 
     t_subscriber* subscriber = malloc(sizeof(t_subscriber));
-    subscriber -> queue = suscribed_queue;
+    subscriber -> queue = suscribe_me -> operation_queue;
     subscriber -> socket_fd = connection_request -> socket_fd;
 
     list_add(subscribers, (void*) subscriber);
@@ -50,45 +51,38 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
 
         case APPEARED_POKEMON :
             queue_push(appeared_queue, connection_request -> serialized_request);
-            log_succesful_new_message_pushed_to_a_queue(); //log main
-            log_pushed_message(); //log nuestro
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case NEW_POKEMON :
             queue_push(new_queue, connection_request -> serialized_request); //accedemos a esto para que en un futuro
             // directamente en la cola enviamos la serialized request que es un void*.
-            log_succesful_new_message_pushed_to_a_queue();
-            log_pushed_message();
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case CATCH_POKEMON :
             queue_push(catch_queue, connection_request -> serialized_request);
-            log_succesful_new_message_pushed_to_a_queue();
-            log_pushed_message();
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case CAUGHT_POKEMON :
             queue_push(caught_queue, connection_request -> serialized_request);
-            log_succesful_new_message_pushed_to_a_queue();
-            log_pushed_message();
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case GET_POKEMON :
             queue_push(get_queue, connection_request -> serialized_request);
-            log_succesful_new_message_pushed_to_a_queue();
-            log_pushed_message();
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case LOCALIZED_POKEMON :
             queue_push(localized_queue, connection_request -> serialized_request);
-            log_succesful_new_message_pushed_to_a_queue();
-            log_pushed_message();
+            log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case SUBSCRIBE_ME :
             subscribe_process(connection_request);
-            log_succesful_subscription_process(); //log main
-            log_succesful_subscription(); //log nuestro
+            log_succesful_subscription_process();
             break;
 
         default: ;
@@ -108,9 +102,15 @@ void publish(uint32_t queue, t_serialization_information* serialization_informat
 
     void _send_message(void* subscriber){
         send_structure(serialization_information, ((t_subscriber*) subscriber) -> socket_fd);
+        log_succesful_message_sent_to_a_suscriber(serialization_information -> serialized_request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
     }
-    list_iterate(subscribers_of_a_queue, _send_message);
 
+    if(list_is_empty(subscribers_of_a_queue)){
+        log_no_subscribers_for_request(serialization_information -> serialized_request);
+    } else {
+        list_iterate(subscribers_of_a_queue, _send_message);
+        log_succesful_message_sent_to_suscribers(serialization_information -> serialized_request);
+    }
     list_destroy(subscribers_of_a_queue);
 }
 

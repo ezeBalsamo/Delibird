@@ -84,7 +84,7 @@ void* initialize_broker_connection_handler(){
     broker_port = config_get_string_at("PUERTO_BROKER");
 
     subscribe_to_queues();
-    with_global_goal_do(send_get_pokemon_request_of);
+//    with_global_goal_do(send_get_pokemon_request_of);
 
     return NULL;
 }
