@@ -9,7 +9,8 @@ set(SOURCES
         src/operations_information.c
         src/pthread_wrapper.c
         src/socket.c
-        src/t_list_extension.c)
+        src/t_list_extension.c
+        src/roots.c)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_library(utils SHARED ${SOURCES})

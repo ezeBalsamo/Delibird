@@ -12,12 +12,13 @@
 #include <commons/collections/queue.h>
 #include <commons/process.h>
 #include <pthread_wrapper.h>
+#include <semaphore.h>
 
 #define THREAD_POOL_SIZE 25
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t elements_on_queue_condition = PTHREAD_COND_INITIALIZER;
+sem_t client_sockets_amount_in_queue;
 t_queue* queue;
 
 int found_local_ip_address_in(struct ifaddrs* interface_address){
@@ -244,47 +245,16 @@ void* receive_structure(int socket_fd){
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
     queue = queue_create();
+    sem_init(&client_sockets_amount_in_queue, false, 0);
 
     void* _thread_function(void* thread_argument){
         while(true){
-            void* client_socket_fd;
+            sem_wait(&client_sockets_amount_in_queue);
             pthread_mutex_lock(&queue_mutex);
-            printf("----------------------------\n");
-            printf("Lock adquirido por hilo %d\n", process_get_thread_id());
-
-            if(queue_is_empty(queue)){
-                printf("Por waitear condición al hilo %d\n", process_get_thread_id());
-                pthread_cond_wait(&elements_on_queue_condition, &queue_mutex);
-                printf("Sale de cond_wait el hilo %d\n", process_get_thread_id());
-
-                printf("A punto de desencolar. Elementos disponibles: %d\n", queue_size(queue));
-                for(int i = 0; i< queue_size(queue); i++){
-                    void* socket_in_queue = list_get(queue -> elements, i);
-                    printf("Elemento %d - socket %d con puntero %p\n", i, *((int*) socket_in_queue), socket_in_queue);
-                }
-                printf("----------------------------\n");
-                client_socket_fd = queue_pop(queue);
-                printf("Desencolado socket %d  con puntero %p\n",*((int*) client_socket_fd), client_socket_fd);
-            }
-            printf("Elementos restantes: %d\n", queue_size(queue));
-            for(int i = 0; i< queue_size(queue); i++){
-                void* socket_in_queue = list_get(queue -> elements, i);
-                printf("Elemento %d - socket %d con puntero %p\n", i, *((int*) socket_in_queue), socket_in_queue);
-            }
-            printf("----------------------------\n");
-
+            void* client_socket_fd = queue_pop(queue);
             pthread_mutex_unlock(&queue_mutex);
 
-            if(client_socket_fd != NULL){
-                (*handle_connection_function) (client_socket_fd);
-            } else{
-                printf("el client_socket_fd era null, no entré!!!!!\n");
-                printf("----------------------------\n");
-            }
-
-            printf("Lock liberado por hilo %d\n", process_get_thread_id());
-            printf("----------------------------\n");
-
+            (*handle_connection_function) (client_socket_fd);
         }
     }
 
@@ -299,32 +269,16 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     while(true){
         int* client_socket_fd = malloc(sizeof(int));
-        printf("----------------------------\n");
-        printf("Alocando memoria para puntero de socket %p\n", client_socket_fd);
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
-//        printf("----------------------------\n");
-        printf("Conexión aceptada para socket %d con puntero %p\n", *client_socket_fd, client_socket_fd);
+
         pthread_mutex_lock(&queue_mutex);
-        printf("Lock adquirido por socket %d con puntero %p\n", *client_socket_fd, client_socket_fd);
         queue_push(queue, (void*) client_socket_fd);
-        printf("Elemento agregado por socket %d con puntero %p\n", *client_socket_fd, client_socket_fd);
-        for(int i = 0; i< queue_size(queue); i++){
-            void* socket_in_queue = list_get(queue -> elements, i);
-            printf("Elemento %d - socket %d con puntero %p\n", i, *((int*) socket_in_queue), socket_in_queue);
-        }
-//        printf("----------------------------\n");
-        pthread_cond_signal(&elements_on_queue_condition);
-        printf("Condición signaleada por socket %d con puntero %p\n", *client_socket_fd, client_socket_fd);
+        sem_post(&client_sockets_amount_in_queue);
         pthread_mutex_unlock(&queue_mutex);
-        printf("Lock liberado por socket %d con puntero %p\n", *client_socket_fd, client_socket_fd);
-        printf("----------------------------\n");
     }
 }
 
 void free_and_close_connection(void* socket_fd){
-    printf("----------------------------\n");
-    printf("Cerrando socket %d con puntero %p\n", *((int*) socket_fd), socket_fd);
     close(*((int*) socket_fd));
     free(socket_fd);
-    printf("Ya libere el socket, el puntero ahora es %p\n", socket_fd);
 }
