@@ -8,31 +8,31 @@ t_list* processes_information;
 
 t_list* team_operation_information(){
     t_list* operations = list_create();
-    list_add(operations, appeared_pokemon_information());
+    list_add(operations, appeared_pokemon_operation_information());
     return operations;
 }
 
 t_list* broker_operation_information(){
     t_list* operations = list_create();
-    list_add(operations, new_pokemon_information());
-    list_add(operations, appeared_pokemon_information());
-    list_add(operations, catch_pokemon_information());
-    list_add(operations, caught_pokemon_information());
-    list_add(operations, get_pokemon_information());
+    list_add(operations, new_pokemon_operation_information());
+    list_add(operations, appeared_pokemon_operation_information());
+    list_add(operations, catch_pokemon_operation_information());
+    list_add(operations, caught_pokemon_operation_information());
+    list_add(operations, get_pokemon_operation_information());
     return operations;
 }
 
 t_list* gamecard_operation_information(){
     t_list* operations = list_create();
-    list_add(operations, new_pokemon_information());
-    list_add(operations, catch_pokemon_information());
-    list_add(operations, get_pokemon_information());
+    list_add(operations, new_pokemon_operation_information());
+    list_add(operations, catch_pokemon_operation_information());
+    list_add(operations, get_pokemon_operation_information());
     return operations;
 }
 
 t_list* suscriptor_operation_information(){
     t_list* operations = list_create();
-    list_add(operations, subscribe_me_information());
+    list_add(operations, subscribe_me_operation_information());
     return operations;
 }
 
@@ -74,11 +74,26 @@ t_process_information* suscriptor_process_information(){
 
 void initialize_processes_information(){
 
+    initialize_operations_information();
+
     processes_information = list_create();
     list_add(processes_information, (void*) team_process_information());
     list_add(processes_information, (void*) broker_process_information());
     list_add(processes_information, (void*) gamecard_process_information());
     list_add(processes_information, (void*) suscriptor_process_information());
+}
+
+t_process_information* process_information_with_code(uint32_t code){
+
+    bool _is_for(void* process_information){
+        return ((t_process_information*) process_information) -> code == code;
+    }
+    return list_find(processes_information, _is_for);
+}
+
+char* broker_process_name(){
+    t_process_information* broker_process_information = process_information_with_code(BROKER);
+    return broker_process_information -> name;
 }
 
 t_process_information* process_information_named(char* process_name){
@@ -97,6 +112,11 @@ uint32_t process_information_code_of(char* process_name){
     }
 
     return process_information -> code;
+}
+
+void free_process_information(t_process_information* process_information){
+    list_destroy(process_information -> operations);
+    free(process_information);
 }
 
 void free_processes_information(){

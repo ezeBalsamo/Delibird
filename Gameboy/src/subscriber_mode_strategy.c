@@ -10,12 +10,7 @@ bool subscriber_can_handle(uint32_t process_code){
 }
 
 char* subscriber_process_name_for_connection(){
-    t_process_information* process_information = broker_process_information();
-    char* broker_name = process_information -> name;
-
-    free_process_information(process_information);
-
-    return broker_name;
+    return broker_process_name();
 }
 
 void initialize_subscriber_mode_strategy(){

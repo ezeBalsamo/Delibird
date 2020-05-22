@@ -94,4 +94,6 @@ bool is_subscriber_mode(){
 
 void free_entry_point_validator(){
     free_processes_information();
+    free_operations_information();
+    free_role_mode_strategy();
 }

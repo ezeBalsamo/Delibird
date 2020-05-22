@@ -4,9 +4,7 @@
 #include <commons/collections/list.h>
 #include "../../Utils/include/common_structures.h"
 
-t_list* broker_operation_information();
-
-t_process_information* broker_process_information();
+char* broker_process_name();
 
 void initialize_processes_information();
 

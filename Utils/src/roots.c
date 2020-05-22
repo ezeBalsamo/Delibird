@@ -10,9 +10,9 @@ char* module_absolute_path(){
     char* project_absolute_path = string_reverse(reversed_path_splitted[1]);
 
     free(executable_path);
-    free(reversed_path_splitted);
-
+    free(reversed_path_for_split);
     string_iterate_lines(reversed_path_splitted, (void (*)(char *)) free);
+    free(reversed_path_splitted);
 
     return project_absolute_path;
 }
