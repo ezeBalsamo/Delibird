@@ -151,32 +151,39 @@ int listen_at(char* port) {
     return socket_fd;
 }
 
+void free_connection_information(t_connection_information* connection_information){
+    freeaddrinfo(connection_information -> address_interface);
+    free(connection_information);
+}
+
+void free_and_close_connection_information(t_connection_information* connection_information){
+    close(connection_information -> socket_fd);
+    free_connection_information(connection_information);
+}
+
 int reconnect(t_connection_information* connection_information){
     return connect(connection_information -> socket_fd,
                    connection_information -> address_interface -> ai_addr,
                    connection_information -> address_interface -> ai_addrlen);
 }
 
-
 void close_connection_strategy(t_connection_information* connection_information){
-    close(connection_information -> socket_fd);
     perror("connect error");
-    freeaddrinfo(connection_information -> address_interface);
-    free(connection_information);
+    free_and_close_connection_information(connection_information);
     exit(EXIT_FAILURE);
 }
 
-void establish_connection(t_connection_information* connection_information, void (*disconnection_strategy) (t_connection_information*)){
+void establish_connection(t_connection_information* connection_information, void (*connection_failed_strategy) (t_connection_information*)){
 
     if (connect(connection_information -> socket_fd,
                 connection_information -> address_interface -> ai_addr,
                 connection_information -> address_interface -> ai_addrlen) == -1) {
 
-        (*disconnection_strategy) (connection_information);
+        (*connection_failed_strategy) (connection_information);
     }
 }
 
-int connect_to(char* ip, char* port, void (*disconnection_strategy) (t_connection_information*)) {
+int connect_to(char* ip, char* port, void (*connection_failed_strategy) (t_connection_information*)) {
 
     struct addrinfo* address_interface = build_address_interface(ip, port);
     int socket_fd = get_socket_fd_using(address_interface);
@@ -185,10 +192,9 @@ int connect_to(char* ip, char* port, void (*disconnection_strategy) (t_connectio
     connection_information -> socket_fd = socket_fd;
     connection_information -> address_interface = address_interface;
 
-    establish_connection(connection_information, disconnection_strategy);
+    establish_connection(connection_information, connection_failed_strategy);
 
-    freeaddrinfo(address_interface);
-    free(connection_information);
+    free_connection_information(connection_information);
     return socket_fd;
 }
 

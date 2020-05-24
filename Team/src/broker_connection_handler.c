@@ -81,15 +81,26 @@ void subscribe_to_queues(){
     subscribe_to_queue(CAUGHT_POKEMON);
 }
 
+
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
+
+    t_get_pokemon* get_pokemon = malloc(sizeof(t_get_pokemon));
+    get_pokemon -> pokemon_name = pokemon_goal -> pokemon_name;
+    get_pokemon -> message_id = -1;
 
     t_request* request = malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
-    request -> structure = (void*) (pokemon_goal -> pokemon_name);
+    request -> structure = get_pokemon;
 
-    int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
+    void _no_locations_found(t_connection_information* connection_information){
+        printf("No se encontraron ubicaciones para %s\n", pokemon_goal -> pokemon_name);
+        free_and_close_connection_information(connection_information);
+        return;
+    }
+
+    int socket_fd = connect_to(broker_ip, broker_port, _no_locations_found);
     serialize_and_send_structure(request, socket_fd);
-    free(request);
+    free_request(request);
 }
 
 void* initialize_broker_connection_handler(){
