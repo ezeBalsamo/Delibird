@@ -21,7 +21,7 @@ void* queue_listener_thread(){
 
     //TODO: logica
 
-    free(request);
+    free_request(request);
 
     return NULL;
 }
@@ -44,6 +44,6 @@ void execute(){
         serialize_and_send_structure(request, socket_fd);
         log_request_sent(request);
 
-        free(request);
+        free_request(request);
     }
 }

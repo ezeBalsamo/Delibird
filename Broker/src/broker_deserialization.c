@@ -4,7 +4,7 @@
 #include <string.h>
 #include "../include/queue_message_manager.h"
 
-t_printable_object* deserialize(void* serialized_request){
+t_request* deserialize(void* serialized_request){
     uint32_t operation;
     void* serialized_structure;
     uint32_t serialized_structure_size;

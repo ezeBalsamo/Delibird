@@ -20,7 +20,7 @@ void initialize_publisher_mode_strategy(){
     publisher_role_mode_strategy = malloc(sizeof(t_role_mode));
     publisher_role_mode_strategy -> can_handle_function = publisher_can_handle;
     publisher_role_mode_strategy -> is_valid_operation_function = is_valid_publisher_operation;
-    publisher_role_mode_strategy -> operation_arguments_function = publisher_operation_arguments;
+    publisher_role_mode_strategy -> pokemon_operation_structure_function = publisher_pokemon_operation_structure;
     publisher_role_mode_strategy -> process_name_for_connection = publisher_process_name_for_connection();
     publisher_role_mode_strategy -> is_subscriber_mode = false;
 }

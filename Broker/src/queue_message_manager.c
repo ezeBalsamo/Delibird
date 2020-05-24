@@ -35,14 +35,16 @@ void initialize_queue_message_manager(){
 
 void subscribe_process(t_connection_request* connection_request){
 
-    t_printable_object* deserialized_suscribe_me = deserialize(connection_request->serialized_request);
-    t_subscribe_me* suscribe_me = (t_subscribe_me*) deserialized_suscribe_me->object;
+    t_request* deserialized_request = deserialize(connection_request -> serialized_request);
+    t_subscribe_me* suscribe_me = (t_subscribe_me*) deserialized_request -> structure;
 
     t_subscriber* subscriber = malloc(sizeof(t_subscriber));
     subscriber -> queue = suscribe_me -> operation_queue;
     subscriber -> socket_fd = connection_request -> socket_fd;
 
     list_add(subscribers, (void*) subscriber);
+
+    free(deserialized_request);
 }
 
 void push_to_queue(uint32_t operation, t_connection_request* connection_request) {

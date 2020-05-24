@@ -3,8 +3,6 @@
 
 #include "../../Utils/include/serialization_interface.h"
 
-t_printable_object* deserialize(void* serialized_request);
-
 uint32_t get_operation_from(void* serialized_request);
 
 t_connection_request * create_connection_request(int connection_fd, void* serialized_structure);

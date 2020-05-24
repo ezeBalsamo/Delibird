@@ -7,7 +7,7 @@
 
 t_list* role_modes_strategy;
 
-void initialize_role_mode_strategy(){
+void initialize_and_load_role_mode_strategy(){
     initialize_subscriber_mode_strategy();
     initialize_publisher_mode_strategy();
 
@@ -18,7 +18,7 @@ void initialize_role_mode_strategy(){
 
 t_role_mode* role_mode_for(uint32_t process_code){
 
-    initialize_role_mode_strategy();
+    initialize_and_load_role_mode_strategy();
 
     bool _can_handle(void* role_mode_strategy){
         t_role_mode* cast_role_mode_strategy = (t_role_mode*) role_mode_strategy;

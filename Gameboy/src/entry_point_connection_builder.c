@@ -14,7 +14,7 @@ t_request* safe_request(){
 
     t_request* request = malloc(sizeof(t_request));
     request -> operation = chosen_operation -> code;
-    request -> structure = operation_arguments();
+    request -> structure = pokemon_operation_structure();
 
     return request;
 }

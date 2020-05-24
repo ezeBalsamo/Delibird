@@ -3,10 +3,12 @@
 #include "../include/connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../include/broker_logs_manager.h"
+#include "../../Utils/include/operations_information.h"
 
 int main() {
 
     initialize_broker_logs_manager();
+    initialize_operations_information();
     initialize_configuration_manager_named("broker");
 
     log_succesful_initialize_config_manager();

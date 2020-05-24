@@ -13,13 +13,13 @@ bool is_valid_publisher_operation(t_operation_information* operation_information
 
 bool is_valid_subscriber_operation(t_operation_information* operation_information);
 
-void* publisher_operation_arguments();
+void* publisher_pokemon_operation_structure();
 
-void* subscriber_operation_arguments();
+void* subscriber_pokemon_operation_structure();
 
 char* valid_process_name_for_connection();
 
-void* operation_arguments();
+void* pokemon_operation_structure();
 
 bool is_subscriber_mode();
 

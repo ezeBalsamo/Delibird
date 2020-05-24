@@ -5,8 +5,8 @@
 #include "../include/entry_point_processes_information.h"
 #include "../include/role_mode_strategy.h"
 #include "../../Utils/include/operations_information.h"
-#include <stdio.h>
 #include <stdlib.h>
+#include <pokemon_operation_parser.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
@@ -68,20 +68,28 @@ t_operation_information* valid_chosen_operation(){
     return operation_information_found;
 }
 
-void* operation_arguments(){
-    return (role_mode -> operation_arguments_function)();
+void* pokemon_operation_structure(){
+    return (role_mode -> pokemon_operation_structure_function)();
 }
 
-void* publisher_operation_arguments(){
-    return (void*) &gameboy_arguments[3];
+void* publisher_pokemon_operation_structure(){
+
+    t_pokemon_operation_parser* parser =
+            pokemon_operation_parser_for(gameboy_arguments[2]);
+
+    void* structure = (*(parser -> parse_function)) (&gameboy_arguments[3]);
+
+    free(parser);
+    return structure;
 }
 
-void* subscriber_operation_arguments(){
+void* subscriber_pokemon_operation_structure(){
+
     char* queue_name = gameboy_arguments[2];
-    uint32_t* queue_code = malloc(sizeof(uint32_t));
-    *queue_code = queue_code_of(queue_name);
 
-    return (void*) queue_code;
+    t_subscribe_me* subscribe_me = malloc(sizeof(t_subscribe_me));
+    subscribe_me -> operation_queue = queue_code_of(queue_name);
+    return (void*) subscribe_me;
 }
 
 char* valid_process_name_for_connection(){

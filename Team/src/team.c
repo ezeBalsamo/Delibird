@@ -6,9 +6,11 @@
 #include "../include/gameboy_connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/pretty_printer.h"
 
 int main(void){
     initialize_team_logs_manager();
+    initialize_pretty_printer();
     initialize_team_operations_information();
     initialize_configuration_manager_named("team-RR");
     initialize_team_manager();
@@ -23,4 +25,5 @@ int main(void){
     thread_join(gameboy_connection_handler_thread);
 
     free_team_manager();
+    free_pretty_printer();
 }

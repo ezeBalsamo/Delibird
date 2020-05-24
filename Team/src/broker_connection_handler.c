@@ -4,8 +4,10 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/pretty_printer.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 char* broker_ip;
 char* broker_port;
@@ -52,8 +54,13 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     while(true){
         t_serialization_information* serialization_information = receive_structure(socket_fd);
+        t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+        char* request_as_string = request_pretty_print(deserialized_request);
+        printf("%s\n", request_as_string);
 
-        deserialize(serialization_information -> serialized_request);
+        free_serialization_information(serialization_information);
+        free_request(deserialized_request);
+        free(request_as_string);
     }
     //TODO: Lógica para escuchar
 }
@@ -64,7 +71,11 @@ void subscribe_to_queue(uint32_t queue_operation_identifier){
 }
 
 void subscribe_to_queues(){
-
+/*
+    subscribe_to_queue(APPEARED_POKEMON, appeared_pokemon_message_received);
+    subscribe_to_queue(LOCALIZED_POKEMON, localized_pokemon_message_received);
+    subscribe_to_queue(CAUGHT_POKEMON, caught_pokemon_message_received);
+    */
     subscribe_to_queue(APPEARED_POKEMON);
     subscribe_to_queue(LOCALIZED_POKEMON);
     subscribe_to_queue(CAUGHT_POKEMON);

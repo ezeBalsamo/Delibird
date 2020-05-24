@@ -19,14 +19,14 @@ typedef struct Connection_request{
     int socket_fd;
 }t_connection_request;
 
-typedef struct AppearedPokemon{
+typedef struct Appeared_pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
     uint32_t message_id;
 }t_appeared_pokemon;
 
-typedef struct NewPokemon{
+typedef struct New_pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
@@ -34,23 +34,24 @@ typedef struct NewPokemon{
     uint32_t message_id;
 }t_new_pokemon;
 
-typedef struct CatchPokemon{
+typedef struct Catch_pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
     uint32_t message_id;
 }t_catch_pokemon;
 
-typedef struct CaughtPokemon{
+typedef struct Caught_pokemon{
     uint32_t message_id;
     uint32_t caught_status;
 }t_caught_pokemon;
 
-typedef struct GetPokemon{
+typedef struct Get_pokemon{
     char* pokemon_name;
+    uint32_t message_id;
 }t_get_pokemon;
 
-typedef struct SubscribeMe{
+typedef struct Subscribe_me{
     uint32_t operation_queue;
 }t_subscribe_me;
 
@@ -59,7 +60,7 @@ enum Process {
 };
 
 typedef struct Printable_Object{
-    void* object;
+    uint32_t code;
     char* (*print_function) (void* object);
 }t_printable_object;
 
@@ -75,7 +76,7 @@ typedef struct Operation_information{
     char* name;
     int max_arguments_amount;
     t_serialization_information* (*serialize_function) (void* structure);
-    t_printable_object* (*deserialize_function) (void* serialized_structure);
+    t_request* (*deserialize_function) (void* serialized_structure);
 }t_operation_information;
 
 typedef struct Process_information{
@@ -87,20 +88,7 @@ typedef struct Process_information{
 void free_request(t_request* request);
 void free_serialization_information(t_serialization_information* serialization_information);
 void free_process_information(t_process_information* process_information);
-void free_operation_information(t_operation_information* operation_information);
 void free_char_array(char**);
-
-char* appeared_pokemon_as_string(t_appeared_pokemon* appeared_pokemon);
-
-char* new_pokemon_as_string(t_new_pokemon* new_pokemon);
-
-char* catch_pokemon_as_string(t_catch_pokemon* catch_pokemon);
-
-char* caught_pokemon_as_string(t_caught_pokemon* caught_pokemon);
-
-char* get_pokemon_as_string(t_get_pokemon* get_pokemon);
-
-char* subscribe_me_as_string(t_subscribe_me* subscribe_me);
 
 void free_printable_object(t_printable_object* printable_object);
 

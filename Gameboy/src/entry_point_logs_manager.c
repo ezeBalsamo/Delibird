@@ -3,27 +3,7 @@
 #include "../include/entry_point_logs_manager.h"
 #include "../include/entry_point_validator.h"
 #include "../../Utils/include/logger.h"
-
-void free_entry_point_logs_manager(){
-    free_loggers();
-}
-
-char* request_as_string(t_request* request){
-    char* message = string_new();
-    string_append(&message, "Operación: ");
-    t_operation_information* operation_information = valid_chosen_operation();
-    string_append(&message, operation_information -> name);
-    string_append(&message, "\n");
-    string_append(&message,"Argumentos: ");
-    char ** arguments = (char **) request -> structure;
-
-    for(int i = 0; arguments[i]; i++){
-        string_append(&message, arguments[i]);
-        string_append(&message, " ");
-    }
-    string_append(&message, "\n");
-    return message;
-}
+#include "../../Utils/include/pretty_printer.h"
 
 void log_successful_connection(){
     char* message = string_new();
@@ -39,7 +19,7 @@ void log_request_with_event(t_request* request, char* event){
     string_append(&message, event);
     string_append(&message, ":\n");
 
-    char* request_string = request_as_string(request);
+    char* request_string = pretty_print_of(request -> operation, request -> structure);
     string_append(&message, request_string);
     log_succesful_message(process_execution_logger(), message);
     free(request_string);
@@ -84,12 +64,26 @@ void incorrect_arguments_amount_error(){
     exit(EXIT_FAILURE);
 }
 
+void log_no_parser_suitable_for_operation_error_for(char* operation_name){
+    char* message = string_from_format("No se ha encontrado un parser compatible para la operación %s.", operation_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+    free_entry_point_logs_manager();
+    exit(EXIT_FAILURE);
+}
+
 void initialize_entry_point_logs_manager(){
     initialize_logger();
     create_main_logger_for("Gameboy");
     create_process_execution_logger_for("Gameboy");
+    initialize_pretty_printer();
 }
 
 void log_succesful_start_up(){
     log_succesful_message(process_execution_logger(), "Gameboy has succesfully started!\n");
+}
+
+void free_entry_point_logs_manager(){
+    free_pretty_printer();
+    free_loggers();
 }

@@ -7,7 +7,7 @@
 typedef struct Role_mode_strategy{
     bool (*can_handle_function) (uint32_t process_code);
     bool (*is_valid_operation_function) (t_operation_information*);
-    void* (*operation_arguments_function) ();
+    void* (*pokemon_operation_structure_function) ();
     char* process_name_for_connection;
     bool is_subscriber_mode;
 }t_role_mode;
