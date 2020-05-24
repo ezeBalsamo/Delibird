@@ -1,0 +1,84 @@
+[ERROR] 00:17:01:139 Team/(17311:17314): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:17:01:140 Team/(17311:17315): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:17:01:140 Team/(17311:17315): Falló el reintento de comunicación con el Broker.
+[INFO] 00:17:31:140 Team/(17311:17315): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:17:31:140 Team/(17311:17315): El proceso de reintento de comunicación con el Broker ha sido exitoso.
+[ERROR] 00:31:22:492 Team/(17801:17807): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:31:22:493 Team/(17801:17808): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:31:22:493 Team/(17801:17808): Falló el reintento de comunicación con el Broker.
+[ERROR] 00:45:14:467 Team/(18878:18881): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:45:14:468 Team/(18878:18882): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:45:14:468 Team/(18878:18882): Falló el reintento de comunicación con el Broker.
+[INFO] 00:45:44:468 Team/(18878:18882): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 00:45:44:468 Team/(18878:18882): El proceso de reintento de comunicación con el Broker ha sido exitoso.
+[ERROR] 00:47:01:220 Team/(18948:18951): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:47:01:220 Team/(18948:18952): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:47:01:220 Team/(18948:18952): Falló el reintento de comunicación con el Broker.
+[INFO] 00:47:31:220 Team/(18948:18952): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 00:47:31:220 Team/(18948:18952): El proceso de reintento de comunicación con el Broker ha sido exitoso.
+[ERROR] 01:14:35:395 Team/(20341:20347): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 01:14:35:395 Team/(20341:20348): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:14:35:395 Team/(20341:20348): Falló el reintento de comunicación con el Broker.
+[INFO] 01:15:05:395 Team/(20341:20348): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:15:05:396 Team/(20341:20348): Falló el reintento de comunicación con el Broker.
+[ERROR] 01:15:34:384 Team/(20389:20392): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 01:15:34:386 Team/(20389:20393): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:15:34:386 Team/(20389:20393): Falló el reintento de comunicación con el Broker.
+[ERROR] 03:02:49:181 Team/(60224:60227): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 03:02:49:186 Team/(60224:60311): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:03:21:181 Team/(60224:60311): Falló el reintento de comunicación con el Broker.
+[INFO] 03:03:51:181 Team/(60224:60311): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:07:05:821 Team/(60498:60504): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 03:07:05:822 Team/(60498:60589): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:07:37:821 Team/(60498:60589): Falló el reintento de comunicación con el Broker.
+[INFO] 03:08:07:821 Team/(60498:60589): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:08:39:901 Team/(60498:60589): Falló el reintento de comunicación con el Broker.
+[INFO] 03:09:09:901 Team/(60498:60589): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:09:45:446 Team/(60498:60589): Falló el reintento de comunicación con el Broker.
+[ERROR] 03:11:35:901 Team/(60839:60845): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 03:11:35:902 Team/(60839:60893): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:12:07:901 Team/(60839:60893): Falló el reintento de comunicación con el Broker.
+[INFO] 03:12:44:162 Team/(60839:60893): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:13:20:175 Team/(60839:60893): Falló el reintento de comunicación con el Broker.
+[INFO] 03:13:50:237 Team/(60839:60893): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 04:31:48:71 Team/(67762:67767): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 04:31:48:71 Team/(67762:67841): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 04:32:41:831 Team/(67890:67894): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 04:32:41:831 Team/(67890:67987): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 04:37:22:791 Team/(68517:68546): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 04:37:22:791 Team/(68517:68607): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 04:39:07:598 Team/(68799:68805): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 04:39:07:601 Team/(68799:68881): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:17:215 Team/(15316:15330): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 17:35:17:706 Team/(15316:15341): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:17:706 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:35:17:707 Team/(15316:15340): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 17:35:17:711 Team/(15316:15343): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:17:712 Team/(15316:15343): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:35:24:150 Team/(15316:15352): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 17:35:24:994 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:24:994 Team/(15316:15357): Falló el reintento de comunicación con el Broker.
+[INFO] 17:35:49:525 Team/(15316:15341): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 17:35:49:526 Team/(15316:15343): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:52:165 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:35:52:165 Team/(15316:15343): Falló el reintento de comunicación con el Broker.
+[INFO] 17:35:57:544 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:35:57:544 Team/(15316:15357): Falló el reintento de comunicación con el Broker.
+[INFO] 17:36:22:453 Team/(15316:15343): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 17:36:22:453 Team/(15316:15341): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:36:22:454 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:36:22:457 Team/(15316:15343): Falló el reintento de comunicación con el Broker.
+[INFO] 17:36:27:546 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:36:27:546 Team/(15316:15357): Falló el reintento de comunicación con el Broker.
+[INFO] 17:36:52:457 Team/(15316:15341): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 17:36:52:458 Team/(15316:15343): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:36:52:459 Team/(15316:15343): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:36:52:460 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
+[INFO] 17:36:57:547 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:36:57:548 Team/(15316:15357): Falló el reintento de comunicación con el Broker.
+[INFO] 17:37:22:460 Team/(15316:15343): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 17:37:22:460 Team/(15316:15341): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:37:22:461 Team/(15316:15343): Falló el reintento de comunicación con el Broker.
+[ERROR] 17:37:22:461 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
+[INFO] 17:37:27:548 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 17:37:27:549 Team/(15316:15357): Falló el reintento de comunicación con el Broker.

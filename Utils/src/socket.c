@@ -167,35 +167,33 @@ int reconnect(t_connection_information* connection_information){
                    connection_information -> address_interface -> ai_addrlen);
 }
 
-void close_connection_strategy(t_connection_information* connection_information){
+void close_and_exit_failed_connection(t_connection_information* connection_information){
     perror("connect error");
     free_and_close_connection_information(connection_information);
     exit(EXIT_FAILURE);
 }
 
-void establish_connection(t_connection_information* connection_information, void (*connection_failed_strategy) (t_connection_information*)){
+int establish_connection(int socket_fd, struct addrinfo* address_interface){
 
-    if (connect(connection_information -> socket_fd,
-                connection_information -> address_interface -> ai_addr,
-                connection_information -> address_interface -> ai_addrlen) == -1) {
-
-        (*connection_failed_strategy) (connection_information);
+    if (connect(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
+        return false;
     }
+    return true;
 }
 
-int connect_to(char* ip, char* port, void (*connection_failed_strategy) (t_connection_information*)) {
+t_connection_information* connect_to(char* ip, char* port) {
 
     struct addrinfo* address_interface = build_address_interface(ip, port);
     int socket_fd = get_socket_fd_using(address_interface);
 
+    bool connection_was_succesful = establish_connection(socket_fd, address_interface);
+
     t_connection_information* connection_information = malloc(sizeof(t_connection_information));
     connection_information -> socket_fd = socket_fd;
     connection_information -> address_interface = address_interface;
+    connection_information -> connection_was_succesful = connection_was_succesful;
 
-    establish_connection(connection_information, connection_failed_strategy);
-
-    free_connection_information(connection_information);
-    return socket_fd;
+    return connection_information;
 }
 
 void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
@@ -220,8 +218,8 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
 
 void send_structure(t_serialization_information* serialization_information, int socket_fd) {
     uint32_t amount_of_bytes =
-            serialization_information -> amount_of_bytes // amount_of_bytes_of_request
-            + sizeof(uint32_t); // total_amount
+            serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
+            + sizeof(uint32_t);                             // total_amount
 
     void *serialized_request = malloc(sizeof(amount_of_bytes));
 

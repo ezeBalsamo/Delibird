@@ -10,6 +10,7 @@ void log_failed_retry_of_communication_with_broker();
 void log_succesful_retry_of_communication_with_broker();
 void log_thread_sleep_time_configuration_error();
 void log_queue_thread_create_error();
+void log_no_locations_found_for(char* pokemon_name);
 
 void free_team_logs_manager();
 
