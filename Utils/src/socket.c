@@ -249,7 +249,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
     queue = queue_create();
     sem_init(&client_sockets_amount_in_queue, false, 0);
 
-    void* _thread_function(void* thread_argument){
+    void* _thread_function(){
         while(true){
             sem_wait(&client_sockets_amount_in_queue);
             pthread_mutex_lock(&queue_mutex);
@@ -258,6 +258,8 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
             (*handle_connection_function) (client_socket_fd);
         }
+
+        return NULL;
     }
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){

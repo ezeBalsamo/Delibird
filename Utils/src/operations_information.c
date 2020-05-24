@@ -128,40 +128,18 @@ t_operation_information* subscribe_me_operation_information(){
     return operation_information_with_code(SUBSCRIBE_ME);
 }
 
-t_list* queues_codes(){
 
-    uint32_t new_pokemon_code = NEW_POKEMON;
-    uint32_t appeared_pokemon_code = APPEARED_POKEMON;
-    uint32_t get_pokemon_code = GET_POKEMON;
-    uint32_t localized_pokemon_code = LOCALIZED_POKEMON;
-    uint32_t catch_pokemon_code = CATCH_POKEMON;
-    uint32_t caught_pokemon_code = CAUGHT_POKEMON;
+t_list* all_queue_operations() {
 
-    t_list* queue_codes = list_create();
-    list_add(queue_codes, (void*) &new_pokemon_code);
-    list_add(queue_codes, (void*) &appeared_pokemon_code);
-    list_add(queue_codes, (void*) &get_pokemon_code);
-    list_add(queue_codes, (void*) &localized_pokemon_code);
-    list_add(queue_codes, (void*) &catch_pokemon_code);
-    list_add(queue_codes, (void*) &caught_pokemon_code);
+    t_list *queue_operations = list_create();
+    list_add(queue_operations, new_pokemon_operation_information());
+    list_add(queue_operations, appeared_pokemon_operation_information());
+    list_add(queue_operations, get_pokemon_operation_information());
+    list_add(queue_operations, localized_pokemon_operation_information());
+    list_add(queue_operations, catch_pokemon_operation_information());
+    list_add(queue_operations, caught_pokemon_operation_information());
 
-}
-
-bool represents_a_queue(uint32_t code){
-    bool _are_equal_codes(void* code, void* another_code){
-        return (*((uint32_t*) code)) == (*((uint32_t*) another_code));
-    }
-
-    return list_contains(queues_codes(), (void*) &code, _are_equal_codes);
-}
-
-t_list* all_queue_operations(){
-
-    bool _is_queue_operation_information(void* operation_information){
-        return represents_a_queue(((t_operation_information*) operation_information) -> code);
-    }
-
-    return list_filter(all_operations, _is_queue_operation_information);
+    return queue_operations;
 }
 
 uint32_t queue_code_of(char* queue_name){
