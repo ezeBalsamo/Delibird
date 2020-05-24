@@ -9,14 +9,15 @@ char* port(){
 
 void* main_thread_handler(void* connection_fd){
     int cast_connection_fd = *((int*) connection_fd);
+    t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
+    void* serialized_request = serialization_information -> serialized_request;
 
-    void* serialized_request = receive_structure(cast_connection_fd);
     void* serialized_structure = deserialize(serialized_request);
 
     free_and_close_connection(connection_fd);
     free(serialized_request);
-    free(serialized_structure);
-    return NULL;
+
+    return serialized_structure;
 }
 
 void* initialize_gameboy_connection_handler(){

@@ -50,6 +50,11 @@ void* subscriber_thread(void* queue_operation_identifier){
     int socket_fd = connect_to(broker_ip, broker_port, reconnection_strategy);
     serialize_and_send_structure(request, socket_fd);
 
+    while(true){
+        t_serialization_information* serialization_information = receive_structure(socket_fd);
+
+        deserialize(serialization_information -> serialized_request);
+    }
     //TODO: Lógica para escuchar
 }
 

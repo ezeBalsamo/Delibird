@@ -24,7 +24,7 @@ void serialize_and_send_structure(t_request* request, int socket_fd);
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 
-void* receive_structure(int socket_fd);
+t_serialization_information* receive_structure(int socket_fd);
 
 void free_and_close_connection(void* socket_fd);
 
