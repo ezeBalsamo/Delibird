@@ -13,14 +13,14 @@ int main(void){
     initialize_pretty_printer();
     initialize_team_operations_information();
     initialize_configuration_manager_named("team-RR");
-    initialize_team_manager();
 
-    initialize_map();
     log_succesful_start_up();
 
+    pthread_t team_manager_thread = default_safe_thread_create(initialize_team_manager, NULL);
     pthread_t broker_connection_handler_thread = default_safe_thread_create(initialize_broker_connection_handler, NULL);
     pthread_t gameboy_connection_handler_thread = default_safe_thread_create(initialize_gameboy_connection_handler, NULL);
 
+    thread_join(team_manager_thread);
     thread_join(broker_connection_handler_thread);
     thread_join(gameboy_connection_handler_thread);
 

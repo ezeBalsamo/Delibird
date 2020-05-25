@@ -74,3 +74,11 @@ void log_no_locations_found_for(char* pokemon_name){
 void free_team_logs_manager(){
     free_loggers();
 }
+
+void log_trainer_thread_create_error(){
+    char* message = "Falló la creación de un hilo para un entrenador.";
+    log_errorful_message(process_execution_logger(), message);
+
+    free_team_logs_manager();
+    exit(EXIT_FAILURE);
+}
