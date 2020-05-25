@@ -85,28 +85,18 @@ void* subscriber_thread(void* queue_operation_identifier){
     return NULL;
 }
 
-pthread_t subscribe_to_queue(uint32_t* queue_operation_identifier){
-    return thread_create(subscriber_thread, (void*) queue_operation_identifier, log_queue_thread_create_error);
+pthread_t subscribe_to_queue(uint32_t queue_code){
+    uint32_t* pokemon_operation_queue_code = malloc(sizeof(uint32_t));
+    *pokemon_operation_queue_code = queue_code;
+
+    return thread_create(subscriber_thread, (void*) pokemon_operation_queue_code, log_queue_thread_create_error);
 }
 
 void subscribe_to_queues(){
-/*
-    subscribe_to_queue(APPEARED_POKEMON, appeared_pokemon_message_received);
-    subscribe_to_queue(LOCALIZED_POKEMON, localized_pokemon_message_received);
-    subscribe_to_queue(CAUGHT_POKEMON, caught_pokemon_message_received);
-    */
-    uint32_t* appeared_pokemon_queue = malloc(sizeof(uint32_t));
-    *appeared_pokemon_queue = APPEARED_POKEMON;
 
-    uint32_t* localized_pokemon_queue = malloc(sizeof(uint32_t));
-    *localized_pokemon_queue = LOCALIZED_POKEMON;
-
-    uint32_t* caught_pokemon_queue = malloc(sizeof(uint32_t));
-    *caught_pokemon_queue = CAUGHT_POKEMON;
-
-    appeared_queue_tid = subscribe_to_queue(appeared_pokemon_queue);
-    localized_queue_tid = subscribe_to_queue(localized_pokemon_queue);
-    caught_queue_tid = subscribe_to_queue(caught_pokemon_queue);
+    appeared_queue_tid = subscribe_to_queue(APPEARED_POKEMON);
+    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
+    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
 
     sem_wait(&subscriber_threads_request_sent);
     sem_wait(&subscriber_threads_request_sent);
