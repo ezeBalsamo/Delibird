@@ -8,9 +8,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <semaphore.h>
 
 char* broker_ip;
 char* broker_port;
+
+sem_t subscriber_threads_request_sent;
+
+pthread_t appeared_queue_tid;
+pthread_t localized_queue_tid;
+pthread_t caught_queue_tid;
 
 void sleep_for(int reconnection_time_in_seconds){
     struct timespec deadline;
@@ -60,12 +67,13 @@ void* subscriber_thread(void* queue_operation_identifier){
     }
     else {
         serialize_and_send_structure(request, connection_information -> socket_fd);
+        sem_post(&subscriber_threads_request_sent);
         free_request(request);
 
         while (true) {
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
-            t_request *deserialized_request = deserialize(serialization_information -> serialized_request);
-            char *request_as_string = request_pretty_print(deserialized_request);
+            t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+            char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
 
             free_serialization_information(serialization_information);
@@ -77,8 +85,8 @@ void* subscriber_thread(void* queue_operation_identifier){
     return NULL;
 }
 
-pthread_t subscribe_to_queue(uint32_t queue_operation_identifier){
-    return thread_create(subscriber_thread, (void*) &queue_operation_identifier, log_queue_thread_create_error);
+pthread_t subscribe_to_queue(uint32_t* queue_operation_identifier){
+    return thread_create(subscriber_thread, (void*) queue_operation_identifier, log_queue_thread_create_error);
 }
 
 void subscribe_to_queues(){
@@ -87,10 +95,29 @@ void subscribe_to_queues(){
     subscribe_to_queue(LOCALIZED_POKEMON, localized_pokemon_message_received);
     subscribe_to_queue(CAUGHT_POKEMON, caught_pokemon_message_received);
     */
-    pthread_t appeared_queue_tid = subscribe_to_queue(APPEARED_POKEMON);
-    pthread_t localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
-    pthread_t caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
+    uint32_t* appeared_pokemon_queue = malloc(sizeof(uint32_t));
+    *appeared_pokemon_queue = APPEARED_POKEMON;
 
+    uint32_t* localized_pokemon_queue = malloc(sizeof(uint32_t));
+    *localized_pokemon_queue = LOCALIZED_POKEMON;
+
+    uint32_t* caught_pokemon_queue = malloc(sizeof(uint32_t));
+    *caught_pokemon_queue = CAUGHT_POKEMON;
+
+    appeared_queue_tid = subscribe_to_queue(appeared_pokemon_queue);
+    localized_queue_tid = subscribe_to_queue(localized_pokemon_queue);
+    caught_queue_tid = subscribe_to_queue(caught_pokemon_queue);
+
+    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
+}
+
+void join_to_queues(){
+
+    thread_join(appeared_queue_tid);
+    thread_join(localized_queue_tid);
+    thread_join(caught_queue_tid);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
@@ -118,8 +145,10 @@ void* initialize_broker_connection_handler(){
     broker_ip = config_get_string_at("IP_BROKER");
     broker_port = config_get_string_at("PUERTO_BROKER");
 
+    sem_init(&subscriber_threads_request_sent, false, 0);
+
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
-
+    join_to_queues();
     return NULL;
 }

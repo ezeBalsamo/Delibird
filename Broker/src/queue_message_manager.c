@@ -44,7 +44,7 @@ void subscribe_process(t_connection_request* connection_request){
 
     list_add(subscribers, (void*) subscriber);
 
-    free(deserialized_request);
+    free_request(deserialized_request);
 }
 
 void push_to_queue(uint32_t operation, t_connection_request* connection_request) {
@@ -88,8 +88,8 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
             break;
 
         default: ;
-        //    received_unknown_operation_error();
-
+        //TODO: implementar
+        // received_unknown_operation_error();
     }
 
 }

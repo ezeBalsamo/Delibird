@@ -53,8 +53,6 @@ void publisher_mode_execution(){
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
-        //TODO: logica
-
         free_request(request);
     }
 }
