@@ -7,7 +7,9 @@ set(SOURCES
         src/team_deserialization.c
         src/team_logs_manager.c
         src/team_manager.c
-        src/team_operations_information.c)
+        src/team_operations_information.c
+        src/trainers_parser.c
+        src/goal_calculator.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

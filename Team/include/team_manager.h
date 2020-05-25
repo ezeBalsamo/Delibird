@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <commons/collections/list.h>
+#include <semaphore.h>
 
 typedef struct Trainer{
     uint32_t sequential_number;
@@ -17,8 +18,12 @@ typedef struct Pokemon_goal{
     uint32_t quantity;
 }t_pokemon_goal;
 
-void initialize_team_manager();
-void calculate_global_goal();
+typedef struct Trainer_with_lock{
+    t_trainer* trainer;
+    sem_t semaphore;
+}t_trainer_with_lock;
+
+void* initialize_team_manager();
 
 void with_trainers_do(void (*closure) (t_trainer*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
