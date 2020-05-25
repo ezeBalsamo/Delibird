@@ -9,13 +9,13 @@ t_list* printable_objects;
 char* new_pokemon_as_string(t_new_pokemon* new_pokemon){
 
     return string_from_format("Operación: NEW_POKEMON\nArgumentos: Pokemon: %s, pos_x: %d, pos_y: %d, quantity: %d, message_id: %d",
-                              new_pokemon->pokemon_name, new_pokemon->pos_x, new_pokemon->pos_y, new_pokemon->quantity, new_pokemon->message_id);
+                              new_pokemon -> pokemon_name, new_pokemon -> pos_x, new_pokemon -> pos_y, new_pokemon -> quantity, new_pokemon -> message_id);
 }
 
 char* appeared_pokemon_as_string(t_appeared_pokemon* appeared_pokemon){
 
     return string_from_format("Operación: APPEARED_POKEMON\nArgumentos: Pokemon: %s, pos_x: %d, pos_y: %d, message_id: %d",
-                              appeared_pokemon->pokemon_name, appeared_pokemon->pos_x, appeared_pokemon->pos_y, appeared_pokemon->message_id);
+                              appeared_pokemon -> pokemon_name, appeared_pokemon -> pos_x, appeared_pokemon -> pos_y, appeared_pokemon -> message_id);
 }
 
 char* get_pokemon_as_string(t_get_pokemon* get_pokemon){
@@ -31,18 +31,18 @@ char* localized_pokemon_as_string(void* to_be_defined){
 char* catch_pokemon_as_string(t_catch_pokemon* catch_pokemon){
 
     return string_from_format("Operación: CATCH_POKEMON\nArgumentos: Pokemon: %s, pos_x: %d, pos_y: %d, message_id: %d",
-                              catch_pokemon->pokemon_name, catch_pokemon->pos_x, catch_pokemon->pos_y, catch_pokemon->message_id);
+                              catch_pokemon -> pokemon_name, catch_pokemon -> pos_x, catch_pokemon -> pos_y, catch_pokemon -> message_id);
 }
 
 char* caught_pokemon_as_string(t_caught_pokemon* caught_pokemon){
 
     return string_from_format("Operación: CAUGHT_POKEMON\nArgumentos: message_id: %d, caught_status: %d",
-                              caught_pokemon->message_id, caught_pokemon->caught_status);
+                              caught_pokemon -> message_id, caught_pokemon -> caught_status);
 }
 
 char* subscribe_me_as_string(t_subscribe_me* subscribe_me){
     t_operation_information* operation_information = operation_information_with_code(subscribe_me -> operation_queue);
-    return string_from_format("Operación: SUBSCRIBE_ME\nArgumentos: %s", operation_information->name);
+    return string_from_format("Operación: SUBSCRIBE_ME\nArgumentos: %s", operation_information -> name);
 }
 
 void initialize_and_load_new_pokemon_pretty_print(){
@@ -87,7 +87,7 @@ void initialize_and_load_catch_pokemon_pretty_print(){
 
 void initialize_and_load_caught_pokemon_pretty_print(){
     t_printable_object* printable_object = malloc(sizeof(t_printable_object));
-    printable_object -> code = NEW_POKEMON;
+    printable_object -> code = CAUGHT_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) caught_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);

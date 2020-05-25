@@ -64,6 +64,13 @@ void log_queue_thread_create_error(){
     exit(EXIT_FAILURE);
 }
 
+void log_no_locations_found_for(char* pokemon_name){
+    char* message = string_from_format("No se encontraron ubicaciones para %s\n", pokemon_name);
+
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_team_logs_manager(){
     free_loggers();
 }

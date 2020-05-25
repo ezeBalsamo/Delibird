@@ -12,38 +12,57 @@ void* queue_listener_thread(){
     char* ip = process_ip();
     char* port = process_port();
 
-    int socket_fd = connect_to(ip, port, close_connection_strategy);
-    log_successful_connection();
-    log_about_to_send_request(request);
+    t_connection_information* connection_information = connect_to(ip, port);
 
-    serialize_and_send_structure(request, socket_fd);
-    log_request_sent(request);
+    if (!connection_information -> connection_was_succesful){
+        close_and_exit_failed_connection(connection_information);
+    }
+    else{
+        log_successful_connection();
+        log_about_to_send_request(request);
 
-    //TODO: logica
+        serialize_and_send_structure(request, connection_information -> socket_fd);
+        log_request_sent(request);
 
-    free_request(request);
+        //TODO: logica
 
+        free_request(request);
+    }
     return NULL;
+}
+
+void subscriber_mode_execution(){
+    pthread_t tid = default_safe_thread_create(queue_listener_thread, NULL);
+    thread_join(tid);
+}
+
+void publisher_mode_execution(){
+    t_request* request = safe_request();
+    char* ip = process_ip();
+    char* port = process_port();
+
+    t_connection_information* connection_information = connect_to(ip, port);
+
+    if (!connection_information -> connection_was_succesful){
+        close_and_exit_failed_connection(connection_information);
+    }
+    else{
+        log_successful_connection();
+        log_about_to_send_request(request);
+
+        serialize_and_send_structure(request, connection_information -> socket_fd);
+        log_request_sent(request);
+
+        free_request(request);
+    }
 }
 
 void execute(){
 
     if(is_subscriber_mode()){
-        pthread_t tid = default_safe_thread_create(queue_listener_thread, NULL);
-        thread_join(tid);
+        subscriber_mode_execution();
     }
     else {
-        t_request* request = safe_request();
-        char* ip = process_ip();
-        char* port = process_port();
-
-        int socket_fd = connect_to(ip, port, close_connection_strategy);
-        log_successful_connection();
-        log_about_to_send_request(request);
-
-        serialize_and_send_structure(request, socket_fd);
-        log_request_sent(request);
-
-        free_request(request);
+        publisher_mode_execution();
     }
 }
