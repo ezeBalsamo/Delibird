@@ -54,4 +54,4 @@ dkms.conf
 # Delibird files
 target/
 .config
-logs
+logs/
