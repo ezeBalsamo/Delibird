@@ -15,7 +15,7 @@ void* queue_listener_thread(){
     t_connection_information* connection_information = connect_to(ip, port);
 
     if (!connection_information -> connection_was_succesful){
-        close_and_exit_failed_connection(connection_information);
+        close_failed_connection(connection_information);
     }
     else{
         log_successful_connection();
@@ -44,7 +44,7 @@ void publisher_mode_execution(){
     t_connection_information* connection_information = connect_to(ip, port);
 
     if (!connection_information -> connection_was_succesful){
-        close_and_exit_failed_connection(connection_information);
+        close_failed_connection(connection_information);
     }
     else{
         log_successful_connection();
@@ -53,8 +53,10 @@ void publisher_mode_execution(){
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
-        free_request(request);
+        free_and_close_connection_information(connection_information);
     }
+
+    free_request(request);
 }
 
 void execute(){

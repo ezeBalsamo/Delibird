@@ -2,14 +2,11 @@
 #include "../include/broker_deserialization.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
-#include <commons/string.h>
-#include <stdlib.h>
 
 void initialize_broker_logs_manager(){
     initialize_logger();
     create_main_logger_for("Broker");
     create_process_execution_logger_for("Broker");
-    initialize_pretty_printer();
 }
 
 //LOGS MAIN, LOS QUE VAN SI O SI EN EL TP.
@@ -102,6 +99,5 @@ void log_no_subscribers_for_request(void* serialized_request){
 }
 
 void free_broker_logs_manager(){
-    free_pretty_printer();
     free_loggers();
 }

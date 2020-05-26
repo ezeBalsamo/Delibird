@@ -82,3 +82,39 @@
 [ERROR] 17:37:22:461 Team/(15316:15341): Falló el reintento de comunicación con el Broker.
 [INFO] 17:37:27:548 Team/(15316:15357): Inicio del proceso de reintento de comunicación con el Broker.
 [ERROR] 17:37:27:549 Team/(15316:15357): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:23:25:33 Team/(8937:8944): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 18:23:25:33 Team/(8937:8941): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 18:23:25:33 Team/(8937:8947): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 18:23:25:34 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:23:25:34 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:23:25:34 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:25:36:105 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:25:36:105 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:25:36:105 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[INFO] 18:26:06:106 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:26:06:106 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:26:06:106 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:28:15:849 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:28:15:849 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:28:15:849 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[INFO] 18:28:45:850 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:28:45:850 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:28:45:851 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:30:55:593 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:30:55:594 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:30:55:594 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:33:35:337 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:33:35:337 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:33:35:337 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[INFO] 18:34:05:338 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:34:05:339 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:34:05:339 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:36:15:81 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:36:15:85 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:36:15:85 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[INFO] 18:36:45:82 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:36:45:86 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:36:45:86 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
