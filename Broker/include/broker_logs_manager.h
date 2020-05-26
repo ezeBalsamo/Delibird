@@ -29,4 +29,6 @@ void log_succesful_message_sent_to_suscribers(void* serialized_request);
 
 void log_no_subscribers_for_request(void* serialized_request);
 
+void free_broker_logs_manager();
+
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H

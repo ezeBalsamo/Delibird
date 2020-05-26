@@ -170,7 +170,6 @@ int reconnect(t_connection_information* connection_information){
 void close_and_exit_failed_connection(t_connection_information* connection_information){
     perror("connect error");
     free_and_close_connection_information(connection_information);
-    exit(EXIT_FAILURE);
 }
 
 int establish_connection(int socket_fd, struct addrinfo* address_interface){
@@ -244,13 +243,18 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
 
 t_serialization_information* receive_structure(int socket_fd){
 
+    //quizas en esta funcion en vez de usar EXIT_FAILURE se puede usar shutdown.
+
     void* serialized_request;
     uint32_t amount_of_bytes_of_request;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) == -1){
         perror("recv amount of bytes error");
         close(socket_fd);
-        exit(EXIT_FAILURE);
+        shutdown(socket_fd, SHUT_RD); //     SHUT_RD   = No more receptions;
+                                           //     SHUT_WR   = No more transmissions;
+                                           //     SHUT_RDWR = No more receptions or transmissions.
+       // exit(EXIT_FAILURE);
     }
 
     serialized_request = malloc(amount_of_bytes_of_request);
@@ -258,7 +262,8 @@ t_serialization_information* receive_structure(int socket_fd){
     if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
         perror("recv serialized structure error");
         close(socket_fd);
-        exit(EXIT_FAILURE);
+        shutdown(socket_fd, SHUT_RD);
+       // exit(EXIT_FAILURE);
     }
 
     t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));

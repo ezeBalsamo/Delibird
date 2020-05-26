@@ -53,8 +53,11 @@ void publisher_mode_execution(){
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
-        free_request(request);
+        free_and_close_connection_information(connection_information);
+
     }
+    //en cualquiera de los dos casos quiero que se libere la request.
+    free_request(request);
 }
 
 void execute(){

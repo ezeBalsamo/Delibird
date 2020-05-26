@@ -1,5 +1,4 @@
 #include "../include/team_manager.h"
-#include "../include/map.h"
 #include "../include/team_logs_manager.h"
 #include "../include/team_operations_information.h"
 #include "../include/broker_connection_handler.h"
@@ -24,6 +23,9 @@ int main(void){
     thread_join(broker_connection_handler_thread);
     thread_join(gameboy_connection_handler_thread);
 
-    free_team_manager();
+    free_team_logs_manager();
     free_pretty_printer();
+    free_team_operations_information();
+    free_team_manager();
+    free_configuration_manager();
 }

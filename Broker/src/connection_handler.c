@@ -28,7 +28,6 @@ void* main_thread_handler(void* connection_fd){
 
     publish(operation, serialization_information);
 
-//    free_and_close_connection(connection_fd);
     free(serialization_information); // no libero con free_serialization_information porque la serialized_request se guarda en colas para reenviarse
     free(connection_request); // misma historia que arriba
 
