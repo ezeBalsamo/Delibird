@@ -26,6 +26,5 @@ int main(void){
     free_team_logs_manager();
     free_pretty_printer();
     free_team_operations_information();
-    free_team_manager();
     free_configuration_manager();
 }

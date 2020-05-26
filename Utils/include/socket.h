@@ -9,7 +9,7 @@ typedef struct Connection_Information{
     bool connection_was_succesful;
 }t_connection_information;
 
-void close_and_exit_failed_connection(t_connection_information* connection_information);
+void close_failed_connection(t_connection_information* connection_information);
 
 int reconnect(t_connection_information* connection_information);
 

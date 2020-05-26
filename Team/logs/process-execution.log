@@ -190,3 +190,117 @@
 
 [INFO] 17:42:12:700 Team/(16237:16237): Team se ha inicializado correctamente!
 
+[INFO] 17:38:26:254 Team/(7666:7666): Team se ha inicializado correctamente!
+
+[INFO] 18:21:14:546 Team/(8937:8937): Team se ha inicializado correctamente!
+
+[ERROR] 18:23:25:34 Team/(8937:8944): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 18:23:25:34 Team/(8937:8941): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 18:23:25:34 Team/(8937:8947): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 18:23:25:34 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:23:25:34 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:23:25:34 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:25:36:106 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:25:36:106 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:25:36:106 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[INFO] 18:26:06:106 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:26:06:107 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:26:06:107 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:28:15:850 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:28:15:850 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:28:15:851 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[INFO] 18:28:45:850 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:28:45:850 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:28:45:851 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:30:55:594 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:30:55:594 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:30:55:594 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:31:25:594 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:33:35:338 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:33:35:338 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:33:35:338 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[INFO] 18:34:05:339 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:34:05:339 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:34:05:339 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:36:15:81 Team/(8937:9171): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:36:15:86 Team/(8937:9172): Falló el reintento de comunicación con el Broker.
+[ERROR] 18:36:15:86 Team/(8937:9173): Falló el reintento de comunicación con el Broker.
+[INFO] 18:36:45:82 Team/(8937:9171): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:36:45:86 Team/(8937:9172): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 18:36:45:87 Team/(8937:9173): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 19:55:06:76 Team/(12557:12557): Team se ha inicializado correctamente!
+
+[INFO] 19:55:19:281 Team/(12622:12622): Team se ha inicializado correctamente!
+
+[INFO] 19:56:56:573 Team/(12701:12701): Team se ha inicializado correctamente!
+
+[INFO] 20:05:59:828 Team/(13289:13289): Team se ha inicializado correctamente!
+
+[INFO] 20:06:19:491 Team/(13342:13342): Team se ha inicializado correctamente!
+
+[INFO] 20:06:29:681 Team/(13389:13389): Team se ha inicializado correctamente!
+
+[INFO] 20:07:12:190 Team/(13485:13485): Team se ha inicializado correctamente!
+
+[INFO] 20:07:23:288 Team/(13534:13534): Team se ha inicializado correctamente!
+
+[INFO] 20:07:31:644 Team/(13579:13579): Team se ha inicializado correctamente!
+
+[INFO] 20:09:52:466 Team/(13662:13662): Team se ha inicializado correctamente!
+
+[INFO] 20:10:39:452 Team/(13715:13715): Team se ha inicializado correctamente!
+
+[INFO] 20:10:59:842 Team/(13766:13766): Team se ha inicializado correctamente!
+
+[INFO] 20:12:11:167 Team/(13858:13858): Team se ha inicializado correctamente!
+
+[INFO] 20:13:40:482 Team/(13908:13908): Team se ha inicializado correctamente!
+
+[INFO] 20:13:54:945 Team/(13959:13959): Team se ha inicializado correctamente!
+
+[INFO] 20:14:38:767 Team/(14010:14010): Team se ha inicializado correctamente!
+
+[INFO] 20:15:16:133 Team/(14055:14055): Team se ha inicializado correctamente!
+
+[INFO] 20:15:45:902 Team/(14097:14097): Team se ha inicializado correctamente!
+
+[INFO] 20:16:02:350 Team/(14137:14137): Team se ha inicializado correctamente!
+
+[INFO] 20:18:41:348 Team/(14318:14318): Team se ha inicializado correctamente!
+
+[INFO] 20:19:18:911 Team/(14403:14403): Team se ha inicializado correctamente!
+
+[INFO] 20:19:58:337 Team/(14488:14488): Team se ha inicializado correctamente!
+
+[INFO] 20:47:22:81 Team/(15082:15082): Team se ha inicializado correctamente!
+
+[INFO] 20:51:17:473 Team/(15476:15476): Team se ha inicializado correctamente!
+
+[INFO] 20:53:34:490 Team/(15691:15691): Team se ha inicializado correctamente!
+
+[INFO] 20:54:26:268 Team/(15781:15781): Team se ha inicializado correctamente!
+
+[INFO] 20:54:57:827 Team/(15835:15835): Team se ha inicializado correctamente!
+
+[INFO] 20:55:13:206 Team/(15885:15885): Team se ha inicializado correctamente!
+
+[INFO] 20:56:10:471 Team/(15936:15936): Team se ha inicializado correctamente!
+
+[INFO] 20:57:30:706 Team/(16044:16044): Team se ha inicializado correctamente!
+
+[INFO] 20:57:50:75 Team/(16087:16087): Team se ha inicializado correctamente!
+
+[INFO] 20:58:04:262 Team/(16136:16136): Team se ha inicializado correctamente!
+
+[INFO] 20:59:00:916 Team/(16187:16187): Team se ha inicializado correctamente!
+
+[INFO] 20:59:29:655 Team/(16217:16217): Team se ha inicializado correctamente!
+
+[INFO] 21:07:28:451 Team/(16381:16381): Team se ha inicializado correctamente!
+
+[INFO] 21:07:51:802 Team/(16456:16456): Team se ha inicializado correctamente!
+
+[INFO] 22:28:17:658 Team/(18663:18663): Team se ha inicializado correctamente!
+

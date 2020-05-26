@@ -6,7 +6,6 @@
 #include "broker_deserialization.h"
 #include "../include/broker_logs_manager.h"
 
-
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
 }

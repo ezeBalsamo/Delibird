@@ -15,7 +15,6 @@ void initialize_team_operations_information(){
 }
 
 void free_team_operations_information(){
-    list_clean(team_operations_information);
     list_destroy(team_operations_information);
     free_operations_information();
 }
