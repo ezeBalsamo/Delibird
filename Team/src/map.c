@@ -41,13 +41,20 @@ uint32_t furthest_trainer_position(){
     return furthest_position;
 }
 
-void load_in_matrix(t_trainer* trainer){
+void load_trainer_in_matrix(t_trainer* trainer){
     insert_matrix_element_at(map, trainer, trainer -> pos_x, trainer -> pos_y);
 }
-
+void load_pokemon_in_matrix(t_pokemon* pokemon){
+    insert_matrix_element_at(map, pokemon, pokemon -> pos_x, pokemon -> pos_y);
+}
+void remove_pokemon_from_matrix(t_pokemon* pokemon){
+    //TODO: Fix esto?
+    insert_matrix_element_at(map, NULL, pokemon -> pos_x, pokemon -> pos_y);
+    free(pokemon);
+}
 void initialize_map(){
     uint32_t map_size = furthest_trainer_position();
     map = matrix_create_of_size(map_size, true, false);
 
-    with_trainers_do(load_in_matrix);
+    with_trainers_do(load_trainer_in_matrix);
 }

@@ -17,7 +17,11 @@ typedef struct Pokemon_goal{
     char* pokemon_name;
     uint32_t quantity;
 }t_pokemon_goal;
-
+typedef struct Pokemon{
+    char* pokemon_name;
+    uint32_t pos_x;
+    uint32_t pos_y;
+}t_pokemon;
 typedef struct Trainer_with_lock{
     t_trainer* trainer;
     sem_t semaphore;
@@ -27,7 +31,7 @@ void* initialize_team_manager();
 
 void with_trainers_do(void (*closure) (t_trainer*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
-
+bool global_goal_contains(char* pokemon_name);
 t_list* trainers_x_positions();
 t_list* trainers_y_positions();
 
