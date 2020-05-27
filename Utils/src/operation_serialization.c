@@ -10,7 +10,12 @@ uint32_t amount_of_bytes_of_appeared(t_appeared_pokemon* appeared_pokemon){
             + sizeof(uint32_t)                                  //Pos y
             + sizeof(uint32_t);                                 //message_id
 }
-
+uint32_t amount_of_bytes_of_localized(t_localized_pokemon * localized_pokemon){
+    return sizeof(uint32_t)                                    //Pokemon name length
+           + strlen(localized_pokemon -> pokemon_name) + 1      //Pokemon name
+           + sizeof(uint32_t)                                 //quantity
+           + sizeof(t_list*);                                  //positions
+}
 uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
             + strlen(new_pokemon -> pokemon_name) + 1           //Pokemon name
@@ -273,7 +278,44 @@ t_serialization_information* serialize_subscribe_me(void* structure){
     return serialization_information;
 }
 
-t_serialization_information* serialize_localized_pokemon(void* structure){
-    //TODO: implementar serializacion de LOCALIZED
-    return NULL;
+t_serialization_information* serialize_localized_pokemon(void* structure) {
+
+    t_localized_pokemon *localized_pokemon = (t_localized_pokemon *) structure;
+    uint32_t amount_of_bytes_of_localized_pokemon = amount_of_bytes_of_localized(localized_pokemon);
+    uint32_t amount_of_bytes_of_request =
+            sizeof(uint32_t)                        // operation
+            + sizeof(uint32_t)                      // structure size
+            + amount_of_bytes_of_localized_pokemon;  // structure
+    uint32_t total_amount_of_bytes =
+            sizeof(uint32_t)                        // total amount (used by socket)
+            + amount_of_bytes_of_request;
+
+    void *serialized_request = malloc(total_amount_of_bytes);
+
+    uint32_t operation = LOCALIZED_POKEMON;
+    uint32_t pokemon_name_length = strlen(localized_pokemon->pokemon_name) + 1;
+
+    uint32_t offset = 0;
+
+    memcpy(serialized_request + offset, &amount_of_bytes_of_request, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &amount_of_bytes_of_localized_pokemon, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &pokemon_name_length, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, localized_pokemon->pokemon_name, pokemon_name_length);
+    offset += pokemon_name_length;
+    memcpy(serialized_request + offset, &(localized_pokemon->message_id), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &(localized_pokemon->quantity), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &(localized_pokemon->positions), sizeof(t_list *));
+
+    t_serialization_information *serialization_information = malloc(sizeof(t_serialization_information));
+    serialization_information->serialized_request = serialized_request;
+    serialization_information->amount_of_bytes = total_amount_of_bytes;
+
+    return serialization_information;
 }

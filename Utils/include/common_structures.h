@@ -50,6 +50,11 @@ typedef struct Get_pokemon{
     char* pokemon_name;
     uint32_t message_id;
 }t_get_pokemon;
+typedef struct Localized_pokemon{
+    char* pokemon_name;
+    uint32_t quantity;
+    t_list* positions;
+}t_localized_pokemon;
 
 typedef struct Subscribe_me{
     uint32_t operation_queue;

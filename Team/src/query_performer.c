@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <query_performer.h>
 #include <appeared_query_performer.h>
+#include <localized_query_performer.h>
+#include <caught_query_performer.h>
 
 t_list* query_performers;
 
@@ -12,9 +14,13 @@ void free_query_performer(){
 }
 void initialize_query_performer(){
     initialize_appeared_query_performer();
+    initialize_localized_query_performer();
+    initialize_caught_query_performer();
     query_performers = list_create();
 
     list_add(query_performers, (void*) appeared_query_performer());
+    list_add(query_performers, (void*) localized_query_performer());
+    list_add(query_performers, (void*) caught_query_performer());
 }
 t_query_performer* query_performer_handle(uint32_t operation){
 
