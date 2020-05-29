@@ -226,7 +226,7 @@ void send_structure(t_serialization_information* serialization_information, int 
     memcpy(serialized_request,
             &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
 
-    memcpy(serialized_request + sizeof(uint32_t),
+    memmove(serialized_request + sizeof(uint32_t),
             serialization_information -> serialized_request,
             serialization_information -> amount_of_bytes);
 

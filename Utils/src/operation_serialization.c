@@ -244,7 +244,7 @@ t_serialization_information* serialize_identified_message(void* structure){
             + sizeof(uint32_t)                          // structure size
             + amount_of_bytes_of_identified_message;    // structure
 
-    void* serialized_request = malloc(sizeof(amount_of_bytes_of_request));
+    void* serialized_request = malloc(amount_of_bytes_of_request);
 
     uint32_t operation = IDENTIFIED_MESSAGE;
 
@@ -260,6 +260,7 @@ t_serialization_information* serialize_identified_message(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, request_serialization_information -> serialized_request, request_serialization_information -> amount_of_bytes);
 
+    free(request_serialization_information);
     t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
