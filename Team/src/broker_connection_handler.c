@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <semaphore.h>
+//#include <semaphore.h>
 
 char* broker_ip;
 char* broker_port;
@@ -113,7 +113,6 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
     t_get_pokemon* get_pokemon = malloc(sizeof(t_get_pokemon));
     get_pokemon -> pokemon_name = pokemon_goal -> pokemon_name;
-    get_pokemon -> message_id = 0;
 
     t_request* request = malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;

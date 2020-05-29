@@ -19,6 +19,8 @@ void* subscriber_pokemon_operation_structure();
 
 char* valid_process_name_for_connection();
 
+uint32_t pokemon_operation_code();
+
 void* pokemon_operation_structure();
 
 bool is_subscriber_mode();
