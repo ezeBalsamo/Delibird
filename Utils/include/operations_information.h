@@ -23,6 +23,8 @@ uint32_t queue_code_of(char* queue_name);
 
 bool exists_queue_named(char* queue_name);
 
+char* queue_name_of(uint32_t queue_code);
+
 t_operation_information* operation_information_with_code(uint32_t operation_code);
 
 void free_operations_information();

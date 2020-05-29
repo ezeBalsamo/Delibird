@@ -10,5 +10,6 @@ t_serialization_information* serialize_caught_pokemon(void* structure);
 t_serialization_information* serialize_get_pokemon(void* structure);
 t_serialization_information* serialize_localized_pokemon(void* structure);
 t_serialization_information* serialize_subscribe_me(void* structure);
+t_serialization_information* serialize_identified_message(void* structure);
 
 #endif //DELIBIRD_OPERATION_SERIALIZATION_H

@@ -87,6 +87,17 @@ void initialize_and_load_subscribe_me_operation_information(){
 
 }
 
+void initialize_and_load_identified_message_operation_information(){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> code = IDENTIFIED_MESSAGE;
+    operation_information -> name = "IDENTIFIED_MESSAGE";
+    operation_information -> max_arguments_amount = 0;
+    operation_information -> serialize_function = serialize_identified_message;
+    operation_information -> deserialize_function = deserialize_identified_message;
+
+    list_add(all_operations, (void*) operation_information);
+}
+
 void initialize_operations_information(){
 
     all_operations = list_create();
@@ -97,6 +108,7 @@ void initialize_operations_information(){
     initialize_and_load_catch_pokemon_information();
     initialize_and_load_caught_pokemon_information();
     initialize_and_load_subscribe_me_operation_information();
+    initialize_and_load_identified_message_operation_information();
 
 }
 
@@ -172,6 +184,10 @@ bool exists_queue_named(char* queue_name){
     list_destroy(queue_operations);
 
     return queue_exists;
+}
+
+char* queue_name_of(uint32_t queue_code){
+    return operation_information_with_code(queue_code) -> name;
 }
 
 t_operation_information* operation_information_with_code(uint32_t operation_code){

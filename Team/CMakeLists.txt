@@ -4,7 +4,6 @@ set(SOURCES
         src/gameboy_connection_handler.c
         src/map.c
         src/team.c
-        src/team_deserialization.c
         src/team_logs_manager.c
         src/team_manager.c
         src/team_operations_information.c

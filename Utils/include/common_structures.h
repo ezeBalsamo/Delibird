@@ -23,7 +23,6 @@ typedef struct Appeared_pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
-    uint32_t message_id;
 }t_appeared_pokemon;
 
 typedef struct New_pokemon{
@@ -31,29 +30,30 @@ typedef struct New_pokemon{
     uint32_t pos_x;
     uint32_t pos_y;
     uint32_t quantity;
-    uint32_t message_id;
 }t_new_pokemon;
 
 typedef struct Catch_pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
-    uint32_t message_id;
 }t_catch_pokemon;
 
 typedef struct Caught_pokemon{
-    uint32_t message_id;
     uint32_t caught_status;
 }t_caught_pokemon;
 
 typedef struct Get_pokemon{
     char* pokemon_name;
-    uint32_t message_id;
 }t_get_pokemon;
 
 typedef struct Subscribe_me{
     uint32_t operation_queue;
 }t_subscribe_me;
+
+typedef struct Identified_message{
+    uint32_t message_id;
+    t_request* request;
+}t_identified_message;
 
 enum Process {
     TEAM, BROKER, GAMECARD, SUSCRIPTOR
@@ -68,7 +68,7 @@ enum Operation {
     NEW_POKEMON, APPEARED_POKEMON,
     GET_POKEMON, LOCALIZED_POKEMON,
     CATCH_POKEMON, CAUGHT_POKEMON,
-    SUBSCRIBE_ME
+    SUBSCRIBE_ME, IDENTIFIED_MESSAGE
 };
 
 typedef struct Operation_information{

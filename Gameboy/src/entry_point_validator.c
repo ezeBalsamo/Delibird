@@ -68,6 +68,14 @@ t_operation_information* valid_chosen_operation(){
     return operation_information_found;
 }
 
+bool should_build_identified_message() {
+    return valid_chosen_operation() -> max_arguments_amount - gameboy_arguments_amount == 0;
+}
+
+uint32_t pokemon_operation_code(){
+    return should_build_identified_message()?IDENTIFIED_MESSAGE:valid_chosen_operation() -> code;
+}
+
 void* pokemon_operation_structure(){
     return (role_mode -> pokemon_operation_structure_function)();
 }
@@ -75,7 +83,7 @@ void* pokemon_operation_structure(){
 void* publisher_pokemon_operation_structure(){
 
     t_pokemon_operation_parser* parser =
-            pokemon_operation_parser_for(gameboy_arguments[2]);
+            pokemon_operation_parser_for(valid_chosen_operation() -> code, should_build_identified_message());
 
     void* structure = (*(parser -> parse_function)) (&gameboy_arguments[3]);
 

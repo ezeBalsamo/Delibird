@@ -4,8 +4,8 @@
 
 t_pokemon_operation_parser* new_pokemon_parser;
 
-bool new_pokemon_can_handle(char* operation_name){
-    return queue_code_of(operation_name) == NEW_POKEMON;
+bool new_pokemon_can_handle(uint32_t operation_code){
+    return operation_code == NEW_POKEMON;
 }
 
 void* new_pokemon_parse_function(char** arguments){
@@ -14,15 +14,27 @@ void* new_pokemon_parse_function(char** arguments){
     new_pokemon -> pos_x = atoi(arguments[1]);
     new_pokemon -> pos_y = atoi(arguments[2]);
     new_pokemon -> quantity = atoi(arguments[3]);
-    new_pokemon -> message_id = arguments[4] == NULL?-1:(atoi(arguments[4]));
+
+    if(new_pokemon_parser -> should_build_identified_message){
+        t_request* request = malloc(sizeof(t_request));
+        request -> operation = NEW_POKEMON;
+        request -> structure = (void*) new_pokemon;
+
+        t_identified_message* identified_message = malloc(sizeof(t_identified_message));
+        identified_message -> message_id = atoi(arguments[4]);
+        identified_message -> request = request;
+
+        return identified_message;
+    }
 
     return new_pokemon;
 }
 
-void initialize_new_pokemon_operation_parser(){
+void initialize_new_pokemon_operation_parser_with(bool should_build_identified_message){
     new_pokemon_parser = malloc(sizeof(t_pokemon_operation_parser));
     new_pokemon_parser -> can_handle_function = new_pokemon_can_handle;
     new_pokemon_parser -> parse_function = new_pokemon_parse_function;
+    new_pokemon_parser -> should_build_identified_message = should_build_identified_message;
 }
 
 t_pokemon_operation_parser* new_pokemon_operation_parser(){

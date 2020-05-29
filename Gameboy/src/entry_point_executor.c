@@ -4,7 +4,9 @@
 #include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/pretty_printer.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void* queue_listener_thread(){
 
@@ -24,6 +26,18 @@ void* queue_listener_thread(){
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
+        while(1){
+            t_serialization_information* serialization_information =
+                    receive_structure(connection_information -> socket_fd);
+
+            t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+            char* pretty_print_request = request_pretty_print(deserialized_request);
+
+            printf("%s\n", pretty_print_request);
+
+            free(pretty_print_request);
+            free_request(deserialized_request);
+        }
         //TODO: logica
 
         free_request(request);

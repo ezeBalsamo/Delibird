@@ -4,25 +4,6 @@
 #include <string.h>
 #include "../include/queue_message_manager.h"
 
-t_request* deserialize(void* serialized_request){
-    uint32_t operation;
-    void* serialized_structure;
-    uint32_t serialized_structure_size;
-
-    int offset = 0;
-
-    operation = get_operation_from(serialized_request);
-    offset += sizeof(uint32_t);
-    memcpy(&serialized_structure_size, serialized_request + offset, sizeof(uint32_t));
-    offset += sizeof(uint32_t);
-    serialized_structure = malloc(serialized_structure_size);
-    memcpy(serialized_structure, serialized_request + offset, serialized_structure_size);
-
-    t_operation_information* operation_information = operation_information_with_code(operation);
-
-    return (*(operation_information -> deserialize_function)) (serialized_structure);
-}
-
 t_connection_request* create_connection_request(int connection_fd, void* serialized_request){
     t_connection_request* connection_request = malloc(sizeof(t_connection_request));
     connection_request -> socket_fd = connection_fd;
