@@ -2,16 +2,14 @@
 #include <stdlib.h>
 
 void free_request(t_request* self){
-    free(self -> structure);
+    self -> sanitizer_function (self -> structure);
     free(self);
 }
 
-void free_identified_request(t_request* self){
-    t_identified_message* identified_message = self -> structure;
+void free_identified_message(t_identified_message* identified_message){
     t_request* internal_request = identified_message -> request;
-    (internal_request -> sanitizer_function) (internal_request);
+    free_request(internal_request);
     free(identified_message);
-    free(self);
 }
 
 void free_connection_request(t_connection_request* connection_request){

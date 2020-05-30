@@ -69,8 +69,7 @@ void publisher_mode_execution(){
         free_and_close_connection_information(connection_information);
     }
 
-    request -> sanitizer_function (request);
-
+    free_request(request);
 }
 
 void execute(){

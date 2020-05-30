@@ -57,7 +57,7 @@ void* subscriber_thread(void* queue_operation_identifier){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
-    request -> sanitizer_function = free_request;
+    request -> sanitizer_function = free;
 
     t_connection_information* connection_information = connect_to(broker_ip, broker_port);
 
@@ -117,7 +117,7 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
     request -> structure = get_pokemon;
-    request -> sanitizer_function = free_request;
+    request -> sanitizer_function = free;
 
     t_connection_information* connection_information = connect_to(broker_ip, broker_port);
 

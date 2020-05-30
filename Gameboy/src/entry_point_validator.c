@@ -80,6 +80,13 @@ void* pokemon_operation_structure(){
     return (role_mode -> pokemon_operation_structure_function)();
 }
 
+void* pokemon_operation_sanitizer_function(){
+    if(should_build_identified_message()){
+       return free_identified_message;
+    }
+    return free;
+}
+
 void* publisher_pokemon_operation_structure(){
 
     t_pokemon_operation_parser* parser =

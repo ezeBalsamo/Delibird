@@ -13,12 +13,7 @@ t_request* safe_request(){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = pokemon_operation_code();
     request -> structure = pokemon_operation_structure();
-
-    if(request -> operation == IDENTIFIED_MESSAGE){
-        request -> sanitizer_function = free_identified_request;
-    } else {
-        request -> sanitizer_function = free_request;
-    }
+    request -> sanitizer_function = pokemon_operation_sanitizer_function();
 
     return request;
 }
