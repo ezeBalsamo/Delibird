@@ -311,9 +311,10 @@ t_serialization_information* serialize_localized_pokemon(void* structure) {
     offset += sizeof(uint32_t);
 
     for(int i=0;i<list_size(localized_pokemon->positions);i++){
-        uint32_t pos = list_get(localized_pokemon->positions,i);
 
-        memcpy(serialized_request + offset,&pos, sizeof(uint32_t));
+        uint32_t* pos = (uint32_t* )list_get(localized_pokemon->positions,i);
+
+        memcpy(serialized_request + offset,&(*pos), sizeof(uint32_t));
         offset += sizeof(uint32_t);
     }
     memcpy(serialized_request + offset, &(localized_pokemon->positions), sizeof(t_list *));

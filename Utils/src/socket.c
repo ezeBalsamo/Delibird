@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <zconf.h>
 #include <pthread.h>
 #include <stdint.h>
 #include "../include/socket.h"
