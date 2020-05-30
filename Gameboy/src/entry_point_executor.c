@@ -36,11 +36,10 @@ void* queue_listener_thread(){
             printf("%s\n", pretty_print_request);
 
             free(pretty_print_request);
-            free_request(deserialized_request);
+            deserialized_request -> sanitizer_function (deserialized_request);
         }
         //TODO: logica
-
-        free_request(request);
+        request -> sanitizer_function (request);
     }
     return NULL;
 }
@@ -70,7 +69,8 @@ void publisher_mode_execution(){
         free_and_close_connection_information(connection_information);
     }
 
-    free_request(request);
+    request -> sanitizer_function (request);
+
 }
 
 void execute(){

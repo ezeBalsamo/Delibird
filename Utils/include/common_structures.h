@@ -7,6 +7,7 @@
 typedef struct Request{
     uint32_t operation;
     void* structure;
+    void (*sanitizer_function) (struct Request* request);
 }t_request;
 
 typedef struct Serialization_information{
@@ -86,6 +87,7 @@ typedef struct Process_information{
 }t_process_information;
 
 void free_request(t_request* request);
+void free_identified_request(t_request* request);
 void free_connection_request(t_connection_request* connection_request);
 void free_serialization_information(t_serialization_information* serialization_information);
 void free_process_information(t_process_information* process_information);

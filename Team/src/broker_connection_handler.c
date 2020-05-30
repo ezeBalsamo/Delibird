@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-//#include <semaphore.h>
 
 char* broker_ip;
 char* broker_port;
@@ -58,6 +57,7 @@ void* subscriber_thread(void* queue_operation_identifier){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
+    request -> sanitizer_function = free_request;
 
     t_connection_information* connection_information = connect_to(broker_ip, broker_port);
 
@@ -67,7 +67,7 @@ void* subscriber_thread(void* queue_operation_identifier){
     else {
         serialize_and_send_structure(request, connection_information -> socket_fd);
         sem_post(&subscriber_threads_request_sent);
-        free_request(request);
+        request -> sanitizer_function (request);
 
         while (true) {
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
@@ -76,7 +76,7 @@ void* subscriber_thread(void* queue_operation_identifier){
             printf("%s\n", request_as_string);
 
             free_serialization_information(serialization_information);
-            free_request(deserialized_request);
+            deserialized_request -> sanitizer_function (deserialized_request);
             free(request_as_string);
         }
     }
@@ -117,12 +117,13 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
     request -> structure = get_pokemon;
+    request -> sanitizer_function = free_request;
 
     t_connection_information* connection_information = connect_to(broker_ip, broker_port);
 
     if(connection_information -> connection_was_succesful){
         serialize_and_send_structure(request, connection_information -> socket_fd);
-        free_request(request);
+        request -> sanitizer_function (request);
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
     }

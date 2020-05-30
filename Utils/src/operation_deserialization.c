@@ -52,6 +52,7 @@ t_request* deserialize_new_pokemon(void* serialized_structure) {
     t_request* request = malloc(sizeof(t_request));
     request -> operation = NEW_POKEMON;
     request -> structure = (void*) new_pokemon;
+    request -> sanitizer_function = free_request;
     return request;
 }
 
@@ -81,6 +82,7 @@ t_request* deserialize_appeared_pokemon(void* serialized_structure) {
     t_request* request = malloc(sizeof(t_request));
     request -> operation = APPEARED_POKEMON;
     request -> structure = (void*) appeared_pokemon;
+    request -> sanitizer_function = free_request;
     return request;
 }
 
@@ -101,6 +103,7 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
     request -> structure = (void*) get_pokemon;
+    request -> sanitizer_function = free_request;
 
     return request;
 }
@@ -137,6 +140,7 @@ t_request* deserialize_catch_pokemon(void* serialized_structure) {
     t_request* request = malloc(sizeof(t_request));
     request -> operation = CATCH_POKEMON;
     request -> structure = (void*) catch_pokemon;
+    request -> sanitizer_function = free_request;
     return request;
 }
 
@@ -153,6 +157,7 @@ t_request* deserialize_caught_pokemon(void* serialized_structure){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = CAUGHT_POKEMON;
     request -> structure = (void*) caught_pokemon;
+    request -> sanitizer_function = free_request;
     return request;
 }
 
@@ -169,6 +174,7 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
+    request -> sanitizer_function = free_request;
     return request;
 }
 
@@ -198,6 +204,7 @@ t_request* deserialize_identified_message(void* serialized_structure){
     t_request* request = malloc(sizeof(t_request));
     request -> operation = IDENTIFIED_MESSAGE;
     request -> structure = (void*) identified_message;
+    request -> sanitizer_function = free_identified_request;
 
     return request;
 }

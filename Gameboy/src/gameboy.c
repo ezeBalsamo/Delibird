@@ -1,4 +1,4 @@
-#include <libnet.h>
+#include <stdlib.h>
 #include "../include/entry_point_connection_builder.h"
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
