@@ -18,6 +18,7 @@ void* queue_listener_thread(){
 
     if (!connection_information -> connection_was_succesful){
         close_failed_connection(connection_information);
+        free_request(request);
     }
     else{
         log_successful_connection();

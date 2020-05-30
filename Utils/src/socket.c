@@ -231,7 +231,6 @@ void send_structure(t_serialization_information* serialization_information, int 
             serialization_information -> amount_of_bytes);
 
     send_all(socket_fd, serialized_request, total_amount_of_bytes);
-
     free(serialized_request);
 }
 
