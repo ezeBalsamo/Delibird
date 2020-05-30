@@ -31,7 +31,7 @@ void log_succesful_new_message_pushed_to_a_queue(void* serialized_request){ //ac
     char* printed_object = request_pretty_print(deserialized_request);
     log_succesful_message(process_execution_logger(), message);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void log_succesful_message_sent_to_a_suscriber(void* serialized_request){
@@ -41,7 +41,7 @@ void log_succesful_message_sent_to_a_suscriber(void* serialized_request){
     char* printed_object = request_pretty_print(deserialized_request);
     log_succesful_message(process_execution_logger(), message);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 //TODO Faltan implementar logs del main: DEL 5 al 8.
@@ -79,7 +79,7 @@ void log_structure_received(void* serialized_request){
     t_request* deserialized_request = deserialize(serialized_request);
     char* printed_object = request_pretty_print(deserialized_request);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void log_succesful_message_sent_to_suscribers(void* serialized_request){
@@ -87,7 +87,7 @@ void log_succesful_message_sent_to_suscribers(void* serialized_request){
     t_request* deserialized_request = deserialize(serialized_request);
     char* printed_object = request_pretty_print(deserialized_request);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void log_no_subscribers_for_request(void* serialized_request){
@@ -95,7 +95,7 @@ void log_no_subscribers_for_request(void* serialized_request){
     t_request* deserialized_request = deserialize(serialized_request);
     char* printed_object = request_pretty_print(deserialized_request);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void free_broker_logs_manager(){

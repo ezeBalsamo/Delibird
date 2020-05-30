@@ -18,6 +18,7 @@ void* catch_pokemon_parse_function(char** arguments){
         t_request* request = malloc(sizeof(t_request));
         request -> operation = CATCH_POKEMON;
         request -> structure = (void*) catch_pokemon;
+        request -> sanitizer_function = free;
 
         t_identified_message* identified_message = malloc(sizeof(t_identified_message));
         identified_message -> message_id = atoi(arguments[3]);
