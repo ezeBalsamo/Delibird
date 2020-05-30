@@ -55,15 +55,6 @@ typedef struct Identified_message{
     t_request* request;
 }t_identified_message;
 
-enum Process {
-    TEAM, BROKER, GAMECARD, SUSCRIPTOR
-};
-
-typedef struct Printable_Object{
-    uint32_t code;
-    char* (*print_function) (void* object);
-}t_printable_object;
-
 enum Operation {
     NEW_POKEMON, APPEARED_POKEMON,
     GET_POKEMON, LOCALIZED_POKEMON,
@@ -71,26 +62,15 @@ enum Operation {
     SUBSCRIBE_ME, IDENTIFIED_MESSAGE
 };
 
-typedef struct Operation_information{
+typedef struct Serializable_Object{
     uint32_t code;
-    char* name;
-    int max_arguments_amount;
     t_serialization_information* (*serialize_function) (void* structure);
     t_request* (*deserialize_function) (void* serialized_structure);
-}t_operation_information;
-
-typedef struct Process_information{
-    uint32_t code;
-    char* name;
-    t_list* operations;
-}t_process_information;
+}t_serializable_object;
 
 void free_request(t_request* request);
 void free_connection_request(t_connection_request* connection_request);
 void free_serialization_information(t_serialization_information* serialization_information);
-void free_process_information(t_process_information* process_information);
 void free_char_array(char**);
-
-void free_printable_object(t_printable_object* printable_object);
 
 #endif //COMMON_STRUCTURES_H

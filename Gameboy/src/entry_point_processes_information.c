@@ -1,38 +1,89 @@
 #include "../include/entry_point_processes_information.h"
 #include "../include/entry_point_logs_manager.h"
-#include "../../Utils/include/operations_information.h"
+#include "../../Utils/include/serializable_objects.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 #include <commons/string.h>
 #include <stdlib.h>
 
 t_list* processes_information;
 
-t_list* team_operation_information(){
+t_operation_information* new_pokemon_operation_information(uint32_t arguments_amount, bool has_identified_message){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_new_pokemon();
+    operation_information -> name = queue_name_of(NEW_POKEMON);
+    operation_information -> arguments_amount = arguments_amount;
+    operation_information -> has_identified_message = has_identified_message;
+
+    return operation_information;
+}
+
+t_operation_information* appeared_pokemon_operation_information(uint32_t arguments_amount, bool has_identified_message){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_appeared_pokemon();
+    operation_information -> name = queue_name_of(APPEARED_POKEMON);
+    operation_information -> arguments_amount = arguments_amount;
+    operation_information -> has_identified_message = has_identified_message;
+
+    return operation_information;
+}
+
+t_operation_information* get_pokemon_operation_information(uint32_t arguments_amount, bool has_identified_message){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_get_pokemon();
+    operation_information -> name = queue_name_of(GET_POKEMON);
+    operation_information -> arguments_amount = arguments_amount;
+    operation_information -> has_identified_message = has_identified_message;
+
+    return operation_information;
+}
+
+t_operation_information* catch_pokemon_operation_information(uint32_t arguments_amount, bool has_identified_message){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_catch_pokemon();
+    operation_information -> name = queue_name_of(CATCH_POKEMON);
+    operation_information -> arguments_amount = arguments_amount;
+    operation_information -> has_identified_message = has_identified_message;
+
+    return operation_information;
+}
+
+t_operation_information* caught_pokemon_operation_information(){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_caught_pokemon();
+    operation_information -> name = "CAUGHT_POKEMON";
+    operation_information -> arguments_amount = 5;
+    operation_information -> has_identified_message = true;
+
+    return operation_information;
+}
+
+t_list* team_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, appeared_pokemon_operation_information());
+    list_add(operations, appeared_pokemon_operation_information(6, false));
     return operations;
 }
 
-t_list* broker_operation_information(){
+t_list* broker_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, new_pokemon_operation_information());
-    list_add(operations, appeared_pokemon_operation_information());
-    list_add(operations, catch_pokemon_operation_information());
+    list_add(operations, new_pokemon_operation_information(7, false));
+    list_add(operations, appeared_pokemon_operation_information(7, true));
+    list_add(operations, get_pokemon_operation_information(4, false));
+    list_add(operations, catch_pokemon_operation_information(6, false));
     list_add(operations, caught_pokemon_operation_information());
-    list_add(operations, get_pokemon_operation_information());
     return operations;
 }
 
-t_list* gamecard_operation_information(){
+t_list* gamecard_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, new_pokemon_operation_information());
-    list_add(operations, catch_pokemon_operation_information());
-    list_add(operations, get_pokemon_operation_information());
+    list_add(operations, new_pokemon_operation_information(8, true));
+    list_add(operations, get_pokemon_operation_information(5, true));
+    list_add(operations, catch_pokemon_operation_information(7, true));
     return operations;
 }
 
-t_list* suscriptor_operation_information(){
+t_list* suscriptor_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, subscribe_me_operation_information());
+    list_add(operations, serializable_subscribe_me());
     return operations;
 }
 
@@ -40,7 +91,7 @@ t_process_information* team_process_information(){
     t_process_information* process_information = malloc(sizeof(t_process_information));
     process_information -> code = TEAM;
     process_information -> name = "TEAM";
-    process_information -> operations = team_operation_information();
+    process_information -> operations = team_operations_information();
 
     return process_information;
 }
@@ -49,7 +100,7 @@ t_process_information* broker_process_information(){
     t_process_information* process_information = malloc(sizeof(t_process_information));
     process_information -> code = BROKER;
     process_information -> name = "BROKER";
-    process_information -> operations = broker_operation_information();
+    process_information -> operations = broker_operations_information();
 
     return process_information;
 }
@@ -58,7 +109,7 @@ t_process_information* gamecard_process_information(){
     t_process_information* process_information = malloc(sizeof(t_process_information));
     process_information -> code = GAMECARD;
     process_information -> name = "GAMECARD";
-    process_information -> operations = gamecard_operation_information();
+    process_information -> operations = gamecard_operations_information();
 
     return process_information;
 }
@@ -67,14 +118,14 @@ t_process_information* suscriptor_process_information(){
     t_process_information* process_information = malloc(sizeof(t_process_information));
     process_information -> code = SUSCRIPTOR;
     process_information -> name = "SUSCRIPTOR";
-    process_information -> operations = suscriptor_operation_information();
+    process_information -> operations = suscriptor_operations_information();
 
     return process_information;
 }
 
 void initialize_processes_information(){
 
-    initialize_operations_information();
+    initialize_serializable_objects();
 
     processes_information = list_create();
     list_add(processes_information, (void*) team_process_information());
@@ -114,9 +165,9 @@ uint32_t process_information_code_of(char* process_name){
     return process_information -> code;
 }
 
-void free_process_information(t_process_information* process_information){
-    list_destroy(process_information -> operations);
-    free(process_information);
+void free_process_information(t_process_information* self){
+    list_destroy_and_destroy_elements(self -> operations, (void (*)(void *)) free);
+    free(self);
 }
 
 void free_processes_information(){

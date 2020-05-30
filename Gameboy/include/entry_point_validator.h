@@ -1,7 +1,7 @@
 #ifndef ENTRY_POINT_VALIDATOR_H
 #define ENTRY_POINT_VALIDATOR_H
 
-#include "../../Utils/include/common_structures.h"
+#include "entry_point_processes_information.h"
 
 void initialize_entry_point_validator(int arguments_amount, char** arguments);
 

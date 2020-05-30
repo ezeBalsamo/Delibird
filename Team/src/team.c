@@ -1,6 +1,6 @@
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
-#include "../include/team_operations_information.h"
+#include "../include/team_serializable_objects.h"
 #include "../include/broker_connection_handler.h"
 #include "../include/gameboy_connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -10,7 +10,7 @@
 int main(void){
     initialize_team_logs_manager();
     initialize_pretty_printer();
-    initialize_team_operations_information();
+    initialize_team_serializable_objects();
     initialize_configuration_manager_named("team-RR");
 
     log_succesful_start_up();
@@ -25,6 +25,6 @@ int main(void){
 
     free_team_logs_manager();
     free_pretty_printer();
-    free_team_operations_information();
+    free_team_serializable_objects();
     free_configuration_manager();
 }

@@ -1,5 +1,5 @@
 #include "../include/operation_serialization.h"
-#include "../include/operations_information.h"
+#include "../include/serializable_objects.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -32,8 +32,8 @@ uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){
 
 t_serialization_information* serialize(t_request* request){
 
-    t_operation_information* operation_information = operation_information_with_code(request -> operation);
-    return (*(operation_information -> serialize_function)) (request -> structure);
+    t_serializable_object* serializable_object = serializable_object_with_code(request -> operation);
+    return (*(serializable_object -> serialize_function)) (request -> structure);
 }
 
 t_serialization_information* serialize_new_pokemon(void* structure){

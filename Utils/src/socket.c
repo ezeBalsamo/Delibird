@@ -221,7 +221,7 @@ void send_structure(t_serialization_information* serialization_information, int 
             serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void* serialized_request = malloc(sizeof(total_amount_of_bytes));
+    void* serialized_request = malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
             &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
@@ -231,6 +231,8 @@ void send_structure(t_serialization_information* serialization_information, int 
             serialization_information -> amount_of_bytes);
 
     send_all(socket_fd, serialized_request, total_amount_of_bytes);
+
+    free(serialized_request);
 }
 
 void serialize_and_send_structure(t_request* request, int socket_fd){

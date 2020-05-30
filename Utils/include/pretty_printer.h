@@ -4,6 +4,11 @@
 #include <stdint.h>
 #include "common_structures.h"
 
+typedef struct Printable_Object{
+    uint32_t code;
+    char* (*print_function) (void* object);
+}t_printable_object;
+
 void initialize_pretty_printer();
 
 char* pretty_print_of(uint32_t code, void* structure);

@@ -1,4 +1,4 @@
-#include "../include/common_structures.h"
+#include <common_structures.h>
 #include <stdlib.h>
 
 void free_request(t_request* request){

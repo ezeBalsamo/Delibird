@@ -1,5 +1,4 @@
 #include "../include/broker_deserialization.h"
-#include "../../Utils/include/operations_information.h"
 #include <stdlib.h>
 #include <string.h>
 #include "../include/queue_message_manager.h"
