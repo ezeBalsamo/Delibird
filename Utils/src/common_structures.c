@@ -1,9 +1,15 @@
 #include "../include/common_structures.h"
 #include <stdlib.h>
 
-void free_request(t_request* request){
-    free(request -> structure);
-    free(request);
+void free_request(t_request* self){
+    self -> sanitizer_function (self -> structure);
+    free(self);
+}
+
+void free_identified_message(t_identified_message* identified_message){
+    t_request* internal_request = identified_message -> request;
+    free_request(internal_request);
+    free(identified_message);
 }
 
 void free_connection_request(t_connection_request* connection_request){

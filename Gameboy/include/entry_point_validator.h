@@ -23,6 +23,8 @@ uint32_t pokemon_operation_code();
 
 void* pokemon_operation_structure();
 
+void* pokemon_operation_sanitizer_function();
+
 bool is_subscriber_mode();
 
 void free_entry_point_validator();

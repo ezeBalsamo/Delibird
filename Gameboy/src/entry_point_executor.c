@@ -36,11 +36,10 @@ void* queue_listener_thread(){
             printf("%s\n", pretty_print_request);
 
             free(pretty_print_request);
-            free_request(deserialized_request);
+            deserialized_request -> sanitizer_function (deserialized_request);
         }
         //TODO: logica
-
-        free_request(request);
+        request -> sanitizer_function (request);
     }
     return NULL;
 }

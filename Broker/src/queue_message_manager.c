@@ -44,7 +44,7 @@ void subscribe_process(t_connection_request* connection_request){
 
     list_add(subscribers, (void*) subscriber);
 
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void push_to_queue(uint32_t operation, t_connection_request* connection_request) {
