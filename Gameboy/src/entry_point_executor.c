@@ -38,7 +38,7 @@ void* queue_listener_thread(){
             printf("%s\n", pretty_print_request);
 
             free(pretty_print_request);
-            deserialized_request -> sanitizer_function (deserialized_request);
+            free_request(deserialized_request);
         }
         //TODO: logica
     }
