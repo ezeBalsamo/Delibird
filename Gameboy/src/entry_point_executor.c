@@ -18,6 +18,7 @@ void* queue_listener_thread(){
 
     if (!connection_information -> connection_was_succesful){
         close_failed_connection(connection_information);
+        free_request(request);
     }
     else{
         log_successful_connection();
@@ -25,6 +26,7 @@ void* queue_listener_thread(){
 
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
+        free_request(request);
 
         while(1){
             t_serialization_information* serialization_information =
@@ -39,7 +41,6 @@ void* queue_listener_thread(){
             deserialized_request -> sanitizer_function (deserialized_request);
         }
         //TODO: logica
-        request -> sanitizer_function (request);
     }
     return NULL;
 }

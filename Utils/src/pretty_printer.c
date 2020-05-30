@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <commons/string.h>
-#include <operations_information.h>
+#include <serializable_objects.h>
+#include <queue_code_name_associations.h>
 
 t_list* printable_objects;
 
@@ -41,14 +42,15 @@ char* caught_pokemon_as_string(t_caught_pokemon* caught_pokemon){
 }
 
 char* subscribe_me_as_string(t_subscribe_me* subscribe_me){
-    t_operation_information* operation_information = operation_information_with_code(subscribe_me -> operation_queue);
-    return string_from_format("Operación: SUBSCRIBE_ME\nArgumentos: %s", operation_information -> name);
+
+    return string_from_format("Operación: SUBSCRIBE_ME\nArgumentos: %s",
+            queue_name_of(subscribe_me -> operation_queue));
 }
 
 char* identified_message_as_string(t_identified_message* identified_message){
 
     char* request_as_string = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Operación: IDENTIFIED_MESSAGE\nArgumentos: message_id: %d %s",
+    char* message = string_from_format("Operación: IDENTIFIED_MESSAGE\nArgumentos: message_id: %d\n%s",
             identified_message -> message_id, request_as_string);
 
     free(request_as_string);
@@ -120,6 +122,7 @@ void initialize_and_load_identified_message(){
 }
 
 void initialize_pretty_printer(){
+
     printable_objects = list_create();
     initialize_and_load_new_pokemon_pretty_print();
     initialize_and_load_appeared_pokemon_pretty_print();

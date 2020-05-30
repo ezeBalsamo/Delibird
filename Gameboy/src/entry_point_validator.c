@@ -2,11 +2,11 @@
 #include <commons/string.h>
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
-#include "../include/entry_point_processes_information.h"
 #include "../include/role_mode_strategy.h"
-#include "../../Utils/include/operations_information.h"
-#include <stdlib.h>
 #include <pokemon_operation_parser.h>
+#include "../../Utils/include/serializable_objects.h"
+#include "../../Utils/include/queue_code_name_associations.h"
+#include <stdlib.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
@@ -59,21 +59,19 @@ t_operation_information* valid_chosen_operation(){
         unknown_operation_error_for(process_information_found -> name, gameboy_arguments[2]);
     }
 
-    int arguments_amount_difference = operation_information_found -> max_arguments_amount - gameboy_arguments_amount;
+    int arguments_amount_difference = operation_information_found -> arguments_amount - gameboy_arguments_amount;
 
-    if(arguments_amount_difference < 0 || arguments_amount_difference > 1){
+    if(arguments_amount_difference != 0){
         incorrect_arguments_amount_error();
     }
 
     return operation_information_found;
 }
 
-bool should_build_identified_message() {
-    return valid_chosen_operation() -> max_arguments_amount - gameboy_arguments_amount == 0;
-}
-
 uint32_t pokemon_operation_code(){
-    return should_build_identified_message()?IDENTIFIED_MESSAGE:valid_chosen_operation() -> code;
+    t_operation_information* chosen_operation = valid_chosen_operation();
+
+    return chosen_operation -> has_identified_message?IDENTIFIED_MESSAGE:chosen_operation -> serializable_object -> code;
 }
 
 void* pokemon_operation_structure(){
@@ -89,8 +87,11 @@ void* pokemon_operation_sanitizer_function(){
 
 void* publisher_pokemon_operation_structure(){
 
+    t_operation_information* chosen_operation = valid_chosen_operation();
     t_pokemon_operation_parser* parser =
-            pokemon_operation_parser_for(valid_chosen_operation() -> code, should_build_identified_message());
+            pokemon_operation_parser_for(
+                        chosen_operation -> serializable_object -> code,
+                        chosen_operation -> has_identified_message);
 
     void* structure = (*(parser -> parse_function)) (&gameboy_arguments[3]);
 
@@ -117,6 +118,6 @@ bool is_subscriber_mode(){
 
 void free_entry_point_validator(){
     free_processes_information();
-    free_operations_information();
+    free_serializable_objects();
     free_role_mode_strategy();
 }

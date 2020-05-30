@@ -6,8 +6,9 @@
 #include <catch_pokemon_operation_parser.h>
 #include <caught_pokemon_operation_parser.h>
 #include <get_pokemon_operation_parser.h>
+#include "../../Utils/include/serializable_objects.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 #include <stdlib.h>
-#include "../../Utils/include/operations_information.h"
 
 t_list* pokemon_operation_parsers;
 

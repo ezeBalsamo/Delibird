@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <serialization_interface.h>
-#include <operations_information.h>
+#include <serializable_objects.h>
 
 t_request* deserialize(void* serialized_request){
     uint32_t operation;
@@ -18,8 +18,8 @@ t_request* deserialize(void* serialized_request){
     serialized_structure = malloc(serialized_structure_size);
     memcpy(serialized_structure, serialized_request + offset, serialized_structure_size);
 
-    t_operation_information* operation_information = operation_information_with_code(operation);
-    return (*(operation_information -> deserialize_function)) (serialized_structure);
+    t_serializable_object* serializable_object = serializable_object_with_code(operation);
+    return (*(serializable_object -> deserialize_function)) (serialized_structure);
 }
 
 t_request* deserialize_new_pokemon(void* serialized_structure) {
