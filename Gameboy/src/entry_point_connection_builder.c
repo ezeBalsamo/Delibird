@@ -10,11 +10,10 @@ void initialize_entry_point_connection_builder(){
 
 t_request* safe_request(){
 
-    t_operation_information* chosen_operation = valid_chosen_operation();
-
     t_request* request = malloc(sizeof(t_request));
-    request -> operation = chosen_operation -> code;
+    request -> operation = pokemon_operation_code();
     request -> structure = pokemon_operation_structure();
+    request -> sanitizer_function = pokemon_operation_sanitizer_function();
 
     return request;
 }

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "../include/entry_point_connection_builder.h"
 #include "../include/entry_point_validator.h"
 #include "../include/entry_point_logs_manager.h"
@@ -12,9 +13,13 @@ int main(int arguments_amount, char* arguments[]) {
 
     execute();
 
+    log_successful_execution();
+
     free_entry_point_validator();
-    free_entry_point_logs_manager();
     free_entry_point_connection_builder();
 
-    return 0;
+    log_successful_clean_up();
+    free_entry_point_logs_manager();
+
+    return EXIT_SUCCESS;
 }

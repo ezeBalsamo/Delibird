@@ -3,7 +3,7 @@
 
 #include "pokemon_operation_parser.h"
 
-void initialize_caught_pokemon_operation_parser();
+void initialize_caught_pokemon_operation_parser_with(bool should_build_identified_message);
 
 t_pokemon_operation_parser* caught_pokemon_operation_parser();
 

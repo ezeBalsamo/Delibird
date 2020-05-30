@@ -44,7 +44,7 @@ void subscribe_process(t_connection_request* connection_request){
 
     list_add(subscribers, (void*) subscriber);
 
-    free_request(deserialized_request);
+    deserialized_request -> sanitizer_function (deserialized_request);
 }
 
 void push_to_queue(uint32_t operation, t_connection_request* connection_request) {
@@ -119,4 +119,22 @@ void publish(uint32_t queue, t_serialization_information* serialization_informat
 void free_subscriber(t_subscriber* subscriber){
     free(&(subscriber -> queue));
     free(subscriber);
+}
+
+void free_all_queues(){
+    queue_destroy_and_destroy_elements(appeared_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(new_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(catch_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(caught_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(get_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(localized_queue, (void (*)(void *)) free_connection_request);
+}
+
+void free_subscribers_list(){
+    list_destroy_and_destroy_elements(subscribers, (void (*)(void *)) free_subscriber);
+}
+
+void free_queue_message_manager(){
+    free_all_queues();
+    free_subscribers_list();
 }

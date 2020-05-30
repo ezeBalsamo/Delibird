@@ -2,7 +2,7 @@
 #define DELIBIRD_ROLE_MODE_STRATEGY_H
 
 #include <stdbool.h>
-#include "../../Utils/include/common_structures.h"
+#include "entry_point_processes_information.h"
 
 typedef struct Role_mode_strategy{
     bool (*can_handle_function) (uint32_t process_code);

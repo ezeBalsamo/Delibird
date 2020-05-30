@@ -4,7 +4,9 @@
 #include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/pretty_printer.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void* queue_listener_thread(){
 
@@ -15,7 +17,8 @@ void* queue_listener_thread(){
     t_connection_information* connection_information = connect_to(ip, port);
 
     if (!connection_information -> connection_was_succesful){
-        close_and_exit_failed_connection(connection_information);
+        close_failed_connection(connection_information);
+        free_request(request);
     }
     else{
         log_successful_connection();
@@ -23,10 +26,21 @@ void* queue_listener_thread(){
 
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
-
-        //TODO: logica
-
         free_request(request);
+
+        while(1){
+            t_serialization_information* serialization_information =
+                    receive_structure(connection_information -> socket_fd);
+
+            t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+            char* pretty_print_request = request_pretty_print(deserialized_request);
+
+            printf("%s\n", pretty_print_request);
+
+            free(pretty_print_request);
+            free_request(deserialized_request);
+        }
+        //TODO: logica
     }
     return NULL;
 }
@@ -44,7 +58,7 @@ void publisher_mode_execution(){
     t_connection_information* connection_information = connect_to(ip, port);
 
     if (!connection_information -> connection_was_succesful){
-        close_and_exit_failed_connection(connection_information);
+        close_failed_connection(connection_information);
     }
     else{
         log_successful_connection();
@@ -53,8 +67,10 @@ void publisher_mode_execution(){
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
-        free_request(request);
+        free_and_close_connection_information(connection_information);
     }
+
+    free_request(request);
 }
 
 void execute(){

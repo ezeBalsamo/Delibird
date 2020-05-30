@@ -4,10 +4,9 @@ set(SOURCES
         src/gameboy_connection_handler.c
         src/map.c
         src/team.c
-        src/team_deserialization.c
         src/team_logs_manager.c
         src/team_manager.c
-        src/team_operations_information.c
+        src/team_serializable_objects.c
         src/trainers_parser.c
         src/goal_calculator.c
         src/query_performer.c
