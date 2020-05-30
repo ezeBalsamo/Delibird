@@ -50,11 +50,19 @@ t_operation_information* catch_pokemon_operation_information(uint32_t arguments_
 t_operation_information* caught_pokemon_operation_information(){
     t_operation_information* operation_information = malloc(sizeof(t_operation_information));
     operation_information -> serializable_object = serializable_caught_pokemon();
-    operation_information -> name = "CAUGHT_POKEMON";
+    operation_information -> name = queue_name_of(CAUGHT_POKEMON);
     operation_information -> arguments_amount = 5;
     operation_information -> has_identified_message = true;
 
     return operation_information;
+}
+
+t_operation_information* subscribe_operation_information(){
+    t_operation_information* operation_information = malloc(sizeof(t_operation_information));
+    operation_information -> serializable_object = serializable_subscribe_me();
+    operation_information -> name = "SUSCRIBE_ME";
+    operation_information -> arguments_amount = 4;
+    operation_information -> has_identified_message = false;
 }
 
 t_list* team_operations_information(){
@@ -83,7 +91,7 @@ t_list* gamecard_operations_information(){
 
 t_list* suscriptor_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, serializable_subscribe_me());
+    list_add(operations, subscribe_operation_information());
     return operations;
 }
 

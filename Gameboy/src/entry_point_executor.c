@@ -25,6 +25,7 @@ void* queue_listener_thread(){
 
         serialize_and_send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
+        free_request(request);
 
         while(1){
             t_serialization_information* serialization_information =
@@ -39,8 +40,6 @@ void* queue_listener_thread(){
             free_request(deserialized_request);
         }
         //TODO: logica
-
-        free_request(request);
     }
     return NULL;
 }
