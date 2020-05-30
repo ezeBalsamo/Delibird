@@ -5,14 +5,12 @@
 #include "../../Utils/include/common_structures.h"
 #include "goal_calculator.h"
 
-
-
-
 t_query_performer *appeared_pokemon_query_performer;
 
 t_query_performer* appeared_query_performer(){
     return appeared_pokemon_query_performer;
 }
+
 void appeared_query_performer_function(void* request_structure){
     t_appeared_pokemon* appeared_pokemon = (t_appeared_pokemon*)request_structure;
     if (global_goal_contains(appeared_pokemon->pokemon_name)) {
@@ -25,6 +23,7 @@ void appeared_query_performer_function(void* request_structure){
         //llamar dispatcher... dispatch_trainer_to_catch(pokemon);
     }
 }
+
 bool appeared_query_performer_can_handle(uint32_t operation){
     return operation == APPEARED_POKEMON;
 }

@@ -6,12 +6,14 @@
 #include <appeared_query_performer.h>
 #include <localized_query_performer.h>
 #include <caught_query_performer.h>
+#include <team_logs_manager.h>
 
 t_list* query_performers;
 
 void free_query_performer(){
     list_destroy_and_destroy_elements(query_performers,free);
 }
+
 void initialize_query_performer(){
     initialize_appeared_query_performer();
     initialize_localized_query_performer();
@@ -22,6 +24,7 @@ void initialize_query_performer(){
     list_add(query_performers, (void*) localized_query_performer());
     list_add(query_performers, (void*) caught_query_performer());
 }
+
 t_query_performer* query_performer_handle(uint32_t operation){
 
     initialize_query_performer();
@@ -33,7 +36,7 @@ t_query_performer* query_performer_handle(uint32_t operation){
 
     t_query_performer* query_performer = list_remove_by_condition(query_performers,_can_handle);
     if (query_performer == NULL){
-        printf("La operacion es invalida %d",operation);
+        log_invalid_operation_to_query_performer(operation);
     }
     free_query_performer();
     return query_performer;

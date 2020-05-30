@@ -9,6 +9,7 @@ t_query_performer *caught_pokemon_query_performer;
 t_query_performer* caught_query_performer(){
     return caught_pokemon_query_performer;
 }
+
 void caught_query_performer_function(void* request_structure){
     t_caught_pokemon* caught_pokemon = (t_caught_pokemon*)request_structure;
     //TODO: logica query_performer caught
@@ -16,6 +17,7 @@ void caught_query_performer_function(void* request_structure){
         //porque necesito saber q pokemon es para persistir el obj
     //si lo capture, lo saco de la matriz y persisto eso en el trainer y chequeo si esta pa exit
 }
+
 bool caught_query_performer_can_handle(uint32_t operation){
     return operation == CAUGHT_POKEMON;
 }

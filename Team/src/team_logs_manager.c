@@ -1,9 +1,11 @@
 #include "../include/team_logs_manager.h"
 #include "../../Utils/include/logger.h"
+#include "../../Utils/include/operations_information.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 void initialize_team_logs_manager(){
     initialize_logger();
@@ -63,7 +65,18 @@ void log_queue_thread_create_error(){
     free_team_logs_manager();
     exit(EXIT_FAILURE);
 }
+void log_invalid_operation_to_query_performer(uint32_t code){
+    t_operation_information *operation = operation_information_with_code(code);
+    char* message;
+    if (operation == NULL){
+        message = string_from_format("Operacion invalida para que el query performer realice, codigo %d.",code);
+    }else{
+        message = string_from_format("Operacion %s invalida para que el query performer realice.",operation->name);
+    }
 
+    log_errorful_message(process_execution_logger(),message);
+    free(message);
+}
 void log_no_locations_found_for(char* pokemon_name){
     char* message = string_from_format("No se encontraron ubicaciones para %s\n", pokemon_name);
 

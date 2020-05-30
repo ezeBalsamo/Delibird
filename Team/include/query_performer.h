@@ -1,5 +1,6 @@
 #ifndef DELIBIRD_QUERY_PERFORMER_H
 #define DELIBIRD_QUERY_PERFORMER_H
+
 #include <stdbool.h>
 #include <stdint.h>
 

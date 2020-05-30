@@ -17,11 +17,13 @@ typedef struct Pokemon_goal{
     char* pokemon_name;
     uint32_t quantity;
 }t_pokemon_goal;
+
 typedef struct Pokemon{
     char* pokemon_name;
     uint32_t pos_x;
     uint32_t pos_y;
 }t_pokemon;
+
 typedef struct Trainer_with_lock{
     t_trainer* trainer;
     sem_t semaphore;
