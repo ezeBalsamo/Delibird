@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <t_list_extension.h>
 #include <queue_code_name_associations.h>
+#include <general_logs.h>
 
 t_list* all_serializables;
 
@@ -95,6 +96,8 @@ void initialize_serializable_objects(){
     initialize_and_load_serializable_caught_pokemon();
     initialize_and_load_serializable_subscribe_me();
     initialize_and_load_serializable_identified_message();
+
+    log_succesful_initialize_serializable_objects();
 }
 
 t_serializable_object* serializable_new_pokemon(){

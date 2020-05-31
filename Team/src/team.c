@@ -7,19 +7,13 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/general_logs.h"
 
 int main(void) {
     initialize_logs_manager_for("Team");
 
     initialize_pretty_printer();
-    log_succesful_initialize_pretty_printer();
-
     initialize_team_serializable_objects();
-    log_succesful_initialize_serializable_objects();
-
     initialize_configuration_manager_named("team-RR");
-    log_succesful_initialize_config_manager();
 
     log_succesful_start_up();
 

@@ -2,6 +2,7 @@
 #include "commons/config.h"
 #include <roots.h>
 #include <stdlib.h>
+#include <general_logs.h>
 
 t_config* config;
 
@@ -10,6 +11,8 @@ void initialize_configuration_manager_named(char* config_name){
     char* config_absolute_path = absolute_path_for_config_named(config_name);
     config = config_create(config_absolute_path);
     free(config_absolute_path);
+
+    log_succesful_initialize_config_manager();
 }
 
 int config_get_int_at(char* key){

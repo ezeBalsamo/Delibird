@@ -18,10 +18,6 @@ void log_succesful_initialize_entry_point_validator(){
     log_succesful_message(process_execution_logger(), "Entry point validator se ha inicializado correctamente!\n");
 }
 
-void log_succesful_initialize_entry_point_connection_builder(){
-    log_succesful_message(process_execution_logger(), "Entry point connection builder se ha inicializado correctamente!\n");
-}
-
 void log_request_with_event(t_request* request, char* event){
     char* message = string_new();
     string_append(&message, event);

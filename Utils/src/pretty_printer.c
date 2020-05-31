@@ -4,6 +4,7 @@
 #include <commons/string.h>
 #include <serializable_objects.h>
 #include <queue_code_name_associations.h>
+#include <general_logs.h>
 
 t_list* printable_objects;
 
@@ -132,6 +133,8 @@ void initialize_pretty_printer(){
     initialize_and_load_caught_pokemon_pretty_print();
     initialize_and_load_subscribe_me_pretty_print();
     initialize_and_load_identified_message();
+
+    log_succesful_initialize_pretty_printer();
 }
 
 char* pretty_print_of(uint32_t code, void* structure){

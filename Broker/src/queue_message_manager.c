@@ -31,6 +31,7 @@ void initialize_queue_message_manager(){
 
     subscribers = list_create();
     log_succesful_subscribers_list_creation();
+    log_succesful_initialize_queue_message_manager();
 }
 
 void subscribe_process(t_connection_request* connection_request){

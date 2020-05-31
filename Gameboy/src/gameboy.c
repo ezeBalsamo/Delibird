@@ -5,20 +5,14 @@
 #include "../include/entry_point_executor.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/configuration_manager.h"
 
 int main(int arguments_amount, char* arguments[]) {
 
     initialize_logs_manager_for("Gameboy");
-
     initialize_pretty_printer();
-    log_succesful_initialize_pretty_printer();
-
     initialize_entry_point_validator(arguments_amount, arguments);
-    log_succesful_initialize_entry_point_validator();
-
-    initialize_entry_point_connection_builder();
-    log_succesful_initialize_entry_point_connection_builder();
+    initialize_configuration_manager_named("gameboy");
 
     log_succesful_start_up();
 

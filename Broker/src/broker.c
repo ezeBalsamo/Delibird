@@ -7,23 +7,15 @@
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/general_logs.h"
 
 int main() {
 
     initialize_logs_manager_for("Broker");
 
     initialize_pretty_printer();
-    log_succesful_initialize_pretty_printer();
-
     initialize_serializable_objects();
-    log_succesful_initialize_serializable_objects();
-
     initialize_configuration_manager_named("broker");
-    log_succesful_initialize_config_manager();
-
     initialize_queue_message_manager();
-    log_succesful_initialize_queue_message_manager();
 
     log_succesful_start_up();
 

@@ -5,7 +5,6 @@
 
 void log_successful_connection();
 void log_succesful_initialize_entry_point_validator();
-void log_succesful_initialize_entry_point_connection_builder();
 void unknown_process_error_for(char* process_name);
 void unknown_operation_error_for(char* process_name, char* operation_name);
 void incorrect_arguments_amount_error();

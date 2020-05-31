@@ -4,10 +4,6 @@
 #include "../../Utils/include/configuration_manager.h"
 #include <stdlib.h>
 
-void initialize_entry_point_connection_builder(){
-    initialize_configuration_manager_named("gameboy");
-}
-
 t_request* safe_request(){
 
     t_request* request = malloc(sizeof(t_request));
