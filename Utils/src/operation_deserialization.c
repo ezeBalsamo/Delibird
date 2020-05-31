@@ -123,9 +123,8 @@ t_request* deserialize_localized_pokemon(void* serialized_structure){
     memcpy(&quantity, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
 
-    for(int i=0;i<quantity;i++){
+    for(int i = 0; i < quantity; i++){
         uint32_t* position = malloc(sizeof(uint32_t));
-
         memcpy(position, serialized_structure + offset, sizeof(uint32_t));
         offset += sizeof(uint32_t);
 
