@@ -79,7 +79,7 @@ void* pokemon_operation_structure(){
 }
 
 void* pokemon_operation_sanitizer_function(){
-    if(should_build_identified_message()){
+    if(valid_chosen_operation()->has_identified_message){
        return free_identified_message;
     }
     return free;

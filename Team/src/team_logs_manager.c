@@ -72,6 +72,7 @@ void log_invalid_operation_to_query_performer(uint32_t code){
         message = string_from_format("Operacion invalida para que el query performer realice, codigo %d.",code);
     }else{
         message = string_from_format("Operacion %s invalida para que el query performer realice.", operation_name);
+        free(operation_name);
     }
 
     log_errorful_message(process_execution_logger(),message);

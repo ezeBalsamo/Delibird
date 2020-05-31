@@ -77,8 +77,7 @@ void* subscriber_thread(void* queue_operation_identifier){
             char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
 
-            t_query_performer* query_performer = query_performer_handle(deserialized_request->operation);
-            (*(query_performer->perform_function))(deserialized_request->structure);
+            query_perform(deserialized_request);
 
             free_serialization_information(serialization_information);
             deserialized_request -> sanitizer_function (deserialized_request);

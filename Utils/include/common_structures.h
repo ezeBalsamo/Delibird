@@ -79,6 +79,7 @@ void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);
 void free_serialization_information(t_serialization_information* serialization_information);
+void free_localized_pokemon(t_localized_pokemon* localized_pokemon);
 void free_char_array(char**);
 
 #endif //COMMON_STRUCTURES_H

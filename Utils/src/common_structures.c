@@ -29,3 +29,7 @@ void free_serialization_information(t_serialization_information* serialization_i
     free(serialization_information -> serialized_request);
     free(serialization_information);
 }
+void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
+    list_destroy_and_destroy_elements(localized_pokemon->positions,free);
+    free(localized_pokemon);
+}
