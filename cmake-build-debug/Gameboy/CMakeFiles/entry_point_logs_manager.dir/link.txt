@@ -1,2 +1,0 @@
-/usr/bin/ar qc libentry_point_logs_manager.a  CMakeFiles/entry_point_logs_manager.dir/src/entry_point_logs_manager.c.o
-/usr/bin/ranlib libentry_point_logs_manager.a

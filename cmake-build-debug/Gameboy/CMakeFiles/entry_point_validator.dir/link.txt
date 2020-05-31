@@ -1,2 +1,0 @@
-/usr/bin/ar qc libentry_point_validator.a  CMakeFiles/entry_point_validator.dir/src/entry_point_validator.c.o
-/usr/bin/ranlib libentry_point_validator.a

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libteam_logs_manager.a  CMakeFiles/team_logs_manager.dir/src/team_logs_manager.c.o
-/usr/bin/ranlib libteam_logs_manager.a

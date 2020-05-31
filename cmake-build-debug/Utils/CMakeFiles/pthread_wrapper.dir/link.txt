@@ -1,2 +1,0 @@
-/usr/bin/ar qc libpthread_wrapper.a  CMakeFiles/pthread_wrapper.dir/src/pthread_wrapper.c.o
-/usr/bin/ranlib libpthread_wrapper.a

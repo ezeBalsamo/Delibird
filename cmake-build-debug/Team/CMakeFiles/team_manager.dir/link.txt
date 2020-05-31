@@ -1,2 +1,0 @@
-/usr/bin/ar qc libteam_manager.a  CMakeFiles/team_manager.dir/src/team_manager.c.o
-/usr/bin/ranlib libteam_manager.a

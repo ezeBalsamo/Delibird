@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgameboy_connection_handler.a  CMakeFiles/gameboy_connection_handler.dir/src/gameboy_connection_handler.c.o
-/usr/bin/ranlib libgameboy_connection_handler.a

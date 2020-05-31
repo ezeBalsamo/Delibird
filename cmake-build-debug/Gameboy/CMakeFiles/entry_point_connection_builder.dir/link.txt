@@ -1,2 +1,0 @@
-/usr/bin/ar qc libentry_point_connection_builder.a  CMakeFiles/entry_point_connection_builder.dir/src/entry_point_connection_builder.c.o
-/usr/bin/ranlib libentry_point_connection_builder.a

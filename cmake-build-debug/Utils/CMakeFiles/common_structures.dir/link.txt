@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcommon_structures.a  CMakeFiles/common_structures.dir/src/common_structures.c.o
-/usr/bin/ranlib libcommon_structures.a
