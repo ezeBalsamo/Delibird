@@ -1,6 +1,6 @@
 #include "../include/team_logs_manager.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/operations_information.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>
@@ -66,12 +66,12 @@ void log_queue_thread_create_error(){
     exit(EXIT_FAILURE);
 }
 void log_invalid_operation_to_query_performer(uint32_t code){
-    t_operation_information *operation = operation_information_with_code(code);
+    char* operation_name = queue_name_of(code);
     char* message;
-    if (operation == NULL){
+    if (operation_name == NULL){
         message = string_from_format("Operacion invalida para que el query performer realice, codigo %d.",code);
     }else{
-        message = string_from_format("Operacion %s invalida para que el query performer realice.",operation->name);
+        message = string_from_format("Operacion %s invalida para que el query performer realice.", operation_name);
     }
 
     log_errorful_message(process_execution_logger(),message);
