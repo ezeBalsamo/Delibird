@@ -5,6 +5,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
+#include "../include/query_performer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -72,8 +73,11 @@ void* subscriber_thread(void* queue_operation_identifier){
         while (true) {
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+
             char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
+
+            query_perform(deserialized_request);
 
             free_serialization_information(serialization_information);
             deserialized_request -> sanitizer_function (deserialized_request);

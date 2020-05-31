@@ -12,6 +12,7 @@ void log_thread_sleep_time_configuration_error();
 void log_queue_thread_create_error();
 void log_no_locations_found_for(char* pokemon_name);
 void log_trainer_thread_create_error();
+void log_invalid_operation_to_query_performer();
 
 void free_team_logs_manager();
 

@@ -4,8 +4,21 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <commons/collections/dictionary.h>
 
 t_matrix* map;
+t_dictionary* pokemon_ocurrences;
+
+void update_occurrences_of(t_pokemon *pokemon) {
+    if (!dictionary_has_key(pokemon_ocurrences, pokemon->pokemon_name)){
+        uint32_t* occurrence = malloc(sizeof(uint32_t));
+        *occurrence = 0;
+        dictionary_put(pokemon_ocurrences,pokemon->pokemon_name,(void*)occurrence);
+    }
+    uint32_t* ocurrences = (uint32_t*) dictionary_get(pokemon_ocurrences,pokemon->pokemon_name);
+    *ocurrences++;
+    dictionary_put(pokemon_ocurrences,pokemon->pokemon_name,(void*) ocurrences);
+}
 
 void matrix_print_trainer(void* trainer){
     char* printable_trainer = string_new();
@@ -41,13 +54,22 @@ uint32_t furthest_trainer_position(){
     return furthest_position;
 }
 
-void load_in_matrix(t_trainer* trainer){
+void load_trainer_in_matrix(t_trainer* trainer){
     insert_matrix_element_at(map, trainer, trainer -> pos_x, trainer -> pos_y);
 }
+void load_pokemon_in_matrix(t_pokemon* pokemon){
+    update_occurrences_of(pokemon);
+    insert_matrix_element_at(map, pokemon, pokemon -> pos_x, pokemon -> pos_y);
+}
 
+void remove_pokemon_from_matrix(t_pokemon* pokemon){
+    //TODO: Fix esto?
+    insert_matrix_element_at(map, NULL, pokemon -> pos_x, pokemon -> pos_y);
+    free(pokemon);
+}
 void initialize_map(){
     uint32_t map_size = furthest_trainer_position();
     map = matrix_create_of_size(map_size, true, false);
-
-    with_trainers_do(load_in_matrix);
+    pokemon_ocurrences = dictionary_create();
+    with_trainers_do(load_trainer_in_matrix);
 }

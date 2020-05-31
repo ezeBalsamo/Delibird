@@ -14,6 +14,16 @@ t_list* global_goal;
 t_list* trainers_semaphores;
 t_list* trainers_tids;
 
+bool global_goal_contains(char* pokemon_name){
+    t_list* actual_global_goal = team_global_goal_according_to(trainers);
+
+    bool _is_equal_pokemon(void *pokemon_goal){
+        return string_equals_ignore_case(((t_pokemon_goal*) pokemon_goal) -> pokemon_name, pokemon_name);
+    }
+
+    return list_any_satisfy(actual_global_goal,_is_equal_pokemon);
+}
+
 void join_trainers_threads(){
     for (int i = 0; i < list_size(trainers_tids); i++) {
         pthread_t* trainer_tid = (pthread_t*) list_get(trainers_tids, i);

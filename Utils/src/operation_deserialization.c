@@ -109,9 +109,39 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
 }
 
 t_request* deserialize_localized_pokemon(void* serialized_structure){
-    //TODO: implementar deserializacion de LOCALIZED
+    uint32_t pokemon_name_length;
+    char* pokemon_name;
+    uint32_t quantity;
+    t_list* positions = list_create();
+    uint32_t offset = 0;
 
-    return NULL;
+    memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    pokemon_name = malloc(pokemon_name_length);
+    memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
+    offset += pokemon_name_length;
+    memcpy(&quantity, serialized_structure + offset, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+
+    for(int i=0;i<quantity;i++){
+        uint32_t* position = malloc(sizeof(uint32_t));
+
+        memcpy(position, serialized_structure + offset, sizeof(uint32_t));
+        offset += sizeof(uint32_t);
+
+        list_add(positions, (void *) position);
+    }
+
+    t_localized_pokemon* localized_pokemon = malloc(sizeof(t_localized_pokemon));
+    localized_pokemon -> pokemon_name = pokemon_name;
+    localized_pokemon -> quantity = quantity;
+    localized_pokemon -> positions = positions;
+
+    t_request* request = malloc(sizeof(t_request));
+    request -> operation = LOCALIZED_POKEMON;
+    request -> structure = (void*) localized_pokemon;
+    request -> sanitizer_function = (void (*)(void *)) free_localized_pokemon;
+    return request;
 }
 
 t_request* deserialize_catch_pokemon(void* serialized_structure) {

@@ -45,7 +45,7 @@ char* queue_name_of(uint32_t queue_code){
     dictionary_iterator(queue_code_name_associations, _find_queue_name);
 
     if(!queue_name_to_find){
-        //TODO
+        //TODO: ojo con esto que no deberia romper, que se encargue quien lo llama
         printf("Romper todo a la bosta, cuando se implemente el logger general se quita");
         exit(EXIT_FAILURE);
     }

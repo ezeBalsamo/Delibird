@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <zconf.h>
 #include <pthread.h>
+#include <zconf.h>
 #include <stdint.h>
 #include "../include/socket.h"
 #include <commons/collections/queue.h>
