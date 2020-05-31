@@ -3,12 +3,6 @@
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
 
-void initialize_broker_logs_manager(){
-    initialize_logger();
-    create_main_logger_for("Broker");
-    create_process_execution_logger_for("Broker");
-}
-
 //LOGS MAIN, LOS QUE VAN SI O SI EN EL TP.
 //---------------------------------------------------------------------------------------
 
@@ -49,14 +43,6 @@ void log_succesful_message_sent_to_a_suscriber(void* serialized_request){
 //---------------------------------------------------------------------
 //LOGS PARA NOSOTROS, PARA CONTROL
 //---------------------------------------------------------------------
-
-void log_succesful_start_up(){
-    log_succesful_message(process_execution_logger(), "Broker se ha inicializado correctamente!\n");
-}
-
-void log_succesful_initialize_config_manager(){
-    log_succesful_message(process_execution_logger(), "El configuration_manager se ha inicializado correctamente!\n");
-}
 
 void log_succesful_initialize_queue_message_manager(){
     log_succesful_message(process_execution_logger(), "El queue_message_manager se ha inicializado correctamente!\n");

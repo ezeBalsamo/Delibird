@@ -1,8 +1,6 @@
 #ifndef DELIBIRD_BROKER_LOGS_MANAGER_H
 #define DELIBIRD_BROKER_LOGS_MANAGER_H
 
-void initialize_broker_logs_manager();
-
 void log_succesful_connection_of_a_process();
 
 void log_succesful_subscription_process();
@@ -10,10 +8,6 @@ void log_succesful_subscription_process();
 void log_succesful_new_message_pushed_to_a_queue(void* serialized_request);
 
 void log_succesful_message_sent_to_a_suscriber(void* message_sent);
-
-void log_succesful_start_up();
-
-void log_succesful_initialize_config_manager();
 
 void log_succesful_initialize_queue_message_manager();
 

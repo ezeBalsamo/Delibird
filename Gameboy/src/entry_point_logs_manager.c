@@ -14,6 +14,14 @@ void log_successful_connection(){
     free(message);
 }
 
+void log_succesful_initialize_entry_point_validator(){
+    log_succesful_message(process_execution_logger(), "Entry point validator se ha inicializado correctamente!\n");
+}
+
+void log_succesful_initialize_entry_point_connection_builder(){
+    log_succesful_message(process_execution_logger(), "Entry point connection builder se ha inicializado correctamente!\n");
+}
+
 void log_request_with_event(t_request* request, char* event){
     char* message = string_new();
     string_append(&message, event);
@@ -72,26 +80,6 @@ void log_no_parser_suitable_for_operation_error_for(char* operation_name){
     exit(EXIT_FAILURE);
 }
 
-void log_successful_execution(){
-    log_succesful_message(process_execution_logger(), "La ejecución de Gameboy se ha realizado exitosamente.");
-}
-
-void log_successful_clean_up(){
-    log_succesful_message(process_execution_logger(), "La memoria ocupada por Gameboy fue liberada exitosamente.");
-}
-
-void initialize_entry_point_logs_manager(){
-    initialize_logger();
-    create_main_logger_for("Gameboy");
-    create_process_execution_logger_for("Gameboy");
-    initialize_pretty_printer();
-}
-
-void log_succesful_start_up(){
-    log_succesful_message(process_execution_logger(), "Gameboy has succesfully started!\n");
-}
-
 void free_entry_point_logs_manager(){
-    free_pretty_printer();
     free_loggers();
 }
