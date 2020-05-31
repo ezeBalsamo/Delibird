@@ -1,0 +1,2 @@
+/usr/bin/ar qc libt_list_extension.a  CMakeFiles/t_list_extension.dir/src/t_list_extension.c.o
+/usr/bin/ranlib libt_list_extension.a

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/common_structures.c
+../include/common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdlib.h
+-
+

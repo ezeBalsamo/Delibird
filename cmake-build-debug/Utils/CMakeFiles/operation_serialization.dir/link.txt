@@ -1,0 +1,2 @@
+/usr/bin/ar qc liboperation_serialization.a  CMakeFiles/operation_serialization.dir/src/operation_serialization.c.o
+/usr/bin/ranlib liboperation_serialization.a

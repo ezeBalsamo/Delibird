@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/gamecard.dir/src/gamecard.c.o  -o ../../Gamecard/target/gamecard  -Wl,-rpath,/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/target ../../Utils/target/libutils.so -lcommons -lpthread 

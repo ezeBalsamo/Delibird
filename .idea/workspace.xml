@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="Delibird" targetName="gamecard" />
+      <config projectName="Delibird" targetName="utils" />
+      <config projectName="Delibird" targetName="team" />
+      <config projectName="Delibird" targetName="gameboy" />
+      <config projectName="Delibird" targetName="broker" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a15a0c31-157d-42b0-8341-3738ce3dc6b5" name="Default Changelist" comment="Hago los query performers restantes. Dejo un TODO en su lógica, porque me traban varias cosas con respecto a los mensajes que recibo/mando y luego el tema del dispatcher. Ya iria para otro pr.">
+      <change beforePath="$PROJECT_DIR$/Utils/src/operation_serialization.c" beforeDir="false" afterPath="$PROJECT_DIR$/Utils/src/operation_serialization.c" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1axRZrdrnzggBUtpXDWXw3zktBe" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/CMakeLists.txt" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="dynamic.analysis.tools.valgrind" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Team/include" />
+      <recent name="$PROJECT_DIR$/Team/src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.team">
+    <configuration name="broker" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Delibird" TARGET_NAME="broker" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Delibird" RUN_TARGET_NAME="broker">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gameboy" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Delibird" TARGET_NAME="gameboy" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Delibird" RUN_TARGET_NAME="gameboy">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="gamecard" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Delibird" TARGET_NAME="gamecard" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Delibird" RUN_TARGET_NAME="gamecard">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="team" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Delibird" TARGET_NAME="team" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Delibird" RUN_TARGET_NAME="team">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="utils" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Delibird" TARGET_NAME="utils" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.broker" />
+      <item itemvalue="CMake Application.gameboy" />
+      <item itemvalue="CMake Application.gamecard" />
+      <item itemvalue="CMake Application.team" />
+      <item itemvalue="CMake Application.utils" />
+      <item itemvalue="Custom Build Application.makefile_build_application" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a15a0c31-157d-42b0-8341-3738ce3dc6b5" name="Default Changelist" comment="" />
+      <created>1587675316142</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587675316142</updated>
+      <workItem from="1587675319618" duration="265000" />
+      <workItem from="1587675620484" duration="1035000" />
+      <workItem from="1587676706973" duration="3455000" />
+      <workItem from="1587926681201" duration="2337000" />
+      <workItem from="1587930245610" duration="578000" />
+      <workItem from="1587936735012" duration="7651000" />
+      <workItem from="1587944662307" duration="1001000" />
+      <workItem from="1587945698943" duration="1040000" />
+      <workItem from="1588041032152" duration="2778000" />
+      <workItem from="1588287931704" duration="2802000" />
+      <workItem from="1588373797295" duration="2709000" />
+      <workItem from="1588442849895" duration="134000" />
+      <workItem from="1588443059454" duration="2759000" />
+      <workItem from="1588640237344" duration="6036000" />
+      <workItem from="1588965196768" duration="11896000" />
+      <workItem from="1589163628660" duration="2585000" />
+      <workItem from="1589330213563" duration="4306000" />
+      <workItem from="1589508032688" duration="1712000" />
+      <workItem from="1589509788600" duration="4851000" />
+      <workItem from="1589578617976" duration="1254000" />
+      <workItem from="1589597506021" duration="1217000" />
+      <workItem from="1589598834553" duration="21587000" />
+      <workItem from="1590349839052" duration="41236000" />
+      <workItem from="1590550238357" duration="3080000" />
+      <workItem from="1590857699297" duration="568000" />
+      <workItem from="1590858461115" duration="8675000" />
+      <workItem from="1590878553405" duration="4491000" />
+    </task>
+    <task id="LOCAL-00001" summary="Agrego funcion free team manager, lo cual implica varias funciones nuevas de free como free para lista de listas de elementos. Fixes a calculate global goal (list_replace no iba), mas que nada temas de referencias a variables de listas.">
+      <created>1589673278371</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589673278371</updated>
+    </task>
+    <task id="LOCAL-00002" summary="map.c-&gt;funciones para cargar/sacar pokemones del mapa (warning de eze con el remove)&#10;team_manager.c-&gt; funcion para chequear si un pokemon pertenece a mi obj global (para ver si lo quiero atrapar)&#10;broker_connection_handler.c-&gt;llamado a query performer, objetito qeu se encarga de resolver cualquier cosa que llega escuchando el broker&#10;query_performer.c-&gt; logica &quot;strategy&quot; para resolver los diferentes mensajes&#10;appeared_query_performer.c -&gt; logica para resolver el mensaje APPEARED en particular.&#10;PENDIENTE: CAUGHT y LOCALIZED query performers, deserializacion/serializacion de mensaje localized, refactorizando el tema de los message ID">
+      <created>1590498215156</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1590498215156</updated>
+    </task>
+    <task id="LOCAL-00003" summary="map.c-&gt;funciones para cargar/sacar pokemones del mapa (warning de eze con el remove)&#10;team_manager.c-&gt; funcion para chequear si un pokemon pertenece a mi obj global (para ver si lo quiero atrapar)&#10;broker_connection_handler.c-&gt;llamado a query performer, objetito qeu se encarga de resolver cualquier cosa que llega escuchando el broker&#10;query_performer.c-&gt; logica &quot;strategy&quot; para resolver los diferentes mensajes&#10;appeared_query_performer.c -&gt; logica para resolver el mensaje APPEARED en particular.&#10;PENDIENTE: CAUGHT y LOCALIZED query performers, deserializacion/serializacion de mensaje localized, refactorizando el tema de los message ID">
+      <created>1590498426481</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1590498426481</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Hago los query performers restantes. Dejo un TODO en su lógica, porque me traban varias cosas con respecto a los mensajes que recibo/mando y luego el tema del dispatcher. Ya iria para otro pr.&#10;Tambien mando lo que tengo (objetito,serializacion/deserializacion) del localized, le saque el message id de sus campos por lo que va a hacer nico, pero me parece que el mensaje localized va a ser en esencia ese, por eso lo voy subiendo.">
+      <created>1590555039307</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1590555039307</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix manqueada">
+      <created>1590555077543</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1590555077543</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Agrego log de error para el query performer.&#10;Fixes en serializacion para manejar bien la lista de posiciones">
+      <created>1590864589275</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1590864589275</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Agrego funcion free team manager, lo cual implica varias funciones nuevas de free como free para lista de listas de elementos. Fixes a calculate global goal (list_replace no iba), mas que nada temas de referencias a variables de listas." />
+    <MESSAGE value="map.c-&gt;funciones para cargar/sacar pokemones del mapa (warning de eze con el remove)&#10;team_manager.c-&gt; funcion para chequear si un pokemon pertenece a mi obj global (para ver si lo quiero atrapar)&#10;broker_connection_handler.c-&gt;llamado a query performer, objetito qeu se encarga de resolver cualquier cosa que llega escuchando el broker&#10;query_performer.c-&gt; logica &quot;strategy&quot; para resolver los diferentes mensajes&#10;appeared_query_performer.c -&gt; logica para resolver el mensaje APPEARED en particular.&#10;PENDIENTE: CAUGHT y LOCALIZED query performers, deserializacion/serializacion de mensaje localized, refactorizando el tema de los message ID" />
+    <MESSAGE value="Hago los query performers restantes. Dejo un TODO en su lógica, porque me traban varias cosas con respecto a los mensajes que recibo/mando y luego el tema del dispatcher. Ya iria para otro pr.&#10;Tambien mando lo que tengo (objetito,serializacion/deserializacion) del localized, le saque el message id de sus campos por lo que va a hacer nico, pero me parece que el mensaje localized va a ser en esencia ese, por eso lo voy subiendo." />
+    <MESSAGE value="fix manqueada" />
+    <MESSAGE value="Agrego log de error para el query performer.&#10;Fixes en serializacion para manejar bien la lista de posiciones" />
+    <option name="LAST_COMMIT_MESSAGE" value="Agrego log de error para el query performer.&#10;Fixes en serializacion para manejar bien la lista de posiciones" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="311" y="58" width="800" height="677" key="#Intentions" timestamp="1589509032550">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="311" y="58" width="800" height="677" key="#Intentions/67.27.1299.741@67.27.1299.741" timestamp="1589509032550" />
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1588373912593">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="174" y="54" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1299.741@67.27.1299.741" timestamp="1588373912593" />
+    <state x="413" y="198" width="603" height="396" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589509520864">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="413" y="198" width="603" height="396" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1299.741@67.27.1299.741" timestamp="1589509520864" />
+    <state x="378" y="98" width="666" height="596" key="#makefile_build_application" timestamp="1587677037311">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="378" y="98" width="666" height="596" key="#makefile_build_application/67.27.1299.741@67.27.1299.741" timestamp="1587677037311" />
+    <state x="815" y="182" key="#xdebugger.evaluate" timestamp="1589671140456">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="815" y="182" key="#xdebugger.evaluate/67.27.1299.741@67.27.1299.741" timestamp="1589671140456" />
+    <state x="67" y="27" width="1853" height="1016" key="CommitChangelistDialog2" timestamp="1590864588713">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="67" y="27" width="1289" height="741" key="CommitChangelistDialog2/67.27.1299.741@67.27.1299.741" timestamp="1590864588713" />
+    <state x="67" y="27" width="1853" height="1016" key="CommitChangelistDialog2/67.27.3219.1053@67.27.3219.1053" timestamp="1590555077274" />
+    <state width="482" height="506" key="DebuggerActiveHint" timestamp="1589663121616">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="482" height="506" key="DebuggerActiveHint/67.27.1299.741@67.27.1299.741" timestamp="1589663121616" />
+    <state x="263" y="76" width="1366" height="768" key="DiffContextDialog" timestamp="1590554867411">
+      <screen x="67" y="27" width="3219" height="1053" />
+    </state>
+    <state x="591" y="90" width="775" height="614" key="DiffContextDialog/67.27.1299.741@67.27.1299.741" timestamp="1590498527195" />
+    <state x="263" y="76" width="1366" height="768" key="DiffContextDialog/67.27.3219.1053@67.27.3219.1053" timestamp="1590554867411" />
+    <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl" timestamp="1588373902997">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="499" y="154" width="424" height="484" key="FileChooserDialogImpl/67.27.1299.741@67.27.1299.741" timestamp="1588373902997" />
+    <state width="1253" height="142" key="GridCell.Tab.0.bottom" timestamp="1590872319588">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="142" key="GridCell.Tab.0.bottom/67.27.1299.741@67.27.1299.741" timestamp="1590872319588" />
+    <state width="1874" height="236" key="GridCell.Tab.0.bottom/67.27.3219.1053@67.27.3219.1053" timestamp="1590460260899" />
+    <state width="1253" height="142" key="GridCell.Tab.0.center" timestamp="1590872319587">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="142" key="GridCell.Tab.0.center/67.27.1299.741@67.27.1299.741" timestamp="1590872319587" />
+    <state width="1874" height="236" key="GridCell.Tab.0.center/67.27.3219.1053@67.27.3219.1053" timestamp="1590460260897" />
+    <state width="1253" height="142" key="GridCell.Tab.0.left" timestamp="1590872319587">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="142" key="GridCell.Tab.0.left/67.27.1299.741@67.27.1299.741" timestamp="1590872319587" />
+    <state width="1874" height="236" key="GridCell.Tab.0.left/67.27.3219.1053@67.27.3219.1053" timestamp="1590460260897" />
+    <state width="1253" height="142" key="GridCell.Tab.0.right" timestamp="1590872319588">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="142" key="GridCell.Tab.0.right/67.27.1299.741@67.27.1299.741" timestamp="1590872319588" />
+    <state width="1874" height="236" key="GridCell.Tab.0.right/67.27.3219.1053@67.27.3219.1053" timestamp="1590460260898" />
+    <state width="1253" height="64" key="GridCell.Tab.1.bottom" timestamp="1589673006043">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="64" key="GridCell.Tab.1.bottom/67.27.1299.741@67.27.1299.741" timestamp="1589673006043" />
+    <state width="1253" height="64" key="GridCell.Tab.1.center" timestamp="1589673006042">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="64" key="GridCell.Tab.1.center/67.27.1299.741@67.27.1299.741" timestamp="1589673006042" />
+    <state width="1253" height="64" key="GridCell.Tab.1.left" timestamp="1589673006041">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="64" key="GridCell.Tab.1.left/67.27.1299.741@67.27.1299.741" timestamp="1589673006041" />
+    <state width="1253" height="64" key="GridCell.Tab.1.right" timestamp="1589673006043">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state width="1253" height="64" key="GridCell.Tab.1.right/67.27.1299.741@67.27.1299.741" timestamp="1589673006043" />
+    <state x="67" y="53" width="1231" height="680" key="MergeDialog" timestamp="1590882649357">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="67" y="53" width="1231" height="680" key="MergeDialog/67.27.1299.741@67.27.1299.741" timestamp="1590882649357" />
+    <state x="1366" y="108" width="1920" height="872" key="MergeDialog/67.27.3219.1053@67.27.3219.1053" timestamp="1590882267176" />
+    <state x="167" y="264" width="668" height="264" key="MultipleFileMergeDialog" timestamp="1590882649368">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="167" y="264" width="668" height="264" key="MultipleFileMergeDialog/67.27.1299.741@67.27.1299.741" timestamp="1590882649368" />
+    <state x="121" y="260" width="839" height="298" key="MultipleFileMergeDialog/67.27.3219.1053@67.27.3219.1053" timestamp="1590882273962" />
+    <state x="205" y="31" key="SettingsEditor" timestamp="1589671361267">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="205" y="31" key="SettingsEditor/67.27.1299.741@67.27.1299.741" timestamp="1589671361267" />
+    <state x="2021" y="282" width="600" height="477" key="Vcs.Multiple.Commit.Info.Dialog.Key" timestamp="1590881991386">
+      <screen x="67" y="27" width="3219" height="1053" />
+    </state>
+    <state x="2021" y="282" width="600" height="477" key="Vcs.Multiple.Commit.Info.Dialog.Key/67.27.3219.1053@67.27.3219.1053" timestamp="1590881991386" />
+    <state x="311" y="132" width="1853" height="751" key="Vcs.Push.Dialog.v2" timestamp="1590864689240">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="311" y="132" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.1299.741@67.27.1299.741" timestamp="1590864689240" />
+    <state x="67" y="176" width="1853" height="751" key="Vcs.Push.Dialog.v2/67.27.3219.1053@67.27.3219.1053" timestamp="1590555098335" />
+    <state x="487" y="311" width="448" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1590498526574">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="487" y="311" width="448" height="170" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/67.27.1299.741@67.27.1299.741" timestamp="1590498526574" />
+    <state x="127" y="27" width="1065" height="741" key="find.popup" timestamp="1590865474080">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="127" y="27" width="1065" height="741" key="find.popup/67.27.1299.741@67.27.1299.741" timestamp="1590865474080" />
+    <state x="216" y="27" width="2640" height="1053" key="find.popup/67.27.3219.1053@67.27.3219.1053" timestamp="1590460322616" />
+    <state x="430" y="182" width="563" height="429" key="refactoring.ChangeSignatureDialog" timestamp="1588978368082">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="430" y="182" width="563" height="429" key="refactoring.ChangeSignatureDialog/67.27.1299.741@67.27.1299.741" timestamp="1588978368082" />
+    <state x="843" y="237" key="run.anything.popup" timestamp="1590553375275">
+      <screen x="67" y="27" width="3219" height="1053" />
+    </state>
+    <state x="380" y="175" key="run.anything.popup/67.27.1299.741@67.27.1299.741" timestamp="1590451451645" />
+    <state x="843" y="237" key="run.anything.popup/67.27.3219.1053@67.27.3219.1053" timestamp="1590553375275" />
+    <state x="379" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1589671209559">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="379" y="89" width="672" height="678" key="search.everywhere.popup/67.27.1299.741@67.27.1299.741" timestamp="1589671209559" />
+    <state x="441" y="310" width="540" height="172" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1590419836121">
+      <screen x="67" y="27" width="1299" height="741" />
+    </state>
+    <state x="441" y="310" width="540" height="172" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/67.27.1299.741@67.27.1299.741" timestamp="1590419836121" />
+  </component>
+</project>

@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/team_manager.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team_manager.c
+../include/team_manager.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/team_manager.h
+../../Utils/include/configuration_manager.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/configuration_manager.h
+../../Utils/include/common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+../../Utils/include/t_list_extension.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/t_list_extension.h
+stdlib.h
+-
+stdio.h
+-
+commons/string.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/configuration_manager.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/t_list_extension.h
+commons/collections/list.h
+-
+

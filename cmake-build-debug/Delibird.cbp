@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Delibird"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\Utils\;CMake Files\Gamecard\;CMake Files\Broker\;CMake Files\Team\;CMake Files\Gameboy\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utils">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/target/libutils.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 utils"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="utils/fast">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/target/libutils.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 utils/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Utils/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gamecard">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/target/gamecard" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 gamecard"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gamecard/fast">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/target/gamecard" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 gamecard/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gamecard/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="broker">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/target/broker" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 broker"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="broker/fast">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/target/broker" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 broker/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Broker/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="team">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/target/team" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 team"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="team/fast">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/target/team" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 team/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Team/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gameboy">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/target/gameboy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 gameboy"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gameboy/fast">
+				<Option output="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/target/gameboy" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/target"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 gameboy/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/home/franco/utnso/tp-2020-1c-El-Kuelgue/cmake-build-debug/Gameboy/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/src/broker.c">
+			<Option target="broker"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/src/broker_deserialization.c">
+			<Option target="broker"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/src/broker_logs_manager.c">
+			<Option target="broker"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/src/connection_handler.c">
+			<Option target="broker"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/src/queue_message_manager.c">
+			<Option target="broker"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/appeared_pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/catch_pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/caught_pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/entry_point_connection_builder.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/entry_point_executor.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/entry_point_logs_manager.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/entry_point_processes_information.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/entry_point_validator.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/gameboy.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/get_pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/new_pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/pokemon_operation_parser.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/publisher_mode_strategy.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/role_mode_strategy.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/src/subscriber_mode_strategy.c">
+			<Option target="gameboy"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/src/gamecard.c">
+			<Option target="gamecard"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/appeared_query_performer.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/broker_connection_handler.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/caught_query_performer.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/gameboy_connection_handler.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/goal_calculator.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/localized_query_performer.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/map.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/query_performer.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team_logs_manager.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team_manager.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team_serializable_objects.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/trainers_parser.c">
+			<Option target="team"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/common_structures.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/configuration_manager.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/logger.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/matrix.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/operation_deserialization.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/operation_serialization.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/pretty_printer.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/pthread_wrapper.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/queue_code_name_associations.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/roots.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/serializable_objects.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/socket.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/t_list_extension.c">
+			<Option target="utils"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Utils\"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gamecard/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Gamecard\"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Broker/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Broker\"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Team\"/>
+		</Unit>
+		<Unit filename="/home/franco/utnso/tp-2020-1c-El-Kuelgue/Gameboy/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Gameboy\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

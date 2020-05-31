@@ -1,0 +1,2 @@
+/usr/bin/ar qc libbroker_connection_handler.a  CMakeFiles/broker_connection_handler.dir/src/broker_connection_handler.c.o
+/usr/bin/ranlib libbroker_connection_handler.a

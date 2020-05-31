@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_deserialization.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_serialization.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/processes_information.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/processes_information.c
+commons/collections/list.h
+-
+commons/string.h
+-
+../include/processes_information.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/processes_information.h
+../include/common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+../include/operation_serialization.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_serialization.h
+../include/operation_deserialization.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_deserialization.h
+stdlib.h
+-
+

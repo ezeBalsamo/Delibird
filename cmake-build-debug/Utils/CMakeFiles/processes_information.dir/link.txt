@@ -1,0 +1,2 @@
+/usr/bin/ar qc libprocesses_information.a  CMakeFiles/processes_information.dir/src/processes_information.c.o
+/usr/bin/ranlib libprocesses_information.a

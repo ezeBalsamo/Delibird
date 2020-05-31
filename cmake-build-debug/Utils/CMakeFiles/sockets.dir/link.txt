@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC -g  -shared -Wl,-soname,libsockets.so -o libsockets.so CMakeFiles/sockets.dir/src/socket.c.o  -lpthread 

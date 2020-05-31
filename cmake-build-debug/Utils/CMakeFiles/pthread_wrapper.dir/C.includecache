@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/pthread_wrapper.h
+pthread.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/pthread_wrapper.c
+../include/pthread_wrapper.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/pthread_wrapper.h
+commons/process.h
+-
+stdio.h
+-
+stdlib.h
+-
+

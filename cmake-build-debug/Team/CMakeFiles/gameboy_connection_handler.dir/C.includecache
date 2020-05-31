@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/gameboy_connection_handler.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/gameboy_connection_handler.c
+../include/gameboy_connection_handler.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/gameboy_connection_handler.h
+../../Utils/include/socket.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/socket.h
+../../Utils/include/configuration_manager.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/configuration_manager.h
+stdlib.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/configuration_manager.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serialization_interface.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/socket.h
+serialization_interface.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serialization_interface.h
+

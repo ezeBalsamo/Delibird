@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_deserialization.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/processes_information.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/operation_deserialization.c
+../include/operation_deserialization.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_deserialization.h
+../include/processes_information.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/processes_information.h
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+

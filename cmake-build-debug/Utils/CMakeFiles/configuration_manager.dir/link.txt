@@ -1,0 +1,2 @@
+/usr/bin/ar qc libconfiguration_manager.a  CMakeFiles/configuration_manager.dir/src/configuration_manager.c.o
+/usr/bin/ranlib libconfiguration_manager.a

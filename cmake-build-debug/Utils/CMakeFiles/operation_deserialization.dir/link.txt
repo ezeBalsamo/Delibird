@@ -1,0 +1,2 @@
+/usr/bin/ar qc liboperation_deserialization.a  CMakeFiles/operation_deserialization.dir/src/operation_deserialization.c.o
+/usr/bin/ranlib liboperation_deserialization.a

@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+stdint.h
+-
+commons/collections/list.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_serialization.h
+serialization_interface.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serialization_interface.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serializable_objects.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serialization_interface.h
+common_structures.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/common_structures.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/src/operation_serialization.c
+../include/operation_serialization.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/operation_serialization.h
+../include/serializable_objects.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/serializable_objects.h
+string.h
+-
+stdlib.h
+-
+

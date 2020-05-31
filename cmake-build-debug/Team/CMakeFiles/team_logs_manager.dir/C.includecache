@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/team_logs_manager.h
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/src/team_logs_manager.c
+../include/team_logs_manager.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Team/include/team_logs_manager.h
+../../Utils/include/logger.h
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/logger.h
+commons/string.h
+-
+errno.h
+-
+string.h
+-
+stdlib.h
+-
+
+/home/franco/utnso/tp-2020-1c-El-Kuelgue/Utils/include/logger.h
+commons/log.h
+-
+

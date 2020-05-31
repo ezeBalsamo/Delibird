@@ -7,7 +7,7 @@ uint32_t amount_of_bytes_of_appeared(t_appeared_pokemon* appeared_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
             + strlen(appeared_pokemon -> pokemon_name) + 1      //Pokemon name
             + sizeof(uint32_t)                                  //Pos x
-            + sizeof(uint32_t)                                  //Pos y
+            + sizeof(uint32_t);                                 //Pos y
 }
 uint32_t amount_of_bytes_of_localized(t_localized_pokemon * localized_pokemon){
     return sizeof(uint32_t)                                   //Pokemon name length
