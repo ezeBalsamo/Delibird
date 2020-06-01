@@ -9,8 +9,8 @@
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
-    create_main_logger_for("Team");
-    create_process_execution_logger_for("Team");
+    create_main_logger();
+    create_process_execution_logger();
 }
 
 void log_failed_attempt_to_communicate_with_broker(){

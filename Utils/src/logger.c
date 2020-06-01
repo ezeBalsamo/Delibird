@@ -4,11 +4,15 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <roots.h>
-#include <general_logs.h>
 
 t_dictionary* loggers_by_name;
 char* process_execution_log_name = "process-execution.log";
 char* main_log_name = "main.log";
+char* program_name;
+
+char* get_program_name(){
+    return program_name;
+}
 
 bool exists_directory_at(char* path){
     struct stat stat_buffer;
@@ -25,7 +29,7 @@ void create_directory_if_necessary(){
     free(path);
 }
 
-void create_log(char* log_name, char* program_name){
+void create_log_named(char* log_name){
     char* log_absolute_path = absolute_path_for_log_named(log_name);
     t_log* logger = log_create(log_absolute_path, program_name, true, LOG_LEVEL_DEBUG);
     dictionary_put(loggers_by_name, log_name, (void*) logger);
@@ -33,22 +37,22 @@ void create_log(char* log_name, char* program_name){
     free(log_absolute_path);
 }
 
-void initialize_logger_for(char* program_name){
+void initialize_logger_for(char* program_name_parameter){
     loggers_by_name = dictionary_create();
     create_directory_if_necessary();
-    initialize_general_logs(program_name);
+    program_name = program_name_parameter;
 }
 
-void create_main_logger_for(char* program_name){
-    create_log(main_log_name, program_name);
+void create_main_logger(){
+    create_log_named(main_log_name);
 }
 
 t_log* main_logger(){
     return dictionary_get(loggers_by_name, main_log_name);
 }
 
-void create_process_execution_logger_for(char* program_name){
-    create_log(process_execution_log_name, program_name);
+void create_process_execution_logger(){
+    create_log_named(process_execution_log_name);
 }
 
 t_log* process_execution_logger(){

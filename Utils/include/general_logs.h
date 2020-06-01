@@ -1,7 +1,11 @@
 #ifndef DELIBIRD_GENERAL_LOGS_H
 #define DELIBIRD_GENERAL_LOGS_H
 
-void initialize_general_logs(char* program_name);
+void log_succesful_start_up();
+
+void log_successful_execution();
+
+void log_successful_clean_up();
 
 void log_succesful_initialize_config_manager();
 

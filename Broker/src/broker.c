@@ -6,7 +6,7 @@
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/pretty_printer.h"
-#include "../../Utils/include/logger.h"
+#include "../../Utils/include/general_logs.h"
 
 int main() {
 

@@ -15,6 +15,10 @@ char* pretty_print_of(uint32_t code, void* structure);
 
 char* request_pretty_print(t_request* request);
 
+char* reset_colour();
+
+char* blue_colour();
+
 char* change_message_colour(char* message, char* colour);
 
 void free_pretty_printer();

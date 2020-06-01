@@ -5,10 +5,10 @@
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
 
-void initialize_gameboy_logs_manager(){
+void initialize_entry_point_logs_manager(){
     initialize_logger_for("Gameboy");
-    create_main_logger_for("Gameboy");
-    create_process_execution_logger_for("Gameboy");
+    create_main_logger();
+    create_process_execution_logger();
 }
 
 void log_successful_connection(){
