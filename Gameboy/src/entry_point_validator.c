@@ -23,6 +23,8 @@ void initialize_entry_point_validator(int arguments_amount, char** arguments){
     initialize_processes_information();
     uint32_t process_code = process_information_code_of(gameboy_arguments[1]);
     role_mode = role_mode_for(process_code);
+
+    log_succesful_initialize_entry_point_validator();
 }
 
 bool is_valid_operation(void* operation_information){

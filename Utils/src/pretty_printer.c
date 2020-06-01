@@ -4,6 +4,7 @@
 #include <commons/string.h>
 #include <serializable_objects.h>
 #include <queue_code_name_associations.h>
+#include <general_logs.h>
 
 t_list* printable_objects;
 
@@ -132,6 +133,8 @@ void initialize_pretty_printer(){
     initialize_and_load_caught_pokemon_pretty_print();
     initialize_and_load_subscribe_me_pretty_print();
     initialize_and_load_identified_message();
+
+    log_succesful_initialize_pretty_printer();
 }
 
 char* pretty_print_of(uint32_t code, void* structure){
@@ -154,6 +157,18 @@ char* pretty_print_of(uint32_t code, void* structure){
 
 char* request_pretty_print(t_request* request){
     return pretty_print_of(request -> operation, request -> structure);
+}
+
+char* reset_colour(){
+    return "\x1b[0m";
+}
+
+char* blue_colour(){
+    return "\x1b[36m";
+}
+
+char* change_message_colour(char* message, char* colour){
+    return string_from_format("%s%s%s", colour, message, reset_colour());
 }
 
 void free_pretty_printer(){

@@ -5,7 +5,6 @@
 #include "../../Utils/include/common_structures.h"
 
 void initialize_entry_point_connection_builder();
-
 t_request* safe_request();
 char* process_ip();
 char* process_port();

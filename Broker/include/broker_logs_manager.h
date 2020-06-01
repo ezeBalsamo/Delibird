@@ -11,10 +11,6 @@ void log_succesful_new_message_pushed_to_a_queue(void* serialized_request);
 
 void log_succesful_message_sent_to_a_suscriber(void* message_sent);
 
-void log_succesful_start_up();
-
-void log_succesful_initialize_config_manager();
-
 void log_succesful_initialize_queue_message_manager();
 
 void log_succesful_queues_creation();

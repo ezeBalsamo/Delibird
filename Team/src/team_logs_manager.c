@@ -8,13 +8,9 @@
 #include <stdint.h>
 
 void initialize_team_logs_manager(){
-    initialize_logger();
-    create_main_logger_for("Team");
-    create_process_execution_logger_for("Team");
-}
-
-void log_succesful_start_up(){
-    log_succesful_message(process_execution_logger(), "Team se ha inicializado correctamente!\n");
+    initialize_logger_for("Team");
+    create_main_logger();
+    create_process_execution_logger();
 }
 
 void log_failed_attempt_to_communicate_with_broker(){
@@ -85,14 +81,14 @@ void log_no_locations_found_for(char* pokemon_name){
     free(message);
 }
 
-void free_team_logs_manager(){
-    free_loggers();
-}
-
 void log_trainer_thread_create_error(){
     char* message = "Falló la creación de un hilo para un entrenador.";
     log_errorful_message(process_execution_logger(), message);
 
     free_team_logs_manager();
     exit(EXIT_FAILURE);
+}
+
+void free_team_logs_manager(){
+    free_loggers();
 }

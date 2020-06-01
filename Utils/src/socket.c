@@ -13,6 +13,7 @@
 #include <commons/process.h>
 #include <pthread_wrapper.h>
 #include <semaphore.h>
+#include <errno.h>
 
 #define THREAD_POOL_SIZE 25
 
