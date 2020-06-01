@@ -7,6 +7,7 @@
 #include <general_logs.h>
 
 t_list* printable_objects;
+static char *reset_color = "\x1b[0m";
 
 char* new_pokemon_as_string(t_new_pokemon* new_pokemon){
 
@@ -157,6 +158,11 @@ char* pretty_print_of(uint32_t code, void* structure){
 
 char* request_pretty_print(t_request* request){
     return pretty_print_of(request -> operation, request -> structure);
+}
+
+char* change_message_colour(char* message, char* colour){
+    message = string_from_format("%s%s%s", colour, message, reset_color);
+    return message;
 }
 
 void free_pretty_printer(){

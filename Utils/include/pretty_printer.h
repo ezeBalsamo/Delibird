@@ -15,6 +15,8 @@ char* pretty_print_of(uint32_t code, void* structure);
 
 char* request_pretty_print(t_request* request);
 
+char* change_message_colour(char* message, char* colour);
+
 void free_pretty_printer();
 
 #endif //DELIBIRD_PRETTY_PRINTER_H

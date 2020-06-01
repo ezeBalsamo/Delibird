@@ -3,6 +3,12 @@
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
 
+void initialize_broker_logs_manager(){
+    initialize_logger_for("Broker");
+    create_main_logger_for("Broker");
+    create_process_execution_logger_for("Broker");
+}
+
 //LOGS MAIN, LOS QUE VAN SI O SI EN EL TP.
 //---------------------------------------------------------------------------------------
 

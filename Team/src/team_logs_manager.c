@@ -7,6 +7,12 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+void initialize_team_logs_manager(){
+    initialize_logger_for("Team");
+    create_main_logger_for("Team");
+    create_process_execution_logger_for("Team");
+}
+
 void log_failed_attempt_to_communicate_with_broker(){
     char* message = "Falló la comunicación con Broker. Se procederá a reintentar.";
     log_errorful_message(main_logger(), message);

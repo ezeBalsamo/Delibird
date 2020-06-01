@@ -10,8 +10,7 @@
 
 int main() {
 
-    initialize_logs_manager_for("Broker");
-
+    initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();
     initialize_configuration_manager_named("broker");

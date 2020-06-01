@@ -1,6 +1,8 @@
 #ifndef DELIBIRD_BROKER_LOGS_MANAGER_H
 #define DELIBIRD_BROKER_LOGS_MANAGER_H
 
+void initialize_broker_logs_manager();
+
 void log_succesful_connection_of_a_process();
 
 void log_succesful_subscription_process();

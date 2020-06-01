@@ -9,7 +9,7 @@
 
 int main(int arguments_amount, char* arguments[]) {
 
-    initialize_logs_manager_for("Gameboy");
+    initialize_gameboy_logs_manager();
     initialize_pretty_printer();
     initialize_entry_point_validator(arguments_amount, arguments);
     initialize_configuration_manager_named("gameboy");

@@ -3,6 +3,7 @@
 
 #include "../../Utils/include/common_structures.h"
 
+void initialize_gameboy_logs_manager();
 void log_successful_connection();
 void log_succesful_initialize_entry_point_validator();
 void unknown_process_error_for(char* process_name);

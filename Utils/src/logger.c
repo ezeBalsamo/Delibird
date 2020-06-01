@@ -33,15 +33,9 @@ void create_log(char* log_name, char* program_name){
     free(log_absolute_path);
 }
 
-void initialize_logger(){
+void initialize_logger_for(char* program_name){
     loggers_by_name = dictionary_create();
     create_directory_if_necessary();
-}
-
-void initialize_logs_manager_for(char* program_name){
-    initialize_logger();
-    create_main_logger_for(program_name);
-    create_process_execution_logger_for(program_name);
     initialize_general_logs(program_name);
 }
 

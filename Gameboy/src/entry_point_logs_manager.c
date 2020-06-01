@@ -5,6 +5,12 @@
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
 
+void initialize_gameboy_logs_manager(){
+    initialize_logger_for("Gameboy");
+    create_main_logger_for("Gameboy");
+    create_process_execution_logger_for("Gameboy");
+}
+
 void log_successful_connection(){
     char* message = string_new();
     string_append(&message, "Conexión establecida al proceso ");

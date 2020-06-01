@@ -9,8 +9,8 @@
 #include "../../Utils/include/logger.h"
 
 int main(void) {
-    initialize_logs_manager_for("Team");
 
+    initialize_team_logs_manager();
     initialize_pretty_printer();
     initialize_team_serializable_objects();
     initialize_configuration_manager_named("team-RR");
