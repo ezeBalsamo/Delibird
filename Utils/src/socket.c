@@ -13,6 +13,9 @@
 #include <commons/process.h>
 #include <pthread_wrapper.h>
 #include <semaphore.h>
+#include <free_system.h>
+#include <general_logs.h>
+#include <errno.h>
 
 #define THREAD_POOL_SIZE 25
 
@@ -34,8 +37,8 @@ char* get_local_ip_address() {
     char* local_ip_address = NULL;
 
     if (getifaddrs(&interface_addresses) == -1) {
-        perror("getifaddrs error");
-        exit(EXIT_FAILURE);
+        log_get_ifaddrs_error(strerror(errno));
+        free_system();
     }
 
     while(interface_addresses != NULL) {
@@ -80,9 +83,9 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     if ((socket_fd = socket(address_interface -> ai_family,
                             address_interface -> ai_socktype,
                             address_interface -> ai_protocol)) == -1) {
-        perror("socket error");
+        log_get_socket_fd_error(strerror(errno));
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return socket_fd;
@@ -93,9 +96,9 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
 
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_ports, sizeof(int)) == -1) {
         close(socket_fd);
-        perror("setsockopt error");
+        log_allow_port_reusability(strerror(errno));
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 }
 
@@ -103,10 +106,10 @@ void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
 
     if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
-        perror("bind error");
+        log_bind_error(strerror(errno));
         fprintf(stderr, "server failed to bind\n");
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 }
 
@@ -114,11 +117,10 @@ void listen_with(int socket_fd){
 
     if (listen(socket_fd, SOMAXCONN) == -1) {
         close(socket_fd);
-        perror("listen error");
-        exit(EXIT_FAILURE);
+        log_listen_error(strerror(errno));
+        free_system();
     }
 }
-
 
 int accept_incoming_connections_on(int socket_fd){
     int connection_fd;
@@ -128,8 +130,8 @@ int accept_incoming_connections_on(int socket_fd){
     address_size = sizeof client_address;
     connection_fd = accept(socket_fd, (struct sockaddr *) &client_address, &address_size);
     if (connection_fd == -1) {
-        perror("accept error");
-        exit(EXIT_FAILURE);
+        log_accept_connection_error(strerror(errno));
+        free_system();
     }
 
     return connection_fd;
@@ -168,8 +170,9 @@ int reconnect(t_connection_information* connection_information){
 }
 
 void close_failed_connection(t_connection_information* connection_information){
-    perror("connect error");
+    log_connection_error(strerror(errno));
     free_and_close_connection_information(connection_information);
+    free_system();
 }
 
 int establish_connection(int socket_fd, struct addrinfo* address_interface){
@@ -205,10 +208,9 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
         partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, 0);
 
         if(partially_sent_bytes == -1){
-            perror("send_all error");
-            printf("only %d bytes sent.\n", sent_bytes);
+            log_send_all_error(strerror(errno));
             close(socket_fd);
-            exit(EXIT_FAILURE);
+            free_system();
         }
         sent_bytes += partially_sent_bytes;
         left_bytes -= partially_sent_bytes;
@@ -247,15 +249,17 @@ t_serialization_information* receive_structure(int socket_fd){
     uint32_t amount_of_bytes_of_request;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) == -1){
-        perror("recv amount of bytes error");
+        log_receive_amount_of_bytes_error(strerror(errno));
         close(socket_fd);
+        free_system();
     }
 
     serialized_request = malloc(amount_of_bytes_of_request);
 
     if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
-        perror("recv serialized structure error");
+        log_serialized_structure_error(strerror(errno));
         close(socket_fd);
+        free_system();
     }
 
     t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
@@ -284,8 +288,8 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         if(pthread_create(&thread_pool[i], NULL, _thread_function, NULL) != 0){
-            printf("An error occurred while creating a new thread for attending an incoming connection\n");
-            exit(EXIT_FAILURE);
+            log_pthread_create_for_attend_connections_error();
+            free_system();
         }
     }
 

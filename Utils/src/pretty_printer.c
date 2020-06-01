@@ -5,6 +5,7 @@
 #include <serializable_objects.h>
 #include <queue_code_name_associations.h>
 #include <general_logs.h>
+#include <free_system.h>
 
 t_list* printable_objects;
 
@@ -147,9 +148,7 @@ char* pretty_print_of(uint32_t code, void* structure){
     t_printable_object* printable_object_found = list_find(printable_objects, _has_code);
 
     if(printable_object_found == NULL){
-        //todo
-        printf("Romper todo a la bosta, tal vez necesite implementar un logger general");
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return (*(printable_object_found -> print_function)) (structure);

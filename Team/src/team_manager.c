@@ -116,6 +116,7 @@ void free_trainer(t_trainer *trainer){
     list_destroy_and_destroy_elements(trainer -> current_pokemons, free);
     free(trainer);
 }
+
 void free_team_manager(){
     list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
     list_destroy_and_destroy_elements(trainers, (void (*)(void *)) free_trainer);

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <free_team.h>
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
@@ -46,8 +47,6 @@ void log_thread_sleep_time_configuration_error(){
     log_errorful_message(process_execution_logger(), message);
 
     free(message);
-    free_team_logs_manager();
-    exit(EXIT_FAILURE);
 }
 
 void log_queue_thread_create_error(){
@@ -58,8 +57,7 @@ void log_queue_thread_create_error(){
     log_errorful_message(process_execution_logger(), message);
 
     free(message);
-    free_team_logs_manager();
-    exit(EXIT_FAILURE);
+    free_system();
 }
 void log_invalid_operation_to_query_performer(uint32_t code){
     char* operation_name = queue_name_of(code);
@@ -85,8 +83,7 @@ void log_trainer_thread_create_error(){
     char* message = "Falló la creación de un hilo para un entrenador.";
     log_errorful_message(process_execution_logger(), message);
 
-    free_team_logs_manager();
-    exit(EXIT_FAILURE);
+    free_system();
 }
 
 void free_team_logs_manager(){

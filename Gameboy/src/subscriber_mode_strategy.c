@@ -1,6 +1,5 @@
 #include "../include/subscriber_mode_strategy.h"
 #include "../include/entry_point_validator.h"
-#include "../include/entry_point_processes_information.h"
 #include <stdlib.h>
 
 t_role_mode* subscriber_role_mode_strategy;

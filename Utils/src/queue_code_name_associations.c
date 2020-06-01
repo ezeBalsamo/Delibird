@@ -4,6 +4,8 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <free_system.h>
+#include <general_logs.h>
 
 t_dictionary* queue_code_name_associations;
 
@@ -45,9 +47,7 @@ char* queue_name_of(uint32_t queue_code){
     dictionary_iterator(queue_code_name_associations, _find_queue_name);
 
     if(!queue_name_to_find){
-        //TODO: ojo con esto que no deberia romper, que se encargue quien lo llama
-        printf("Romper todo a la bosta, cuando se implemente el logger general se quita");
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return queue_name_to_find;
@@ -61,10 +61,9 @@ uint32_t queue_code_of(char* queue_name){
     uint32_t* queue_code_found = dictionary_get(queue_code_name_associations, duplicated_queue_name);
 
     if(!queue_code_found){
-        //TODO
         free(duplicated_queue_name);
-        printf("Romper todo a la bosta, cuando se implemente el logger general se quita");
-        exit(EXIT_FAILURE);
+        log_queue_code_not_found(queue_name);
+        free_system();
     }
 
     free(duplicated_queue_name);

@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <general_logs.h>
+#include <free_system.h>
 #include "../include/matrix.h"
 
 void add_row(t_matrix* self){
@@ -57,8 +59,8 @@ void consider_expanding(t_matrix* self, uint32_t row_index, uint32_t column_inde
             expand(self, row_index, column_index);
         }
         else{
-            printf("No se puede ampliar una matriz definida como no ampliable\n");
-            exit(EXIT_FAILURE);
+            log_expanding_unexpandable_matrix_error();
+            free_system();
         }
     }
 }
@@ -66,8 +68,8 @@ void consider_expanding(t_matrix* self, uint32_t row_index, uint32_t column_inde
 void assert_strictly_positive_indexes(uint32_t row_index, uint32_t column_index){
 
     if(row_index <= 0 || column_index <= 0){
-        printf("Los índices de filas y columnas deben ser mayores a cero\n");
-        exit(EXIT_FAILURE);
+        log_incorrect_index();
+        free_system();
     }
 }
 
@@ -76,8 +78,8 @@ t_matrix* matrix_create(uint32_t amount_of_rows, uint32_t amount_of_columns, boo
     assert_strictly_positive_indexes(amount_of_rows, amount_of_columns);
 
     if(should_be_squared && amount_of_rows != amount_of_columns){
-        printf("Una matriz cuadrada debe tener igual cantidad de filas y columnas\n");
-        exit(EXIT_FAILURE);
+        log_are_not_equals_columns_and_rows_in_squared_matrix();
+        free_system();
     }
 
     t_matrix* matrix = malloc(sizeof(t_matrix));
@@ -111,8 +113,8 @@ void* matrix_element_at(t_matrix* self, uint32_t row_index, uint32_t column_inde
     assert_strictly_positive_indexes(row_index, column_index);
 
     if(self -> amount_of_rows < row_index || self -> amount_of_columns < column_index){
-        printf("Las posiciones elegidas exceden las dimensiones de la matriz\n");
-        exit(EXIT_FAILURE);
+        log_incorrect_positions();
+        free_system();
     }
     return (self -> data)[row_index - 1][column_index - 1];
 }

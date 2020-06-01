@@ -4,6 +4,7 @@
 #include "../../Utils/include/queue_code_name_associations.h"
 #include <commons/string.h>
 #include <stdlib.h>
+#include <free_gameboy.h>
 
 t_list* processes_information;
 
@@ -168,6 +169,7 @@ uint32_t process_information_code_of(char* process_name){
 
     if(process_information == NULL){
         unknown_process_error_for(process_name);
+        free_system();
     }
 
     return process_information -> code;

@@ -9,6 +9,7 @@
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 #include <stdlib.h>
+#include <free_gameboy.h>
 
 t_list* pokemon_operation_parsers;
 
@@ -44,6 +45,7 @@ t_pokemon_operation_parser* pokemon_operation_parser_for(uint32_t operation_code
 
     if(parser_found == NULL){
         log_no_parser_suitable_for_operation_error_for(queue_name_of(operation_code));
+        free_system();
     }
 
     free_pokemon_operation_parser();

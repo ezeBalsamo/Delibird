@@ -51,8 +51,6 @@ void unknown_process_error_for(char* process_name){
 
     log_errorful_message(process_execution_logger(), message);
     free(message);
-    free_entry_point_logs_manager();
-    exit(EXIT_FAILURE);
 }
 
 void unknown_operation_error_for(char* process_name, char* operation_name){
@@ -64,22 +62,16 @@ void unknown_operation_error_for(char* process_name, char* operation_name){
 
     log_errorful_message(process_execution_logger(), message);
     free(message);
-    free_entry_point_logs_manager();
-    exit(EXIT_FAILURE);
 }
 
 void incorrect_arguments_amount_error(){
     log_errorful_message(process_execution_logger(), "La cantidad de argumentos ingresada es incorrecta.\n");
-    free_entry_point_logs_manager();
-    exit(EXIT_FAILURE);
 }
 
 void log_no_parser_suitable_for_operation_error_for(char* operation_name){
     char* message = string_from_format("No se ha encontrado un parser compatible para la operación %s.", operation_name);
     log_errorful_message(process_execution_logger(), message);
     free(message);
-    free_entry_point_logs_manager();
-    exit(EXIT_FAILURE);
 }
 
 void free_entry_point_logs_manager(){

@@ -7,6 +7,7 @@
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
+#include "free_broker.h"
 
 int main() {
 
@@ -22,12 +23,7 @@ int main() {
     thread_join(connection_handler_thread);
     log_successful_execution();
 
-    free_pretty_printer();
-    free_serializable_objects();
-    free_queue_message_manager();
-    free_configuration_manager();
-    log_successful_clean_up();
-    free_broker_logs_manager();
+    free_system();
 
     return EXIT_SUCCESS;
 }

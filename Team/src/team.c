@@ -7,6 +7,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
+#include "free_team.h"
 
 int main(void) {
 
@@ -27,10 +28,5 @@ int main(void) {
 
     log_successful_execution();
 
-    free_pretty_printer();
-    free_team_serializable_objects();
-    free_configuration_manager();
-
-    log_successful_clean_up();
-    free_team_logs_manager();
+    free_system();
 }
