@@ -53,6 +53,10 @@ dkms.conf
 
 # Delibird files
 target/
-.config
 logs/
+/Team/logs/
+Team/*.config
+Broker/*.config
+Gameboy/*.config
+Gamecard/*.config
 /cmake-build-debug/
