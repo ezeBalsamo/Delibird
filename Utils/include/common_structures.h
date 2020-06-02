@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <commons/collections/list.h>
+#include <stddef.h>
 
 typedef struct Request{
     uint32_t operation;
@@ -75,6 +76,8 @@ typedef struct Serializable_Object{
     t_request* (*deserialize_function) (void* serialized_structure);
 }t_serializable_object;
 
+
+void* safe_malloc(size_t size);
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);

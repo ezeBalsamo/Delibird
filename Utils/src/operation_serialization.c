@@ -52,7 +52,7 @@ t_serialization_information* serialize_new_pokemon(void* structure){
             + sizeof(uint32_t)                  // structure size
             + amount_of_bytes_of_new_pokemon;   // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = NEW_POKEMON;
     uint32_t pokemon_name_length = strlen(new_pokemon -> pokemon_name) + 1;
@@ -73,7 +73,7 @@ t_serialization_information* serialize_new_pokemon(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(new_pokemon -> quantity), sizeof(uint32_t));
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -88,7 +88,7 @@ t_serialization_information* serialize_appeared_pokemon(void* structure){
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_appeared_pokemon;  // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = APPEARED_POKEMON;
     uint32_t pokemon_name_length = strlen(appeared_pokemon -> pokemon_name) + 1;
@@ -107,7 +107,7 @@ t_serialization_information* serialize_appeared_pokemon(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(appeared_pokemon -> pos_y), sizeof(uint32_t));
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -122,7 +122,7 @@ t_serialization_information* serialize_get_pokemon(void* structure){
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_get_pokemon;  		// structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = GET_POKEMON;
     uint32_t pokemon_name_length = strlen(get_pokemon -> pokemon_name) + 1;
@@ -137,7 +137,7 @@ t_serialization_information* serialize_get_pokemon(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, get_pokemon -> pokemon_name, pokemon_name_length);
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -152,7 +152,7 @@ t_serialization_information* serialize_localized_pokemon(void* structure) {
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_localized_pokemon;  // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = LOCALIZED_POKEMON;
     uint32_t pokemon_name_length = strlen(localized_pokemon -> pokemon_name) + 1;
@@ -176,7 +176,7 @@ t_serialization_information* serialize_localized_pokemon(void* structure) {
         offset += sizeof(uint32_t);
     }
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
 
@@ -192,7 +192,7 @@ t_serialization_information* serialize_catch_pokemon(void* structure){
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_catch_pokemon;     // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = CATCH_POKEMON;
     uint32_t pokemon_name_length = strlen(catch_pokemon -> pokemon_name) + 1;
@@ -211,7 +211,7 @@ t_serialization_information* serialize_catch_pokemon(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(catch_pokemon -> pos_y), sizeof(uint32_t));
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -226,7 +226,7 @@ t_serialization_information* serialize_caught_pokemon(void* structure){
             + sizeof(uint32_t)                      // structure size
             + amount_of_bytes_of_caught_pokemon;    // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = CAUGHT_POKEMON;
 
@@ -238,7 +238,7 @@ t_serialization_information* serialize_caught_pokemon(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(caught_pokemon -> caught_status), sizeof(uint32_t));
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -253,7 +253,7 @@ t_serialization_information* serialize_subscribe_me(void* structure){
             + sizeof(uint32_t)                          // structure size
             + amount_of_bytes_of_queue;                 // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = SUBSCRIBE_ME;
 
@@ -265,7 +265,7 @@ t_serialization_information* serialize_subscribe_me(void* structure){
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(subscribe_me -> operation_queue), sizeof(uint32_t));
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     return serialization_information;
@@ -286,7 +286,7 @@ t_serialization_information* serialize_identified_message(void* structure){
             + sizeof(uint32_t)                          // structure size
             + amount_of_bytes_of_identified_message;    // structure
 
-    void* serialized_request = malloc(amount_of_bytes_of_request);
+    void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = IDENTIFIED_MESSAGE;
 
@@ -303,7 +303,7 @@ t_serialization_information* serialize_identified_message(void* structure){
     memcpy(serialized_request + offset, request_serialization_information -> serialized_request, request_serialization_information -> amount_of_bytes);
 
     free_serialization_information(request_serialization_information);
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
 

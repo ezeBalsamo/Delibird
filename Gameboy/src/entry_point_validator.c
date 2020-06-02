@@ -7,6 +7,7 @@
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 #include <stdlib.h>
+#include <free_gameboy.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;
@@ -16,6 +17,7 @@ void initialize_entry_point_validator(int arguments_amount, char** arguments){
 
     if (arguments_amount < 3) {
         incorrect_arguments_amount_error();
+        free_system();
     }
 
     gameboy_arguments = arguments;
@@ -59,6 +61,7 @@ t_operation_information* valid_chosen_operation(){
 
     if(operation_information_found == NULL){
         unknown_operation_error_for(process_information_found -> name, gameboy_arguments[2]);
+        free_system();
     }
 
     int arguments_amount_difference = operation_information_found -> arguments_amount - gameboy_arguments_amount;
@@ -105,7 +108,7 @@ void* subscriber_pokemon_operation_structure(){
 
     char* queue_name = gameboy_arguments[2];
 
-    t_subscribe_me* subscribe_me = malloc(sizeof(t_subscribe_me));
+    t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);
     return (void*) subscribe_me;
 }

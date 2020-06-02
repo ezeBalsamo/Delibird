@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <free_team.h>
 
 char* broker_ip;
 char* broker_port;
@@ -25,6 +26,7 @@ void sleep_for(int reconnection_time_in_seconds){
     deadline.tv_nsec = 0;
     if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
         log_thread_sleep_time_configuration_error();
+        free_system();
     }
 }
 
@@ -52,10 +54,10 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
 
 void* subscriber_thread(void* queue_operation_identifier){
 
-    t_subscribe_me* subscribe_me = malloc(sizeof(t_subscribe_me));
+    t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
 
-    t_request* request = malloc(sizeof(t_request));
+    t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
     request -> sanitizer_function = free;
@@ -89,7 +91,7 @@ void* subscriber_thread(void* queue_operation_identifier){
 }
 
 pthread_t subscribe_to_queue(uint32_t queue_code){
-    uint32_t* pokemon_operation_queue_code = malloc(sizeof(uint32_t));
+    uint32_t* pokemon_operation_queue_code = safe_malloc(sizeof(uint32_t));
     *pokemon_operation_queue_code = queue_code;
 
     return thread_create(subscriber_thread, (void*) pokemon_operation_queue_code, log_queue_thread_create_error);
@@ -115,10 +117,10 @@ void join_to_queues(){
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
-    t_get_pokemon* get_pokemon = malloc(sizeof(t_get_pokemon));
+    t_get_pokemon* get_pokemon = safe_malloc(sizeof(t_get_pokemon));
     get_pokemon -> pokemon_name = pokemon_goal -> pokemon_name;
 
-    t_request* request = malloc(sizeof(t_request));
+    t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
     request -> structure = get_pokemon;
     request -> sanitizer_function = free;

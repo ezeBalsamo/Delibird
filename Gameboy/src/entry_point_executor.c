@@ -17,8 +17,8 @@ void* queue_listener_thread(){
     t_connection_information* connection_information = connect_to(ip, port);
 
     if (!connection_information -> connection_was_succesful){
-        close_failed_connection(connection_information);
         free_request(request);
+        close_failed_connection(connection_information);
     }
     else{
         log_successful_connection();

@@ -12,7 +12,7 @@
 t_list* all_serializables;
 
 void initialize_and_load_serializable_new_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = NEW_POKEMON;
     serializable_object -> serialize_function = serialize_new_pokemon;
     serializable_object -> deserialize_function = deserialize_new_pokemon;
@@ -21,7 +21,7 @@ void initialize_and_load_serializable_new_pokemon(){
 }
 
 void initialize_and_load_serializable_appeared_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = APPEARED_POKEMON;
     serializable_object -> serialize_function = serialize_appeared_pokemon;
     serializable_object -> deserialize_function = deserialize_appeared_pokemon;
@@ -30,7 +30,7 @@ void initialize_and_load_serializable_appeared_pokemon(){
 }
 
 void initialize_and_load_serializable_get_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = GET_POKEMON;
     serializable_object -> serialize_function = serialize_get_pokemon;
     serializable_object -> deserialize_function = deserialize_get_pokemon;
@@ -39,7 +39,7 @@ void initialize_and_load_serializable_get_pokemon(){
 }
 
 void initialize_and_load_serializable_localized_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = LOCALIZED_POKEMON;
     serializable_object -> serialize_function = serialize_localized_pokemon;
     serializable_object -> deserialize_function = deserialize_localized_pokemon;
@@ -48,7 +48,7 @@ void initialize_and_load_serializable_localized_pokemon(){
 }
 
 void initialize_and_load_serializable_catch_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = CATCH_POKEMON;
     serializable_object -> serialize_function = serialize_catch_pokemon;
     serializable_object -> deserialize_function = deserialize_catch_pokemon;
@@ -57,7 +57,7 @@ void initialize_and_load_serializable_catch_pokemon(){
 }
 
 void initialize_and_load_serializable_caught_pokemon(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = CAUGHT_POKEMON;
     serializable_object -> serialize_function = serialize_caught_pokemon;
     serializable_object -> deserialize_function = deserialize_caught_pokemon;
@@ -66,7 +66,7 @@ void initialize_and_load_serializable_caught_pokemon(){
 }
 
 void initialize_and_load_serializable_subscribe_me(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = SUBSCRIBE_ME;
     serializable_object -> serialize_function = serialize_subscribe_me;
     serializable_object -> deserialize_function = deserialize_subscribe_me;
@@ -75,7 +75,7 @@ void initialize_and_load_serializable_subscribe_me(){
 }
 
 void initialize_and_load_serializable_identified_message(){
-    t_serializable_object* serializable_object = malloc(sizeof(t_serializable_object));
+    t_serializable_object* serializable_object = safe_malloc(sizeof(t_serializable_object));
     serializable_object -> code = IDENTIFIED_MESSAGE;
     serializable_object -> serialize_function = serialize_identified_message;
     serializable_object -> deserialize_function = deserialize_identified_message;

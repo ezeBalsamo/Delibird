@@ -13,6 +13,9 @@
 #include <commons/process.h>
 #include <pthread_wrapper.h>
 #include <semaphore.h>
+#include <free_system.h>
+#include <general_logs.h>
+#include <errno.h>
 
 #define THREAD_POOL_SIZE 25
 
@@ -34,8 +37,8 @@ char* get_local_ip_address() {
     char* local_ip_address = NULL;
 
     if (getifaddrs(&interface_addresses) == -1) {
-        perror("getifaddrs error");
-        exit(EXIT_FAILURE);
+        log_syscall_error("Error al obtener ifaddrs");
+        free_system();
     }
 
     while(interface_addresses != NULL) {
@@ -50,8 +53,8 @@ char* get_local_ip_address() {
     freeifaddrs(interface_addresses);
 
     if (local_ip_address == NULL) {
-        printf("Failed getting local ip address\n");
-        exit(EXIT_FAILURE);
+        log_syscall_error("Error al obtener ip local");
+        free_system();
     }
 
     return local_ip_address;
@@ -68,7 +71,7 @@ struct addrinfo* build_address_interface(char* ip, char* port){
 
     if ((addrinfo_status = getaddrinfo(ip, port, &hints, &address_interface) != 0)) {
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(addrinfo_status));
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return address_interface;
@@ -80,9 +83,9 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     if ((socket_fd = socket(address_interface -> ai_family,
                             address_interface -> ai_socktype,
                             address_interface -> ai_protocol)) == -1) {
-        perror("socket error");
+        log_syscall_error("Error al obtener socket_fd");
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return socket_fd;
@@ -93,9 +96,9 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
 
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_ports, sizeof(int)) == -1) {
         close(socket_fd);
-        perror("setsockopt error");
+        log_syscall_error("Error al habilitar reutilización de puerto");
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 }
 
@@ -103,10 +106,9 @@ void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
 
     if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
-        perror("bind error");
-        fprintf(stderr, "server failed to bind\n");
+        log_syscall_error("Error de server al hacer bind");
         freeaddrinfo(address_interface);
-        exit(EXIT_FAILURE);
+        free_system();
     }
 }
 
@@ -114,11 +116,10 @@ void listen_with(int socket_fd){
 
     if (listen(socket_fd, SOMAXCONN) == -1) {
         close(socket_fd);
-        perror("listen error");
-        exit(EXIT_FAILURE);
+        log_syscall_error("Error al escuchar con socket");
+        free_system();
     }
 }
-
 
 int accept_incoming_connections_on(int socket_fd){
     int connection_fd;
@@ -128,8 +129,8 @@ int accept_incoming_connections_on(int socket_fd){
     address_size = sizeof client_address;
     connection_fd = accept(socket_fd, (struct sockaddr *) &client_address, &address_size);
     if (connection_fd == -1) {
-        perror("accept error");
-        exit(EXIT_FAILURE);
+        log_syscall_error("Error al aceptar conexiones en socket");
+        free_system();
     }
 
     return connection_fd;
@@ -168,8 +169,9 @@ int reconnect(t_connection_information* connection_information){
 }
 
 void close_failed_connection(t_connection_information* connection_information){
-    perror("connect error");
+    log_syscall_error("Error de conexión");
     free_and_close_connection_information(connection_information);
+    free_system();
 }
 
 int establish_connection(int socket_fd, struct addrinfo* address_interface){
@@ -187,7 +189,7 @@ t_connection_information* connect_to(char* ip, char* port) {
 
     bool connection_was_succesful = establish_connection(socket_fd, address_interface);
 
-    t_connection_information* connection_information = malloc(sizeof(t_connection_information));
+    t_connection_information* connection_information = safe_malloc(sizeof(t_connection_information));
     connection_information -> socket_fd = socket_fd;
     connection_information -> address_interface = address_interface;
     connection_information -> connection_was_succesful = connection_was_succesful;
@@ -205,10 +207,9 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
         partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, 0);
 
         if(partially_sent_bytes == -1){
-            perror("send_all error");
-            printf("only %d bytes sent.\n", sent_bytes);
+            log_send_all_error(sent_bytes, amount_of_bytes);
             close(socket_fd);
-            exit(EXIT_FAILURE);
+            free_system();
         }
         sent_bytes += partially_sent_bytes;
         left_bytes -= partially_sent_bytes;
@@ -221,7 +222,7 @@ void send_structure(t_serialization_information* serialization_information, int 
             serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void* serialized_request = malloc(total_amount_of_bytes);
+    void* serialized_request = safe_malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
             &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
@@ -247,18 +248,20 @@ t_serialization_information* receive_structure(int socket_fd){
     uint32_t amount_of_bytes_of_request;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) == -1){
-        perror("recv amount of bytes error");
+        log_syscall_error("Error al recibir estructura");
         close(socket_fd);
+        free_system();
     }
 
-    serialized_request = malloc(amount_of_bytes_of_request);
+    serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
-        perror("recv serialized structure error");
+        log_syscall_error("Error al recibir serialized_request");
         close(socket_fd);
+        free_system();
     }
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
 
@@ -284,15 +287,15 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         if(pthread_create(&thread_pool[i], NULL, _thread_function, NULL) != 0){
-            printf("An error occurred while creating a new thread for attending an incoming connection\n");
-            exit(EXIT_FAILURE);
+            log_syscall_error("Error al crear hilos que atienden clientes");
+            free_system();
         }
     }
 
     int server_socket_fd = listen_at(port);
 
     while(true){
-        int* client_socket_fd = malloc(sizeof(int));
+        int* client_socket_fd = safe_malloc(sizeof(int));
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
 
         pthread_mutex_lock(&queue_mutex);

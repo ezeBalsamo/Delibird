@@ -4,22 +4,24 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <free_system.h>
+#include <general_logs.h>
 
 t_dictionary* queue_code_name_associations;
 
 void initialize_queue_code_name_associations(){
 
-    uint32_t* new_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* new_pokemon_code = safe_malloc(sizeof(uint32_t));
     *new_pokemon_code = NEW_POKEMON;
-    uint32_t* appeared_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* appeared_pokemon_code = safe_malloc(sizeof(uint32_t));
     *appeared_pokemon_code = APPEARED_POKEMON;
-    uint32_t* get_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* get_pokemon_code = safe_malloc(sizeof(uint32_t));
     *get_pokemon_code = GET_POKEMON;
-    uint32_t* localized_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* localized_pokemon_code = safe_malloc(sizeof(uint32_t));
     *localized_pokemon_code = LOCALIZED_POKEMON;
-    uint32_t* catch_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* catch_pokemon_code = safe_malloc(sizeof(uint32_t));
     *catch_pokemon_code = CATCH_POKEMON;
-    uint32_t* caught_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* caught_pokemon_code = safe_malloc(sizeof(uint32_t));
     *caught_pokemon_code = CAUGHT_POKEMON;
 
     queue_code_name_associations = dictionary_create();
@@ -45,9 +47,8 @@ char* queue_name_of(uint32_t queue_code){
     dictionary_iterator(queue_code_name_associations, _find_queue_name);
 
     if(!queue_name_to_find){
-        //TODO: ojo con esto que no deberia romper, que se encargue quien lo llama
-        printf("Romper todo a la bosta, cuando se implemente el logger general se quita");
-        exit(EXIT_FAILURE);
+        log_queue_name_not_found_error(queue_code);
+        free_system();
     }
 
     return queue_name_to_find;
@@ -61,10 +62,9 @@ uint32_t queue_code_of(char* queue_name){
     uint32_t* queue_code_found = dictionary_get(queue_code_name_associations, duplicated_queue_name);
 
     if(!queue_code_found){
-        //TODO
         free(duplicated_queue_name);
-        printf("Romper todo a la bosta, cuando se implemente el logger general se quita");
-        exit(EXIT_FAILURE);
+        log_queue_code_not_found_error(queue_name);
+        free_system();
     }
 
     free(duplicated_queue_name);

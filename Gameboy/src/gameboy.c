@@ -5,6 +5,7 @@
 #include "../include/entry_point_executor.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
+#include "free_gameboy.h"
 
 int main(int arguments_amount, char* arguments[]) {
 
@@ -19,11 +20,7 @@ int main(int arguments_amount, char* arguments[]) {
 
     log_successful_execution();
 
-    free_entry_point_validator();
-    free_entry_point_connection_builder();
-    free_pretty_printer();
-    log_successful_clean_up();
-    free_entry_point_logs_manager();
+    free_system();
 
     return EXIT_SUCCESS;
 }

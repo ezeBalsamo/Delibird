@@ -7,7 +7,7 @@
 
 t_trainer* parsed_trainer_from(uint32_t sequential_number, char* positions, char* current_pokemons, char* desired_pokemons){
 
-    t_trainer* trainer = malloc(sizeof(t_trainer));
+    t_trainer* trainer = safe_malloc(sizeof(t_trainer));
     trainer -> sequential_number = sequential_number;
 
     char** splitted_positions = string_split(positions, "|");

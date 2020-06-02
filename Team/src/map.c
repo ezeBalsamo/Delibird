@@ -1,6 +1,7 @@
 #include "../include/map.h"
 #include "../include/team_manager.h"
 #include "../../Utils/include/matrix.h"
+#include "../../Utils/include/common_structures.h"
 #include <commons/string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,7 +12,7 @@ t_dictionary* pokemon_ocurrences;
 
 void update_occurrences_of(t_pokemon *pokemon) {
     if (!dictionary_has_key(pokemon_ocurrences, pokemon->pokemon_name)){
-        uint32_t* occurrence = malloc(sizeof(uint32_t));
+        uint32_t* occurrence = safe_malloc(sizeof(uint32_t));
         *occurrence = 0;
         dictionary_put(pokemon_ocurrences,pokemon->pokemon_name,(void*)occurrence);
     }

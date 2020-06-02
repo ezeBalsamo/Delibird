@@ -5,6 +5,7 @@
 #include <serializable_objects.h>
 #include <queue_code_name_associations.h>
 #include <general_logs.h>
+#include <free_system.h>
 
 t_list* printable_objects;
 
@@ -90,7 +91,7 @@ char* identified_message_as_string(t_identified_message* identified_message){
 }
 
 void initialize_and_load_new_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = NEW_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) new_pokemon_as_string;
 
@@ -98,7 +99,7 @@ void initialize_and_load_new_pokemon_pretty_print(){
 }
 
 void initialize_and_load_appeared_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = APPEARED_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) appeared_pokemon_as_string;
 
@@ -106,7 +107,7 @@ void initialize_and_load_appeared_pokemon_pretty_print(){
 }
 
 void initialize_and_load_get_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = GET_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) get_pokemon_as_string;
 
@@ -114,7 +115,7 @@ void initialize_and_load_get_pokemon_pretty_print(){
 }
 
 void initialize_and_load_localized_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = LOCALIZED_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) localized_pokemon_as_string;
 
@@ -122,7 +123,7 @@ void initialize_and_load_localized_pokemon_pretty_print(){
 }
 
 void initialize_and_load_catch_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CATCH_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) catch_pokemon_as_string;
 
@@ -130,7 +131,7 @@ void initialize_and_load_catch_pokemon_pretty_print(){
 }
 
 void initialize_and_load_caught_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CAUGHT_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) caught_pokemon_as_string;
 
@@ -138,7 +139,7 @@ void initialize_and_load_caught_pokemon_pretty_print(){
 }
 
 void initialize_and_load_subscribe_me_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = SUBSCRIBE_ME;
     printable_object -> print_function = (char *(*)(void *)) subscribe_me_as_string;
 
@@ -146,7 +147,7 @@ void initialize_and_load_subscribe_me_pretty_print(){
 }
 
 void initialize_and_load_identified_message(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = IDENTIFIED_MESSAGE;
     printable_object -> print_function = (char *(*)(void *)) identified_message_as_string;
 
@@ -178,9 +179,8 @@ char* pretty_print_of(uint32_t code, void* structure){
     t_printable_object* printable_object_found = list_find(printable_objects, _has_code);
 
     if(printable_object_found == NULL){
-        //todo
-        printf("Romper todo a la bosta, tal vez necesite implementar un logger general");
-        exit(EXIT_FAILURE);
+        log_printable_object_not_found_error();
+        free_system();
     }
 
     return (*(printable_object_found -> print_function)) (structure);

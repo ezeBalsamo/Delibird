@@ -4,6 +4,7 @@
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 #include <stdlib.h>
+#include <free_broker.h>
 
 //son queues con estructuras del tipo: connection_request.
 
@@ -39,7 +40,7 @@ void subscribe_process(t_connection_request* connection_request){
     t_request* deserialized_request = deserialize(connection_request -> serialized_request);
     t_subscribe_me* suscribe_me = (t_subscribe_me*) deserialized_request -> structure;
 
-    t_subscriber* subscriber = malloc(sizeof(t_subscriber));
+    t_subscriber* subscriber = safe_malloc(sizeof(t_subscriber));
     subscriber -> queue = suscribe_me -> operation_queue;
     subscriber -> socket_fd = connection_request -> socket_fd;
 
@@ -53,33 +54,32 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
     switch (operation) {
 
         case APPEARED_POKEMON :
-            queue_push(appeared_queue, connection_request -> serialized_request);
+            queue_push(appeared_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case NEW_POKEMON :
-            queue_push(new_queue, connection_request -> serialized_request); //accedemos a esto para que en un futuro
-            // directamente en la cola enviamos la serialized request que es un void*.
+            queue_push(new_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case CATCH_POKEMON :
-            queue_push(catch_queue, connection_request -> serialized_request);
+            queue_push(catch_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case CAUGHT_POKEMON :
-            queue_push(caught_queue, connection_request -> serialized_request);
+            queue_push(caught_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case GET_POKEMON :
-            queue_push(get_queue, connection_request -> serialized_request);
+            queue_push(get_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
         case LOCALIZED_POKEMON :
-            queue_push(localized_queue, connection_request -> serialized_request);
+            queue_push(localized_queue, connection_request);
             log_succesful_new_message_pushed_to_a_queue(connection_request -> serialized_request);
             break;
 
@@ -88,11 +88,10 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
             log_succesful_subscription_process();
             break;
 
-        default: ;
-        //TODO: implementar
-        // received_unknown_operation_error();
+        default:
+            log_received_unknown_operation_error();
+        free_system();
     }
-
 }
 
 void publish(uint32_t queue, t_serialization_information* serialization_information){

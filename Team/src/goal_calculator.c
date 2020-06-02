@@ -2,6 +2,7 @@
 #include <team_manager.h>
 #include <commons/string.h>
 #include "../../Utils/include/t_list_extension.h"
+#include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
 
 t_list* requirements_of(t_trainer* trainer){
@@ -24,7 +25,7 @@ t_list* goal_of(t_trainer* trainer){
         t_pokemon_goal* pokemon_goal = list_find(trainer_goal, _is_equal_pokemon);
 
         if (pokemon_goal == NULL) {
-            pokemon_goal = malloc(sizeof(t_pokemon_goal));
+            pokemon_goal = safe_malloc(sizeof(t_pokemon_goal));
             pokemon_goal -> pokemon_name = pokemon_name;
             pokemon_goal -> quantity = 1;
             list_add(trainer_goal, (void*) pokemon_goal);
@@ -54,7 +55,7 @@ t_list* unified_pokemon_goals(t_list* flattened_team_pokemon_goals) {
         t_pokemon_goal* global_pokemon_goal = list_find(global_goal, _is_equal_pokemon);
 
         if (global_pokemon_goal == NULL) {
-            global_pokemon_goal = malloc(sizeof(t_pokemon_goal));
+            global_pokemon_goal = safe_malloc(sizeof(t_pokemon_goal));
             global_pokemon_goal -> pokemon_name = trainer_pokemon_goals -> pokemon_name;
             global_pokemon_goal -> quantity = trainer_pokemon_goals -> quantity;
             list_add(global_goal, (void *) global_pokemon_goal);
