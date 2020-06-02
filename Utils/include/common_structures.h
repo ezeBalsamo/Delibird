@@ -76,6 +76,8 @@ typedef struct Serializable_Object{
     t_request* (*deserialize_function) (void* serialized_structure);
 }t_serializable_object;
 
+void* internal_object_in(t_identified_message* identified_message);
+void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
 
 void* safe_malloc(size_t size);
 void free_request(t_request* request);

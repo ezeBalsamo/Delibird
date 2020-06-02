@@ -1,6 +1,6 @@
-#include "../../Utils/include/socket.h"
+#include "../../Utils/include/free_system.h"
 #include <stdlib.h>
 
 int main() {
-	return 0;
+	return EXIT_SUCCESS;
 }
