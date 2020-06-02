@@ -15,7 +15,6 @@
 #include <semaphore.h>
 #include <free_system.h>
 #include <general_logs.h>
-#include <errno.h>
 
 #define THREAD_POOL_SIZE 25
 

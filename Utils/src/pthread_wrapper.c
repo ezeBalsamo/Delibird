@@ -6,7 +6,7 @@
 
 void default_thread_create_error_response(){
     unsigned int process_id = process_getpid();
-    log_pthread_create_error((int)process_id);
+    log_pthread_create_error(process_id);
     free_system();
 }
 
