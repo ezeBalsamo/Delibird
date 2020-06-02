@@ -48,14 +48,45 @@ char* subscribe_me_as_string(t_subscribe_me* subscribe_me){
             queue_name_of(subscribe_me -> operation_queue));
 }
 
-char* identified_message_as_string(t_identified_message* identified_message){
+bool is_correlative_identified_message(t_identified_message* identified_message){
+    return identified_message -> request -> operation == IDENTIFIED_MESSAGE;
+}
 
-    char* request_as_string = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Operación: IDENTIFIED_MESSAGE\nArgumentos: message_id: %d\n%s",
-            identified_message -> message_id, request_as_string);
+char* correlative_identified_message_as_string(t_identified_message* correlative_identified_message){
+    t_identified_message* original_identified_message = (t_identified_message*) correlative_identified_message -> request -> structure;
+
+    char * request_as_string = request_pretty_print(original_identified_message -> request);
+    char* message =
+            string_from_format("Operación: CORRELATIVE_IDENTIFIED_MESSAGE\nArgumentos:\n"
+                               "\t-> message_id: %d\n\t-> Operación: IDENTIFIED_MESSAGE\n"
+                               "\t   Argumentos:\n\t\t   -> message_id: %d\n\t\t   -> %s",
+                               correlative_identified_message -> message_id,
+                               original_identified_message -> message_id,
+                               request_as_string);
 
     free(request_as_string);
     return message;
+}
+
+char* original_identified_message_as_string(t_identified_message* identified_message){
+    char* request_as_string = request_pretty_print(identified_message -> request);
+    char* message =
+            string_from_format("Operación: IDENTIFIED_MESSAGE\nArgumentos:\n\t-> message_id: %d\n\t-> %s",
+                               identified_message -> message_id, request_as_string);
+
+    free(request_as_string);
+
+    return message;
+
+}
+
+char* identified_message_as_string(t_identified_message* identified_message){
+
+    if(is_correlative_identified_message(identified_message)){
+        return correlative_identified_message_as_string(identified_message);
+    }else{
+        return original_identified_message_as_string(identified_message);
+    }
 }
 
 void initialize_and_load_new_pokemon_pretty_print(){
