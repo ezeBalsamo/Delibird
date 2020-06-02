@@ -1,8 +1,6 @@
 #include <query_performer.h>
 #include <map.h>
 #include "appeared_query_performer.h"
-#include <stdlib.h>
-#include "../../Utils/include/common_structures.h"
 #include "goal_calculator.h"
 
 t_query_performer *appeared_pokemon_query_performer;
@@ -19,7 +17,7 @@ void appeared_query_performer_function(t_identified_message* correlative_identif
     //TODO: ojo caso llegan 3 pikachus y necesitaba 2, y esos 2 todavia no estan capturados
     if (global_goal_contains(appeared_pokemon->pokemon_name)) {
 
-        t_pokemon *pokemon = malloc(sizeof(t_pokemon));
+        t_pokemon *pokemon = safe_malloc(sizeof(t_pokemon));
         pokemon->pokemon_name = appeared_pokemon->pokemon_name;
         pokemon->pos_x = appeared_pokemon->pos_x;
         pokemon->pos_y = appeared_pokemon->pos_y;
@@ -34,7 +32,7 @@ bool appeared_query_performer_can_handle(uint32_t operation){
 }
 
 void initialize_appeared_query_performer(){
-    appeared_pokemon_query_performer = malloc(sizeof(t_query_performer));
+    appeared_pokemon_query_performer = safe_malloc(sizeof(t_query_performer));
     appeared_pokemon_query_performer->can_handle_function = appeared_query_performer_can_handle;
     appeared_pokemon_query_performer->perform_function = appeared_query_performer_function;
 

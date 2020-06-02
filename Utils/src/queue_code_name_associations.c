@@ -11,17 +11,17 @@ t_dictionary* queue_code_name_associations;
 
 void initialize_queue_code_name_associations(){
 
-    uint32_t* new_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* new_pokemon_code = safe_malloc(sizeof(uint32_t));
     *new_pokemon_code = NEW_POKEMON;
-    uint32_t* appeared_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* appeared_pokemon_code = safe_malloc(sizeof(uint32_t));
     *appeared_pokemon_code = APPEARED_POKEMON;
-    uint32_t* get_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* get_pokemon_code = safe_malloc(sizeof(uint32_t));
     *get_pokemon_code = GET_POKEMON;
-    uint32_t* localized_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* localized_pokemon_code = safe_malloc(sizeof(uint32_t));
     *localized_pokemon_code = LOCALIZED_POKEMON;
-    uint32_t* catch_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* catch_pokemon_code = safe_malloc(sizeof(uint32_t));
     *catch_pokemon_code = CATCH_POKEMON;
-    uint32_t* caught_pokemon_code = malloc(sizeof(uint32_t));
+    uint32_t* caught_pokemon_code = safe_malloc(sizeof(uint32_t));
     *caught_pokemon_code = CAUGHT_POKEMON;
 
     queue_code_name_associations = dictionary_create();
@@ -47,7 +47,7 @@ char* queue_name_of(uint32_t queue_code){
     dictionary_iterator(queue_code_name_associations, _find_queue_name);
 
     if(!queue_name_to_find){
-        log_queue_name_not_found(queue_code);
+        log_queue_name_not_found_error(queue_code);
         free_system();
     }
 
@@ -63,7 +63,7 @@ uint32_t queue_code_of(char* queue_name){
 
     if(!queue_code_found){
         free(duplicated_queue_name);
-        log_queue_code_not_found(queue_name);
+        log_queue_code_not_found_error(queue_name);
         free_system();
     }
 

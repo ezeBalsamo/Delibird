@@ -25,7 +25,7 @@ void log_succesful_message_sent_to_suscribers(void* serialized_request);
 
 void log_no_subscribers_for_request(void* serialized_request);
 
-void received_unknown_operation_error();
+void log_received_unknown_operation_error();
 
 void free_broker_logs_manager();
 

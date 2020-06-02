@@ -9,16 +9,16 @@ bool caught_pokemon_can_handle(uint32_t operation_code){
 }
 
 void* caught_pokemon_parse_function(char** arguments){
-    t_caught_pokemon* caught_pokemon = malloc(sizeof(t_caught_pokemon));
+    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_caught_pokemon));
     caught_pokemon -> caught_status = atoi(arguments[1]);
 
     if(caught_pokemon_parser -> should_build_identified_message){
-        t_request* request = malloc(sizeof(t_request));
+        t_request* request = safe_malloc(sizeof(t_request));
         request -> operation = CAUGHT_POKEMON;
         request -> structure = (void*) caught_pokemon;
         request -> sanitizer_function = free;
 
-        t_identified_message* identified_message = malloc(sizeof(t_identified_message));
+        t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
         identified_message -> message_id = atoi(arguments[0]);
         identified_message -> request = request;
 
@@ -29,7 +29,7 @@ void* caught_pokemon_parse_function(char** arguments){
 }
 
 void initialize_caught_pokemon_operation_parser_with(bool should_build_identified_message){
-    caught_pokemon_parser = malloc(sizeof(t_pokemon_operation_parser));
+    caught_pokemon_parser = safe_malloc(sizeof(t_pokemon_operation_parser));
     caught_pokemon_parser -> can_handle_function = caught_pokemon_can_handle;
     caught_pokemon_parser -> parse_function = caught_pokemon_parse_function;
     caught_pokemon_parser -> should_build_identified_message = should_build_identified_message;

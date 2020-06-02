@@ -108,7 +108,7 @@ void* subscriber_pokemon_operation_structure(){
 
     char* queue_name = gameboy_arguments[2];
 
-    t_subscribe_me* subscribe_me = malloc(sizeof(t_subscribe_me));
+    t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);
     return (void*) subscribe_me;
 }

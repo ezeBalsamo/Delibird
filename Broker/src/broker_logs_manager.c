@@ -90,7 +90,7 @@ void log_no_subscribers_for_request(void* serialized_request){
     free_request(deserialized_request);
 }
 
-void received_unknown_operation_error(){
+void log_received_unknown_operation_error(){
     log_errorful_message(process_execution_logger(), "No se recibió una operación válida para poder poner en una cola de mensajes.\n");
 }
 

@@ -40,7 +40,7 @@ void subscribe_process(t_connection_request* connection_request){
     t_request* deserialized_request = deserialize(connection_request -> serialized_request);
     t_subscribe_me* suscribe_me = (t_subscribe_me*) deserialized_request -> structure;
 
-    t_subscriber* subscriber = malloc(sizeof(t_subscriber));
+    t_subscriber* subscriber = safe_malloc(sizeof(t_subscriber));
     subscriber -> queue = suscribe_me -> operation_queue;
     subscriber -> socket_fd = connection_request -> socket_fd;
 
@@ -89,7 +89,7 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
             break;
 
         default:
-        received_unknown_operation_error();
+            log_received_unknown_operation_error();
         free_system();
     }
 }

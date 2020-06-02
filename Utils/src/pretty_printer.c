@@ -60,7 +60,7 @@ char* identified_message_as_string(t_identified_message* identified_message){
 }
 
 void initialize_and_load_new_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = NEW_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) new_pokemon_as_string;
 
@@ -68,7 +68,7 @@ void initialize_and_load_new_pokemon_pretty_print(){
 }
 
 void initialize_and_load_appeared_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = APPEARED_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) appeared_pokemon_as_string;
 
@@ -76,7 +76,7 @@ void initialize_and_load_appeared_pokemon_pretty_print(){
 }
 
 void initialize_and_load_get_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = GET_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) get_pokemon_as_string;
 
@@ -84,7 +84,7 @@ void initialize_and_load_get_pokemon_pretty_print(){
 }
 
 void initialize_and_load_localized_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = LOCALIZED_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) localized_pokemon_as_string;
 
@@ -92,7 +92,7 @@ void initialize_and_load_localized_pokemon_pretty_print(){
 }
 
 void initialize_and_load_catch_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CATCH_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) catch_pokemon_as_string;
 
@@ -100,7 +100,7 @@ void initialize_and_load_catch_pokemon_pretty_print(){
 }
 
 void initialize_and_load_caught_pokemon_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CAUGHT_POKEMON;
     printable_object -> print_function = (char *(*)(void *)) caught_pokemon_as_string;
 
@@ -108,7 +108,7 @@ void initialize_and_load_caught_pokemon_pretty_print(){
 }
 
 void initialize_and_load_subscribe_me_pretty_print(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = SUBSCRIBE_ME;
     printable_object -> print_function = (char *(*)(void *)) subscribe_me_as_string;
 
@@ -116,7 +116,7 @@ void initialize_and_load_subscribe_me_pretty_print(){
 }
 
 void initialize_and_load_identified_message(){
-    t_printable_object* printable_object = malloc(sizeof(t_printable_object));
+    t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = IDENTIFIED_MESSAGE;
     printable_object -> print_function = (char *(*)(void *)) identified_message_as_string;
 

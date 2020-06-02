@@ -19,7 +19,10 @@ pthread_t thread_create(void* (*thread_function) (void*), void* thread_argument,
 }
 
 void thread_join(pthread_t thread){
-    pthread_join(thread, NULL);
+    if(pthread_join(thread, NULL) != 0){
+        log_syscall_error("Error al ejecutar pthread_join");
+        free_system();
+    }
 }
 
 pthread_t default_safe_thread_create(void* (*thread_function) (void*), void* thread_argument){

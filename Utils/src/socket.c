@@ -189,7 +189,7 @@ t_connection_information* connect_to(char* ip, char* port) {
 
     bool connection_was_succesful = establish_connection(socket_fd, address_interface);
 
-    t_connection_information* connection_information = malloc(sizeof(t_connection_information));
+    t_connection_information* connection_information = safe_malloc(sizeof(t_connection_information));
     connection_information -> socket_fd = socket_fd;
     connection_information -> address_interface = address_interface;
     connection_information -> connection_was_succesful = connection_was_succesful;
@@ -207,7 +207,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
         partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, 0);
 
         if(partially_sent_bytes == -1){
-            log_send_all_error();
+            log_send_all_error(sent_bytes, amount_of_bytes);
             close(socket_fd);
             free_system();
         }
@@ -222,7 +222,7 @@ void send_structure(t_serialization_information* serialization_information, int 
             serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void* serialized_request = malloc(total_amount_of_bytes);
+    void* serialized_request = safe_malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
             &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
@@ -253,7 +253,7 @@ t_serialization_information* receive_structure(int socket_fd){
         free_system();
     }
 
-    serialized_request = malloc(amount_of_bytes_of_request);
+    serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
         log_syscall_error("Error al recibir serialized_request");
@@ -261,7 +261,7 @@ t_serialization_information* receive_structure(int socket_fd){
         free_system();
     }
 
-    t_serialization_information* serialization_information = malloc(sizeof(t_serialization_information));
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
 
@@ -295,7 +295,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
     int server_socket_fd = listen_at(port);
 
     while(true){
-        int* client_socket_fd = malloc(sizeof(int));
+        int* client_socket_fd = safe_malloc(sizeof(int));
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
 
         pthread_mutex_lock(&queue_mutex);

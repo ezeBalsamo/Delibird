@@ -54,23 +54,25 @@ void log_syscall_error(char* message_error){
     free(message);
 }
 
-void log_send_all_error(){
-    log_errorful_message(process_execution_logger(), "Error en send_all");
+void log_send_all_error(int sent_bytes, int amount_of_bytes){
+    char* message = string_from_format("%s. Cantidad de bytes enviados: %d Total que debia enviarse: %d", "Error en send_all", sent_bytes, amount_of_bytes);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_expanding_unexpandable_matrix_error(){
     log_errorful_message(process_execution_logger(), "No se puede ampliar una matriz definida como no ampliable\n");
 }
 
-void log_invalid_index(){
+void log_invalid_index_error(){
     log_errorful_message(process_execution_logger(), "Los índices de filas y columnas deben ser mayores a cero\n");
 }
 
-void log_are_not_equals_columns_and_rows_in_squared_matrix(){
+void log_are_not_equals_columns_and_rows_in_squared_matrix_error(){
     log_errorful_message(process_execution_logger(), "Una matriz cuadrada debe tener igual cantidad de filas y columnas\n");
 }
 
-void log_invalid_positions(){
+void log_invalid_positions_error(){
     log_errorful_message(process_execution_logger(), "Las posiciones elegidas exceden las dimensiones de la matriz\n");
 }
 
@@ -80,13 +82,13 @@ void log_pthread_create_error(unsigned int process_id){
     free(message);
 }
 
-void log_queue_name_not_found(uint32_t queue_code){
+void log_queue_name_not_found_error(uint32_t queue_code){
     char* message = string_from_format("No se encontró una cola para el código: %lu", queue_code);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_queue_code_not_found(char* queue_name){
+void log_queue_code_not_found_error(char* queue_name){
     char* message = string_new();
     string_append(&message, "No se encontró una cola para el nombre: ");
     string_append(&message, queue_name);

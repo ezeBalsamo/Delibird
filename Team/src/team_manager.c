@@ -3,6 +3,7 @@
 #include "../include/team_manager.h"
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <commons/string.h>
@@ -47,7 +48,7 @@ void* trainer_thread(void* trainer_with_lock){
 
 void initialize_and_load_trainer_thread_for(void* trainer_with_lock){
 
-    pthread_t* trainer_tid = malloc(sizeof(pthread_t));
+    pthread_t* trainer_tid = safe_malloc(sizeof(pthread_t));
     *trainer_tid = thread_create(trainer_thread, trainer_with_lock, log_trainer_thread_create_error);
 
     list_add(trainers_tids, (void*) trainer_tid);
@@ -63,7 +64,7 @@ void initialize_and_load_trainer_with_lock_for(t_trainer* trainer){
     sem_t trainer_semaphore;
     sem_init(&trainer_semaphore, false, 0);
 
-    t_trainer_with_lock* trainer_with_lock = malloc(sizeof(t_trainer_with_lock));
+    t_trainer_with_lock* trainer_with_lock = safe_malloc(sizeof(t_trainer_with_lock));
     trainer_with_lock -> trainer = trainer;
     trainer_with_lock -> semaphore = trainer_semaphore;
 
