@@ -8,26 +8,43 @@ bool appeared_pokemon_can_handle(uint32_t operation_code){
     return operation_code == APPEARED_POKEMON;
 }
 
+bool should_build_correlative_identified_message_according_to(char** arguments){
+    return arguments[4] != NULL;
+}
+
+t_identified_message* correlative_identified_message_built_with(t_identified_message* identified_message, char** arguments){
+    t_request* correlative_request = safe_malloc(sizeof(t_request));
+    correlative_request -> operation = IDENTIFIED_MESSAGE;
+    correlative_request -> structure = (void*) identified_message;
+    correlative_request -> sanitizer_function = (void (*)(void *)) free_identified_message;
+
+    t_identified_message* correlative_identified_message = malloc(sizeof(t_identified_message));
+    correlative_identified_message -> message_id = atoi(arguments[4]);
+    correlative_identified_message -> request = correlative_request;
+
+    return correlative_identified_message;
+}
+
 void* appeared_pokemon_parse_function(char** arguments){
     t_appeared_pokemon* appeared_pokemon = safe_malloc(sizeof(t_new_pokemon));
     appeared_pokemon -> pokemon_name = arguments[0];
     appeared_pokemon -> pos_x = atoi(arguments[1]);
     appeared_pokemon -> pos_y = atoi(arguments[2]);
 
-    if (appeared_pokemon_parser -> should_build_identified_message){
-        t_request* request = safe_malloc(sizeof(t_request));
-        request -> operation = APPEARED_POKEMON;
-        request -> structure = (void*) appeared_pokemon;
-        request -> sanitizer_function = free;
+    t_request* request = safe_malloc(sizeof(t_request));
+    request -> operation = APPEARED_POKEMON;
+    request -> structure = (void*) appeared_pokemon;
+    request -> sanitizer_function = free;
 
-        t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
-        identified_message -> message_id = atoi(arguments[3]);
-        identified_message -> request = request;
+    t_identified_message* identified_message = malloc(sizeof(t_identified_message));
+    identified_message -> message_id = atoi(arguments[3]);
+    identified_message -> request = request;
 
-        return identified_message;
+    if(should_build_correlative_identified_message_according_to(arguments)){
+        return correlative_identified_message_built_with(identified_message, arguments);
     }
 
-    return appeared_pokemon;
+    return identified_message;
 }
 
 void initialize_appeared_pokemon_operation_parser_with(bool should_build_identified_message){
