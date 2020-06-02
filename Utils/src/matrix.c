@@ -68,7 +68,7 @@ void consider_expanding(t_matrix* self, uint32_t row_index, uint32_t column_inde
 void assert_strictly_positive_indexes(uint32_t row_index, uint32_t column_index){
 
     if(row_index <= 0 || column_index <= 0){
-        log_incorrect_index();
+        log_invalid_index();
         free_system();
     }
 }
@@ -113,7 +113,7 @@ void* matrix_element_at(t_matrix* self, uint32_t row_index, uint32_t column_inde
     assert_strictly_positive_indexes(row_index, column_index);
 
     if(self -> amount_of_rows < row_index || self -> amount_of_columns < column_index){
-        log_incorrect_positions();
+        log_invalid_positions();
         free_system();
     }
     return (self -> data)[row_index - 1][column_index - 1];

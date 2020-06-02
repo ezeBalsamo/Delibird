@@ -37,7 +37,7 @@ char* get_local_ip_address() {
     char* local_ip_address = NULL;
 
     if (getifaddrs(&interface_addresses) == -1) {
-        log_get_ifaddrs_error(strerror(errno));
+        log_syscall_error("Error al obtener ifaddrs");
         free_system();
     }
 
@@ -53,8 +53,8 @@ char* get_local_ip_address() {
     freeifaddrs(interface_addresses);
 
     if (local_ip_address == NULL) {
-        printf("Failed getting local ip address\n");
-        exit(EXIT_FAILURE);
+        log_syscall_error("Error al obtener ip local");
+        free_system();
     }
 
     return local_ip_address;
@@ -71,7 +71,7 @@ struct addrinfo* build_address_interface(char* ip, char* port){
 
     if ((addrinfo_status = getaddrinfo(ip, port, &hints, &address_interface) != 0)) {
         fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(addrinfo_status));
-        exit(EXIT_FAILURE);
+        free_system();
     }
 
     return address_interface;
@@ -83,7 +83,7 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     if ((socket_fd = socket(address_interface -> ai_family,
                             address_interface -> ai_socktype,
                             address_interface -> ai_protocol)) == -1) {
-        log_get_socket_fd_error(strerror(errno));
+        log_syscall_error("Error al obtener socket_fd");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -96,7 +96,7 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
 
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_ports, sizeof(int)) == -1) {
         close(socket_fd);
-        log_allow_port_reusability(strerror(errno));
+        log_syscall_error("Error al habilitar reutilización de puerto");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -106,8 +106,7 @@ void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
 
     if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
-        log_bind_error(strerror(errno));
-        fprintf(stderr, "server failed to bind\n");
+        log_syscall_error("Error de server al hacer bind");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -117,7 +116,7 @@ void listen_with(int socket_fd){
 
     if (listen(socket_fd, SOMAXCONN) == -1) {
         close(socket_fd);
-        log_listen_error(strerror(errno));
+        log_syscall_error("Error al escuchar con socket");
         free_system();
     }
 }
@@ -130,7 +129,7 @@ int accept_incoming_connections_on(int socket_fd){
     address_size = sizeof client_address;
     connection_fd = accept(socket_fd, (struct sockaddr *) &client_address, &address_size);
     if (connection_fd == -1) {
-        log_accept_connection_error(strerror(errno));
+        log_syscall_error("Error al aceptar conexiones en socket");
         free_system();
     }
 
@@ -170,7 +169,7 @@ int reconnect(t_connection_information* connection_information){
 }
 
 void close_failed_connection(t_connection_information* connection_information){
-    log_connection_error(strerror(errno));
+    log_syscall_error("Error de conexión");
     free_and_close_connection_information(connection_information);
     free_system();
 }
@@ -208,7 +207,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
         partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, 0);
 
         if(partially_sent_bytes == -1){
-            log_send_all_error(strerror(errno));
+            log_send_all_error();
             close(socket_fd);
             free_system();
         }
@@ -249,7 +248,7 @@ t_serialization_information* receive_structure(int socket_fd){
     uint32_t amount_of_bytes_of_request;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) == -1){
-        log_receive_amount_of_bytes_error(strerror(errno));
+        log_syscall_error("Error al recibir estructura");
         close(socket_fd);
         free_system();
     }
@@ -257,7 +256,7 @@ t_serialization_information* receive_structure(int socket_fd){
     serialized_request = malloc(amount_of_bytes_of_request);
 
     if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
-        log_serialized_structure_error(strerror(errno));
+        log_syscall_error("Error al recibir serialized_request");
         close(socket_fd);
         free_system();
     }
@@ -288,7 +287,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         if(pthread_create(&thread_pool[i], NULL, _thread_function, NULL) != 0){
-            log_pthread_create_for_attend_connections_error();
+            log_syscall_error("Error al crear hilos que atienden clientes");
             free_system();
         }
     }

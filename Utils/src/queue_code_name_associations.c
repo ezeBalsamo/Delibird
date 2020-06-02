@@ -47,6 +47,7 @@ char* queue_name_of(uint32_t queue_code){
     dictionary_iterator(queue_code_name_associations, _find_queue_name);
 
     if(!queue_name_to_find){
+        log_queue_name_not_found(queue_code);
         free_system();
     }
 

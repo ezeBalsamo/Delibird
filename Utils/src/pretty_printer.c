@@ -148,6 +148,7 @@ char* pretty_print_of(uint32_t code, void* structure){
     t_printable_object* printable_object_found = list_find(printable_objects, _has_code);
 
     if(printable_object_found == NULL){
+        log_printable_object_not_found_error();
         free_system();
     }
 

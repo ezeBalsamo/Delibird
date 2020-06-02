@@ -90,6 +90,7 @@ void push_to_queue(uint32_t operation, t_connection_request* connection_request)
 
         default:
         received_unknown_operation_error();
+        free_system();
     }
 }
 
