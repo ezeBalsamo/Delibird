@@ -6,9 +6,9 @@
 #include <semaphore.h>
 
 typedef struct Trainer{
-    uint32_t sequential_number;
-    uint32_t pos_x;
-    uint32_t pos_y;
+    int sequential_number;
+    int32_t pos_x;
+    int32_t pos_y;
     t_list* current_pokemons;
     t_list* desired_pokemons;
 }t_trainer;
@@ -20,19 +20,17 @@ typedef struct Pokemon_goal{
 
 typedef struct Pokemon{
     char* pokemon_name;
-    uint32_t pos_x;
-    uint32_t pos_y;
+    int32_t pos_x;
+    int32_t pos_y;
 }t_pokemon;
-
-typedef struct Trainer_with_lock{
-    t_trainer* trainer;
-    sem_t semaphore;
-}t_trainer_with_lock;
 
 void* initialize_team_manager();
 
 void with_trainers_do(void (*closure) (t_trainer*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
+
+bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);
+
 bool global_goal_contains(char* pokemon_name);
 t_list* trainers_x_positions();
 t_list* trainers_y_positions();

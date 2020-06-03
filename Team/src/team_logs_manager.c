@@ -6,7 +6,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <free_team.h>
+#include "../../Utils/include/free_system.h"
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
@@ -59,19 +59,7 @@ void log_queue_thread_create_error(){
     free(message);
     free_system();
 }
-void log_invalid_operation_to_query_performer(uint32_t code){
-    char* operation_name = queue_name_of(code);
-    char* message;
-    if (operation_name == NULL){
-        message = string_from_format("Operacion invalida para que el query performer realice, codigo %d.",code);
-    }else{
-        message = string_from_format("Operacion %s invalida para que el query performer realice.", operation_name);
-        free(operation_name);
-    }
 
-    log_errorful_message(process_execution_logger(),message);
-    free(message);
-}
 void log_no_locations_found_for(char* pokemon_name){
     char* message = string_from_format("No se encontraron ubicaciones para %s\n", pokemon_name);
 
@@ -80,10 +68,30 @@ void log_no_locations_found_for(char* pokemon_name){
 }
 
 void log_trainer_thread_create_error(){
-    char* message = "Falló la creación de un hilo para un entrenador.";
-    log_errorful_message(process_execution_logger(), message);
-
+    log_errorful_message(process_execution_logger(), "Falló la creación de un hilo para un entrenador.");
     free_system();
+}
+
+void log_succesful_creation_of_thread_of_trainer(uint32_t sequential_number){
+    char* message = string_from_format("Se creó exitosamente el hilo para el entrenador %u", sequential_number);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_query_performer_not_found_error_for(uint32_t operation){
+    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u", operation);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_zero_schedulable_threads_error(){
+    log_errorful_message(process_execution_logger(), "Se esperaba encontrar al menos un hilo planificable.");
+}
+
+void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number){
+    char* message = string_from_format("Se esperaba encontrar al entrenador %u en las colas de new o blocked.", sequential_number);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void free_team_logs_manager(){

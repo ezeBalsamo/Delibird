@@ -4,7 +4,7 @@
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
-#include "free_team.h"
+#include "../../Utils/include/free_system.h"
 
 void free_system(){
     free_pretty_printer();
@@ -14,5 +14,5 @@ void free_system(){
     log_successful_clean_up();
     free_team_logs_manager();
 
-     exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }

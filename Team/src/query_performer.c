@@ -1,7 +1,7 @@
 #include <team_manager.h>
 #include <map.h>
-#include "stdio.h"
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/free_system.h"
 #include <stdlib.h>
 #include <query_performer.h>
 #include <appeared_query_performer.h>
@@ -53,10 +53,13 @@ t_query_performer* query_performer_handle(uint32_t operation){
         return (*(cast_query_performer -> can_handle_function)) (operation);
     }
 
-    t_query_performer* query_performer = list_remove_by_condition(query_performers,_can_handle);
-    if (query_performer == NULL){
-        log_invalid_operation_to_query_performer(operation);
+    t_query_performer* query_performer_found = list_remove_by_condition(query_performers,_can_handle);
+
+    if (!query_performer_found){
+        log_query_performer_not_found_error_for(operation);
+        free_system();
     }
+
     free_query_performer();
-    return query_performer;
+    return query_performer_found;
 }

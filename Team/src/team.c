@@ -1,3 +1,4 @@
+#include <dispatcher.h>
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
 #include "../include/team_serializable_objects.h"
@@ -7,7 +8,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
-#include "free_team.h"
+#include "../../Utils/include/free_system.h"
 
 int main(void) {
 
@@ -15,6 +16,8 @@ int main(void) {
     initialize_pretty_printer();
     initialize_team_serializable_objects();
     initialize_configuration_manager_named("team-RR");
+
+    initialize_dispatcher();
 
     log_succesful_start_up();
 

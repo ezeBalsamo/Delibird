@@ -13,7 +13,11 @@ set(SOURCES
         src/appeared_query_performer.c
         src/localized_query_performer.c
         src/caught_query_performer.c
-        src/free_team.c)
+        src/team_sanitizer.c
+        src/matrix_update_trigger.c
+        src/dispatcher.c
+        src/trainer_threads.c
+        src/scheduling_algorithm.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

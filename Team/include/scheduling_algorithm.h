@@ -1,0 +1,6 @@
+#ifndef DELIBIRD_SCHEDULING_ALGORITHM_H
+#define DELIBIRD_SCHEDULING_ALGORITHM_H
+
+void initialize_scheduling_algorithm();
+
+#endif //DELIBIRD_SCHEDULING_ALGORITHM_H

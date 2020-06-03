@@ -1,15 +1,15 @@
 #include "../include/broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
+#include "../include/query_performer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
-#include "../include/query_performer.h"
+#include "../../Utils/include/free_system.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <free_team.h>
 
 char* broker_ip;
 char* broker_port;
