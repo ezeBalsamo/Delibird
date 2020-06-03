@@ -63,6 +63,11 @@ typedef struct Identified_message{
     t_request* request;
 }t_identified_message;
 
+typedef struct Manageable_object{
+    bool (*can_handle_function) (uint32_t operation);
+    void (*perform_function) (t_identified_message* message);
+} t_manageable_object;
+
 enum Operation {
     NEW_POKEMON, APPEARED_POKEMON,
     GET_POKEMON, LOCALIZED_POKEMON,

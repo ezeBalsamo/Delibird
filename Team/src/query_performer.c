@@ -1,13 +1,10 @@
-#include <team_manager.h>
-#include <map.h>
-#include "stdio.h"
-#include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
 #include <query_performer.h>
 #include <appeared_query_performer.h>
 #include <localized_query_performer.h>
 #include <caught_query_performer.h>
 #include <team_logs_manager.h>
+#include "../../Utils/include/handle.h"
 
 t_list* query_performers;
 
@@ -41,9 +38,22 @@ void query_perform(t_request* request) {
     t_query_performer* query_performer = query_performer_handle(parse_request->operation);
 
     query_performer->perform_function (request->structure);
-
 }
 
+t_query_performer* query_performer_handle(uint32_t operation) {
+
+    initialize_query_performer();
+
+    void* query_performer = object_can_handle(query_performers, operation);
+
+    if (query_performer == NULL){
+        log_invalid_operation_to_query_performer(operation);
+    }
+
+    free_query_performer();
+    return (t_query_performer*) query_performer;
+}
+/*
 t_query_performer* query_performer_handle(uint32_t operation){
 
     initialize_query_performer();
@@ -60,3 +70,4 @@ t_query_performer* query_performer_handle(uint32_t operation){
     free_query_performer();
     return query_performer;
 }
+ */

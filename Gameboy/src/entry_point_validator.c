@@ -68,6 +68,7 @@ t_operation_information* valid_chosen_operation(){
 
     if(arguments_amount_difference != 0){
         incorrect_arguments_amount_error();
+        free_system();
     }
 
     return operation_information_found;
