@@ -1,5 +1,4 @@
 #include <dispatcher.h>
-#include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
 #include "../include/team_serializable_objects.h"
 #include "../include/broker_connection_handler.h"

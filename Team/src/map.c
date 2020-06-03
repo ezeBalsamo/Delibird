@@ -20,7 +20,7 @@ void update_occurrences_of(char* pokemon_name){
 
     uint32_t* ocurrences = (uint32_t*) dictionary_get(pokemon_ocurrences, pokemon_name);
     *ocurrences++;
-    dictionary_put(pokemon_ocurrences, pokemon_name,(void*) ocurrences);
+    dictionary_put(pokemon_ocurrences, pokemon_name, (void*) ocurrences);
 }
 
 void matrix_print_trainer(void* trainer){

@@ -8,7 +8,7 @@ void initialize_dispatcher();
 
 void new_thread_created_for(t_synchronizable_trainer* synchronizable_trainer);
 
-t_list* schedulable_threads();
+t_list* schedulable_synchronizable_trainers();
 
 void trainer_ready_to_be_sheduled(t_synchronizable_trainer* synchronizable_trainer);
 

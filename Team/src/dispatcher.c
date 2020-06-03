@@ -27,19 +27,19 @@ bool can_be_schedule(void* to_be_defined){
     return true;
 }
 
-t_list* schedulable_blocked_threads(){
+t_list* schedulable_blocked_synchronizable_trainers(){
     return list_filter(blocked_synchronizable_trainers, can_be_schedule);
 }
 
-t_list* schedulable_threads(){
-    t_list* schedulable_threads = list_create();
-    list_add_all(schedulable_threads, new_synchronizable_trainers);
+t_list* schedulable_synchronizable_trainers(){
+    t_list* schedulable_synchronizable_trainers = list_create();
+    list_add_all(schedulable_synchronizable_trainers, new_synchronizable_trainers);
 
-    t_list* available_to_schedule_blocked_threads = schedulable_blocked_threads();
-    list_add_all(schedulable_threads, available_to_schedule_blocked_threads);
+    t_list* available_to_schedule_blocked_threads = schedulable_blocked_synchronizable_trainers();
+    list_add_all(schedulable_synchronizable_trainers, available_to_schedule_blocked_threads);
 
     list_destroy(available_to_schedule_blocked_threads);
-    return schedulable_threads;
+    return schedulable_synchronizable_trainers;
 }
 
 bool are_equals_synchronizable_trainers(t_synchronizable_trainer* synchronizable_trainer,
@@ -68,4 +68,5 @@ void trainer_ready_to_be_sheduled(t_synchronizable_trainer* synchronizable_train
     }
 
     queue_push(ready_synchronizable_trainers_found, synchronizable_trainer);
+
 }

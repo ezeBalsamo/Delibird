@@ -20,30 +20,30 @@ uint32_t distance_between(t_trainer* trainer, t_pokemon* pokemon){
     return x_distance + y_distance;
 }
 
-void* closest_trainer_to(t_synchronizable_trainer* trainer_with_lock,
-                         t_synchronizable_trainer* another_trainer_with_lock, t_pokemon* pokemon){
+void* closest_trainer_to(t_synchronizable_trainer* synchronizable_trainer,
+                         t_synchronizable_trainer* another_synchronizable_trainer, t_pokemon* pokemon){
 
-    uint32_t trainer_distance = distance_between(trainer_with_lock -> trainer, pokemon);
-    uint32_t another_trainer_distance = distance_between(another_trainer_with_lock -> trainer, pokemon);
+    uint32_t trainer_distance = distance_between(synchronizable_trainer -> trainer, pokemon);
+    uint32_t another_trainer_distance = distance_between(another_synchronizable_trainer -> trainer, pokemon);
 
-    return trainer_distance < another_trainer_distance ? trainer_with_lock : another_trainer_with_lock;
+    return trainer_distance < another_trainer_distance ? synchronizable_trainer : another_synchronizable_trainer;
 }
 
 void matrix_updated_with_insertion_of(t_pokemon* pokemon){
-    t_list* trainer_threads = schedulable_threads();
+    t_list* synchronizable_trainers = schedulable_synchronizable_trainers();
 
-    assert_not_empty(trainer_threads);
-    t_synchronizable_trainer* first_trainer_thread = list_get(trainer_threads, 0);
+    assert_not_empty(synchronizable_trainers);
+    t_synchronizable_trainer* first_synchronizable_trainer = list_get(synchronizable_trainers, 0);
 
-    void* _closest_trainer(void* trainer_with_lock, void* another_trainer_with_lock){
-        t_synchronizable_trainer* cast_trainer_with_lock = (t_synchronizable_trainer*) trainer_with_lock;
-        t_synchronizable_trainer* cast_another_trainer_with_lock = (t_synchronizable_trainer*) another_trainer_with_lock;
+    void* _closest_trainer(void* synchronizable_trainer, void* another_synchronizable_trainer){
+        t_synchronizable_trainer* cast_synchronizable_trainer = (t_synchronizable_trainer*) synchronizable_trainer;
+        t_synchronizable_trainer* cast_another_synchronizable_trainer = (t_synchronizable_trainer*) another_synchronizable_trainer;
 
-        return closest_trainer_to(cast_trainer_with_lock, cast_another_trainer_with_lock, pokemon);
+        return closest_trainer_to(cast_synchronizable_trainer, cast_another_synchronizable_trainer, pokemon);
     }
 
-    t_synchronizable_trainer* trainer_thread = (t_synchronizable_trainer*)
-            list_fold(trainer_threads, first_trainer_thread, _closest_trainer);
+    t_synchronizable_trainer* synchronizable_trainer = (t_synchronizable_trainer*)
+            list_fold(synchronizable_trainers, first_synchronizable_trainer, _closest_trainer);
 
-    trainer_ready_to_be_sheduled(trainer_thread);
+    trainer_ready_to_be_sheduled(synchronizable_trainer);
 }

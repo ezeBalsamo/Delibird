@@ -27,21 +27,12 @@ void initialize_query_performer(){
     initialize_appeared_query_performer();
     initialize_localized_query_performer();
     initialize_caught_query_performer();
+
     query_performers = list_create();
 
     list_add(query_performers, (void*) appeared_query_performer());
     list_add(query_performers, (void*) localized_query_performer());
     list_add(query_performers, (void*) caught_query_performer());
-}
-
-void query_perform(t_request* request) {
-    //parseo de la request deserializada (indentified message x2) al mensaje en si
-    t_request* parse_request = internal_request_from(request);
-
-    t_query_performer* query_performer = query_performer_handle(parse_request->operation);
-
-    query_performer->perform_function (request->structure);
-
 }
 
 t_query_performer* query_performer_handle(uint32_t operation){
@@ -53,7 +44,7 @@ t_query_performer* query_performer_handle(uint32_t operation){
         return (*(cast_query_performer -> can_handle_function)) (operation);
     }
 
-    t_query_performer* query_performer_found = list_remove_by_condition(query_performers,_can_handle);
+    t_query_performer* query_performer_found = list_remove_by_condition(query_performers, _can_handle);
 
     if (!query_performer_found){
         log_query_performer_not_found_error_for(operation);
@@ -62,4 +53,14 @@ t_query_performer* query_performer_handle(uint32_t operation){
 
     free_query_performer();
     return query_performer_found;
+}
+
+void query_perform(t_request* request) {
+    //parseo de la request deserializada (indentified message x2) al mensaje en si
+    t_request* parse_request = internal_request_from(request);
+
+    t_query_performer* query_performer = query_performer_handle(parse_request -> operation);
+
+    query_performer -> perform_function (request -> structure);
+
 }

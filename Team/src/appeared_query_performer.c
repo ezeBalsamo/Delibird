@@ -9,6 +9,7 @@ t_query_performer* appeared_query_performer(){
 }
 
 bool should_process_pokemon_named(char* pokemon_name){
+    //TODO
     return true;
 }
 

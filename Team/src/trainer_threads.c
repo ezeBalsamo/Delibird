@@ -14,38 +14,38 @@ void join_trainers_threads(){
     }
 }
 
-void* trainer_thread(void* trainer_with_lock){
-    t_synchronizable_trainer* cast_trainer_with_lock = (t_synchronizable_trainer*) trainer_with_lock;
+void* trainer_thread(void* synchronizable_trainer){
+    t_synchronizable_trainer* cast_synchronizable_trainer = (t_synchronizable_trainer*) synchronizable_trainer;
 
-    log_succesful_creation_of_thread_of_trainer(cast_trainer_with_lock -> trainer -> sequential_number);
-    sem_wait(&cast_trainer_with_lock -> semaphore);
+    log_succesful_creation_of_thread_of_trainer(cast_synchronizable_trainer -> trainer -> sequential_number);
+    sem_wait(&cast_synchronizable_trainer -> semaphore);
 
     return NULL;
 }
 
-void initialize_and_load_trainer_thread_for(void* trainer_with_lock){
+void initialize_and_load_trainer_thread_for(void* synchronizable_trainer){
 
     pthread_t* trainer_tid = safe_malloc(sizeof(pthread_t));
-    *trainer_tid = thread_create(trainer_thread, trainer_with_lock, log_trainer_thread_create_error);
+    *trainer_tid = thread_create(trainer_thread, synchronizable_trainer, log_trainer_thread_create_error);
 
     list_add(trainers_tids, (void*) trainer_tid);
-    new_thread_created_for((t_synchronizable_trainer*) trainer_with_lock);
+    new_thread_created_for((t_synchronizable_trainer*) synchronizable_trainer);
 }
 
-void initialize_and_load_trainer_with_lock_for(t_trainer* trainer){
+void initialize_and_load_synchronizable_trainer_for(t_trainer* trainer){
     sem_t trainer_semaphore;
     sem_init(&trainer_semaphore, false, 0);
 
-    t_synchronizable_trainer* trainer_with_lock = safe_malloc(sizeof(t_synchronizable_trainer));
-    trainer_with_lock -> trainer = trainer;
-    trainer_with_lock -> semaphore = trainer_semaphore;
+    t_synchronizable_trainer* synchronizable_trainer = safe_malloc(sizeof(t_synchronizable_trainer));
+    synchronizable_trainer -> trainer = trainer;
+    synchronizable_trainer -> semaphore = trainer_semaphore;
 
-    list_add(trainers_semaphores, (void*) trainer_with_lock);
+    list_add(trainers_semaphores, (void*) synchronizable_trainer);
 }
 
 void initialize_trainers_semaphores(){
     trainers_semaphores = list_create();
-    with_trainers_do(initialize_and_load_trainer_with_lock_for);
+    with_trainers_do(initialize_and_load_synchronizable_trainer_for);
 }
 
 void initialize_trainer_threads(){
