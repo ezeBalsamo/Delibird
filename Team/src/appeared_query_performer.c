@@ -19,12 +19,12 @@ void appeared_query_performer_function(t_identified_message* correlative_identif
 
     if(should_process_pokemon_named(appeared_pokemon -> pokemon_name)){
 
-        t_pokemon* pokemon = safe_malloc(sizeof(t_pokemon));
-        pokemon -> pokemon_name = appeared_pokemon -> pokemon_name;
-        pokemon -> pos_x = appeared_pokemon -> pos_x;
-        pokemon -> pos_y = appeared_pokemon -> pos_y;
+        t_localizable_object* localizable_pokemon = safe_malloc(sizeof(t_localizable_object));
+        localizable_pokemon -> pos_x = appeared_pokemon -> pos_x;
+        localizable_pokemon -> pos_y = appeared_pokemon -> pos_y;
+        localizable_pokemon -> object = appeared_pokemon -> pokemon_name;
 
-        load_pokemon_in_matrix(pokemon);
+        load_pokemon_in_map(localizable_pokemon);
     }
 }
 

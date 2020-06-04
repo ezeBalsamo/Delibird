@@ -68,11 +68,12 @@ t_list* unified_pokemon_goals(t_list* flattened_team_pokemon_goals) {
     return global_goal;
 }
 
-t_list* team_global_goal_according_to(t_list* trainers){
+t_list* team_global_goal_according_to(t_list* localizable_trainers){
     t_list* team_pokemon_goals = list_create();
 
-    for (int i = 0; i < list_size(trainers); i++){
-        t_trainer* trainer = list_get(trainers, i);
+    for (int i = 0; i < list_size(localizable_trainers); i++){
+        t_localizable_object* localizable_trainer = list_get(localizable_trainers, i);
+        t_trainer* trainer = localizable_trainer -> object;
         t_list* trainer_pokemon_goals = goal_of(trainer);
         list_add(team_pokemon_goals, trainer_pokemon_goals);
     }

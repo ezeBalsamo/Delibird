@@ -5,6 +5,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
+#include "../../Utils/include/general_logs.h"
 #include <stdlib.h>
 #include <stdio.h>
 

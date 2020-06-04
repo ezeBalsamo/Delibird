@@ -14,10 +14,18 @@ set(SOURCES
         src/localized_query_performer.c
         src/caught_query_performer.c
         src/team_sanitizer.c
-        src/matrix_update_trigger.c
+        src/map_update_trigger.c
         src/dispatcher.c
         src/trainer_threads.c
-        src/scheduling_algorithm.c)
+        src/scheduling_algorithm.c
+        src/scheduling_algorithm_finder.c
+        src/fifo_scheduling_algorithm.c
+        src/round_robin_scheduling_algorithm.c
+        src/preemptive_sjf_scheduling_algorithm.c
+        src/non_preemptive_sjf_scheduling_algorithm.c
+        src/movement_action.c
+        src/trainer_thread_context_execution_cycle.c
+        src/catch_action.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

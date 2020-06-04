@@ -70,7 +70,7 @@ enum Operation {
     SUBSCRIBE_ME, IDENTIFIED_MESSAGE
 };
 
-typedef struct Serializable_Object{
+typedef struct Serializable_object{
     uint32_t code;
     t_serialization_information* (*serialize_function) (void* structure);
     t_request* (*deserialize_function) (void* serialized_structure);

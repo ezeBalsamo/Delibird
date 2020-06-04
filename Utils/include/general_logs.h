@@ -1,7 +1,7 @@
 #ifndef DELIBIRD_GENERAL_LOGS_H
 #define DELIBIRD_GENERAL_LOGS_H
 
-#include <stdint.h>
+#include "common_structures.h"
 
 void log_succesful_start_up();
 void log_successful_execution();
@@ -19,4 +19,8 @@ void log_pthread_create_error(unsigned int process_id);
 void log_queue_name_not_found_error(uint32_t queue_code);
 void log_queue_code_not_found_error(char* queue_name);
 void log_printable_object_not_found_error();
+void log_about_to_send_request(t_request* request);
+void log_request_sent(t_request* request);
+void log_request_received(t_request* request);
+
 #endif //DELIBIRD_GENERAL_LOGS_H

@@ -6,11 +6,11 @@
 #include <trainer_threads.h>
 #include <commons/string.h>
 
-t_list* trainers;
+t_list* localized_trainers;
 t_list* global_goal;
 
 bool global_goal_contains(char* pokemon_name){
-    t_list* actual_global_goal = team_global_goal_according_to(trainers);
+    t_list* actual_global_goal = team_global_goal_according_to(localized_trainers);
 
     bool _is_equal_pokemon(void *pokemon_goal){
         return string_equals_ignore_case(((t_pokemon_goal*) pokemon_goal) -> pokemon_name, pokemon_name);
@@ -20,8 +20,8 @@ bool global_goal_contains(char* pokemon_name){
 }
 
 void* initialize_team_manager(){
-    trainers = parsed_trainers();
-    global_goal = team_global_goal_according_to(trainers);
+    localized_trainers = parsed_trainers();
+    global_goal = team_global_goal_according_to(localized_trainers);
     initialize_map();
     initialize_trainer_threads();
 
@@ -33,23 +33,23 @@ bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer){
 }
 
 t_list* trainers_x_positions(){
-    void* _x_position_of(void* trainer){
-        return (void*) &(((t_trainer*) trainer) -> pos_x);
+    void* _x_position_of(void* localized_trainer){
+        return (void*) &(((t_localizable_object*) localized_trainer) -> pos_x);
     }
 
-    return list_map(trainers, _x_position_of);
+    return list_map(localized_trainers, _x_position_of);
 }
 
 t_list* trainers_y_positions(){
-    void* _y_position_of(void* trainer){
-        return (void*) &(((t_trainer*) trainer) -> pos_y);
+    void* _y_position_of(void* localized_trainer){
+        return (void*) &(((t_localizable_object*) localized_trainer) -> pos_y);
     }
 
-    return list_map(trainers, _y_position_of);
+    return list_map(localized_trainers, _y_position_of);
 }
 
-void with_trainers_do(void (*closure) (t_trainer*)){
-    list_iterate(trainers, (void (*)(void *)) closure);
+void with_trainers_do(void (*closure) (t_localizable_object*)){
+    list_iterate(localized_trainers, (void (*)(void *)) closure);
 }
 
 void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
@@ -64,5 +64,5 @@ void free_trainer(t_trainer *trainer){
 
 void free_team_manager(){
     list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
-    list_destroy_and_destroy_elements(trainers, (void (*)(void *)) free_trainer);
+    list_destroy_and_destroy_elements(localized_trainers, (void (*)(void *)) free_trainer);
 }

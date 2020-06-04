@@ -5,10 +5,14 @@
 #include <commons/collections/list.h>
 #include <semaphore.h>
 
-typedef struct Trainer{
-    int sequential_number;
+typedef struct Localizable_object{
     int32_t pos_x;
     int32_t pos_y;
+    void* object;
+}t_localizable_object;
+
+typedef struct Trainer{
+    int sequential_number;
     t_list* current_pokemons;
     t_list* desired_pokemons;
 }t_trainer;
@@ -18,15 +22,9 @@ typedef struct Pokemon_goal{
     uint32_t quantity;
 }t_pokemon_goal;
 
-typedef struct Pokemon{
-    char* pokemon_name;
-    int32_t pos_x;
-    int32_t pos_y;
-}t_pokemon;
-
 void* initialize_team_manager();
 
-void with_trainers_do(void (*closure) (t_trainer*));
+void with_trainers_do(void (*closure) (t_localizable_object*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
 
 bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);

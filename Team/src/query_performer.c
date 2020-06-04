@@ -17,8 +17,8 @@ void free_query_performer(){
 
 t_request* internal_request_from(t_request* deserialized_request){
 
-    t_identified_message* correlative_identified_message = (t_identified_message*) deserialized_request->structure;
-    t_identified_message* original_identified_message = correlative_identified_message -> request -> structure;
+    t_identified_message* correlative_identified_message = (t_identified_message*) deserialized_request -> structure;
+    t_identified_message* original_identified_message = internal_object_in(correlative_identified_message);
 
     return original_identified_message -> request;
 }

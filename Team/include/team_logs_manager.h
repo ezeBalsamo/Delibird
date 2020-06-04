@@ -16,6 +16,7 @@ void log_trainer_thread_create_error();
 void log_succesful_creation_of_thread_of_trainer(uint32_t sequential_number);
 void log_zero_schedulable_threads_error();
 void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number);
+void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_name);
 
 void free_team_logs_manager();
 

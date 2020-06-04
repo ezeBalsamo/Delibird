@@ -4,11 +4,21 @@
 #include <commons/collections/list.h>
 #include "team_manager.h"
 
-typedef struct Synchronizable_trainer{
-    t_trainer* trainer;
+enum Thread_states{
+    NEW, READY, EXECUTE, BLOCKED, FINISHED
+};
+
+typedef struct Trainer_thread_context{
+    t_localizable_object* localizable_trainer;
     sem_t semaphore;
-}t_synchronizable_trainer;
+    uint32_t state;
+    void* thread_action;
+    bool has_finished;
+    void (*execution_function) (void*);
+}t_trainer_thread_context;
 
 void initialize_trainer_threads();
+
+void execute_trainer_thread_context(t_trainer_thread_context* trainer_thread_context);
 
 #endif //DELIBIRD_TRAINER_THREADS_H

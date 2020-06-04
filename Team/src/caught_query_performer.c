@@ -13,7 +13,7 @@ void caught_query_performer_function(t_identified_message* correlative_identifie
     //TODO: logica query_perform caught
     //chequear si yo tire catch de este id, y ademas traer la info de ese mensaje
         //porque necesito saber q pokemon es para persistir el obj
-    //si lo capture, lo saco de la matriz y persisto eso en el trainer y chequeo si esta pa exit
+    //si lo capture, lo saco de la matriz y persisto eso en el localizable_trainer y chequeo si esta pa exit
 }
 
 bool caught_query_performer_can_handle(uint32_t operation){

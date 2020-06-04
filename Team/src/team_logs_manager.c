@@ -94,6 +94,12 @@ void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number){
     free(message);
 }
 
+void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_name){
+    char* message = string_from_format("No se ha implementado un algoritmo de planificación llamado %s", scheduling_algorithm_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_team_logs_manager(){
     free_loggers();
 }

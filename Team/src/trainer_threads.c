@@ -4,8 +4,12 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/common_structures.h"
 
-t_list* trainers_semaphores;
+t_list* trainer_thread_contexts;
 t_list* trainers_tids;
+
+void execute_trainer_thread_context(t_trainer_thread_context* trainer_thread_context){
+    trainer_thread_context -> execution_function (trainer_thread_context);
+}
 
 void join_trainers_threads(){
     for (int i = 0; i < list_size(trainers_tids); i++) {
@@ -14,46 +18,52 @@ void join_trainers_threads(){
     }
 }
 
-void* trainer_thread(void* synchronizable_trainer){
-    t_synchronizable_trainer* cast_synchronizable_trainer = (t_synchronizable_trainer*) synchronizable_trainer;
+void* trainer_thread(void* trainer_thread_context){
+    t_trainer_thread_context* cast_trainer_thread_context = (t_trainer_thread_context*) trainer_thread_context;
 
-    log_succesful_creation_of_thread_of_trainer(cast_synchronizable_trainer -> trainer -> sequential_number);
-    sem_wait(&cast_synchronizable_trainer -> semaphore);
+    t_trainer* trainer = cast_trainer_thread_context -> localizable_trainer -> object;
+    log_succesful_creation_of_thread_of_trainer(trainer-> sequential_number);
+
+    while(cast_trainer_thread_context -> state != FINISHED){
+        sem_wait(&cast_trainer_thread_context -> semaphore);
+        execute_trainer_thread_context(cast_trainer_thread_context);
+    }
 
     return NULL;
 }
 
-void initialize_and_load_trainer_thread_for(void* synchronizable_trainer){
+void initialize_and_load_trainer_thread_for(void* trainer_thread_context){
 
     pthread_t* trainer_tid = safe_malloc(sizeof(pthread_t));
-    *trainer_tid = thread_create(trainer_thread, synchronizable_trainer, log_trainer_thread_create_error);
+    *trainer_tid = thread_create(trainer_thread, trainer_thread_context, log_trainer_thread_create_error);
 
     list_add(trainers_tids, (void*) trainer_tid);
-    new_thread_created_for((t_synchronizable_trainer*) synchronizable_trainer);
+    new_thread_created_for((t_trainer_thread_context*) trainer_thread_context);
 }
 
-void initialize_and_load_synchronizable_trainer_for(t_trainer* trainer){
+void initialize_and_load_trainer_thread_context_for(t_localizable_object* localizable_trainer){
     sem_t trainer_semaphore;
     sem_init(&trainer_semaphore, false, 0);
 
-    t_synchronizable_trainer* synchronizable_trainer = safe_malloc(sizeof(t_synchronizable_trainer));
-    synchronizable_trainer -> trainer = trainer;
-    synchronizable_trainer -> semaphore = trainer_semaphore;
+    t_trainer_thread_context* trainer_thread_context = safe_malloc(sizeof(t_trainer_thread_context));
+    trainer_thread_context -> localizable_trainer = localizable_trainer;
+    trainer_thread_context -> semaphore = trainer_semaphore;
+    trainer_thread_context -> has_finished = false;
 
-    list_add(trainers_semaphores, (void*) synchronizable_trainer);
+    list_add(trainer_thread_contexts, (void*) trainer_thread_context);
 }
 
-void initialize_trainers_semaphores(){
-    trainers_semaphores = list_create();
-    with_trainers_do(initialize_and_load_synchronizable_trainer_for);
+void initialize_trainer_thread_contexts(){
+    trainer_thread_contexts = list_create();
+    with_trainers_do(initialize_and_load_trainer_thread_context_for);
 }
 
 void initialize_trainer_threads(){
 
-    initialize_trainers_semaphores();
+    initialize_trainer_thread_contexts();
 
     trainers_tids = list_create();
-    list_iterate(trainers_semaphores, initialize_and_load_trainer_thread_for);
+    list_iterate(trainer_thread_contexts, initialize_and_load_trainer_thread_for);
 
     join_trainers_threads();
 }
