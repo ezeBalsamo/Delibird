@@ -54,21 +54,21 @@ t_list* get_subscribers_of_a_queue(uint32_t queue){
    return (t_list*) subscribers_of_a_queue;
 }
 
-bool equal_subscribers(int subscriber, int another_subscriber){
+bool equals_subscribers_(int subscriber, int another_subscriber){
     return subscriber == another_subscriber;
 }
 
 void move_subscriber_to_ACK(t_message_status* message_status, int subscriber){
 
-    list_add(message_status -> subscribers_who_received, &subscriber);
-    list_remove_by_condition(message_status -> subscribers_to_send, (bool (*)(void *)) equal_subscribers);
+    list_add(message_status -> subscribers_who_received, subscriber);
+    list_remove_by_condition(message_status -> subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
 }
 
 void subscribe_process(int subscriber, uint32_t operation_queue){
     char* queue_name = queue_name_of(operation_queue);
     void* subscribers = dictionary_get(subscribers_list_dictionary, queue_name);
 
-    list_add((t_list*) subscribers, &subscriber);
+    list_add((t_list*) subscribers, subscriber);
 }
 
 void send_all_messages(int subscriber, uint32_t operation_queue){
@@ -80,7 +80,7 @@ void send_all_messages(int subscriber, uint32_t operation_queue){
         serialize_and_send_structure(request, subscriber);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create((void *(*)(void *)) receive_ack_message,
-                                                                      &subscriber);
+                                                                      subscriber);
         thread_join(waiting_for_ack_thread);
 
         move_subscriber_to_ACK(message_status, subscriber);

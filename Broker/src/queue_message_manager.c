@@ -71,6 +71,12 @@ t_queue* get_queue_of(uint32_t operation){
     return (t_queue*) queue;
 }
 
+bool equals_message_status_(t_message_status* message_status, t_message_status* another_message_status){
+    return message_status -> identified_message == another_message_status -> identified_message &&
+           message_status -> subscribers_to_send == another_message_status -> subscribers_to_send &&
+           message_status -> subscribers_who_received == another_message_status -> subscribers_who_received;
+}
+
 void push_to_queue(t_message_status* message_status){
 
     uint32_t operation = internal_operation_in(message_status -> identified_message);
@@ -87,22 +93,25 @@ void push_to_queue(t_message_status* message_status){
     queue_push(queue, message_status);
 
     publish(message_status -> subscribers_to_send, message_status);
+
+//TODO ver qe no esta haciendo lo que yo quiero equals_message_status.
+    if(list_is_empty(message_status -> subscribers_to_send))
+        list_remove_by_condition(queue -> elements, (bool (*)(void *)) equals_message_status_);
 }
 
 void publish(t_list* subscribers, t_message_status* message_status){
 
     t_request* request = create_request_id(message_status);
 
-    void _send_message(void* subscriber){
+    void _send_message(int subscriber){
 
-        int cast_subscriber = *((int*)subscriber);
-        serialize_and_send_structure(request, cast_subscriber);
+        serialize_and_send_structure(request, subscriber);
     //    log_succesful_message_sent_to_a_suscriber(request -> structure); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
         thread_join(waiting_for_ack_thread);
 
-        move_subscriber_to_ACK(message_status, cast_subscriber);
+        move_subscriber_to_ACK(message_status, subscriber);
     }
 
     if(list_is_empty(subscribers)){
