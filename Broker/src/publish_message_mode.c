@@ -19,6 +19,8 @@ t_message_status* create_message_status_structure(t_identified_message* identifi
     message_status -> identified_message = identified_message;
     message_status -> subscribers_to_send = list_create();
     message_status -> subscribers_who_received = list_create();
+
+    return message_status;
 }
 
 void consume_message(t_connection_request* connection_request){
@@ -37,7 +39,7 @@ void consume_message(t_connection_request* connection_request){
 }
 
 void initialize_publish_message_mode(){
-    t_message_role_identifier* publish_message_mode = safe_malloc(sizeof(t_message_role_identifier));
+    publish_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     publish_message_mode -> can_handle_function  = publish_mode_can_handle;
     publish_message_mode -> attending_message_function = consume_message;
 }

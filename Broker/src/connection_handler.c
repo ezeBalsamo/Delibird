@@ -7,7 +7,7 @@
 #include "../include/broker_logs_manager.h"
 
 uint32_t message_id = 1;
-sem_t* mutex_id;
+sem_t mutex_id;
 
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
@@ -22,7 +22,7 @@ void update_message_id(){
 }
 
 sem_t* get_mutex_id(){
-    return mutex_id;
+    return &mutex_id;
 }
 
 void* main_thread_handler(void* connection_fd){
@@ -46,7 +46,7 @@ void* main_thread_handler(void* connection_fd){
 
 void* initialize_connection_handler(){
     log_server_initial_status();
-    sem_init(mutex_id, true, 1);
+    sem_init(&mutex_id, false, 1);
     start_multithreaded_server(port(), main_thread_handler);
 
     return NULL;

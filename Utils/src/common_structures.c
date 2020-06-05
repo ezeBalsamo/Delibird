@@ -66,6 +66,11 @@ uint32_t internal_operation_in(t_identified_message* identified_message){
     return identified_message -> request -> operation;
 }
 
+uint32_t internal_operation_in_correlative(t_identified_message* correlative_identified_message){
+    t_identified_message* original_identified_message = (t_identified_message*) internal_object_in(correlative_identified_message);
+    return internal_operation_in(original_identified_message);
+}
+
 void* internal_object_in(t_identified_message* identified_message){
     return identified_message -> request -> structure;
 }

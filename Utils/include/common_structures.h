@@ -76,13 +76,8 @@ enum Operation {
     SUBSCRIBE_ME, IDENTIFIED_MESSAGE
 };
 
-typedef struct Serializable_Object{
-    uint32_t code;
-    t_serialization_information* (*serialize_function) (void* structure);
-    t_request* (*deserialize_function) (void* serialized_structure);
-}t_serializable_object;
-
 uint32_t internal_operation_in(t_identified_message* identified_message);
+uint32_t internal_operation_in_correlative(t_identified_message* correlative_identified_message);
 void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
 

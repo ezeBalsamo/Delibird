@@ -17,8 +17,8 @@ void initialize_message_role_identifier(){
 
     message_identifier = list_create();
 
-    list_add(message_identifier, (void*) publish_message_mode_function());
-    list_add(message_identifier, (void*) subscriber_message_mode_function());
+    list_add(message_identifier, publish_message_mode_function());
+    list_add(message_identifier, subscriber_message_mode_function());
 }
 
 t_message_role_identifier* message_role_handler(uint32_t operation){
@@ -28,7 +28,7 @@ t_message_role_identifier* message_role_handler(uint32_t operation){
     bool can_handle_ (void* message_role_identifier){
         t_message_role_identifier* cast_message_role_identifier = (t_message_role_identifier*) message_role_identifier;
         return (*(cast_message_role_identifier -> can_handle_function)) (operation);
-    };
+    }
 
     t_message_role_identifier* message_role_identifier = list_remove_by_condition(message_identifier, can_handle_);
 

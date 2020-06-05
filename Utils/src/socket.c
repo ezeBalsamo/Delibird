@@ -258,7 +258,6 @@ uint32_t receive_ack_message(int socket_fd){
     if(recv(socket_fd, &ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");
         close(socket_fd);
-        free_system();
     }
     return ack;
 }

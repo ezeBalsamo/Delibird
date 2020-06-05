@@ -20,7 +20,7 @@ void subscribe(t_connection_request* connection_request){
 }
 
 t_message_role_identifier* initialize_subscriber_message_mode(){
-    t_message_role_identifier* subscriber_message_mode = safe_malloc(sizeof(t_message_role_identifier));
+    subscriber_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     subscriber_message_mode -> can_handle_function  = subscriber_mode_can_handle;
     subscriber_message_mode -> attending_message_function = subscribe;
 }

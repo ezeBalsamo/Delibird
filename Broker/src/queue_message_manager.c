@@ -75,6 +75,11 @@ void push_to_queue(t_message_status* message_status){
 
     uint32_t operation = internal_operation_in(message_status -> identified_message);
 
+    if(operation == 7){ //caso en donde es un identified con otro identified adentro.
+    uint32_t internal_operation = internal_operation_in_correlative(message_status->identified_message);
+    operation = internal_operation;
+    }
+
     get_and_update_subscribers_to_send(message_status, operation);
 
     t_queue* queue = get_queue_of(operation);
@@ -92,7 +97,7 @@ void publish(t_list* subscribers, t_message_status* message_status){
 
         int cast_subscriber = *((int*)subscriber);
         serialize_and_send_structure(request, cast_subscriber);
-        log_succesful_message_sent_to_a_suscriber(request -> structure); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
+    //    log_succesful_message_sent_to_a_suscriber(request -> structure); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
         thread_join(waiting_for_ack_thread);
@@ -101,13 +106,14 @@ void publish(t_list* subscribers, t_message_status* message_status){
     }
 
     if(list_is_empty(subscribers)){
-        log_no_subscribers_for_request(request -> structure);
+//        log_no_subscribers_for_request(request -> structure);
     } else {
         list_iterate(subscribers, _send_message);
-        log_succesful_message_sent_to_suscribers(request -> structure);
+//        log_succesful_message_sent_to_suscribers(request -> structure);
     }
 }
 
+//TODO Cambiar estos frees... Quedaron viejos.
 void free_all_queues(){
     queue_destroy_and_destroy_elements(appeared_queue, (void (*)(void *)) free_connection_request);
     queue_destroy_and_destroy_elements(new_queue, (void (*)(void *)) free_connection_request);
