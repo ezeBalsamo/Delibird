@@ -5,6 +5,7 @@ set(SOURCES
         src/map.c
         src/team.c
         src/team_logs_manager.c
+        src/team_configuration_manager.c
         src/team_manager.c
         src/team_serializable_objects.c
         src/trainers_parser.c
@@ -25,7 +26,9 @@ set(SOURCES
         src/non_preemptive_sjf_scheduling_algorithm.c
         src/movement_action.c
         src/trainer_thread_context_execution_cycle.c
-        src/catch_action.c)
+        src/catch_action.c
+        src/distance_calculator.c
+        src/trainer_thread_context_state_chained_evaluation.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

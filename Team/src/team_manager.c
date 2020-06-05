@@ -5,19 +5,11 @@
 #include <stdlib.h>
 #include <trainer_threads.h>
 #include <commons/string.h>
+#include <team_logs_manager.h>
+#include "../../Utils/include/free_system.h"
 
 t_list* localized_trainers;
 t_list* global_goal;
-
-bool global_goal_contains(char* pokemon_name){
-    t_list* actual_global_goal = team_global_goal_according_to(localized_trainers);
-
-    bool _is_equal_pokemon(void *pokemon_goal){
-        return string_equals_ignore_case(((t_pokemon_goal*) pokemon_goal) -> pokemon_name, pokemon_name);
-    }
-
-    return list_any_satisfy(actual_global_goal, _is_equal_pokemon);
-}
 
 void* initialize_team_manager(){
     localized_trainers = parsed_trainers();
@@ -30,6 +22,38 @@ void* initialize_team_manager(){
 
 bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer){
     return trainer -> sequential_number == another_trainer -> sequential_number;
+}
+
+uint32_t amount_required_of(char* pokemon_name){
+
+    bool _are_equals(void* pokemon_goal){
+        t_pokemon_goal* cast_pokemon_goal = (t_pokemon_goal*) pokemon_goal;
+        return string_equals_ignore_case(cast_pokemon_goal -> pokemon_name, pokemon_name);
+    }
+
+    t_pokemon_goal* pokemon_goal_found = list_find(global_goal, _are_equals);
+
+    if(!pokemon_goal_found){
+        log_pokemon_not_belonging_to_global_goal_error_for(pokemon_name);
+        free_system();
+    }
+
+    return pokemon_goal_found -> quantity;
+}
+
+bool global_goal_contains(char* pokemon_name){
+
+    bool _are_equals(void* pokemon_goal){
+        t_pokemon_goal* cast_pokemon_goal = (t_pokemon_goal*) pokemon_goal;
+        return string_equals_ignore_case(cast_pokemon_goal -> pokemon_name, pokemon_name);
+    }
+
+    return list_any_satisfy(global_goal, _are_equals);
+}
+
+void update_required_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name){
+    t_trainer* trainer = localizable_trainer -> object;
+    list_add(trainer -> desired_pokemons, pokemon_name);
 }
 
 t_list* trainers_x_positions(){

@@ -1,7 +1,8 @@
+#include <team_configuration_manager.h>
+#include <trainer_thread_context_execution_cycle.h>
 #include "catch_action.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/socket.h"
-#include "../../Utils/include/configuration_manager.h"
 
 t_catch_action* catch_action_for(t_localizable_object* localizable_pokemon){
 
@@ -24,12 +25,6 @@ t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_cont
     return catch_pokemon;
 }
 
-char* broker_ip(){
-    return config_get_string_at("BROKER_IP");
-}
-char* broker_port(){
-    return config_get_string_at("BROKER_PORT");
-}
 
 void catch_action_execution_function(t_trainer_thread_context* trainer_thread_context){
     t_request* request = safe_malloc(sizeof(t_request));
@@ -39,7 +34,7 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(!connection_information -> connection_was_succesful) {
-        //TODO: lógica de comportamiento por default
+        catch_action_completed_by(trainer_thread_context);
     } else {
         //TODO: traer implementación de nico de serialize_send_structure_and_wait_for_ack(request, socket_fd);
     }

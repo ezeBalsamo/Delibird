@@ -25,7 +25,7 @@ void* queue_listener_thread(){
         log_successful_connection();
         log_about_to_send_request(request);
 
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
         free_request(request);
 
@@ -65,7 +65,7 @@ void publisher_mode_execution(){
         log_successful_connection();
         log_about_to_send_request(request);
 
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
         free_and_close_connection_information(connection_information);

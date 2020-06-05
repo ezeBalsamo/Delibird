@@ -13,7 +13,9 @@ set(SOURCES
         src/roots.c
         src/pretty_printer.c
         src/queue_code_name_associations.c
-        src/general_logs.c)
+        src/general_logs.c
+        src/chained_evaluation.c
+        src/chained_on_failure_evaluation.c)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_library(utils SHARED ${SOURCES})

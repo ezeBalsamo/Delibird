@@ -100,6 +100,19 @@ void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_nam
     free(message);
 }
 
+void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name){
+    char* message = string_from_format("El pokemon %s no forma parte del objetivo global.", pokemon_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_incorrent_pokemon_removed_error_for(char* pokemon_name_to_remove, char* pokemon_name_removed){
+    char* message = string_from_format("Se esperaba remover %s pero en su lugar se encontraba %s",
+            pokemon_name_to_remove, pokemon_name_removed);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_team_logs_manager(){
     free_loggers();
 }

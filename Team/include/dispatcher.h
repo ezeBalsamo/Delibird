@@ -16,4 +16,6 @@ bool is_anybody_executing();
 
 void execute(t_trainer_thread_context* trainer_thread_context);
 
+void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
+
 #endif //DELIBIRD_DISPATCHER_H

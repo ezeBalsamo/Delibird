@@ -5,15 +5,12 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/free_system.h"
 #include "../../Utils/include/general_logs.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
+#include <team_configuration_manager.h>
 
-char* broker_ip;
-char* broker_port;
 
 sem_t subscriber_threads_request_sent;
 
@@ -63,13 +60,13 @@ void* subscriber_thread(void* queue_operation_identifier){
     request -> structure = subscribe_me;
     request -> sanitizer_function = free;
 
-    t_connection_information* connection_information = connect_to(broker_ip, broker_port);
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(!connection_information -> connection_was_succesful) {
         execute_retry_connection_strategy(connection_information);
     }
     else {
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         sem_post(&subscriber_threads_request_sent);
         request -> sanitizer_function (request);
 
@@ -124,10 +121,10 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     request -> structure = get_pokemon;
     request -> sanitizer_function = free;
 
-    t_connection_information* connection_information = connect_to(broker_ip, broker_port);
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         request -> sanitizer_function (request);
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
@@ -136,8 +133,6 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 }
 
 void* initialize_broker_connection_handler(){
-    broker_ip = config_get_string_at("IP_BROKER");
-    broker_port = config_get_string_at("PUERTO_BROKER");
 
     sem_init(&subscriber_threads_request_sent, false, 0);
 

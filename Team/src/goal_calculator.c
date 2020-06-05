@@ -1,5 +1,4 @@
 #include "goal_calculator.h"
-#include <team_manager.h>
 #include <commons/string.h>
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/common_structures.h"
@@ -8,6 +7,10 @@
 t_list* requirements_of(t_trainer* trainer){
     return list_difference(trainer -> desired_pokemons, trainer -> current_pokemons,
                            (bool (*)(void *, void *)) string_equals_ignore_case);
+}
+
+bool can_catch_pokemons(t_trainer* trainer){
+    return list_size(trainer -> current_pokemons) < list_size(trainer -> desired_pokemons);
 }
 
 t_list* goal_of(t_trainer* trainer){

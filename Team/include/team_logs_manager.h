@@ -17,6 +17,8 @@ void log_succesful_creation_of_thread_of_trainer(uint32_t sequential_number);
 void log_zero_schedulable_threads_error();
 void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number);
 void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_name);
+void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name);
+void log_incorrent_pokemon_removed_error_for(char* pokemon_name_to_remove, char* pokemon_name_removed);
 
 void free_team_logs_manager();
 

@@ -9,7 +9,7 @@
 
 t_query_performer* query_performer;
 
-char* port(){
+char* own_port(){
     return config_get_string_at("PUERTO");
 }
 
@@ -34,7 +34,7 @@ void* initialize_gameboy_connection_handler(){
     initialize_appeared_query_performer();
     query_performer = appeared_query_performer();
 
-    start_multithreaded_server(port(), main_thread_handler);
+    start_multithreaded_server(own_port(), main_thread_handler);
 
     return NULL;
 }

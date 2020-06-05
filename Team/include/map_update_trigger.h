@@ -3,6 +3,6 @@
 
 #include "team_manager.h"
 
-void map_updated_with_insertion_of(t_localizable_object* pokemon);
+void map_updated_with_insertion_of(t_localizable_object* localizable_pokemon);
 
 #endif //DELIBIRD_MAP_UPDATE_TRIGGER_H

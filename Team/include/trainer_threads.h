@@ -13,12 +13,11 @@ typedef struct Trainer_thread_context{
     sem_t semaphore;
     uint32_t state;
     void* thread_action;
-    bool has_finished;
     void (*execution_function) (void*);
 }t_trainer_thread_context;
 
 void initialize_trainer_threads();
 
-void execute_trainer_thread_context(t_trainer_thread_context* trainer_thread_context);
+void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
 
 #endif //DELIBIRD_TRAINER_THREADS_H

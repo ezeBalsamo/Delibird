@@ -7,7 +7,7 @@
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
 
-void execute_trainer_thread_context(t_trainer_thread_context* trainer_thread_context){
+void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context){
     trainer_thread_context -> execution_function (trainer_thread_context);
 }
 
@@ -26,7 +26,7 @@ void* trainer_thread(void* trainer_thread_context){
 
     while(cast_trainer_thread_context -> state != FINISHED){
         sem_wait(&cast_trainer_thread_context -> semaphore);
-        execute_trainer_thread_context(cast_trainer_thread_context);
+        execute_trainer_thread_context_action(cast_trainer_thread_context);
     }
 
     return NULL;
@@ -48,7 +48,6 @@ void initialize_and_load_trainer_thread_context_for(t_localizable_object* locali
     t_trainer_thread_context* trainer_thread_context = safe_malloc(sizeof(t_trainer_thread_context));
     trainer_thread_context -> localizable_trainer = localizable_trainer;
     trainer_thread_context -> semaphore = trainer_semaphore;
-    trainer_thread_context -> has_finished = false;
 
     list_add(trainer_thread_contexts, (void*) trainer_thread_context);
 }

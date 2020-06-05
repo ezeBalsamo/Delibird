@@ -3,12 +3,11 @@
 #include <scheduling_algorithm.h>
 #include "dispatcher.h"
 #include "../../Utils/include/free_system.h"
-#include "../../Utils/include/common_structures.h"
 
 t_list* new_trainer_thread_contexts;
 t_queue* ready_trainer_thread_contexts;
 t_list* blocked_trainer_thread_contexts;
-t_list* finished_synchronizable_trainers;
+t_list* finished_trainer_thread_contexts;
 
 bool is_someone_executing = false;
 
@@ -16,7 +15,7 @@ void initialize_dispatcher(){
     new_trainer_thread_contexts = list_create();
     ready_trainer_thread_contexts = queue_create();
     blocked_trainer_thread_contexts = list_create();
-    finished_synchronizable_trainers = list_create();
+    finished_trainer_thread_contexts = list_create();
 
     initialize_scheduling_algorithm();
 }
@@ -105,4 +104,10 @@ void execute(t_trainer_thread_context* trainer_thread_context){
      *      -> si la conexión no se realiza: comportamiento por default, lo cual puede ser blocked o finished
      * En el caso de la resolución del deadlock, puede pasar a finished
      * */
+}
+
+void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
+    //TODO
+    trainer_thread_context -> state = FINISHED;
+    list_add(finished_trainer_thread_contexts, trainer_thread_context);
 }

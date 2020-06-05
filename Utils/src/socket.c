@@ -215,7 +215,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
     }
 }
 
-void send_structure(t_serialization_information* serialization_information, int socket_fd) {
+void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd) {
 
     uint32_t total_amount_of_bytes =
             serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
@@ -234,10 +234,10 @@ void send_structure(t_serialization_information* serialization_information, int 
     free(serialized_request);
 }
 
-void serialize_and_send_structure(t_request* request, int socket_fd){
+void send_structure(t_request* request, int socket_fd){
 
     t_serialization_information* request_serialization_information = serialize(request);
-    send_structure(request_serialization_information, socket_fd);
+    send_serialized_structure(request_serialization_information, socket_fd);
     free_serialization_information(request_serialization_information);
 }
 
