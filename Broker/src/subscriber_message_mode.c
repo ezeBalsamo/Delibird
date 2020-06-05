@@ -13,7 +13,7 @@ bool subscriber_mode_can_handle(uint32_t operation){
     return operation == SUBSCRIBE_ME;
 }
 
-void consume_message(t_connection_request* connection_request){
+void subscribe(t_connection_request* connection_request){
     t_subscribe_me* suscribe_me = (t_subscribe_me*) (connection_request -> request) -> structure;
     subscribe_process(connection_request -> socket_fd, suscribe_me -> operation_queue);
     send_all_messages(connection_request -> socket_fd, suscribe_me -> operation_queue);
@@ -22,5 +22,5 @@ void consume_message(t_connection_request* connection_request){
 t_message_role_identifier* initialize_subscriber_message_mode(){
     t_message_role_identifier* subscriber_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     subscriber_message_mode -> can_handle_function  = subscriber_mode_can_handle;
-    subscriber_message_mode -> attending_message_function = consume_message;
+    subscriber_message_mode -> attending_message_function = subscribe;
 }

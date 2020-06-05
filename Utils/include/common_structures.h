@@ -89,7 +89,6 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
 void* safe_malloc(size_t size);
 t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
 t_connection_request* create_connection_request(int connection_fd, t_request* request);
-t_request* create_request_id(t_message_status* message_status);
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);

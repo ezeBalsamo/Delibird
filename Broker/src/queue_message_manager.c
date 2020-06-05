@@ -49,6 +49,15 @@ void initialize_queue_message_manager(){
     log_succesful_initialize_queue_message_manager();
 }
 
+t_request* create_request_id(t_message_status* message_status){
+    t_request* request = safe_malloc(sizeof(t_request));
+    request -> operation = IDENTIFIED_MESSAGE;
+    request -> structure = message_status -> identified_message;
+    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
+
+    return request;
+}
+
 void get_and_update_subscribers_to_send(t_message_status* message_status, uint32_t operation){
 
     t_list* subscribers_of_a_queue = get_subscribers_of_a_queue(operation);
@@ -81,13 +90,14 @@ void publish(t_list* subscribers, t_message_status* message_status){
 
     void _send_message(void* subscriber){
 
-        serialize_and_send_structure(request, int subscriber);
+        int cast_subscriber = *((int*)subscriber);
+        serialize_and_send_structure(request, cast_subscriber);
         log_succesful_message_sent_to_a_suscriber(request -> structure); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
         thread_join(waiting_for_ack_thread);
 
-        move_subscriber_to_ACK(message_status, subscriber);
+        move_subscriber_to_ACK(message_status, cast_subscriber);
     }
 
     if(list_is_empty(subscribers)){

@@ -3,7 +3,6 @@
 #include <general_logs.h>
 #include <free_system.h>
 #include <socket.h>
-#include "../../Broker/include/publish_message_mode.h"
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
@@ -30,13 +29,6 @@ t_connection_request* create_connection_request(int connection_fd, t_request* re
     return connection_request;
 }
 
-t_request* create_request_id(t_message_status* message_status){
-    t_request* request = safe_malloc(sizeof(t_request));
-    request -> operation = IDENTIFIED_MESSAGE;
-    request -> structure = message_status -> identified_message;
-    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
-}
-
 void free_request(t_request* self){
     self -> sanitizer_function (self -> structure);
     free(self);
@@ -49,7 +41,7 @@ void free_identified_message(t_identified_message* identified_message){
 }
 
 void free_connection_request(t_connection_request* connection_request){
-    free(connection_request -> serialized_request);
+    free_request(connection_request -> request);
     free(connection_request);
 }
 

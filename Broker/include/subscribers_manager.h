@@ -1,6 +1,10 @@
 #ifndef DELIBIRD_SUBSCRIBERS_MANAGER_H
 #define DELIBIRD_SUBSCRIBERS_MANAGER_H
 
+#include <commons/collections/list.h>
+#include <stdint.h>
+#include "publish_message_mode.h"
+
 void initialize_subscribers_manager();
 
 t_list* get_subscribers_of_a_queue(uint32_t queue);

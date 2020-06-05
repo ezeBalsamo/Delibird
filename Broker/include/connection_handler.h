@@ -1,6 +1,8 @@
 #ifndef DELIBIRD_TEAM_CONNECTION_HANDLER_H
 #define DELIBIRD_TEAM_CONNECTION_HANDLER_H
 
+#include <semaphore.h>
+
 uint32_t get_message_id();
 void update_message_id();
 sem_t* get_mutex_id();

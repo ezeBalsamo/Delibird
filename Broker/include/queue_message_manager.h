@@ -10,6 +10,8 @@ void initialize_queue_message_manager();
 
 t_queue* get_queue_of(uint32_t operation);
 
+t_request* create_request_id(t_message_status* message_status);
+
 void push_to_queue(t_message_status* message_status);
 
 void publish(t_list* subscribers, t_message_status* message_status);

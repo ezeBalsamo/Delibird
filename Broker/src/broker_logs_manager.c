@@ -1,7 +1,7 @@
 #include "../include/broker_logs_manager.h"
-#include "../include/broker_deserialization.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
+#include "../../Utils/include/serialization_interface.h"
 
 void initialize_broker_logs_manager(){
     initialize_logger_for("Broker");

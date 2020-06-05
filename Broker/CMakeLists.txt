@@ -1,7 +1,6 @@
 include_directories(include)
 set(SOURCES
         src/broker.c
-        src/broker_deserialization.c
         src/queue_message_manager.c
         src/connection_handler.c
         src/broker_logs_manager.c

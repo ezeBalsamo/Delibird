@@ -4,7 +4,6 @@
 #include <localized_query_performer.h>
 #include <caught_query_performer.h>
 #include <team_logs_manager.h>
-#include "../../Utils/include/handle.h"
 
 t_list* query_performers;
 
