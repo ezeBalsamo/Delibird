@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <subscribers_manager.h>
 #include "../include/queue_message_manager.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../include/connection_handler.h"
@@ -16,6 +17,7 @@ int main() {
     initialize_serializable_objects();
     initialize_configuration_manager_named("broker");
     initialize_queue_message_manager();
+    initialize_subscribers_manager();
 
     log_succesful_start_up();
 

@@ -40,20 +40,6 @@ void query_perform(t_request* request) {
     query_performer->perform_function (request->structure);
 }
 
-t_query_performer* query_performer_handle(uint32_t operation) {
-
-    initialize_query_performer();
-
-    void* query_performer = object_can_handle(query_performers, operation);
-
-    if (query_performer == NULL){
-        log_invalid_operation_to_query_performer(operation);
-    }
-
-    free_query_performer();
-    return (t_query_performer*) query_performer;
-}
-/*
 t_query_performer* query_performer_handle(uint32_t operation){
 
     initialize_query_performer();
@@ -70,4 +56,3 @@ t_query_performer* query_performer_handle(uint32_t operation){
     free_query_performer();
     return query_performer;
 }
- */

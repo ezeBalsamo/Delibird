@@ -218,17 +218,17 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
 void send_structure(t_serialization_information* serialization_information, int socket_fd) {
 
     uint32_t total_amount_of_bytes =
-            serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
+            serialization_information->amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void* serialized_request = safe_malloc(total_amount_of_bytes);
+    void *serialized_request = safe_malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
-            &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
+           &(serialization_information->amount_of_bytes), sizeof(uint32_t));
 
     memmove(serialized_request + sizeof(uint32_t),
-            serialization_information -> serialized_request,
-            serialization_information -> amount_of_bytes);
+            serialization_information->serialized_request,
+            serialization_information->amount_of_bytes);
 
     send_all(socket_fd, serialized_request, total_amount_of_bytes);
     free(serialized_request);
@@ -239,6 +239,28 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
     t_serialization_information* request_serialization_information = serialize(request);
     send_structure(request_serialization_information, socket_fd);
     free_serialization_information(request_serialization_information);
+}
+
+void send_ack_message(uint32_t message_id, int socket_fd){
+
+    void* serialized_ack = malloc(sizeof(uint32_t));
+
+    memcpy(serialized_ack, &(message_id), sizeof(uint32_t));
+
+    send_all(socket_fd, serialized_ack, sizeof(uint32_t));
+    free(serialized_ack);
+}
+
+uint32_t receive_ack_message(int socket_fd){
+
+    uint32_t ack;
+
+    if(recv(socket_fd, &ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
+        log_syscall_error("Error al recibir mensaje ACK");
+        close(socket_fd);
+        free_system();
+    }
+    return ack;
 }
 
 t_serialization_information* receive_structure(int socket_fd){

@@ -5,7 +5,11 @@ set(SOURCES
         src/queue_message_manager.c
         src/connection_handler.c
         src/broker_logs_manager.c
-        src/free_broker.c)
+        src/free_broker.c
+        src/message_role_identifier.c
+        src/publish_message_mode.c
+        src/subscriber_message_mode.c
+        src/subscribers_manager.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(broker ${SOURCES})

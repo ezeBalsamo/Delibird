@@ -1,3 +1,4 @@
+#include <commons/collections/queue.h>
 #include "../include/t_list_extension.h"
 
 t_list* list_flat(t_list* self){
@@ -56,4 +57,8 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     }
 
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
+}
+
+void queue_iterator(t_queue* queue, void(*closure)(void*)){
+    return list_iterate(queue -> elements, closure);
 }

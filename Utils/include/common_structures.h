@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <commons/collections/list.h>
 #include <stddef.h>
+#include "../../Broker/include/publish_message_mode.h"
 
 typedef struct Request{
     uint32_t operation;
@@ -17,7 +18,7 @@ typedef struct Serialization_information{
 }t_serialization_information;
 
 typedef struct Connection_request{
-    void* serialized_request;
+    t_request* request;
     int socket_fd;
 }t_connection_request;
 
@@ -81,10 +82,14 @@ typedef struct Serializable_Object{
     t_request* (*deserialize_function) (void* serialized_structure);
 }t_serializable_object;
 
+uint32_t internal_operation_in(t_identified_message* identified_message);
 void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
 
 void* safe_malloc(size_t size);
+t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
+t_connection_request* create_connection_request(int connection_fd, t_request* request);
+t_request* create_request_id(t_message_status* message_status);
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);

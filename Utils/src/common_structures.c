@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <general_logs.h>
 #include <free_system.h>
+#include <socket.h>
+#include "../../Broker/include/publish_message_mode.h"
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
@@ -10,6 +12,29 @@ void* safe_malloc(size_t size){
         free_system();
     }
     return pointer;
+}
+
+t_identified_message* create_identified_message(uint32_t message_id, t_request* request){
+    t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
+    identified_message -> message_id = message_id;
+    identified_message -> request = request;
+
+    return identified_message;
+}
+
+t_connection_request* create_connection_request(int connection_fd, t_request* request){
+    t_connection_request* connection_request = safe_malloc(sizeof(t_connection_request));
+    connection_request -> socket_fd = connection_fd;
+    connection_request -> request = request;
+
+    return connection_request;
+}
+
+t_request* create_request_id(t_message_status* message_status){
+    t_request* request = safe_malloc(sizeof(t_request));
+    request -> operation = IDENTIFIED_MESSAGE;
+    request -> structure = message_status -> identified_message;
+    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
 }
 
 void free_request(t_request* self){
@@ -43,6 +68,10 @@ void free_serialization_information(t_serialization_information* serialization_i
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
     list_destroy_and_destroy_elements(localized_pokemon->positions,free);
     free(localized_pokemon);
+}
+
+uint32_t internal_operation_in(t_identified_message* identified_message){
+    return identified_message -> request -> operation;
 }
 
 void* internal_object_in(t_identified_message* identified_message){

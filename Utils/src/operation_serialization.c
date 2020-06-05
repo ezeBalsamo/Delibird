@@ -1,7 +1,6 @@
 #include "../include/operation_serialization.h"
 #include "../include/serializable_objects.h"
 #include <string.h>
-#include <stdlib.h>
 
 uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
