@@ -12,5 +12,6 @@ void subscribe_process(int subscriber,uint32_t operation_queue);
 bool equals_subscribers_(int subscriber, int another_subscriber);
 void move_subscriber_to_ACK(t_message_status* message_status, int subscriber);
 void send_all_messages(int subscriber, uint32_t operation_queue);
+void free_subscribers_manager();
 
 #endif //DELIBIRD_SUBSCRIBERS_MANAGER_H

@@ -94,9 +94,14 @@ void push_to_queue(t_message_status* message_status){
 
     publish(message_status -> subscribers_to_send, message_status);
 
-//TODO ver qe no esta haciendo lo que yo quiero equals_message_status.
-    if(list_is_empty(message_status -> subscribers_to_send))
-        list_remove_by_condition(queue -> elements, (bool (*)(void *)) equals_message_status_);
+    if(list_is_empty(message_status -> subscribers_to_send)){
+        for(int i = 0; i < list_size(queue -> elements); i++){
+            t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
+            if(equals_message_status_(message_status, message_status_to_compare)){
+                list_remove(queue -> elements, i);
+            }
+        }
+    }
 }
 
 void publish(t_list* subscribers, t_message_status* message_status){
@@ -106,7 +111,7 @@ void publish(t_list* subscribers, t_message_status* message_status){
     void _send_message(int subscriber){
 
         serialize_and_send_structure(request, subscriber);
-    //    log_succesful_message_sent_to_a_suscriber(request -> structure); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
+        log_succesful_message_sent_to_a_suscriber(request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
         thread_join(waiting_for_ack_thread);
@@ -115,21 +120,20 @@ void publish(t_list* subscribers, t_message_status* message_status){
     }
 
     if(list_is_empty(subscribers)){
-//        log_no_subscribers_for_request(request -> structure);
+        log_no_subscribers_for_request(internal_request_in_correlative(message_status -> identified_message));
     } else {
         list_iterate(subscribers, _send_message);
-//        log_succesful_message_sent_to_suscribers(request -> structure);
+        log_succesful_message_sent_to_suscribers(internal_request_in_correlative(message_status -> identified_message));
     }
 }
 
-//TODO Cambiar estos frees... Quedaron viejos.
 void free_all_queues(){
-    queue_destroy_and_destroy_elements(appeared_queue, (void (*)(void *)) free_connection_request);
-    queue_destroy_and_destroy_elements(new_queue, (void (*)(void *)) free_connection_request);
-    queue_destroy_and_destroy_elements(catch_queue, (void (*)(void *)) free_connection_request);
-    queue_destroy_and_destroy_elements(caught_queue, (void (*)(void *)) free_connection_request);
-    queue_destroy_and_destroy_elements(get_queue, (void (*)(void *)) free_connection_request);
-    queue_destroy_and_destroy_elements(localized_queue, (void (*)(void *)) free_connection_request);
+    queue_destroy_and_destroy_elements(appeared_queue, (void (*)(void *)) free_message_status);
+    queue_destroy_and_destroy_elements(new_queue, (void (*)(void *)) free_message_status);
+    queue_destroy_and_destroy_elements(catch_queue, (void (*)(void *)) free_message_status);
+    queue_destroy_and_destroy_elements(caught_queue, (void (*)(void *)) free_message_status);
+    queue_destroy_and_destroy_elements(get_queue, (void (*)(void *)) free_message_status);
+    queue_destroy_and_destroy_elements(localized_queue, (void (*)(void *)) free_message_status);
 }
 
 void free_queue_dictionary(){

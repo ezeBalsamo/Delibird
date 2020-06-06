@@ -2,6 +2,7 @@
 #include <connection_handler.h>
 #include <semaphore.h>
 #include <queue_message_manager.h>
+#include <stdlib.h>
 #include "../../Utils/include/socket.h"
 
 t_message_role_identifier* publish_message_mode;
@@ -42,4 +43,10 @@ void initialize_publish_message_mode(){
     publish_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     publish_message_mode -> can_handle_function  = publish_mode_can_handle;
     publish_message_mode -> attending_message_function = consume_message;
+}
+
+void free_message_status(t_message_status* message_status){
+    free_identified_message(message_status -> identified_message);
+    list_destroy_and_destroy_elements(message_status -> subscribers_who_received, free);
+    list_destroy_and_destroy_elements(message_status ->subscribers_to_send, free);
 }

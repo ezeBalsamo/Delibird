@@ -32,7 +32,7 @@ void* main_thread_handler(void* connection_fd){
 
     void* serialized_request = serialization_information -> serialized_request;
     t_request* request = deserialize(serialized_request);
-    log_structure_received(serialized_request);
+    log_structure_received(request);
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
 

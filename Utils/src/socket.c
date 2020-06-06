@@ -251,9 +251,9 @@ void send_ack_message(uint32_t message_id, int socket_fd){
     free(serialized_ack);
 }
 
-uint32_t receive_ack_message(int socket_fd){
+void* receive_ack_message(int socket_fd){
 
-    uint32_t ack;
+    void* ack;
 
     if(recv(socket_fd, &ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");

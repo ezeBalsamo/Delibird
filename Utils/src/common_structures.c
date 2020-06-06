@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <general_logs.h>
 #include <free_system.h>
-#include <socket.h>
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
@@ -73,6 +72,11 @@ uint32_t internal_operation_in_correlative(t_identified_message* correlative_ide
 
 void* internal_object_in(t_identified_message* identified_message){
     return identified_message -> request -> structure;
+}
+
+void* internal_request_in_correlative(t_identified_message* correlative_identified_message) {
+    t_identified_message *original_identified_message = internal_object_in(correlative_identified_message);
+    return original_identified_message -> request;
 }
 
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message){
