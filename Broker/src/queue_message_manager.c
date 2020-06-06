@@ -81,7 +81,7 @@ void push_to_queue(t_message_status* message_status){
 
     uint32_t operation = internal_operation_in(message_status -> identified_message);
 
-    if(operation == 7){ //caso en donde es un identified con otro identified adentro.
+    if(operation == IDENTIFIED_MESSAGE){ //caso en donde es un identified con otro identified adentro.
     uint32_t internal_operation = internal_operation_in_correlative(message_status->identified_message);
     operation = internal_operation;
     }
@@ -94,7 +94,7 @@ void push_to_queue(t_message_status* message_status){
 
     publish(message_status -> subscribers_to_send, message_status);
 
-    if(list_is_empty(message_status -> subscribers_to_send)){
+    if(list_is_empty(message_status -> subscribers_to_send)){ //si el mensaje fue enviado a todos los suscriptores se borra.
         for(int i = 0; i < list_size(queue -> elements); i++){
             t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
             if(equals_message_status_(message_status, message_status_to_compare)){
@@ -108,22 +108,26 @@ void publish(t_list* subscribers, t_message_status* message_status){
 
     t_request* request = create_request_id(message_status);
 
-    void _send_message(int subscriber){
-
-        serialize_and_send_structure(request, subscriber);
+    void _send_message(void* subscriber){
+        int cast_subscriber = *((int*) subscriber);
+        serialize_and_send_structure(request, cast_subscriber);
         log_succesful_message_sent_to_a_suscriber(request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
 
+        void* ack;
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
-        thread_join(waiting_for_ack_thread);
-
-        move_subscriber_to_ACK(message_status, subscriber);
+        pthread_join(waiting_for_ack_thread, &ack);
+        uint32_t cast_received_ack = *((uint32_t*) ack);
+        if(cast_received_ack != message_status -> identified_message -> message_id){
+            //TODO log_error_in_ack
+        }
+        move_subscriber_to_ACK(message_status, cast_subscriber);
     }
 
     if(list_is_empty(subscribers)){
-        log_no_subscribers_for_request(internal_request_in_correlative(message_status -> identified_message));
+            log_no_subscribers_for_request(message_status -> identified_message);
     } else {
-        list_iterate(subscribers, _send_message);
-        log_succesful_message_sent_to_suscribers(internal_request_in_correlative(message_status -> identified_message));
+            list_iterate(subscribers, _send_message);
+            log_succesful_message_sent_to_suscribers(message_status -> identified_message);
     }
 }
 

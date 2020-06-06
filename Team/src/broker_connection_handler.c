@@ -76,6 +76,9 @@ void* subscriber_thread(void* queue_operation_identifier){
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
+            t_identified_message* correlative_identified_message = deserialized_request -> structure;
+            send_ack_message(correlative_identified_message -> message_id, connection_information -> socket_fd);
+
             char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
 

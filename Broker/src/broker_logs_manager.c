@@ -70,15 +70,15 @@ void log_structure_received(void* serialized_request){
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
-void log_succesful_message_sent_to_suscribers(void* serialized_request){
+void log_succesful_message_sent_to_suscribers(t_identified_message* identified_message){
     log_succesful_message(process_execution_logger(), "El mensaje fue enviado correctamente a todos los suscriptores:");
-    char* printed_object = request_pretty_print(serialized_request);
+    char* printed_object = request_pretty_print(identified_message -> request);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
-void log_no_subscribers_for_request(void* serialized_request){
+void log_no_subscribers_for_request(t_identified_message* identified_message){
     log_succesful_message(process_execution_logger(), "No hay suscriptores en la cola donde se encuentra este mensaje:");
-    char* printed_object = request_pretty_print(serialized_request);
+    char* printed_object = request_pretty_print(identified_message -> request);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 

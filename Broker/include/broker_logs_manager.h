@@ -1,6 +1,8 @@
 #ifndef DELIBIRD_BROKER_LOGS_MANAGER_H
 #define DELIBIRD_BROKER_LOGS_MANAGER_H
 
+#include "publish_message_mode.h"
+
 void initialize_broker_logs_manager();
 
 void log_succesful_connection_of_a_process();
@@ -21,9 +23,9 @@ void log_server_initial_status();
 
 void log_structure_received(void* serialized_request);
 
-void log_succesful_message_sent_to_suscribers(void* serialized_request);
+void log_succesful_message_sent_to_suscribers(t_identified_message* identified_message);
 
-void log_no_subscribers_for_request(void* serialized_request);
+void log_no_subscribers_for_request(t_identified_message* identified_message);
 
 void log_received_unknown_operation_error();
 

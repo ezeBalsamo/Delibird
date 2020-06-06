@@ -243,23 +243,25 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
 
 void send_ack_message(uint32_t message_id, int socket_fd){
 
-    void* serialized_ack = malloc(sizeof(uint32_t));
+    void* serialized_ack = safe_malloc(sizeof(uint32_t));
 
-    memcpy(serialized_ack, &(message_id), sizeof(uint32_t));
+    memcpy(serialized_ack, &message_id, sizeof(uint32_t));
 
     send_all(socket_fd, serialized_ack, sizeof(uint32_t));
     free(serialized_ack);
 }
 
-void* receive_ack_message(int socket_fd){
+void* receive_ack_message(void* socket_fd){
 
-    void* ack;
+    uint32_t* ack = safe_malloc(sizeof(uint32_t));
 
-    if(recv(socket_fd, &ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
+    int cast_socket_fd = *((int*)socket_fd);
+
+    if(recv(cast_socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");
-        close(socket_fd);
+        close(cast_socket_fd);
     }
-    return ack;
+    return (void*) ack;
 }
 
 t_serialization_information* receive_structure(int socket_fd){

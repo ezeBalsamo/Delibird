@@ -25,7 +25,7 @@ void serialize_and_send_structure(t_request* request, int socket_fd);
 
 void send_ack_message(uint32_t message_id, int socket_fd);
 
-void* receive_ack_message(int socket_fd);
+void* receive_ack_message(void* socket_fd);
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 
