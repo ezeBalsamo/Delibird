@@ -19,7 +19,7 @@ typedef struct Targetable_object{
 typedef struct Trainer{
     int sequential_number;
     t_list* current_pokemons;
-    t_list* desired_pokemons;
+    t_list* required_pokemons;
 }t_trainer;
 
 typedef struct Pokemon_goal{
@@ -37,7 +37,7 @@ bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);
 bool global_goal_contains(char* pokemon_name);
 uint32_t amount_required_of(char* pokemon_name);
 
-void update_required_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name);
+void update_current_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name);
 
 t_list* trainers_x_positions();
 t_list* trainers_y_positions();

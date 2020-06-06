@@ -35,7 +35,7 @@ void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context)
     t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
 
     free(catch_action);
-    update_required_pokemons_after_catching(trainer_thread_context -> localizable_trainer, localizable_pokemon -> object);
+    update_current_pokemons_after_catching(trainer_thread_context -> localizable_trainer, localizable_pokemon -> object);
     remove_pokemon_from_map(localizable_pokemon);
 
     trainer_thread_context_state_chained_evaluation_value_when_caught_for(trainer_thread_context);

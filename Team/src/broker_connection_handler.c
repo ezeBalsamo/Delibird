@@ -11,7 +11,6 @@
 #include <string.h>
 #include <team_configuration_manager.h>
 
-
 sem_t subscriber_threads_request_sent;
 
 pthread_t appeared_queue_tid;

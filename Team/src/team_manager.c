@@ -51,9 +51,9 @@ bool global_goal_contains(char* pokemon_name){
     return list_any_satisfy(global_goal, _are_equals);
 }
 
-void update_required_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name){
+void update_current_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name){
     t_trainer* trainer = localizable_trainer -> object;
-    list_add(trainer -> desired_pokemons, pokemon_name);
+    list_add(trainer -> current_pokemons, pokemon_name);
 }
 
 t_list* trainers_x_positions(){
@@ -81,7 +81,7 @@ void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
 }
 
 void free_trainer(t_trainer *trainer){
-    list_destroy_and_destroy_elements(trainer -> desired_pokemons, free);
+    list_destroy_and_destroy_elements(trainer -> required_pokemons, free);
     list_destroy_and_destroy_elements(trainer -> current_pokemons, free);
     free(trainer);
 }

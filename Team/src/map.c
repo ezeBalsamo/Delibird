@@ -13,7 +13,11 @@ t_matrix* map;
 t_dictionary* pokemon_occurrences;
 
 t_list* occurrences_of(char* pokemon_name){
-    t_list* targetable_pokemons_found = dictionary_get(pokemon_occurrences, pokemon_name);
+    char* uppercase_pokemon_name = string_duplicate(pokemon_name);
+    string_to_upper(uppercase_pokemon_name);
+
+    t_list* targetable_pokemons_found = dictionary_get(pokemon_occurrences, uppercase_pokemon_name);
+    free(uppercase_pokemon_name);
 
     if(!targetable_pokemons_found){
         log_pokemon_not_belonging_to_global_goal_error_for(pokemon_name);
@@ -87,7 +91,7 @@ void load_pokemon_in_map(t_targetable_object* targetable_pokemon){
 }
 
 uint32_t occurrences_amount_in_map_of(char* pokemon_name){
-    t_list* targetable_pokemons = dictionary_get(pokemon_occurrences, pokemon_name);
+    t_list* targetable_pokemons = occurrences_of(pokemon_name);
     return list_size(targetable_pokemons);
 }
 
@@ -101,7 +105,6 @@ void remove_pokemon_from_map(t_localizable_object* localizable_pokemon){
     }
 
     remove_occurence_of(localizable_pokemon);
-    free(pokemon_name);
     free(localizable_pokemon);
 }
 
@@ -131,7 +134,9 @@ uint32_t furthest_trainer_position(){
 void initialize_occurrence_of(t_pokemon_goal* pokemon_goal){
     
     t_list* targetable_pokemons = list_create();
-    dictionary_put(pokemon_occurrences, pokemon_goal -> pokemon_name, targetable_pokemons);
+    char* pokemon_name = string_duplicate(pokemon_goal -> pokemon_name);
+    string_to_upper(pokemon_name);
+    dictionary_put(pokemon_occurrences, pokemon_name, targetable_pokemons);
 }
 
 void initialize_map(){

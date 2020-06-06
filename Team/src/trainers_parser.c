@@ -25,10 +25,10 @@ t_trainer* parsed_trainer_from(uint32_t sequential_number, char* current_pokemon
         list_add(trainer -> current_pokemons, (void*) splitted_current_pokemons[i]);
     }
 
-    trainer -> desired_pokemons = list_create();
+    trainer -> required_pokemons = list_create();
     char** splitted_desired_pokemons = string_split(desired_pokemons, "|");
     for(int i = 0; splitted_desired_pokemons[i]; i++){
-        list_add(trainer -> desired_pokemons, (void*) splitted_desired_pokemons[i]);
+        list_add(trainer -> required_pokemons, (void*) splitted_desired_pokemons[i]);
     }
 
     free(splitted_current_pokemons);
