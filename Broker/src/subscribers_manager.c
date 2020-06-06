@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <queue_message_manager.h>
 #include <bits/pthreadtypes.h>
-#include <stdlib.h>
 #include <broker_logs_manager.h>
 #include "subscribers_manager.h"
 #include "../../Utils/include/queue_code_name_associations.h"
@@ -91,20 +90,11 @@ void send_all_messages(int subscriber, uint32_t operation_queue){
     log_succesful_all_messages_of_a_queue_sent_to(subscriber);
 }
 
-void free_all_lists(){
-    list_destroy_and_destroy_elements(new_pokemon_subscribers,free);
-    list_destroy_and_destroy_elements(appeared_pokemon_subscribers,free);
-    list_destroy_and_destroy_elements(get_pokemon_subscribers,free);
-    list_destroy_and_destroy_elements(localized_pokemon_subscribers,free);
-    list_destroy_and_destroy_elements(catch_pokemon_subscribers,free);
-    list_destroy_and_destroy_elements(caught_pokemon_subscribers,free);
-}
-
 void free_subscriber_dictionary(){
-    dictionary_destroy_and_destroy_elements(subscribers_list_dictionary,free);
+    dictionary_destroy_and_destroy_elements(subscribers_list_dictionary,
+                                            (void (*)(void *)) list_destroy_and_destroy_elements);
 }
 
 void free_subscribers_manager(){
-    free_all_lists();
     free_subscriber_dictionary();
 }

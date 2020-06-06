@@ -100,6 +100,7 @@ void push_to_queue(t_message_status* message_status){
             t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
             if(equals_message_status_(message_status, message_status_to_compare)){
                 list_remove(queue -> elements, i);
+                free_message_status(message_status);
             }
         }
     }
@@ -133,20 +134,10 @@ void publish(t_message_status* message_status){
     }
 }
 
-void free_all_queues(){
-    queue_destroy_and_destroy_elements(appeared_queue, (void (*)(void *)) free_message_status);
-    queue_destroy_and_destroy_elements(new_queue, (void (*)(void *)) free_message_status);
-    queue_destroy_and_destroy_elements(catch_queue, (void (*)(void *)) free_message_status);
-    queue_destroy_and_destroy_elements(caught_queue, (void (*)(void *)) free_message_status);
-    queue_destroy_and_destroy_elements(get_queue, (void (*)(void *)) free_message_status);
-    queue_destroy_and_destroy_elements(localized_queue, (void (*)(void *)) free_message_status);
-}
-
 void free_queue_dictionary(){
-    dictionary_destroy_and_destroy_elements(queue_dictionary, free);
+    dictionary_destroy_and_destroy_elements(queue_dictionary, (void (*)(void *)) queue_destroy_and_destroy_elements);
 }
 
 void free_queue_message_manager(){
-    free_all_queues();
     free_queue_dictionary();
 }
