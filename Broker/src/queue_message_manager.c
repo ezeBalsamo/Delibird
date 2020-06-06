@@ -41,10 +41,7 @@ void initialize_queue_dictionary(){
 
 void initialize_queue_message_manager(){
     initialize_messages_queue();
-    log_succesful_queues_creation();
-
     initialize_queue_dictionary();
-    //TODO log de esto
 
     log_succesful_initialize_queue_message_manager();
 }
@@ -87,13 +84,17 @@ void push_to_queue(t_message_status* message_status){
     }
 
     get_and_update_subscribers_to_send(message_status, operation);
+    log_succesful_get_and_update_subscribers_to_send(message_status -> identified_message);
 
     t_queue* queue = get_queue_of(operation);
 
     queue_push(queue, message_status);
+    log_succesful_new_message_pushed_to_a_queue(message_status -> identified_message);
 
-    publish(message_status -> subscribers_to_send, message_status);
+    publish(message_status);
 
+    //TODO ESTO ES LA LOGICA DE BORRAR MENSAJE EN LA COLA, VER MAS ADELANTE EN QUE MOMENTO SE DEBERIA DE HACER ESTO.
+    //Ahora se esta haciendo cuando el message_status ya no tiene suscriptores a los cuales enviarle.
     if(list_is_empty(message_status -> subscribers_to_send)){ //si el mensaje fue enviado a todos los suscriptores se borra.
         for(int i = 0; i < list_size(queue -> elements); i++){
             t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
@@ -104,8 +105,9 @@ void push_to_queue(t_message_status* message_status){
     }
 }
 
-void publish(t_list* subscribers, t_message_status* message_status){
+void publish(t_message_status* message_status){
 
+    t_list* subscribers = message_status -> subscribers_to_send;
     t_request* request = create_request_id(message_status);
 
     void _send_message(void* subscriber){
@@ -118,7 +120,7 @@ void publish(t_list* subscribers, t_message_status* message_status){
         pthread_join(waiting_for_ack_thread, &ack);
         uint32_t cast_received_ack = *((uint32_t*) ack);
         if(cast_received_ack != message_status -> identified_message -> message_id){
-            //TODO log_error_in_ack
+            log_ack_received_error();
         }
         move_subscriber_to_ACK(message_status, cast_subscriber);
     }

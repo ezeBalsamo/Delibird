@@ -1,3 +1,5 @@
+#include <commons/string.h>
+#include <stdlib.h>
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -18,16 +20,17 @@ void log_succesful_connection_of_a_process(){
     log_succesful_message(process_execution_logger(), message);
 }
 
-void log_succesful_subscription_process(){
-    char* message = "Se suscribió un proceso a una cola de mensajes correctamente.";
+void log_succesful_subscription_process(int subscriber){
+    char* message = string_from_format("%s: %d.", "Se suscribió al siguiente proceso a una cola de mensajes correctamente", subscriber);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
+    free(message);
 }
 
-void log_succesful_new_message_pushed_to_a_queue(void* serialized_request){ //aca agarrar void*
-    char* message = "Llegó un nuevo mensaje a una cola de mensajes correctamente.";
+void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identified_message){
+    char* message = "Se pusheo un nuevo mensaje a una cola de mensajes correctamente.";
     log_succesful_message(main_logger(), message);
-    char* printed_object = request_pretty_print(serialized_request);
+    char* printed_object = request_pretty_print(identified_message -> request);
     log_succesful_message(process_execution_logger(), message);
     log_succesful_message(process_execution_logger(), printed_object);
 }
@@ -52,12 +55,8 @@ void log_succesful_initialize_queue_message_manager(){
     log_succesful_message(process_execution_logger(), "El queue_message_manager se ha inicializado correctamente!\n");
 }
 
-void log_succesful_queues_creation(){
-    log_succesful_message(process_execution_logger(), "Las colas de mensajes se han creado correctamente!\n");
-}
-
-void log_succesful_subscribers_list_creation(){
-    log_succesful_message(process_execution_logger(), "La lista de suscriptores se ha creado correctamente!\n");
+void log_succesful_initialize_subscriber_manager(){
+    log_succesful_message(process_execution_logger(), "El subscriber_manager se ha inicializado correctamente!\n");
 }
 
 void log_server_initial_status(){
@@ -76,14 +75,34 @@ void log_succesful_message_sent_to_suscribers(t_identified_message* identified_m
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
+void log_succesful_get_and_update_subscribers_to_send(){
+    log_succesful_message(process_execution_logger(), "Se actualizaron los suscriptores a enviar correctamente.");
+}
+
 void log_no_subscribers_for_request(t_identified_message* identified_message){
     log_succesful_message(process_execution_logger(), "No hay suscriptores en la cola donde se encuentra este mensaje:");
     char* printed_object = request_pretty_print(identified_message -> request);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
+void log_succesful_all_messages_of_a_queue_sent_to(int subscriber){
+    char* message = string_from_format("%s: %d", "Se le enviaron todos los mensajes de una cola correctamente al siguiente suscriptor", subscriber);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_received_unknown_operation_error(){
     log_errorful_message(process_execution_logger(), "No se recibió una operación válida para poder poner en una cola de mensajes.\n");
+}
+
+void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
+    char* message = string_from_format("%s: %d", "No se encontro un rol que maneje a la siguiente operacion", operation);
+    log_errorful_message(process_execution_logger(),message);
+    free(message);
+}
+
+void log_ack_received_error(){
+    log_errorful_message(process_execution_logger(), "Se recibio un dato que no es igual al ack que envie.");
 }
 
 void free_broker_logs_manager(){

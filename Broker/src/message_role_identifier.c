@@ -1,6 +1,8 @@
 #include <commons/collections/list.h>
 #include <stdlib.h>
 #include <subscriber_message_mode.h>
+#include <broker_logs_manager.h>
+#include <free_broker.h>
 #include "../include/message_role_identifier.h"
 #include "../../Utils/include/common_structures.h"
 #include "../include/publish_message_mode.h"
@@ -33,7 +35,8 @@ t_message_role_identifier* message_role_handler(uint32_t operation){
     t_message_role_identifier* message_role_identifier = list_remove_by_condition(message_identifier, can_handle_);
 
     if (message_role_identifier == NULL){
-        //TODO     log_invalid_operation_to_message_identifier(operation);
+        log_invalid_operation_to_message_role_identifier_error(operation);
+        free_system();
     }
 
     free_message_identifier();

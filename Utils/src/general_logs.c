@@ -100,3 +100,22 @@ void log_printable_object_not_found_error(){
     log_errorful_message(process_execution_logger(), "No se encontró un printable_object válido.");
 }
 
+void log_request_with_event(t_request* request, char* event){
+    char* message = string_new();
+    string_append(&message, event);
+    string_append(&message, ":\n");
+
+    char* request_string = request_pretty_print(request);
+    string_append(&message, request_string);
+    log_succesful_message(process_execution_logger(), message);
+    free(request_string);
+    free(message);
+}
+
+void log_about_to_send_request(t_request* request){
+    log_request_with_event(request, "Pedido de enviar");
+}
+
+void log_request_sent(t_request* request){
+    log_request_with_event(request, "Pedido enviado");
+}

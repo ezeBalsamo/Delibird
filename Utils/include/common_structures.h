@@ -80,6 +80,7 @@ uint32_t internal_operation_in(t_identified_message* identified_message);
 uint32_t internal_operation_in_correlative(t_identified_message* correlative_identified_message);
 void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
+void* internal_request_in_correlative(t_identified_message* correlative_identified_message);
 
 void* safe_malloc(size_t size);
 t_identified_message* create_identified_message(uint32_t message_id, t_request* request);

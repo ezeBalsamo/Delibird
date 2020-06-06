@@ -4,6 +4,7 @@
 #include <queue_message_manager.h>
 #include <bits/pthreadtypes.h>
 #include <stdlib.h>
+#include <broker_logs_manager.h>
 #include "subscribers_manager.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 #include "../../Utils/include/t_list_extension.h"
@@ -41,12 +42,9 @@ void initialize_subscribers_list_dictionary(){
 
 void initialize_subscribers_manager(){
     initialize_subscribers_list();
-    //TODO log de esto
-
     initialize_subscribers_list_dictionary();
-    //TODO log de esto
 
-    //TODO log
+    log_succesful_initialize_subscriber_manager();
 }
 
 t_list* get_subscribers_of_a_queue(uint32_t queue){
@@ -73,6 +71,7 @@ void subscribe_process(int subscriber, uint32_t operation_queue){
     *subscriber_socket_fd = subscriber;
 
     list_add(subscribers, (void*) subscriber_socket_fd);
+    log_succesful_subscription_process(*subscriber_socket_fd);
 }
 
 void send_all_messages(int subscriber, uint32_t operation_queue){
@@ -89,6 +88,7 @@ void send_all_messages(int subscriber, uint32_t operation_queue){
 
         move_subscriber_to_ACK(message_status, subscriber);
     }
+    log_succesful_all_messages_of_a_queue_sent_to(subscriber);
 }
 
 void free_all_lists(){
@@ -103,7 +103,6 @@ void free_all_lists(){
 void free_subscriber_dictionary(){
     dictionary_destroy_and_destroy_elements(subscribers_list_dictionary,free);
 }
-
 
 void free_subscribers_manager(){
     free_all_lists();

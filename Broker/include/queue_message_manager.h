@@ -14,7 +14,7 @@ t_request* create_request_id(t_message_status* message_status);
 
 void push_to_queue(t_message_status* message_status);
 
-void publish(t_list* subscribers, t_message_status* message_status);
+void publish(t_message_status* message_status);
 
 void free_all_queues();
 
