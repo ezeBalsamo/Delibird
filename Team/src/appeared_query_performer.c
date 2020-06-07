@@ -4,6 +4,7 @@
 #include "appeared_query_performer.h"
 
 t_query_performer* appeared_pokemon_query_performer;
+sem_t targetable_status;
 
 t_query_performer* appeared_query_performer(){
     return appeared_pokemon_query_performer;
@@ -22,8 +23,12 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
     localizable_pokemon -> pos_y = appeared_pokemon -> pos_y;
     localizable_pokemon -> object = appeared_pokemon -> pokemon_name;
 
+    sem_wait(&targetable_status);
+    bool should_be_targeted = should_be_targeted_pokemon_named(appeared_pokemon -> pokemon_name);;
+    sem_post(&targetable_status);
+
     t_targetable_object* targetable_pokemon = safe_malloc(sizeof(t_targetable_object));
-    targetable_pokemon -> is_being_targeted = should_be_targeted_pokemon_named(appeared_pokemon -> pokemon_name);
+    targetable_pokemon -> is_being_targeted = should_be_targeted;
     targetable_pokemon -> localizable_pokemon = localizable_pokemon;
 
     return targetable_pokemon;
@@ -46,6 +51,8 @@ bool appeared_query_performer_can_handle(uint32_t operation){
 }
 
 void initialize_appeared_query_performer(){
+    sem_initialize(&targetable_status);
+
     appeared_pokemon_query_performer = safe_malloc(sizeof(t_query_performer));
     appeared_pokemon_query_performer -> can_handle_function = appeared_query_performer_can_handle;
     appeared_pokemon_query_performer -> perform_function = appeared_query_performer_function;

@@ -43,7 +43,7 @@ void initialize_and_load_trainer_thread_for(void* trainer_thread_context){
 
 void initialize_and_load_trainer_thread_context_for(t_localizable_object* localizable_trainer){
     sem_t trainer_semaphore;
-    sem_init(&trainer_semaphore, false, 0);
+    sem_initialize(&trainer_semaphore);
 
     t_trainer_thread_context* trainer_thread_context = safe_malloc(sizeof(t_trainer_thread_context));
     trainer_thread_context -> localizable_trainer = localizable_trainer;

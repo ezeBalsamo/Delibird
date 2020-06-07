@@ -12,6 +12,9 @@
 t_matrix* map;
 t_dictionary* pokemon_occurrences;
 
+sem_t map_semaphore;
+sem_t ocurrences_semaphore;
+
 t_list* occurrences_of(char* pokemon_name){
     char* uppercase_pokemon_name = string_duplicate(pokemon_name);
     string_to_upper(uppercase_pokemon_name);
@@ -82,8 +85,13 @@ void load_pokemon_in_map(t_targetable_object* targetable_pokemon){
     t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
     char* pokemon_name = localizable_pokemon -> object;
 
+    sem_wait(&map_semaphore);
     matrix_insert_element_at(map, pokemon_name, localizable_pokemon -> pos_x, localizable_pokemon -> pos_y);
+    sem_post(&map_semaphore);
+
+    sem_wait(&ocurrences_semaphore);
     add_occurrence_of(targetable_pokemon);
+    sem_post(&ocurrences_semaphore);
     
     if(targetable_pokemon -> is_being_targeted){
         map_updated_with_insertion_of(localizable_pokemon);
@@ -143,6 +151,9 @@ void initialize_map(){
     uint32_t map_size = furthest_trainer_position();
     map = matrix_create_of_size(map_size, true, false);
     pokemon_occurrences = dictionary_create();
+
+    sem_initialize(&map_semaphore);
+    sem_initialize(&ocurrences_semaphore);
 
     with_global_goal_do(initialize_occurrence_of);
     with_trainers_do(load_trainer_in_map);

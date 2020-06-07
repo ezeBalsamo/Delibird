@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <commons/collections/list.h>
 #include <stddef.h>
+#include <semaphore.h>
 
 typedef struct Request{
     uint32_t operation;
@@ -78,6 +79,8 @@ typedef struct Serializable_object{
 
 void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
+
+void sem_initialize(sem_t* semaphore);
 
 void* safe_malloc(size_t size);
 void free_request(t_request* request);

@@ -133,7 +133,7 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
 void* initialize_broker_connection_handler(){
 
-    sem_init(&subscriber_threads_request_sent, false, 0);
+    sem_initialize(&subscriber_threads_request_sent);
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);

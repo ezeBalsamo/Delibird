@@ -105,7 +105,7 @@ void log_request_with_event(t_request* request, char* event){
     string_append(&message, event);
     string_append(&message, ":\n");
 
-    char* request_string = pretty_print_of(request -> operation, request -> structure);
+    char* request_string = request_pretty_print(request);
     string_append(&message, request_string);
     log_succesful_message(process_execution_logger(), message);
     free(request_string);

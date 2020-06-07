@@ -14,7 +14,7 @@ void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* train
 
 bool is_anybody_executing();
 
-void execute(t_trainer_thread_context* trainer_thread_context);
+void execute();
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 

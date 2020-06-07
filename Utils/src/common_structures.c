@@ -53,3 +53,7 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
     t_identified_message* original_identified_message = internal_object_in(correlative_identified_message);
     return internal_object_in(original_identified_message);
 }
+
+void sem_initialize(sem_t* semaphore){
+    sem_init(semaphore, false, 0);
+}

@@ -3,6 +3,7 @@
 #include <scheduling_algorithm.h>
 #include "dispatcher.h"
 #include "../../Utils/include/free_system.h"
+#include "../../Utils/include/common_structures.h"
 
 t_list* new_trainer_thread_contexts;
 t_queue* ready_trainer_thread_contexts;
@@ -11,6 +12,10 @@ t_list* finished_trainer_thread_contexts;
 
 bool is_someone_executing = false;
 
+sem_t schedulable_trainer_thread_contexts_semaphore;
+sem_t ready_queue_semaphore;
+sem_t execute_semaphore;
+
 void initialize_dispatcher(){
     new_trainer_thread_contexts = list_create();
     ready_trainer_thread_contexts = queue_create();
@@ -18,6 +23,9 @@ void initialize_dispatcher(){
     finished_trainer_thread_contexts = list_create();
 
     initialize_scheduling_algorithm();
+
+    sem_initialize(&schedulable_trainer_thread_contexts_semaphore);
+    sem_initialize(&ready_queue_semaphore);
 }
 
 void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
@@ -35,6 +43,9 @@ t_list* schedulable_blocked_trainer_thread_contexts(){
 }
 
 t_list* schedulable_trainer_thread_contexts(){
+
+    sem_wait(&schedulable_trainer_thread_contexts_semaphore);
+
     t_list* trainer_thread_contexts = list_create();
     list_add_all(trainer_thread_contexts, new_trainer_thread_contexts);
 
@@ -76,9 +87,14 @@ void remove_from_new_or_blocked(t_trainer_thread_context* trainer_thread_context
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
 
     remove_from_new_or_blocked(trainer_thread_context);
+    sem_post(&schedulable_trainer_thread_contexts_semaphore);
 
+    sem_wait(&ready_queue_semaphore);
     update_ready_queue_when_adding(ready_trainer_thread_contexts, trainer_thread_context);
+    sem_post(&ready_queue_semaphore);
+
     trainer_thread_context -> state = READY;
+
     trainer_thread_context_ready(trainer_thread_context);
 }
 
@@ -86,15 +102,12 @@ bool is_anybody_executing(){
     return is_someone_executing;
 }
 
-void remove_from_ready(t_trainer_thread_context* trainer_thread_context){
-    remove_from(ready_trainer_thread_contexts -> elements, trainer_thread_context);
-}
+void execute(){
 
-void execute(t_trainer_thread_context* trainer_thread_context){
-
-    //TODO semaforizar
-    remove_from_ready(trainer_thread_context);
+    sem_wait(&execute_semaphore);
     is_someone_executing = true;
+
+    t_trainer_thread_context* trainer_thread_context = queue_pop(ready_trainer_thread_contexts);
     trainer_thread_context -> state = EXECUTE;
     sem_post(&trainer_thread_context -> semaphore);
 
