@@ -6,7 +6,7 @@
 #include "trainer_threads.h"
 
 void initialize_team_logs_manager();
-void log_failed_attempt_to_communicate_with_broker();
+void log_failed_attempt_to_communicate_with_broker(char* default_action);
 void log_initiating_communication_retry_process_with_broker();
 void log_failed_retry_of_communication_with_broker();
 void log_succesful_retry_of_communication_with_broker();
@@ -28,6 +28,7 @@ void log_trainer_execution(t_localizable_object* localizable_trainer, char* reas
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer);
 void log_unknown_thread_action_type_error();
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context);
+void log_succesfully_caught(t_localizable_object* localizable_pokemon);
 
 void free_team_logs_manager();
 

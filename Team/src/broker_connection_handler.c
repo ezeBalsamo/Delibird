@@ -45,7 +45,7 @@ void* retry_connection_thread(void* connection_information){
 }
 
 void execute_retry_connection_strategy(t_connection_information* connection_information){
-    log_failed_attempt_to_communicate_with_broker();
+    log_failed_attempt_to_communicate_with_broker("se procederá a reintentar");
     pthread_t reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
     thread_join(reconnection_thread);
 }

@@ -16,10 +16,11 @@ void initialize_team_logs_manager(){
     create_process_execution_logger();
 }
 
-void log_failed_attempt_to_communicate_with_broker(){
-    char* message = "Falló la comunicación con Broker. Se procederá a reintentar.";
+void log_failed_attempt_to_communicate_with_broker(char* default_action){
+    char* message = string_from_format("Falló la comunicación con Broker. Por defecto, %s.", default_action);
     log_errorful_message(main_logger(), message);
     log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_initiating_communication_retry_process_with_broker(){
@@ -63,10 +64,9 @@ void log_queue_thread_create_error(){
 }
 
 void log_no_locations_found_for(char* pokemon_name){
-    char* message = string_from_format("No se encontraron ubicaciones para %s\n", pokemon_name);
-
-    log_succesful_message(process_execution_logger(), message);
-    free(message);
+    char* default_action = string_from_format("No se encontraron ubicaciones para %s\n", pokemon_name);
+    log_failed_attempt_to_communicate_with_broker(default_action);
+    free(default_action);
 }
 
 void log_trainer_thread_create_error(){
@@ -196,6 +196,21 @@ void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_co
     free(action_to_perform);
     free(message);
 
+}
+
+void log_succesfully_caught(t_localizable_object* localizable_pokemon){
+    char* pokemon_name = localizable_pokemon -> object;
+    char* localizable_pokemon_string =
+            string_from_format("%s, ubicado en (%d, %d)",
+                               pokemon_name,
+                               localizable_pokemon -> pos_x,
+                               localizable_pokemon -> pos_y);
+
+    char* default_action = string_from_format("%s, fue atrapado exitosamente", localizable_pokemon_string);
+
+    log_failed_attempt_to_communicate_with_broker(default_action);
+    free(localizable_pokemon_string);
+    free(default_action);
 }
 
 void free_team_logs_manager(){
