@@ -16,7 +16,7 @@
 #include <free_system.h>
 #include <general_logs.h>
 
-#define THREAD_POOL_SIZE 25
+#define THREAD_POOL_SIZE 3
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;

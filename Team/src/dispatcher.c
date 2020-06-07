@@ -137,8 +137,15 @@ void preempt_due_to(char* preemption_reason){
 }
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
-    //TODO
+
+    trainer_thread_context_executing = NULL;
     trainer_thread_context -> state = FINISHED;
+
     list_add(finished_trainer_thread_contexts, trainer_thread_context);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
+
+    pthread_mutex_unlock(&execute_mutex);
+    if(!queue_is_empty(ready_trainer_thread_contexts)){
+        execute_trainer_thread_context();
+    }
 }

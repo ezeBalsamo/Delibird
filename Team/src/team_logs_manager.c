@@ -174,7 +174,7 @@ void log_trainer_execution(t_localizable_object* localizable_trainer, char* reas
 
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer){
     char* reason = string_new();
-    string_append(&reason, "Atrapó todos los pokemones que requería");
+    string_append(&reason, "Atrapó todos los pokemones que requería.");
 
     log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "lista de finalizados", reason);
 }

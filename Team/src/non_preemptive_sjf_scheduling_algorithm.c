@@ -17,11 +17,16 @@ bool non_preemptive_sjf_should_execute_now_function(t_trainer_thread_context* tr
     return basic_should_execute();
 }
 
+void non_preemptive_sjf_execution_cycle_consumed_function(){
+    //do nothing
+}
+
 void initialize_non_preemptive_sjf_scheduling_algorithm(){
     non_preemptive_sjf_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
     non_preemptive_sjf_algorithm -> can_handle_function = non_preemptive_sjf_scheduling_algorithm_can_handle;
     non_preemptive_sjf_algorithm -> update_ready_queue_when_adding_function = non_preemptive_update_ready_queue_when_adding_function;
     non_preemptive_sjf_algorithm -> should_execute_now_function = non_preemptive_sjf_should_execute_now_function;
+    non_preemptive_sjf_algorithm -> execution_cycle_consumed_function = non_preemptive_sjf_execution_cycle_consumed_function;
 }
 
 t_scheduling_algorithm* non_preemptive_sjf_scheduling_algorithm(){

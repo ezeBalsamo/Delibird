@@ -1,9 +1,14 @@
 #include <trainer_thread_context_execution_cycle.h>
-#include <round_robin_scheduling_algorithm.h>
 #include <team_logs_manager.h>
 #include "../include/movement_action.h"
-#include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
+#include <unistd.h>
+#include <team_configuration_manager.h>
+#include <scheduling_algorithm.h>
+
+void wait_the_time_delay(){
+    sleep(time_delay());
+}
 
 void approach_at_x(t_localizable_object* localizable_trainer, t_localizable_object* destiny_object){
 
@@ -11,6 +16,7 @@ void approach_at_x(t_localizable_object* localizable_trainer, t_localizable_obje
         localizable_trainer -> pos_x < destiny_object -> pos_x ? localizable_trainer -> pos_x++ : localizable_trainer -> pos_x--;
         log_trainer_movement(localizable_trainer);
         execution_cycle_consumed();
+        wait_the_time_delay();
     }
 }
 
@@ -20,6 +26,7 @@ void approach_at_y(t_localizable_object* localizable_trainer, t_localizable_obje
         localizable_trainer -> pos_y < destiny_object -> pos_y ? localizable_trainer -> pos_y++ : localizable_trainer -> pos_y--;
         log_trainer_movement(localizable_trainer);
         execution_cycle_consumed();
+        wait_the_time_delay();
     }
 }
 

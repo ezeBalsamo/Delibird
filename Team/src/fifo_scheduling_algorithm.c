@@ -17,11 +17,16 @@ bool fifo_should_execute_now_function(t_trainer_thread_context* trainer_thread_c
     return basic_should_execute();
 }
 
+void fifo_execution_cycle_consumed_function(){
+    //do nothing
+}
+
 void initialize_fifo_scheduling_algorithm(){
     fifo_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
     fifo_algorithm -> can_handle_function = fifo_can_handle;
     fifo_algorithm -> update_ready_queue_when_adding_function = fifo_update_ready_queue_when_adding_function;
     fifo_algorithm -> should_execute_now_function = fifo_should_execute_now_function;
+    fifo_algorithm -> execution_cycle_consumed_function = fifo_execution_cycle_consumed_function;
 }
 
 t_scheduling_algorithm* fifo_scheduling_algorithm(){

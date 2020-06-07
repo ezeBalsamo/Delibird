@@ -29,19 +29,6 @@ void reset_quantum_consumed(){
     quantum_consumed = 0;
 }
 
-void initialize_round_robin_scheduling_algorithm(){
-    round_robin_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
-    round_robin_algorithm -> can_handle_function = round_robin_can_handle;
-    round_robin_algorithm -> update_ready_queue_when_adding_function = round_robin_update_ready_queue_when_adding_function;
-    round_robin_algorithm -> should_execute_now_function = round_robin_should_execute_now_function;
-
-    initialize_quantum();
-    reset_quantum_consumed();
-}
-
-t_scheduling_algorithm* round_robin_scheduling_algorithm(){
-    return round_robin_algorithm;
-}
 
 char* quantum_consumed_reason(){
     //Se aloca memoria en lugar de devolver el string porque los
@@ -54,11 +41,26 @@ char* quantum_consumed_reason(){
     return reason;
 }
 
-void execution_cycle_consumed(){
+void round_robin_execution_cycle_consumed_function(){
     quantum_consumed++;
 
     if(quantum_consumed == maximum_quantum){
         reset_quantum_consumed();
         preempt_due_to(quantum_consumed_reason());
     }
+}
+
+void initialize_round_robin_scheduling_algorithm(){
+    round_robin_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
+    round_robin_algorithm -> can_handle_function = round_robin_can_handle;
+    round_robin_algorithm -> update_ready_queue_when_adding_function = round_robin_update_ready_queue_when_adding_function;
+    round_robin_algorithm -> should_execute_now_function = round_robin_should_execute_now_function;
+    round_robin_algorithm -> execution_cycle_consumed_function = round_robin_execution_cycle_consumed_function;
+
+    initialize_quantum();
+    reset_quantum_consumed();
+}
+
+t_scheduling_algorithm* round_robin_scheduling_algorithm(){
+    return round_robin_algorithm;
 }

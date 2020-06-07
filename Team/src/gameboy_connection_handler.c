@@ -1,8 +1,8 @@
 #include "../include/gameboy_connection_handler.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
-#include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <appeared_query_performer.h>
@@ -19,7 +19,7 @@ void* main_thread_handler(void* connection_fd){
     t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
     t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
-    log_request_received(deserialized_request);
+    log_request_received_with(main_logger(), deserialized_request);
 
     query_performer -> perform_function (deserialized_request -> structure);
 

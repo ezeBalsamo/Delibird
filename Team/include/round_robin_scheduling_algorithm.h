@@ -7,6 +7,4 @@ void initialize_round_robin_scheduling_algorithm();
 
 t_scheduling_algorithm* round_robin_scheduling_algorithm();
 
-void execution_cycle_consumed();
-
 #endif //DELIBIRD_ROUND_ROBIN_SCHEDULING_ALGORITHM_H
