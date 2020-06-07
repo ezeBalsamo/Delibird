@@ -1,12 +1,14 @@
 #include "../include/team_logs_manager.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/free_system.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "../../Utils/include/free_system.h"
+#include <team_manager.h>
+#include <trainer_threads.h>
+#include <dispatching_reasons.h>
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
@@ -84,8 +86,10 @@ void log_query_performer_not_found_error_for(uint32_t operation){
     free(message);
 }
 
-void log_zero_schedulable_threads_error(){
-    log_errorful_message(process_execution_logger(), "Se esperaba encontrar al menos un hilo planificable.");
+void log_no_schedulable_threads_available_for(char* pokemon_name){
+    char* message = string_from_format("No se encuentran disponibles hilos planificables para capturar %s", pokemon_name);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number){
@@ -111,6 +115,87 @@ void log_incorrent_pokemon_removed_error_for(char* pokemon_name_to_remove, char*
             pokemon_name_to_remove, pokemon_name_removed);
     log_errorful_message(process_execution_logger(), message);
     free(message);
+}
+
+
+void log_trainer_dispatch_action_with_reason(t_localizable_object* localizable_trainer, char* action_name, char* state_structure_name, char* reason){
+    t_trainer* trainer = localizable_trainer -> object;
+    char* final_message;
+    char* message =
+            string_from_format("El entrenador %d, ubicado en (%d, %d) fue %s a la %s.",
+                    trainer -> sequential_number,
+                    localizable_trainer -> pos_x,
+                    localizable_trainer -> pos_y,
+                    action_name,
+                    state_structure_name);
+
+    if(reason != NULL){
+        final_message = string_from_format("%s Motivo: %s", message, reason);
+        free(reason);
+    }else{
+        final_message = string_duplicate(message);
+    }
+
+    free(message);
+
+    log_succesful_message(main_logger(), final_message);
+    log_succesful_message(process_execution_logger(), final_message);
+    free(final_message);
+}
+
+void log_trainer_dispatch_action(t_localizable_object* localizable_trainer, char* action_name, char* state_structure_name){
+    log_trainer_dispatch_action_with_reason(localizable_trainer, action_name, state_structure_name, NULL);
+}
+
+void log_trainer_added_to_new(t_localizable_object* localizable_trainer){
+    log_trainer_dispatch_action(localizable_trainer, "agregado", "lista de nuevos");
+}
+
+void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason){
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "cola de listos", reason);
+}
+
+void log_trainer_movement(t_localizable_object* localizable_trainer){
+    t_trainer* trainer = localizable_trainer -> object;
+    char* message =
+            string_from_format("El entrenador %d se desplazó a (%d, %d).",
+                    trainer -> sequential_number,
+                    localizable_trainer -> pos_x,
+                    localizable_trainer -> pos_y);
+
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason){
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "ejecución", reason);
+}
+
+void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer){
+    char* reason = string_new();
+    string_append(&reason, "Atrapó todos los pokemones que requería");
+
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "lista de finalizados", reason);
+}
+
+void log_unknown_thread_action_type_error(){
+    log_errorful_message(main_logger(), "Se ha configurado una thread_action con un tipo inválido.");
+}
+
+void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context){
+    t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
+    char* action_to_perform = thread_action_as_string(trainer_thread_context);
+    char* message =
+            string_from_format("Acción a realizar por el entrenador %d: %s",
+                    trainer -> sequential_number,
+                    action_to_perform);
+
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(action_to_perform);
+    free(message);
+
 }
 
 void free_team_logs_manager(){

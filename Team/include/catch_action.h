@@ -8,7 +8,7 @@ typedef struct Catch_action{
     t_localizable_object* localizable_pokemon;
 }t_catch_action;
 
-t_catch_action* catch_action_for(t_localizable_object* localizable_pokemon);
+t_thread_action* catch_thread_action_for(t_localizable_object* localizable_pokemon);
 
 void catch_action_execution_function(t_trainer_thread_context* trainer_thread_context);
 

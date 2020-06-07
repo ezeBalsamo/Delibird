@@ -1,6 +1,7 @@
 #ifndef DELIBIRD_GENERAL_LOGS_H
 #define DELIBIRD_GENERAL_LOGS_H
 
+#include <commons/log.h>
 #include "common_structures.h"
 
 void log_succesful_start_up();
@@ -22,5 +23,6 @@ void log_printable_object_not_found_error();
 void log_about_to_send_request(t_request* request);
 void log_request_sent(t_request* request);
 void log_request_received(t_request* request);
+void log_request_received_with(t_log* logger, t_request* request);
 
 #endif //DELIBIRD_GENERAL_LOGS_H

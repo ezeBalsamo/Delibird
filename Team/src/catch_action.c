@@ -1,20 +1,26 @@
 #include <team_configuration_manager.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include "catch_action.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/socket.h"
+#include <stdlib.h>
 
-t_catch_action* catch_action_for(t_localizable_object* localizable_pokemon){
+t_thread_action* catch_thread_action_for(t_localizable_object* localizable_pokemon){
 
     t_catch_action* catch_action = safe_malloc(sizeof(t_catch_action));
     catch_action -> localizable_pokemon = localizable_pokemon;
 
-    return catch_action;
+    t_thread_action* thread_action = new_thread_action();
+    thread_action -> request -> operation = CATCH;
+    thread_action -> request -> structure = catch_action;
+    thread_action -> request -> sanitizer_function = free;
+    thread_action -> execution_function = (void (*)(void *)) catch_action_execution_function;
+
+    return thread_action;
 }
 
 t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_context){
 
-    t_catch_action* catch_action = trainer_thread_context -> thread_action;
+    t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
     t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
 
     t_catch_pokemon* catch_pokemon = safe_malloc(sizeof(t_catch_pokemon));

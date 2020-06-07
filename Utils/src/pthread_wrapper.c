@@ -28,3 +28,10 @@ void thread_join(pthread_t thread){
 pthread_t default_safe_thread_create(void* (*thread_function) (void*), void* thread_argument){
     return thread_create(thread_function, thread_argument, default_thread_create_error_response);
 }
+
+void safe_mutex_initialize(pthread_mutex_t* mutex){
+    if(pthread_mutex_init(mutex, NULL) != 0){
+        log_syscall_error("Error al inicializar un mutex");
+        free_system();
+    }
+}

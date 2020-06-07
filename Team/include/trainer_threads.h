@@ -3,21 +3,33 @@
 
 #include <commons/collections/list.h>
 #include "team_manager.h"
+#include "../../Utils/include/common_structures.h"
 
 enum Thread_states{
     NEW, READY, EXECUTE, BLOCKED, FINISHED
 };
 
+enum thread_action_types{
+    MOVEMENT, CATCH
+};
+
+typedef struct Thread_action{
+    t_request* request;
+    void (*execution_function) (void*);
+}t_thread_action;
+
 typedef struct Trainer_thread_context{
     t_localizable_object* localizable_trainer;
     sem_t semaphore;
     uint32_t state;
-    void* thread_action;
-    void (*execution_function) (void*);
+    t_thread_action* thread_action;
 }t_trainer_thread_context;
 
 void initialize_trainer_threads();
-
 void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
+
+t_thread_action* new_thread_action();
+void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context);
+void free_thread_action(t_thread_action* thread_action);
 
 #endif //DELIBIRD_TRAINER_THREADS_H

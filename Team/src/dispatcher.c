@@ -1,20 +1,21 @@
 #include <commons/collections/queue.h>
 #include <team_logs_manager.h>
 #include <scheduling_algorithm.h>
+#include <dispatching_reasons.h>
 #include "dispatcher.h"
 #include "../../Utils/include/free_system.h"
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/pthread_wrapper.h"
 
 t_list* new_trainer_thread_contexts;
 t_queue* ready_trainer_thread_contexts;
+t_trainer_thread_context* trainer_thread_context_executing;
 t_list* blocked_trainer_thread_contexts;
 t_list* finished_trainer_thread_contexts;
 
-bool is_someone_executing = false;
-
-sem_t schedulable_trainer_thread_contexts_semaphore;
-sem_t ready_queue_semaphore;
-sem_t execute_semaphore;
+pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
+pthread_mutex_t ready_queue_mutex;
+pthread_mutex_t execute_mutex;
 
 void initialize_dispatcher(){
     new_trainer_thread_contexts = list_create();
@@ -24,13 +25,14 @@ void initialize_dispatcher(){
 
     initialize_scheduling_algorithm();
 
-    sem_initialize(&schedulable_trainer_thread_contexts_semaphore);
-    sem_initialize(&ready_queue_semaphore);
+    safe_mutex_initialize(&schedulable_trainer_thread_contexts_mutex);
+    safe_mutex_initialize(&ready_queue_mutex);
 }
 
 void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
     trainer_thread_context -> state = NEW;
     list_add(new_trainer_thread_contexts, (void *) trainer_thread_context);
+    log_trainer_added_to_new(trainer_thread_context -> localizable_trainer);
 }
 
 bool can_be_schedule(void* to_be_defined){
@@ -44,7 +46,7 @@ t_list* schedulable_blocked_trainer_thread_contexts(){
 
 t_list* schedulable_trainer_thread_contexts(){
 
-    sem_wait(&schedulable_trainer_thread_contexts_semaphore);
+    pthread_mutex_lock(&schedulable_trainer_thread_contexts_mutex);
 
     t_list* trainer_thread_contexts = list_create();
     list_add_all(trainer_thread_contexts, new_trainer_thread_contexts);
@@ -84,32 +86,40 @@ void remove_from_new_or_blocked(t_trainer_thread_context* trainer_thread_context
     }
 }
 
-void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
-
-    remove_from_new_or_blocked(trainer_thread_context);
-    sem_post(&schedulable_trainer_thread_contexts_semaphore);
-
-    sem_wait(&ready_queue_semaphore);
+void schedule(t_trainer_thread_context* trainer_thread_context, char* reason){
+    pthread_mutex_lock(&ready_queue_mutex);
     update_ready_queue_when_adding(ready_trainer_thread_contexts, trainer_thread_context);
-    sem_post(&ready_queue_semaphore);
+    pthread_mutex_unlock(&ready_queue_mutex);
 
+    log_trainer_schedule(trainer_thread_context -> localizable_trainer, reason);
     trainer_thread_context -> state = READY;
 
     trainer_thread_context_ready(trainer_thread_context);
 }
 
-bool is_anybody_executing(){
-    return is_someone_executing;
+void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
+
+    remove_from_new_or_blocked(trainer_thread_context);
+    pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
+
+    schedule(trainer_thread_context, move_to_pokemon_reason_for(trainer_thread_context));
 }
 
-void execute(){
+bool is_anybody_executing(){
+    return trainer_thread_context_executing != NULL;
+}
 
-    sem_wait(&execute_semaphore);
-    is_someone_executing = true;
+void execute_trainer_thread_context(){
 
-    t_trainer_thread_context* trainer_thread_context = queue_pop(ready_trainer_thread_contexts);
-    trainer_thread_context -> state = EXECUTE;
-    sem_post(&trainer_thread_context -> semaphore);
+    pthread_mutex_lock(&execute_mutex);
+
+    trainer_thread_context_executing = queue_pop(ready_trainer_thread_contexts);
+    trainer_thread_context_executing -> state = EXECUTE;
+
+    log_trainer_execution(trainer_thread_context_executing -> localizable_trainer,
+                          thread_action_as_string(trainer_thread_context_executing));
+
+    sem_post(&trainer_thread_context_executing -> semaphore);
 
     /*Todo lógica para esperar a que ejecute + lógica para ver que pasó
      * En el caso de un appeared/localized,
@@ -119,8 +129,16 @@ void execute(){
      * */
 }
 
+void preempt_due_to(char* preemption_reason){
+    t_trainer_thread_context* trainer_thread_context_to_schedule = trainer_thread_context_executing;
+    trainer_thread_context_executing = NULL;
+    pthread_mutex_unlock(&execute_mutex);
+    schedule(trainer_thread_context_to_schedule, preemption_reason);
+}
+
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
     //TODO
     trainer_thread_context -> state = FINISHED;
     list_add(finished_trainer_thread_contexts, trainer_thread_context);
+    log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
 }

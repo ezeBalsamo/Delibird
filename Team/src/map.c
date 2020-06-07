@@ -2,6 +2,7 @@
 #include "../../Utils/include/matrix.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/free_system.h"
+#include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -12,8 +13,8 @@
 t_matrix* map;
 t_dictionary* pokemon_occurrences;
 
-sem_t map_semaphore;
-sem_t ocurrences_semaphore;
+pthread_mutex_t map_mutex;
+pthread_mutex_t ocurrences_mutex;
 
 t_list* occurrences_of(char* pokemon_name){
     char* uppercase_pokemon_name = string_duplicate(pokemon_name);
@@ -85,13 +86,13 @@ void load_pokemon_in_map(t_targetable_object* targetable_pokemon){
     t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
     char* pokemon_name = localizable_pokemon -> object;
 
-    sem_wait(&map_semaphore);
+    pthread_mutex_lock(&map_mutex);
     matrix_insert_element_at(map, pokemon_name, localizable_pokemon -> pos_x, localizable_pokemon -> pos_y);
-    sem_post(&map_semaphore);
+    pthread_mutex_unlock(&map_mutex);
 
-    sem_wait(&ocurrences_semaphore);
+    pthread_mutex_lock(&ocurrences_mutex);
     add_occurrence_of(targetable_pokemon);
-    sem_post(&ocurrences_semaphore);
+    pthread_mutex_unlock(&ocurrences_mutex);
     
     if(targetable_pokemon -> is_being_targeted){
         map_updated_with_insertion_of(localizable_pokemon);
@@ -152,8 +153,8 @@ void initialize_map(){
     map = matrix_create_of_size(map_size, true, false);
     pokemon_occurrences = dictionary_create();
 
-    sem_initialize(&map_semaphore);
-    sem_initialize(&ocurrences_semaphore);
+    safe_mutex_initialize(&map_mutex);
+    safe_mutex_initialize(&ocurrences_mutex);
 
     with_global_goal_do(initialize_occurrence_of);
     with_trainers_do(load_trainer_in_map);

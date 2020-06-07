@@ -2,13 +2,13 @@
 #include <team_logs_manager.h>
 #include <dispatcher.h>
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/common_structures.h"
+#include <stdlib.h>
 
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
 
 void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context){
-    trainer_thread_context -> execution_function (trainer_thread_context);
+    trainer_thread_context -> thread_action -> execution_function (trainer_thread_context);
 }
 
 void join_trainers_threads(){
@@ -22,7 +22,7 @@ void* trainer_thread(void* trainer_thread_context){
     t_trainer_thread_context* cast_trainer_thread_context = (t_trainer_thread_context*) trainer_thread_context;
 
     t_trainer* trainer = cast_trainer_thread_context -> localizable_trainer -> object;
-    log_succesful_creation_of_thread_of_trainer(trainer-> sequential_number);
+    log_succesful_creation_of_thread_of_trainer(trainer -> sequential_number);
 
     while(cast_trainer_thread_context -> state != FINISHED){
         sem_wait(&cast_trainer_thread_context -> semaphore);
@@ -65,4 +65,23 @@ void initialize_trainer_threads(){
     list_iterate(trainer_thread_contexts, initialize_and_load_trainer_thread_for);
 
     join_trainers_threads();
+}
+
+t_thread_action* new_thread_action(){
+
+    t_request* request = safe_malloc(sizeof(t_request));
+    t_thread_action* thread_action = safe_malloc(sizeof(t_thread_action));
+    thread_action -> request = request;
+
+    return thread_action;
+}
+
+void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context){
+    t_thread_action* thread_action = trainer_thread_context -> thread_action;
+    return thread_action -> request -> structure;
+}
+
+void free_thread_action(t_thread_action* thread_action){
+    free_request(thread_action -> request);
+    free(thread_action);
 }

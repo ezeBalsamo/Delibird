@@ -7,6 +7,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/free_system.h"
 #include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <team_configuration_manager.h>
@@ -73,7 +74,7 @@ void* subscriber_thread(void* queue_operation_identifier){
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
-            log_request_received(deserialized_request);
+            log_request_received_with(main_logger(), deserialized_request);
 
             query_perform(deserialized_request);
 
