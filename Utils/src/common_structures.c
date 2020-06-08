@@ -2,6 +2,18 @@
 #include <stdlib.h>
 #include <general_logs.h>
 #include <free_system.h>
+#include <zconf.h>
+#include <signal.h>
+
+void handler(){
+    write(STDOUT_FILENO, ": OK. Me vas a matar pero primero voy a liberar la memoria que utilice!\n", 73);
+    free_system();
+}
+
+void initialize_signal_handler(){
+    signal(SIGINT, handler);
+    signal(SIGTERM, handler);
+}
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);

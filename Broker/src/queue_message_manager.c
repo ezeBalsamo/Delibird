@@ -95,7 +95,7 @@ void push_to_queue(t_message_status* message_status){
 
     //TODO ESTO ES LA LOGICA DE BORRAR MENSAJE EN LA COLA, VER MAS ADELANTE EN QUE MOMENTO SE DEBERIA DE HACER ESTO.
     //Ahora se esta haciendo cuando el message_status ya no tiene suscriptores a los cuales enviarle.
-    if(list_is_empty(message_status -> subscribers_to_send)){ //si el mensaje fue enviado a todos los suscriptores se borra.
+/*    if(list_is_empty(message_status -> subscribers_to_send)){ //si el mensaje fue enviado a todos los suscriptores se borra.
         for(int i = 0; i < list_size(queue -> elements); i++){
             t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
             if(equals_message_status_(message_status, message_status_to_compare)){
@@ -103,35 +103,65 @@ void push_to_queue(t_message_status* message_status){
                 free_message_status(message_status);
             }
         }
+    }*/
+}
+
+void subscriber_died(t_message_status* message_status, int subscriber){
+    t_list* subscribers_to_send = message_status -> subscribers_to_send;
+
+    bool equals_subscribers_(void* another_subscriber){
+        return subscriber == *((int*)another_subscriber);
+    }
+    list_remove_by_condition(subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
+}
+
+void join_subscribers_threads(t_list* subscriber_thread_list){
+    void* subscriber_ack;
+    for(int i = 0; i < list_size(subscriber_thread_list); i++){
+        t_subscriber_ack_thread_structure* subscriber_ack_thread_structure = (t_subscriber_ack_thread_structure*) list_get(subscriber_thread_list, i);
+        pthread_t waiting_for_ack_thread = subscriber_ack_thread_structure -> subscriber_thread;
+        pthread_join(waiting_for_ack_thread, &subscriber_ack);
+
+        uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
+        if (cast_subscriber_ack == FAILED_ACK){
+            log_ack_received_error();
+            subscriber_died(subscriber_ack_thread_structure -> message_status, subscriber_ack_thread_structure -> subscriber);
+        } else {
+            move_subscriber_to_ACK(subscriber_ack_thread_structure -> message_status, subscriber_ack_thread_structure -> subscriber);
+        }
     }
 }
 
-void publish(t_message_status* message_status){
+void publish(t_message_status* message_status) {
 
-    t_list* subscribers = message_status -> subscribers_to_send;
-    t_request* request = create_request_id(message_status);
+    t_list *subscribers = message_status->subscribers_to_send;
+    t_request *request = create_request_id(message_status);
+    t_list* subscriber_thread_list = list_create();
 
-    void _send_message(void* subscriber){
-        int cast_subscriber = *((int*) subscriber);
-        serialize_and_send_structure(request, cast_subscriber);
-        log_succesful_message_sent_to_a_suscriber(request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
-
-        void* ack;
-        pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_message, subscriber);
-        pthread_join(waiting_for_ack_thread, &ack);
-        uint32_t cast_received_ack = *((uint32_t*) ack);
-        if(cast_received_ack != message_status -> identified_message -> message_id){
-            log_ack_received_error();
-        }
-        move_subscriber_to_ACK(message_status, cast_subscriber);
-    }
-
-    if(list_is_empty(subscribers)){
-            log_no_subscribers_for_request(message_status -> identified_message);
+    if (list_is_empty(subscribers)) {
+        log_no_subscribers_for_request(request);
     } else {
-            list_iterate(subscribers, _send_message);
-            log_succesful_message_sent_to_suscribers(message_status -> identified_message);
-    }
+
+        void _send_message(void* subscriber) {
+            int cast_subscriber = *((int *) subscriber);
+            serialize_and_send_structure(request, cast_subscriber);
+            log_succesful_message_sent_to_a_suscriber(request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
+
+
+            pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, subscriber);
+
+            t_subscriber_ack_thread_structure* subscriber_ack_thread_structure = malloc(sizeof(t_subscriber_ack_thread_structure));
+            subscriber_ack_thread_structure -> subscriber_thread = waiting_for_ack_thread;
+            subscriber_ack_thread_structure -> subscriber = cast_subscriber;
+            subscriber_ack_thread_structure -> message_status = message_status;
+
+            list_add(subscriber_thread_list, subscriber_ack_thread_structure);
+
+        }
+        list_iterate(subscribers, _send_message);
+        log_succesful_message_sent_to_suscribers(request);
+        join_subscribers_threads(subscriber_thread_list);
+        }
 }
 
 void free_queue_dictionary(){

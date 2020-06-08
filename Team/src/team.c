@@ -11,6 +11,7 @@
 
 int main(void) {
 
+    initialize_signal_handler();
     initialize_team_logs_manager();
     initialize_pretty_printer();
     initialize_team_serializable_objects();

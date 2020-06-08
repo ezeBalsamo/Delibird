@@ -47,6 +47,6 @@ void initialize_publish_message_mode(){
 
 void free_message_status(t_message_status* message_status){
     free_identified_message(message_status -> identified_message);
-    list_destroy_and_destroy_elements(message_status -> subscribers_who_received, free);
-    list_destroy_and_destroy_elements(message_status ->subscribers_to_send, free);
+    list_destroy(message_status -> subscribers_who_received);
+    list_destroy(message_status ->subscribers_to_send);
 }

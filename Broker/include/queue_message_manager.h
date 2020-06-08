@@ -3,8 +3,15 @@
 
 #include <stdint.h>
 #include <commons/collections/queue.h>
+#include <zconf.h>
 #include "../../Utils/include/common_structures.h"
 #include "publish_message_mode.h"
+
+typedef struct Subscriber_ack_thread_structure{
+    pthread_t subscriber_thread;
+    int subscriber;
+    t_message_status* message_status;
+} t_subscriber_ack_thread_structure;
 
 void initialize_queue_message_manager();
 

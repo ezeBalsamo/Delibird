@@ -251,17 +251,23 @@ void send_ack_message(uint32_t message_id, int socket_fd){
     free(serialized_ack);
 }
 
-void* receive_ack_message(void* socket_fd){
+void* receive_ack(int socket_fd){
 
     uint32_t* ack = safe_malloc(sizeof(uint32_t));
 
-    int cast_socket_fd = *((int*)socket_fd);
+    //Es MSG_DONTWAIT porque tiene timeout para recibir cosas.
 
-    if(recv(cast_socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
+    if(recv(socket_fd, ack, sizeof(uint32_t), MSG_DONTWAIT) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");
-        close(cast_socket_fd);
+        close(socket_fd);
+        return (void *) FAILED_ACK;
     }
     return (void*) ack;
+}
+
+void* receive_ack_thread(void* subscriber_fd){
+    int cast_subscriber_fd = *((int *) subscriber_fd);
+    return receive_ack(cast_subscriber_fd);
 }
 
 t_serialization_information* receive_structure(int socket_fd){

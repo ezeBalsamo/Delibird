@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <commons/collections/list.h>
 #include <stddef.h>
-#include "../../Broker/include/publish_message_mode.h"
-
 typedef struct Request{
     uint32_t operation;
     void* structure;
@@ -64,10 +62,11 @@ typedef struct Identified_message{
     t_request* request;
 }t_identified_message;
 
-typedef struct Manageable_object{
-    bool (*can_handle_function) (uint32_t operation);
-    void (*perform_function) (t_identified_message* message);
-} t_manageable_object;
+typedef struct Serializable_Object{
+    uint32_t code;
+    t_serialization_information* (*serialize_function) (void* structure);
+    t_request* (*deserialize_function) (void* serialized_structure);
+}t_serializable_object;
 
 enum Operation {
     NEW_POKEMON, APPEARED_POKEMON,
@@ -82,6 +81,7 @@ void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
 void* internal_request_in_correlative(t_identified_message* correlative_identified_message);
 
+void initialize_signal_handler();
 void* safe_malloc(size_t size);
 t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
 t_connection_request* create_connection_request(int connection_fd, t_request* request);

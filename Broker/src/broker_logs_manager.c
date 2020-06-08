@@ -3,7 +3,6 @@
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
-#include "../../Utils/include/serialization_interface.h"
 
 void initialize_broker_logs_manager(){
     initialize_logger_for("Broker");
@@ -17,13 +16,11 @@ void initialize_broker_logs_manager(){
 void log_succesful_connection_of_a_process(){
     char* message = "Se conectó un proceso correctamente.";
     log_succesful_message(main_logger(), message);
-    log_succesful_message(process_execution_logger(), message);
 }
 
 void log_succesful_subscription_process(int subscriber){
     char* message = string_from_format("%s: %d.", "Se suscribió al siguiente proceso a una cola de mensajes correctamente", subscriber);
     log_succesful_message(main_logger(), message);
-    log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
@@ -31,18 +28,14 @@ void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identifie
     char* message = "Se pusheo un nuevo mensaje a una cola de mensajes correctamente.";
     log_succesful_message(main_logger(), message);
     char* printed_object = request_pretty_print(identified_message -> request);
-    log_succesful_message(process_execution_logger(), message);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
-void log_succesful_message_sent_to_a_suscriber(void* serialized_request){
+void log_succesful_message_sent_to_a_suscriber(t_request* request){
     char* message = "Se envió un mensaje a un suscriptor correctamente.";
     log_succesful_message(main_logger(), message);
-    t_request* deserialized_request = deserialize(serialized_request);
-    char* printed_object = request_pretty_print(deserialized_request);
-    log_succesful_message(process_execution_logger(), message);
+    char* printed_object = request_pretty_print(request);
     log_succesful_message(process_execution_logger(), printed_object);
-    free_request(deserialized_request);
 }
 
 //TODO Faltan implementar logs del main: DEL 5 al 8.
@@ -69,9 +62,9 @@ void log_structure_received(void* serialized_request){
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
-void log_succesful_message_sent_to_suscribers(t_identified_message* identified_message){
+void log_succesful_message_sent_to_suscribers(t_request* request){
     log_succesful_message(process_execution_logger(), "El mensaje fue enviado correctamente a todos los suscriptores:");
-    char* printed_object = request_pretty_print(identified_message -> request);
+    char* printed_object = request_pretty_print(request);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
@@ -79,9 +72,9 @@ void log_succesful_get_and_update_subscribers_to_send(){
     log_succesful_message(process_execution_logger(), "Se actualizaron los suscriptores a enviar correctamente.");
 }
 
-void log_no_subscribers_for_request(t_identified_message* identified_message){
+void log_no_subscribers_for_request(t_request* request){
     log_succesful_message(process_execution_logger(), "No hay suscriptores en la cola donde se encuentra este mensaje:");
-    char* printed_object = request_pretty_print(identified_message -> request);
+    char* printed_object = request_pretty_print(request);
     log_succesful_message(process_execution_logger(), printed_object);
 }
 
