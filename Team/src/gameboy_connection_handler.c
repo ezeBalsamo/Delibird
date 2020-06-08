@@ -25,7 +25,7 @@ void* main_thread_handler(void* connection_fd){
 
     free_and_close_connection(connection_fd);
     free_serialization_information(serialization_information);
-    free(deserialized_request);
+    free_request(deserialized_request);
 
     return NULL;
 }
@@ -37,4 +37,9 @@ void* initialize_gameboy_connection_handler(){
     start_multithreaded_server(own_port(), main_thread_handler);
 
     return NULL;
+}
+
+void free_gameboy_connection_handler(){
+    free(query_performer);
+    free_multithreaded_server();
 }

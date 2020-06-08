@@ -7,6 +7,7 @@
 #include "scheduling_algorithm_finder.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/free_system.h"
+#include <stdlib.h>
 
 t_list* scheduling_algorithms;
 char* scheduling_algorithm_name;
@@ -28,6 +29,10 @@ bool can_handle(t_scheduling_algorithm* scheduling_algorithm){
     return scheduling_algorithm -> can_handle_function (scheduling_algorithm_name);
 }
 
+void free_scheduling_algorithms(){
+    list_destroy_and_destroy_elements(scheduling_algorithms, free);
+}
+
 t_scheduling_algorithm* chosen_scheduling_algorithm(){
     scheduling_algorithm_name = config_get_string_at("ALGORITMO_PLANIFICACION");
 
@@ -40,6 +45,8 @@ t_scheduling_algorithm* chosen_scheduling_algorithm(){
         log_scheduling_algorithm_not_found_error_for(scheduling_algorithm_name);
         free_system();
     }
+
+    free_scheduling_algorithms();
 
     return scheduling_algorithm_found;
 }

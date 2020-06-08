@@ -308,3 +308,7 @@ void free_and_close_connection(void* socket_fd){
     close(*((int*) socket_fd));
     free(socket_fd);
 }
+
+void free_multithreaded_server(){
+    queue_destroy(queue);
+}

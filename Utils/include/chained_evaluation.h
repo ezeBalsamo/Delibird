@@ -33,4 +33,6 @@ typedef struct Chained_on_succesful_evaluation{
 
 void execute_evaluation_for(t_identified_chained_evaluation* identified_chained_evaluation, void* object_to_evaluate);
 
+void free_chained_evaluation(t_identified_chained_evaluation* identified_chained_evaluation);
+
 #endif //DELIBIRD_CHAINED_EVALUATION_H

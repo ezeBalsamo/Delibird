@@ -28,7 +28,8 @@ void start_multithreaded_server(char* port, void* (*thread_function) (void* thre
 t_serialization_information* receive_structure(int socket_fd);
 
 void free_and_close_connection(void* socket_fd);
-
+void free_connection_information(t_connection_information* connection_information);
 void free_and_close_connection_information(t_connection_information* connection_information);
+void free_multithreaded_server();
 
 #endif //SOCKET_H

@@ -146,6 +146,7 @@ void initialize_occurrence_of(t_pokemon_goal* pokemon_goal){
     char* pokemon_name = string_duplicate(pokemon_goal -> pokemon_name);
     string_to_upper(pokemon_name);
     dictionary_put(pokemon_occurrences, pokemon_name, targetable_pokemons);
+    free(pokemon_name);
 }
 
 void initialize_map(){
@@ -168,4 +169,19 @@ void matrix_print_trainer(void* trainer){
 
     printf("%10s", printable_trainer);
     free(printable_trainer);
+}
+
+void free_targetable_pokemon(t_targetable_object* targetable_pokemon){
+    t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
+    free(localizable_pokemon);
+    free(targetable_pokemon);
+}
+
+void free_targetable_pokemons(t_list* targetable_pokemons){
+    list_destroy_and_destroy_elements(targetable_pokemons, (void (*)(void *)) free_targetable_pokemon);
+}
+
+void free_map(){
+    dictionary_destroy_and_destroy_elements(pokemon_occurrences, (void (*)(void *)) free_targetable_pokemons);
+    matrix_destroy(map);
 }

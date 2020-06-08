@@ -37,7 +37,8 @@ bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);
 bool global_goal_contains(char* pokemon_name);
 uint32_t amount_required_of(char* pokemon_name);
 
-void update_current_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name);
+void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name);
+void consider_global_goal_accomplished();
 
 t_list* trainers_x_positions();
 t_list* trainers_y_positions();

@@ -136,6 +136,12 @@ void preempt_due_to(char* preemption_reason){
     schedule(trainer_thread_context_to_schedule, preemption_reason);
 }
 
+void consider_continue_executing(){
+    if(!queue_is_empty(ready_trainer_thread_contexts)){
+        execute_trainer_thread_context();
+    }
+}
+
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
     trainer_thread_context_executing = NULL;
@@ -145,7 +151,42 @@ void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_threa
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
 
     pthread_mutex_unlock(&execute_mutex);
-    if(!queue_is_empty(ready_trainer_thread_contexts)){
-        execute_trainer_thread_context();
+    consider_global_goal_accomplished();
+    consider_continue_executing();
+}
+
+void assert_all_trainer_thread_contexts_have_finished(){
+    if(!list_is_empty(new_trainer_thread_contexts)){
+        log_expected_to_be_empty_error_for("lista de nuevos");
+        free_system();
     }
+    if(!queue_is_empty(ready_trainer_thread_contexts)){
+        log_expected_to_be_empty_error_for("cola de listos");
+        free_system();
+    }
+    if(!list_is_empty(blocked_trainer_thread_contexts)){
+        log_expected_to_be_empty_error_for("lista de bloqueados");
+        free_system();
+    }
+    if(trainer_thread_context_executing != NULL){
+        log_expected_no_trainer_thread_executing_error_for(trainer_thread_context_executing);
+        free_system();
+    }
+    if(list_is_empty(finished_trainer_thread_contexts)){
+        log_expected_to_be_not_empty_error_for("lista de finalizados");
+        free_system();
+    }
+}
+
+int finished_trainer_thread_contexts_amount(){
+    return list_size(finished_trainer_thread_contexts);
+}
+
+void free_dispatcher(){
+    list_destroy(new_trainer_thread_contexts);
+    queue_destroy(ready_trainer_thread_contexts);
+    list_destroy(blocked_trainer_thread_contexts);
+    list_destroy(finished_trainer_thread_contexts);
+
+    free_scheduling_algorithm();
 }

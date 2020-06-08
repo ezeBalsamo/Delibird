@@ -213,6 +213,41 @@ void log_succesfully_caught(t_localizable_object* localizable_pokemon){
     free(default_action);
 }
 
+void log_expected_to_be_empty_error_for(char* state_structure_name){
+    char* message = string_from_format("Se esperaba que la %s estuviera vacía.", state_structure_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_expected_to_be_not_empty_error_for(char* state_structure_name){
+    char* message = string_from_format("Se esperaba que la %s no estuviera vacía.", state_structure_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context){
+    char* action_to_perform = thread_action_as_string(trainer_thread_context);
+    char* message = string_from_format("Se esperaba que ningún hilo estuviese ejecutando.\n"
+                                       "Información del hilo actualmente ejecutando: %s", action_to_perform);
+
+    log_errorful_message(process_execution_logger(), message);
+    free(action_to_perform);
+    free(message);
+}
+
+void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error(){
+    char* message = "Se determinó que se cumplió el objetivo global "
+                    "pero la cantidad de entrenadores y de hilos finalizados no coinciden.";
+
+    log_errorful_message(process_execution_logger(), message);
+}
+
+void log_global_goal_accomplished(){
+    char* message = "Team ha cumplido su objetivo global.";
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+}
+
 void free_team_logs_manager(){
     free_loggers();
 }

@@ -32,19 +32,24 @@ t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_cont
     return catch_pokemon;
 }
 
-
 void catch_action_execution_function(t_trainer_thread_context* trainer_thread_context){
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = CATCH_POKEMON;
     request -> structure = catch_pokemon_for(trainer_thread_context);
+    request -> sanitizer_function = free;
 
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(!connection_information -> connection_was_succesful) {
         t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
         log_succesfully_caught(catch_action -> localizable_pokemon);
+
+        free_and_close_connection_information(connection_information);
+        free_request(request);
+
         catch_action_completed_by(trainer_thread_context);
     } else {
         //TODO: traer implementación de nico de serialize_send_structure_and_wait_for_ack(request, socket_fd);
     }
+
 }

@@ -14,11 +14,10 @@ typedef struct Scheduling_algorithm{
 void initialize_scheduling_algorithm();
 
 void update_ready_queue_when_adding(t_queue* ready_queue, t_trainer_thread_context* trainer_thread_context);
-
 void trainer_thread_context_ready(t_trainer_thread_context* trainer_thread_context);
-
 bool basic_should_execute();
-
 void execution_cycle_consumed();
+
+void free_scheduling_algorithm();
 
 #endif //DELIBIRD_SCHEDULING_ALGORITHM_H

@@ -1,6 +1,5 @@
 #include <query_performer.h>
 #include <map.h>
-#include <stdlib.h>
 #include "appeared_query_performer.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
@@ -43,7 +42,6 @@ void appeared_query_performer_function(t_identified_message* correlative_identif
     if(global_goal_contains(appeared_pokemon -> pokemon_name)){
 
         t_targetable_object* targetable_pokemon = targetable_pokemon_according_to(appeared_pokemon);
-        free(appeared_pokemon);
         load_pokemon_in_map(targetable_pokemon);
     }
 }

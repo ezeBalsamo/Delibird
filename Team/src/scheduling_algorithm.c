@@ -1,6 +1,7 @@
 #include <scheduling_algorithm.h>
 #include <scheduling_algorithm_finder.h>
 #include <dispatcher.h>
+#include <stdlib.h>
 
 t_scheduling_algorithm* scheduling_algorithm;
 
@@ -29,4 +30,8 @@ void trainer_thread_context_ready(t_trainer_thread_context* trainer_thread_conte
 
 void execution_cycle_consumed(){
     scheduling_algorithm -> execution_cycle_consumed_function();
+}
+
+void free_scheduling_algorithm(){
+    free(scheduling_algorithm);
 }

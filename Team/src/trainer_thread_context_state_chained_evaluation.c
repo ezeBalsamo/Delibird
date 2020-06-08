@@ -4,7 +4,6 @@
 #include <distance_calculator.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include "trainer_thread_context_state_chained_evaluation.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/chained_evaluation.h"
 
 t_identified_chained_evaluation* first_evaluation;
@@ -63,7 +62,7 @@ bool has_finished_function(t_trainer_thread_context* trainer_thread_context){
 
 t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_finished(){
 
-    t_identified_chained_evaluation* next_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation*));
+    t_identified_chained_evaluation* next_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
     next_evaluation -> chained_evaluation_type = BASIC;
     next_evaluation -> evaluation = ready_or_schedulable_blocked_state_chained_evaluation();
 
@@ -93,7 +92,9 @@ void initialize_trainer_thread_context_state_chained_evaluation(){
 
 void trainer_thread_context_state_chained_evaluation_value_when_caught_for(t_trainer_thread_context* trainer_thread_context){
 
-    initialize_trainer_thread_context_state_chained_evaluation();
-
     execute_evaluation_for(first_evaluation, trainer_thread_context);
+}
+
+void free_trainer_thread_context_state_chained_evaluation(){
+    free_chained_evaluation(first_evaluation);
 }

@@ -6,6 +6,7 @@
 #include <trainer_threads.h>
 #include <commons/string.h>
 #include <team_logs_manager.h>
+#include <dispatcher.h>
 #include "../../Utils/include/free_system.h"
 
 t_list* localized_trainers;
@@ -51,9 +52,40 @@ bool global_goal_contains(char* pokemon_name){
     return list_any_satisfy(global_goal, _are_equals);
 }
 
-void update_current_pokemons_after_catching(t_localizable_object* localizable_trainer, char* pokemon_name){
+void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name){
     t_trainer* trainer = localizable_trainer -> object;
     list_add(trainer -> current_pokemons, pokemon_name);
+}
+
+void assert_equals_size_between_trainers_and_finished_trainer_thread_contexts(){
+    int finished_amount = finished_trainer_thread_contexts_amount();
+    if(list_size(localized_trainers) != finished_amount){
+        log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
+        free_system();
+    }
+}
+
+void consider_global_goal_accomplished(){
+
+    bool _has_no_requirements_left(void* localized_trainer){
+        t_localizable_object* cast_localized_trainer = (t_localizable_object*) localized_trainer;
+        t_trainer* trainer = cast_localized_trainer -> object;
+        t_list* trainer_requirements = requirements_of(trainer);
+        bool has_no_requeriments_left = list_is_empty(trainer_requirements);
+
+        list_destroy(trainer_requirements);
+        return has_no_requeriments_left;
+    }
+
+    bool global_goal_accomplished =
+            list_all_satisfy(localized_trainers, _has_no_requirements_left);
+
+    if(global_goal_accomplished){
+        assert_all_trainer_thread_contexts_have_finished();
+        assert_equals_size_between_trainers_and_finished_trainer_thread_contexts();
+        log_global_goal_accomplished();
+        free_system();
+    }
 }
 
 t_list* trainers_x_positions(){
@@ -80,13 +112,15 @@ void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
     list_iterate(global_goal, (void (*)(void *)) closure);
 }
 
-void free_trainer(t_trainer *trainer){
+void free_localizable_trainer(t_localizable_object* localizable_trainer){
+    t_trainer* trainer = localizable_trainer -> object;
     list_destroy_and_destroy_elements(trainer -> required_pokemons, free);
     list_destroy_and_destroy_elements(trainer -> current_pokemons, free);
     free(trainer);
+    free(localizable_trainer);
 }
 
 void free_team_manager(){
     list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
-    list_destroy_and_destroy_elements(localized_trainers, (void (*)(void *)) free_trainer);
+    list_destroy_and_destroy_elements(localized_trainers, (void (*)(void *)) free_localizable_trainer);
 }

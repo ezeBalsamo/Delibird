@@ -67,6 +67,7 @@ void* subscriber_thread(void* queue_operation_identifier){
     }
     else {
         send_structure(request, connection_information -> socket_fd);
+        free_connection_information(connection_information);
         sem_post(&subscriber_threads_request_sent);
         request -> sanitizer_function (request);
 

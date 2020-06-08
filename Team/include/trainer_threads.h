@@ -26,10 +26,12 @@ typedef struct Trainer_thread_context{
 }t_trainer_thread_context;
 
 void initialize_trainer_threads();
-void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
 
+void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
 t_thread_action* new_thread_action();
 void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context);
+
 void free_thread_action(t_thread_action* thread_action);
+void free_trainer_threads();
 
 #endif //DELIBIRD_TRAINER_THREADS_H

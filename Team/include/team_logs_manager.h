@@ -29,6 +29,11 @@ void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_tra
 void log_unknown_thread_action_type_error();
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context);
 void log_succesfully_caught(t_localizable_object* localizable_pokemon);
+void log_expected_to_be_empty_error_for(char* state_structure_name);
+void log_expected_to_be_not_empty_error_for(char* state_structure_name);
+void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context);
+void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
+void log_global_goal_accomplished();
 
 void free_team_logs_manager();
 

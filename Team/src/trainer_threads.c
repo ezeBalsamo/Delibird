@@ -3,6 +3,7 @@
 #include <dispatcher.h>
 #include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
+#include <trainer_thread_context_state_chained_evaluation.h>
 
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
@@ -59,6 +60,7 @@ void initialize_trainer_thread_contexts(){
 
 void initialize_trainer_threads(){
 
+    initialize_trainer_thread_context_state_chained_evaluation();
     initialize_trainer_thread_contexts();
 
     trainers_tids = list_create();
@@ -84,4 +86,10 @@ void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context
 void free_thread_action(t_thread_action* thread_action){
     free_request(thread_action -> request);
     free(thread_action);
+}
+
+void free_trainer_threads(){
+    list_destroy_and_destroy_elements(trainers_tids, free);
+    list_destroy_and_destroy_elements(trainer_thread_contexts, free);
+    free_trainer_thread_context_state_chained_evaluation();
 }
