@@ -90,8 +90,10 @@ void send_all_messages(int subscriber, uint32_t operation_queue){
     t_queue* queue = get_queue_of(operation_queue);
 
     for(int i = 0; i < list_size(queue -> elements); i++){
+
         t_message_status* message_status = list_get(queue -> elements, i);
         t_request* request = create_request_id(message_status);
+
         serialize_and_send_structure(request, subscriber);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, &subscriber);

@@ -65,6 +65,7 @@ t_queue* get_queue_of(uint32_t operation){
 
     char* queue_name = queue_name_of(operation);
     void* queue = dictionary_get(queue_dictionary, queue_name);
+
     return (t_queue*) queue;
 }
 
@@ -107,22 +108,28 @@ void push_to_queue(t_message_status* message_status){
 }
 
 void subscriber_died(t_message_status* message_status, int subscriber){
+
     t_list* subscribers_to_send = message_status -> subscribers_to_send;
 
     bool equals_subscribers_(void* another_subscriber){
         return subscriber == *((int*)another_subscriber);
     }
+
     list_remove_by_condition(subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
 }
 
 void join_subscribers_threads(t_list* subscriber_thread_list){
     void* subscriber_ack;
+
     for(int i = 0; i < list_size(subscriber_thread_list); i++){
+
         t_subscriber_ack_thread_structure* subscriber_ack_thread_structure = (t_subscriber_ack_thread_structure*) list_get(subscriber_thread_list, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread_structure -> subscriber_thread;
+
         pthread_join(waiting_for_ack_thread, &subscriber_ack);
 
         uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
+
         if (cast_subscriber_ack == FAILED_ACK){
             log_ack_received_error();
             subscriber_died(subscriber_ack_thread_structure -> message_status, subscriber_ack_thread_structure -> subscriber);
@@ -134,7 +141,7 @@ void join_subscribers_threads(t_list* subscriber_thread_list){
 
 void publish(t_message_status* message_status) {
 
-    t_list *subscribers = message_status->subscribers_to_send;
+    t_list *subscribers = message_status -> subscribers_to_send;
     t_request *request = create_request_id(message_status);
     t_list* subscriber_thread_list = list_create();
 
@@ -160,6 +167,7 @@ void publish(t_message_status* message_status) {
         }
         list_iterate(subscribers, _send_message);
         log_succesful_message_sent_to_suscribers(request);
+
         join_subscribers_threads(subscriber_thread_list);
         }
 }

@@ -6,7 +6,7 @@
 #include <signal.h>
 
 void handler(){
-    write(STDOUT_FILENO, ": OK. Me vas a matar pero primero voy a liberar la memoria que utilice!\n", 73);
+    write(STDOUT_FILENO, ": OK. Me vas a matar. :( Pero antes voy a liberar la tooodaaa memoria que utilice! :D\n", 86);
     free_system();
 }
 
