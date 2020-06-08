@@ -134,6 +134,7 @@ void preempt_due_to(char* preemption_reason){
     trainer_thread_context_executing = NULL;
     pthread_mutex_unlock(&execute_mutex);
     schedule(trainer_thread_context_to_schedule, preemption_reason);
+    sem_wait(&trainer_thread_context_to_schedule -> semaphore);
 }
 
 void consider_continue_executing(){
