@@ -88,6 +88,7 @@ void load_trainer_in_map(t_localizable_object* localizable_trainer){
     matrix_insert_element_at(map, (t_trainer *) localizable_trainer -> object, localizable_trainer -> pos_x,
                              localizable_trainer -> pos_y);
 }
+
 void load_pokemon_in_map(t_targetable_object* targetable_pokemon){
 
     t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
