@@ -13,6 +13,7 @@ void free_system(){
     free_queue_message_manager();
     free_configuration_manager();
 
+    free_garbage_collector();
     log_successful_clean_up();
     free_broker_logs_manager();
 
