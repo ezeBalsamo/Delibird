@@ -4,9 +4,12 @@
 #include <free_system.h>
 #include <zconf.h>
 #include <signal.h>
+#include <commons/string.h>
+
+char* message_handler = "\nOK. Me vas a matar. :( Pero antes voy a liberar la tooodaaa memoria que utilice! :D\n\n";
 
 void handler(){
-    write(STDOUT_FILENO, ": OK. Me vas a matar. :( Pero antes voy a liberar la tooodaaa memoria que utilice! :D\n", 86);
+    write(STDOUT_FILENO, message_handler, string_length(message_handler));
     free_system();
 }
 
