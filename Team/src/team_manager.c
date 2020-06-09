@@ -85,7 +85,6 @@ void consider_global_goal_accomplished(){
         assert_all_trainer_thread_contexts_have_finished();
         assert_equals_size_between_trainers_and_finished_trainer_thread_contexts();
         log_global_goal_accomplished();
-        free_system();
     }
 }
 

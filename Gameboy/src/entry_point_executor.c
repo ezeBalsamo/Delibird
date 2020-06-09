@@ -48,7 +48,7 @@ void* queue_listener_thread(){
 
 void subscriber_mode_execution(){
     pthread_t tid = default_safe_thread_create(queue_listener_thread, NULL);
-    thread_join(tid);
+    safe_thread_join(tid);
 }
 
 void publisher_mode_execution(){

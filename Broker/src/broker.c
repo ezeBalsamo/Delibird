@@ -11,6 +11,8 @@
 
 int main() {
 
+    initialize_garbage_collector();
+
     initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();
@@ -20,7 +22,7 @@ int main() {
     log_succesful_start_up();
 
     pthread_t connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
-    thread_join(connection_handler_thread);
+    safe_thread_join(connection_handler_thread);
     log_successful_execution();
 
     free_system();

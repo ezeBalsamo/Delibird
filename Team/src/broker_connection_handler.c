@@ -47,7 +47,7 @@ void* retry_connection_thread(void* connection_information){
 void execute_retry_connection_strategy(t_connection_information* connection_information){
     log_failed_attempt_to_communicate_with_broker("se procederá a reintentar");
     pthread_t reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
-    thread_join(reconnection_thread);
+    safe_thread_join(reconnection_thread);
 }
 
 void* subscriber_thread(void* queue_operation_identifier){
@@ -64,14 +64,16 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
-    if(!connection_information -> connection_was_succesful) {
-        consider_as_garbage(request, (void (*)(void *)) free_request);
-        consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
+    consider_as_garbage(request, (void (*)(void *)) free_request);
+    consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
 
+    if(!connection_information -> connection_was_succesful) {
         execute_retry_connection_strategy(connection_information);
     }
     else {
         send_structure(request, connection_information -> socket_fd);
+
+        int socket_fd = connection_information -> socket_fd;
 
         free_connection_information(connection_information);
         stop_considering_garbage(connection_information);
@@ -82,7 +84,7 @@ void* subscriber_thread(void* queue_operation_identifier){
         sem_post(&subscriber_threads_request_sent);
 
         while (true) {
-            t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
+            t_serialization_information* serialization_information = receive_structure(socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
             log_request_received_with(main_logger(), deserialized_request);
@@ -117,9 +119,9 @@ void subscribe_to_queues(){
 
 void join_to_queues(){
 
-    thread_join(appeared_queue_tid);
-    thread_join(localized_queue_tid);
-    thread_join(caught_queue_tid);
+    safe_thread_join(appeared_queue_tid);
+    safe_thread_join(localized_queue_tid);
+    safe_thread_join(caught_queue_tid);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){

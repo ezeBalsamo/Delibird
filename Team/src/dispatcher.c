@@ -120,13 +120,6 @@ void execute_trainer_thread_context(){
                           thread_action_as_string(trainer_thread_context_executing));
 
     sem_post(&trainer_thread_context_executing -> semaphore);
-
-    /*Todo lógica para esperar a que ejecute + lógica para ver que pasó
-     * En el caso de un appeared/localized,
-     *      -> si la conexión se realiza: va a ser bloqueado a la espera del caught
-     *      -> si la conexión no se realiza: comportamiento por default, lo cual puede ser blocked o finished
-     * En el caso de la resolución del deadlock, puede pasar a finished
-     * */
 }
 
 void preempt_due_to(char* preemption_reason){

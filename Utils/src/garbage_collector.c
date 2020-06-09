@@ -3,11 +3,14 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <general_logs.h>
+#include <pthread_wrapper.h>
 
+pthread_mutex_t garbage_collector_mutex;
 t_list* garbage_collector;
 
 void initialize_garbage_collector(){
     garbage_collector = list_create();
+    safe_mutex_initialize(&garbage_collector_mutex);
 }
 
 void consider_as_garbage(void* object, void (*object_cleaner_function) (void*)){
@@ -15,7 +18,9 @@ void consider_as_garbage(void* object, void (*object_cleaner_function) (void*)){
     garbage -> object = object;
     garbage -> object_cleaner_function = object_cleaner_function;
 
+    pthread_mutex_lock(&garbage_collector_mutex);
     list_add(garbage_collector, garbage);
+    pthread_mutex_unlock(&garbage_collector_mutex);
 }
 
 void stop_considering_garbage(void* object){
@@ -26,7 +31,9 @@ void stop_considering_garbage(void* object){
         return object_to_compare == object;
     }
 
+    pthread_mutex_lock(&garbage_collector_mutex);
     t_garbage* garbage_found = list_remove_by_condition(garbage_collector, _are_equals);
+    pthread_mutex_unlock(&garbage_collector_mutex);
 
     if(!garbage_found){
         log_garbage_to_stop_considering_that_not_found_error();

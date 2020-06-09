@@ -15,7 +15,7 @@ void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thr
 void join_trainers_threads(){
     for (int i = 0; i < list_size(trainers_tids); i++) {
         pthread_t* trainer_tid = (pthread_t*) list_get(trainers_tids, i);
-        thread_join(*trainer_tid);
+        safe_thread_join(*trainer_tid);
     }
 }
 

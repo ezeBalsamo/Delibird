@@ -2,4 +2,5 @@
 
 void free_system(){
     //TODO: se implementa para que no falle el build
+    free_garbage_collector();
 }

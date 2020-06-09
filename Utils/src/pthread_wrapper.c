@@ -26,7 +26,7 @@ void safe_thread_join_waiting_value(pthread_t thread, void** return_value){
     }
 }
 
-void thread_join(pthread_t thread){
+void safe_thread_join(pthread_t thread){
     safe_thread_join_waiting_value(thread, NULL);
 }
 
@@ -61,4 +61,13 @@ void safe_thread_cancel(pthread_t thread){
     }
 
     free(message);
+}
+
+void safe_thread_detach(pthread_t thread){
+    if(pthread_detach(thread) != 0){
+        char* message = string_from_format("Error al detachar el hilo %u", process_get_thread_id());
+        log_syscall_error(message);
+        free(message);
+        free_system();
+    }
 }
