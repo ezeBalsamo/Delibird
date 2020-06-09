@@ -7,12 +7,13 @@
 #include <commons/string.h>
 #include <team_logs_manager.h>
 #include <dispatcher.h>
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_list* localized_trainers;
 t_list* global_goal;
 
 void* initialize_team_manager(){
+
     localized_trainers = parsed_trainers();
     global_goal = team_global_goal_according_to(localized_trainers);
     initialize_map();

@@ -1,7 +1,7 @@
 #include "../include/map.h"
 #include "../../Utils/include/matrix.h"
 #include "../../Utils/include/common_structures.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
 #include <stdlib.h>
@@ -15,6 +15,12 @@ t_dictionary* pokemon_occurrences;
 
 pthread_mutex_t map_mutex;
 pthread_mutex_t ocurrences_mutex;
+
+void free_targetable_pokemon(t_targetable_object* targetable_pokemon){
+    t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
+    free(localizable_pokemon);
+    free(targetable_pokemon);
+}
 
 t_list* occurrences_of(char* pokemon_name){
     char* uppercase_pokemon_name = string_duplicate(pokemon_name);
@@ -57,6 +63,7 @@ void remove_occurence_of(t_localizable_object* localizable_pokemon){
     }
     
     t_targetable_object* targetable_pokemon = list_remove_by_condition(targetable_pokemons, _is_of);
+    free_targetable_pokemon(targetable_pokemon);
 }
 
 bool is_not_targeted(void* targetable_pokemon){
@@ -114,7 +121,6 @@ void remove_pokemon_from_map(t_localizable_object* localizable_pokemon){
     }
 
     remove_occurence_of(localizable_pokemon);
-    free(localizable_pokemon);
 }
 
 void* cast_uint_max_between(void* number, void* another_number){
@@ -169,12 +175,6 @@ void matrix_print_trainer(void* trainer){
 
     printf("%10s", printable_trainer);
     free(printable_trainer);
-}
-
-void free_targetable_pokemon(t_targetable_object* targetable_pokemon){
-    t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
-    free(localizable_pokemon);
-    free(targetable_pokemon);
 }
 
 void free_targetable_pokemons(t_list* targetable_pokemons){

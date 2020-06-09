@@ -1,7 +1,7 @@
 #include <movement_action.h>
 #include <commons/string.h>
 #include "../include/dispatching_reasons.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
 #include <team_logs_manager.h>
 #include <catch_action.h>

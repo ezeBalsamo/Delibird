@@ -1,4 +1,4 @@
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
 
 int main() {

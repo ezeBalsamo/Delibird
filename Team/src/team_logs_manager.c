@@ -1,6 +1,6 @@
 #include "../include/team_logs_manager.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>

@@ -3,7 +3,7 @@
 #include <scheduling_algorithm.h>
 #include <dispatching_reasons.h>
 #include "dispatcher.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/pthread_wrapper.h"
 

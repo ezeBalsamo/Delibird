@@ -6,7 +6,7 @@
 #include <team_logs_manager.h>
 #include "scheduling_algorithm_finder.h"
 #include "../../Utils/include/configuration_manager.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
 
 t_list* scheduling_algorithms;

@@ -19,7 +19,10 @@ t_request* deserialize(void* serialized_request){
     memcpy(serialized_structure, serialized_request + offset, serialized_structure_size);
 
     t_serializable_object* serializable_object = serializable_object_with_code(operation);
-    return (*(serializable_object -> deserialize_function)) (serialized_structure);
+    t_request* request = (*(serializable_object -> deserialize_function)) (serialized_structure);
+
+    free(serialized_structure);
+    return request;
 }
 
 t_request* deserialize_new_pokemon(void* serialized_structure) {
@@ -235,5 +238,6 @@ t_request* deserialize_identified_message(void* serialized_structure){
     request -> structure = (void*) identified_message;
     request -> sanitizer_function = (void (*)(void *)) free_identified_message;
 
+    free(serialized_request);
     return request;
 }

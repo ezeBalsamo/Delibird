@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <general_logs.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 #include <common_structures.h>
 #include "../include/matrix.h"
 

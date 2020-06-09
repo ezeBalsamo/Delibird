@@ -15,7 +15,7 @@ set(SOURCES
         src/queue_code_name_associations.c
         src/general_logs.c
         src/chained_evaluation.c
-        )
+        src/garbage_collector.c)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_library(utils SHARED ${SOURCES})

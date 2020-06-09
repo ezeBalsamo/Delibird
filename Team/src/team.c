@@ -7,9 +7,10 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 
 int main(void) {
+    initialize_garbage_collector();
 
     initialize_team_logs_manager();
     initialize_pretty_printer();

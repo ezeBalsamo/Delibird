@@ -13,10 +13,10 @@
 #include <commons/process.h>
 #include <pthread_wrapper.h>
 #include <semaphore.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 #include <general_logs.h>
 
-#define THREAD_POOL_SIZE 3
+#define THREAD_POOL_SIZE 25
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -40,13 +40,16 @@ char* get_local_ip_address() {
         free_system();
     }
 
-    while(interface_addresses != NULL) {
+    struct ifaddrs* interface_adress_to_iterate = interface_addresses;
 
-        if (found_local_ip_address_in(interface_addresses)) {
-            af_inet_address_interface = (struct sockaddr_in*) interface_addresses -> ifa_addr;
+    while(interface_adress_to_iterate != NULL) {
+
+        if (found_local_ip_address_in(interface_adress_to_iterate)) {
+            af_inet_address_interface = (struct sockaddr_in*) interface_adress_to_iterate -> ifa_addr;
             local_ip_address = inet_ntoa(af_inet_address_interface -> sin_addr);
         }
-        interface_addresses = interface_addresses->ifa_next;
+
+        interface_adress_to_iterate = interface_adress_to_iterate -> ifa_next;
     }
 
     freeifaddrs(interface_addresses);
@@ -295,7 +298,10 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     while(true){
         int* client_socket_fd = safe_malloc(sizeof(int));
+        consider_as_garbage(client_socket_fd, free);
+
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
+        stop_considering_garbage(client_socket_fd);
 
         pthread_mutex_lock(&queue_mutex);
         queue_push(queue, (void*) client_socket_fd);
@@ -310,5 +316,10 @@ void free_and_close_connection(void* socket_fd){
 }
 
 void free_multithreaded_server(){
-    queue_destroy(queue);
+    queue_destroy_and_destroy_elements(queue, free);
+
+    for(int i = 0; i < THREAD_POOL_SIZE; i++){
+        pthread_t thread = thread_pool[i];
+        safe_thread_cancel(thread);
+    }
 }

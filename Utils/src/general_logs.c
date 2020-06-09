@@ -132,3 +132,7 @@ void log_request_received(t_request* request){
 void log_unknown_chained_evaluation_type_error(){
     log_errorful_message(process_execution_logger(), "Se ha configurado una chained_evaluation con un tipo inválido.");
 }
+
+void log_garbage_to_stop_considering_that_not_found_error(){
+    log_errorful_message(process_execution_logger(), "Se esperaba encontrar un objeto designado como basura.");
+}

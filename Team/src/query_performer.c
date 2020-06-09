@@ -1,7 +1,7 @@
 #include <team_manager.h>
 #include <map.h>
 #include "../../Utils/include/common_structures.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
 #include <query_performer.h>
 #include <appeared_query_performer.h>

@@ -5,7 +5,7 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/free_system.h"
+#include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/general_logs.h"
 #include "../../Utils/include/logger.h"
 #include <stdlib.h>
@@ -55,6 +55,8 @@ void* subscriber_thread(void* queue_operation_identifier){
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
 
+    free(queue_operation_identifier);
+
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
@@ -63,13 +65,21 @@ void* subscriber_thread(void* queue_operation_identifier){
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(!connection_information -> connection_was_succesful) {
+        consider_as_garbage(request, (void (*)(void *)) free_request);
+        consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
+
         execute_retry_connection_strategy(connection_information);
     }
     else {
         send_structure(request, connection_information -> socket_fd);
+
         free_connection_information(connection_information);
+        stop_considering_garbage(connection_information);
+
+        free_request(request);
+        stop_considering_garbage(request);
+
         sem_post(&subscriber_threads_request_sent);
-        request -> sanitizer_function (request);
 
         while (true) {
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
@@ -140,5 +150,6 @@ void* initialize_broker_connection_handler(){
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
     join_to_queues();
+
     return NULL;
 }

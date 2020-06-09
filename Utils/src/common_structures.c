@@ -1,7 +1,7 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <general_logs.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
