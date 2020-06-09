@@ -26,8 +26,9 @@ int main(void) {
     pthread_t gameboy_connection_handler_thread = default_safe_thread_create(initialize_gameboy_connection_handler,NULL);
 
     safe_thread_join(team_manager_thread);
-    safe_thread_detach(broker_connection_handler_thread);
-    safe_thread_detach(gameboy_connection_handler_thread);
+    cancel_all_broker_connection_handler_threads();
+    safe_thread_cancel(broker_connection_handler_thread);
+    safe_thread_cancel(gameboy_connection_handler_thread);
 
     log_successful_execution();
 

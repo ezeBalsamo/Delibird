@@ -46,8 +46,12 @@ void* retry_connection_thread(void* connection_information){
 
 void execute_retry_connection_strategy(t_connection_information* connection_information){
     log_failed_attempt_to_communicate_with_broker("se procederá a reintentar");
-    pthread_t reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
-    safe_thread_join(reconnection_thread);
+
+    pthread_t* reconnection_thread = safe_malloc(sizeof(pthread_t));
+    consider_as_garbage(reconnection_thread, (void (*)(void *)) safe_thread_pointer_cancel);
+
+    *reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
+    safe_thread_join(*reconnection_thread);
 }
 
 void* subscriber_thread(void* queue_operation_identifier){
@@ -154,4 +158,10 @@ void* initialize_broker_connection_handler(){
     join_to_queues();
 
     return NULL;
+}
+
+void cancel_all_broker_connection_handler_threads(){
+    safe_thread_cancel(appeared_queue_tid);
+    safe_thread_cancel(localized_queue_tid);
+    safe_thread_cancel(caught_queue_tid);
 }

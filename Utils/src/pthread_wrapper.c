@@ -71,3 +71,8 @@ void safe_thread_detach(pthread_t thread){
         free_system();
     }
 }
+
+void safe_thread_pointer_cancel(pthread_t* thread){
+    safe_thread_cancel(*thread);
+    free(thread);
+}
