@@ -162,7 +162,7 @@ void assert_all_trainer_thread_contexts_have_finished(){
         log_expected_to_be_empty_error_for("lista de bloqueados");
         free_system();
     }
-    if(trainer_thread_context_executing != NULL){
+    if(is_anybody_executing()){
         log_expected_no_trainer_thread_executing_error_for(trainer_thread_context_executing);
         free_system();
     }

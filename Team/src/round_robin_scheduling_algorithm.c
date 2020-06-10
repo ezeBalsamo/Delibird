@@ -25,11 +25,6 @@ void initialize_quantum(){
     maximum_quantum = config_get_int_at("QUANTUM");
 }
 
-void reset_quantum_consumed(){
-    quantum_consumed = 0;
-}
-
-
 char* quantum_consumed_reason(){
     //Se aloca memoria en lugar de devolver el string porque los
     //otros motivos de logueo de schedule la alocan y la función
@@ -50,12 +45,17 @@ void round_robin_execution_cycle_consumed_function(){
     }
 }
 
+void round_robin_reset_quantum_consumed_function(){
+    quantum_consumed = 0;
+}
+
 void initialize_round_robin_scheduling_algorithm(){
     round_robin_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
     round_robin_algorithm -> can_handle_function = round_robin_can_handle;
     round_robin_algorithm -> update_ready_queue_when_adding_function = round_robin_update_ready_queue_when_adding_function;
     round_robin_algorithm -> should_execute_now_function = round_robin_should_execute_now_function;
     round_robin_algorithm -> execution_cycle_consumed_function = round_robin_execution_cycle_consumed_function;
+    round_robin_algorithm -> reset_quantum_consumed_function = round_robin_reset_quantum_consumed_function;
 
     initialize_quantum();
     reset_quantum_consumed();

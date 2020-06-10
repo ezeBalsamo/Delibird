@@ -9,6 +9,7 @@ typedef struct Scheduling_algorithm{
     void (*update_ready_queue_when_adding_function) (t_queue* ready_queue, t_trainer_thread_context* trainer_thread_context);
     bool (*should_execute_now_function) (t_trainer_thread_context* trainer_thread_context);
     void (*execution_cycle_consumed_function) ();
+    void (*reset_quantum_consumed_function) ();
 }t_scheduling_algorithm;
 
 void initialize_scheduling_algorithm();
@@ -17,6 +18,7 @@ void update_ready_queue_when_adding(t_queue* ready_queue, t_trainer_thread_conte
 void trainer_thread_context_ready(t_trainer_thread_context* trainer_thread_context);
 bool basic_should_execute();
 void execution_cycle_consumed();
+void reset_quantum_consumed();
 
 void free_scheduling_algorithm();
 

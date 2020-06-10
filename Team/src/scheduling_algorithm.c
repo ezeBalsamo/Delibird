@@ -32,6 +32,10 @@ void execution_cycle_consumed(){
     scheduling_algorithm -> execution_cycle_consumed_function();
 }
 
+void reset_quantum_consumed(){
+    scheduling_algorithm -> reset_quantum_consumed_function();
+}
+
 void free_scheduling_algorithm(){
     free(scheduling_algorithm);
 }

@@ -20,12 +20,18 @@ void preemptive_sjf_execution_cycle_consumed_function(){
     //do nothing
 }
 
+
+void preemptive_sjf_reset_quantum_consumed_function(){
+    //do nothing
+}
+
 void initialize_preemptive_sjf_scheduling_algorithm(){
     preemptive_sjf_algorithm = safe_malloc(sizeof(t_scheduling_algorithm));
     preemptive_sjf_algorithm -> can_handle_function = preemptive_sjf_can_handle;
     preemptive_sjf_algorithm -> update_ready_queue_when_adding_function = preemptive_sjf_update_ready_queue_when_adding_function;
     preemptive_sjf_algorithm -> should_execute_now_function = preemptive_sjf_should_execute_now_function;
     preemptive_sjf_algorithm -> execution_cycle_consumed_function = preemptive_sjf_execution_cycle_consumed_function;
+    preemptive_sjf_algorithm -> reset_quantum_consumed_function = preemptive_sjf_reset_quantum_consumed_function;
 }
 
 t_scheduling_algorithm* preemptive_sjf_scheduling_algorithm(){
