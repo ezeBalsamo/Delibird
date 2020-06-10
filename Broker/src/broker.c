@@ -18,7 +18,6 @@ int main() {
     initialize_serializable_objects();
     initialize_configuration_manager_named("broker");
     initialize_queue_message_manager();
-    initialize_subscribers_manager();
 
     log_succesful_start_up();
 

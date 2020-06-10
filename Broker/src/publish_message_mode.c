@@ -1,8 +1,6 @@
 #include <message_role_identifier.h>
 #include <connection_handler.h>
-#include <semaphore.h>
 #include <queue_message_manager.h>
-#include <stdlib.h>
 #include "../../Utils/include/socket.h"
 
 t_message_role_identifier* publish_message_mode;
@@ -26,10 +24,7 @@ t_message_status* create_message_status_structure(t_identified_message* identifi
 
 void consume_message(t_connection_request* connection_request){
 
-    sem_wait(get_mutex_id());
-    uint32_t message_id = get_message_id();
-    update_message_id();
-    sem_post(get_mutex_id());
+    uint32_t message_id = update_and_get_message_id();
 
     t_identified_message* identified_message = create_identified_message(message_id, connection_request -> request);
 

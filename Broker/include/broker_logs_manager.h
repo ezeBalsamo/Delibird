@@ -33,6 +33,8 @@ void log_invalid_operation_to_message_role_identifier_error(uint32_t operation);
 
 void log_ack_received_error();
 
+void log_subscriber_disconnection(int subscriber);
+
 void log_received_unknown_operation_error();
 
 void free_broker_logs_manager();

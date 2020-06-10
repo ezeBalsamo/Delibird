@@ -16,11 +16,13 @@ void initialize_broker_logs_manager(){
 void log_succesful_connection_of_a_process(){
     char* message = "Se conectó un proceso correctamente.";
     log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
 }
 
 void log_succesful_subscription_process(int subscriber){
     char* message = string_from_format("%s: %d.", "Se suscribió al siguiente proceso a una cola de mensajes correctamente", subscriber);
     log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
@@ -90,12 +92,18 @@ void log_received_unknown_operation_error(){
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
     char* message = string_from_format("%s: %d", "No se encontro un rol que maneje a la siguiente operacion", operation);
-    log_errorful_message(process_execution_logger(),message);
+    log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_ack_received_error(){
     log_errorful_message(process_execution_logger(), "Se recibio un dato que no es igual al ack que envie.");
+}
+
+void log_subscriber_disconnection(int subscriber){
+    char* message = string_from_format("%s: %d", "Se desconecto al suscriptor con numero de socket:", subscriber);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void free_broker_logs_manager(){

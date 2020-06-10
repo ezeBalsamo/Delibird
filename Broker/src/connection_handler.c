@@ -13,16 +13,11 @@ char* port(){
     return config_get_string_at("PUERTO_BROKER");
 }
 
-uint32_t get_message_id(){
-    return message_id;
-}
-
-void update_message_id(){
+uint32_t update_and_get_message_id(){
+    sem_wait(&mutex_id);
     message_id++;
-}
-
-sem_t* get_mutex_id(){
-    return &mutex_id;
+    sem_post(&mutex_id);
+    return message_id;
 }
 
 void* main_thread_handler(void* connection_fd){
@@ -30,8 +25,7 @@ void* main_thread_handler(void* connection_fd){
     t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
     log_succesful_connection_of_a_process();
 
-    void* serialized_request = serialization_information -> serialized_request;
-    t_request* request = deserialize(serialized_request);
+    t_request* request = deserialize(serialization_information -> serialized_request);
     log_structure_received(request);
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);

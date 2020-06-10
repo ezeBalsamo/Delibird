@@ -12,45 +12,12 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/configuration_manager.h"
 
-t_list* new_pokemon_subscribers;
-t_list* appeared_pokemon_subscribers;
-t_list* get_pokemon_subscribers;
-t_list* localized_pokemon_subscribers;
-t_list* catch_pokemon_subscribers;
-t_list* caught_pokemon_subscribers;
-
-t_dictionary* subscribers_list_dictionary;
-
-
-void initialize_subscribers_list(){
-    new_pokemon_subscribers = list_create();
-    appeared_pokemon_subscribers = list_create();
-    get_pokemon_subscribers = list_create();
-    localized_pokemon_subscribers = list_create();
-    catch_pokemon_subscribers = list_create();
-    caught_pokemon_subscribers = list_create();
-}
-
-void initialize_subscribers_list_dictionary(){
-    subscribers_list_dictionary = dictionary_create();
-    dictionary_put(subscribers_list_dictionary,"NEW_POKEMON", (void*) new_pokemon_subscribers);
-    dictionary_put(subscribers_list_dictionary,"APPEARED_POKEMON", (void*) appeared_pokemon_subscribers);
-    dictionary_put(subscribers_list_dictionary,"GET_POKEMON", (void*) get_pokemon_subscribers);
-    dictionary_put(subscribers_list_dictionary,"LOCALIZED_POKEMON", (void*) localized_pokemon_subscribers);
-    dictionary_put(subscribers_list_dictionary,"CATCH_POKEMON", (void*) catch_pokemon_subscribers);
-    dictionary_put(subscribers_list_dictionary,"CAUGHT_POKEMON", (void*) caught_pokemon_subscribers);
-}
-
-void initialize_subscribers_manager(){
-    initialize_subscribers_list();
-    initialize_subscribers_list_dictionary();
-
-    log_succesful_initialize_subscriber_manager();
-}
-
-t_list* get_subscribers_of_a_queue(uint32_t queue){
+t_queue_context* get_context_of_a_queue(uint32_t queue){
    char* queue_name = queue_name_of(queue);
-   return dictionary_get(subscribers_list_dictionary, queue_name);
+   t_dictionary* dictionary =  get_queue_context_dictionary();
+   void* queue_context = dictionary_get(dictionary, queue_name);
+
+   return (t_queue_context*) queue_context;
 }
 
 void configure_socket_with_timeout(int socket_fd){
@@ -68,26 +35,42 @@ void move_subscriber_to_ACK(t_message_status* message_status, int subscriber){
     t_list* subscribers_to_send = message_status -> subscribers_to_send;
 
     bool equals_subscribers_(void* another_subscriber){
-        return subscriber == *((int*)another_subscriber);
+        return subscriber == *((int*) another_subscriber);
     }
 
     list_remove_by_condition(subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
 }
 
 void subscribe_process(int subscriber, uint32_t operation_queue){
-    char* queue_name = queue_name_of(operation_queue);
-    t_list* subscribers = (t_list*) dictionary_get(subscribers_list_dictionary, queue_name);
+    t_queue_context* queue_context = get_context_of_a_queue(operation_queue);
+    t_list* subscribers = queue_context -> subscribers;
 
     int* subscriber_socket_fd = safe_malloc(sizeof(int));
     *subscriber_socket_fd = subscriber;
 
     configure_socket_with_timeout(*subscriber_socket_fd);
+    sem_wait(&(queue_context -> subscribers_mutex));
     list_add(subscribers, (void*) subscriber_socket_fd);
+    sem_post(&(queue_context -> subscribers_mutex));
     log_succesful_subscription_process(*subscriber_socket_fd);
+}
+
+void disconnect_subscriber(t_message_status* message_status, int subscriber){
+
+    t_list* subscribers_to_send = message_status -> subscribers_to_send;
+
+    bool equals_subscribers_(void* another_subscriber){
+        return subscriber == *((int*)another_subscriber);
+    }
+
+    list_remove_by_condition(subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
+    close(subscriber);
+    log_subscriber_disconnection(subscriber);
 }
 
 void send_all_messages(int subscriber, uint32_t operation_queue){
     t_queue* queue = get_queue_of(operation_queue);
+    void* subscriber_ack;
 
     for(int i = 0; i < list_size(queue -> elements); i++){
 
@@ -97,18 +80,17 @@ void send_all_messages(int subscriber, uint32_t operation_queue){
         serialize_and_send_structure(request, subscriber);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, &subscriber);
-        thread_join(waiting_for_ack_thread);
 
-        move_subscriber_to_ACK(message_status, subscriber);
+        pthread_join(waiting_for_ack_thread, &subscriber_ack);
+
+        uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
+
+        if (cast_subscriber_ack == FAILED_ACK){
+            log_ack_received_error();
+            disconnect_subscriber(message_status, subscriber);
+        } else {
+            move_subscriber_to_ACK(message_status, subscriber);
+            log_succesful_all_messages_of_a_queue_sent_to(subscriber);
+        }
     }
-    log_succesful_all_messages_of_a_queue_sent_to(subscriber);
-}
-
-void free_subscriber_dictionary(){
-    dictionary_destroy_and_destroy_elements(subscribers_list_dictionary,
-                                            (void (*)(void *)) list_destroy_and_destroy_elements);
-}
-
-void free_subscribers_manager(){
-    free_subscriber_dictionary();
 }

@@ -3,9 +3,7 @@
 
 #include <semaphore.h>
 
-uint32_t get_message_id();
-void update_message_id();
-sem_t* get_mutex_id();
+uint32_t update_and_get_message_id();
 void* initialize_connection_handler();
 
 #endif //DELIBIRD_TEAM_CONNECTION_HANDLER_H

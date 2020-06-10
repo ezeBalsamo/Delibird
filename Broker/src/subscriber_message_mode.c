@@ -19,7 +19,7 @@ void subscribe(t_connection_request* connection_request){
     send_all_messages(connection_request -> socket_fd, suscribe_me -> operation_queue);
 }
 
-t_message_role_identifier* initialize_subscriber_message_mode(){
+void initialize_subscriber_message_mode(){
     subscriber_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     subscriber_message_mode -> can_handle_function  = subscriber_mode_can_handle;
     subscriber_message_mode -> attending_message_function = subscribe;

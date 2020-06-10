@@ -8,45 +8,55 @@
 #include <free_broker.h>
 #include <commons/collections/dictionary.h>
 #include <publish_message_mode.h>
+#include <semaphore.h>
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/t_list_extension.h"
 
-t_queue* new_queue;
-t_queue* appeared_queue;
-t_queue* get_queue;
-t_queue* localized_queue;
-t_queue* catch_queue;
-t_queue* caught_queue;
+t_dictionary* queue_management_dictionary;
 
-t_dictionary* queue_dictionary;
+t_dictionary* get_queue_context_dictionary(){
+    return queue_management_dictionary;
+}
 
+void initialize_queue_context(char* operation_name){
 
-void initialize_messages_queue(){
-    new_queue = queue_create();
-    appeared_queue = queue_create();
-    get_queue = queue_create();
-    localized_queue = queue_create();
-    catch_queue = queue_create();
-    caught_queue = queue_create();
+    t_queue* queue = queue_create();
+    t_list* subscribers = list_create();
+    sem_t queue_mutex;
+    sem_init(&queue_mutex, false, 1);
+    sem_t subscribers_mutex;
+    sem_init(&subscribers_mutex, false, 1);
+
+    t_queue_context* queue_context = safe_malloc(sizeof(t_queue_context));
+    uint32_t operation = queue_code_of(operation_name);
+    queue_context -> operation = operation;
+    queue_context -> queue = queue;
+    queue_context -> subscribers = subscribers;
+    queue_context -> queue_mutex = queue_mutex;
+    queue_context -> subscribers_mutex = subscribers_mutex;
+
+    dictionary_put(queue_management_dictionary, operation_name, (void*) queue_context);
 }
 
 void initialize_queue_dictionary(){
-    queue_dictionary = dictionary_create();
-    dictionary_put(queue_dictionary,"NEW_POKEMON", (void*) new_queue);
-    dictionary_put(queue_dictionary,"APPEARED_POKEMON", (void*) appeared_queue);
-    dictionary_put(queue_dictionary,"GET_POKEMON", (void*) get_queue);
-    dictionary_put(queue_dictionary,"LOCALIZED_POKEMON", (void*) localized_queue);
-    dictionary_put(queue_dictionary,"CATCH_POKEMON", (void*) catch_queue);
-    dictionary_put(queue_dictionary,"CAUGHT_POKEMON", (void*) caught_queue);
+
+    queue_management_dictionary = dictionary_create();
+    initialize_queue_context("NEW_POKEMON");
+    initialize_queue_context("APPEARED_POKEMON");
+    initialize_queue_context("GET_POKEMON");
+    initialize_queue_context("LOCALIZED_POKEMON");
+    initialize_queue_context("CATCH_POKEMON");
+    initialize_queue_context("CAUGHT_POKEMON");
 }
 
 void initialize_queue_message_manager(){
-    initialize_messages_queue();
-    initialize_queue_dictionary();
 
+    initialize_queue_dictionary();
     log_succesful_initialize_queue_message_manager();
 }
 
 t_request* create_request_id(t_message_status* message_status){
+
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = IDENTIFIED_MESSAGE;
     request -> structure = message_status -> identified_message;
@@ -55,24 +65,25 @@ t_request* create_request_id(t_message_status* message_status){
     return request;
 }
 
-void get_and_update_subscribers_to_send(t_message_status* message_status, uint32_t operation){
+void get_and_update_subscribers_to_send(t_message_status* message_status, t_queue_context* queue_context){
 
-    t_list* subscribers_of_a_queue = get_subscribers_of_a_queue(operation);
-    list_add_all(message_status -> subscribers_to_send, subscribers_of_a_queue);
+    sem_wait(&(queue_context -> subscribers_mutex));
+    list_add_all(message_status -> subscribers_to_send, queue_context -> subscribers);
+    sem_post(&(queue_context -> subscribers_mutex));
 }
 
 t_queue* get_queue_of(uint32_t operation){
 
     char* queue_name = queue_name_of(operation);
-    void* queue = dictionary_get(queue_dictionary, queue_name);
+    void* queue_management_structure = dictionary_get(queue_management_dictionary, queue_name);
 
-    return (t_queue*) queue;
+    return ((t_queue_context*) queue_management_structure) -> queue;
 }
 
 bool equals_message_status_(t_message_status* message_status, t_message_status* another_message_status){
     return message_status -> identified_message == another_message_status -> identified_message &&
-           message_status -> subscribers_to_send == another_message_status -> subscribers_to_send &&
-           message_status -> subscribers_who_received == another_message_status -> subscribers_who_received;
+            are_equal_lists(message_status->subscribers_to_send, another_message_status->subscribers_to_send) &&
+           are_equal_lists(message_status->subscribers_who_received, another_message_status->subscribers_who_received);
 }
 
 void push_to_queue(t_message_status* message_status){
@@ -80,16 +91,18 @@ void push_to_queue(t_message_status* message_status){
     uint32_t operation = internal_operation_in(message_status -> identified_message);
 
     if(operation == IDENTIFIED_MESSAGE){ //caso en donde es un identified con otro identified adentro.
-    uint32_t internal_operation = internal_operation_in_correlative(message_status->identified_message);
-    operation = internal_operation;
+        uint32_t internal_operation = internal_operation_in_correlative(message_status->identified_message);
+        operation = internal_operation;
     }
 
-    get_and_update_subscribers_to_send(message_status, operation);
+    t_queue_context* queue_context = get_context_of_a_queue(operation);
+
+    get_and_update_subscribers_to_send(message_status, queue_context);
     log_succesful_get_and_update_subscribers_to_send(message_status -> identified_message);
 
-    t_queue* queue = get_queue_of(operation);
-
-    queue_push(queue, message_status);
+    sem_wait(&(queue_context -> queue_mutex));
+    queue_push(queue_context -> queue, message_status);
+    sem_post(&(queue_context -> queue_mutex));
     log_succesful_new_message_pushed_to_a_queue(message_status -> identified_message);
 
     publish(message_status);
@@ -107,24 +120,13 @@ void push_to_queue(t_message_status* message_status){
     }*/
 }
 
-void subscriber_died(t_message_status* message_status, int subscriber){
-
-    t_list* subscribers_to_send = message_status -> subscribers_to_send;
-
-    bool equals_subscribers_(void* another_subscriber){
-        return subscriber == *((int*)another_subscriber);
-    }
-
-    list_remove_by_condition(subscribers_to_send, (bool (*)(void *)) equals_subscribers_);
-}
-
 void join_subscribers_threads(t_list* subscriber_thread_list){
     void* subscriber_ack;
 
     for(int i = 0; i < list_size(subscriber_thread_list); i++){
 
-        t_subscriber_ack_thread_structure* subscriber_ack_thread_structure = (t_subscriber_ack_thread_structure*) list_get(subscriber_thread_list, i);
-        pthread_t waiting_for_ack_thread = subscriber_ack_thread_structure -> subscriber_thread;
+        t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(subscriber_thread_list, i);
+        pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
         pthread_join(waiting_for_ack_thread, &subscriber_ack);
 
@@ -132,9 +134,9 @@ void join_subscribers_threads(t_list* subscriber_thread_list){
 
         if (cast_subscriber_ack == FAILED_ACK){
             log_ack_received_error();
-            subscriber_died(subscriber_ack_thread_structure -> message_status, subscriber_ack_thread_structure -> subscriber);
+            disconnect_subscriber(subscriber_ack_thread->message_status, subscriber_ack_thread->subscriber);
         } else {
-            move_subscriber_to_ACK(subscriber_ack_thread_structure -> message_status, subscriber_ack_thread_structure -> subscriber);
+            move_subscriber_to_ACK(subscriber_ack_thread -> message_status, subscriber_ack_thread -> subscriber);
         }
     }
 }
@@ -157,12 +159,12 @@ void publish(t_message_status* message_status) {
 
             pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, subscriber);
 
-            t_subscriber_ack_thread_structure* subscriber_ack_thread_structure = malloc(sizeof(t_subscriber_ack_thread_structure));
-            subscriber_ack_thread_structure -> subscriber_thread = waiting_for_ack_thread;
-            subscriber_ack_thread_structure -> subscriber = cast_subscriber;
-            subscriber_ack_thread_structure -> message_status = message_status;
+            t_subscriber_ack_thread* subscriber_ack_thread = malloc(sizeof(t_subscriber_ack_thread));
+            subscriber_ack_thread -> subscriber_thread = waiting_for_ack_thread;
+            subscriber_ack_thread -> subscriber = cast_subscriber;
+            subscriber_ack_thread -> message_status = message_status;
 
-            list_add(subscriber_thread_list, subscriber_ack_thread_structure);
+            list_add(subscriber_thread_list, subscriber_ack_thread);
 
         }
         list_iterate(subscribers, _send_message);
@@ -172,8 +174,14 @@ void publish(t_message_status* message_status) {
         }
 }
 
+void free_queue_context(t_queue_context* queue_context){
+
+    queue_destroy_and_destroy_elements((queue_context -> queue), (void (*)(void *)) free_message_status);
+    list_destroy(queue_context -> subscribers);
+}
+
 void free_queue_dictionary(){
-    dictionary_destroy_and_destroy_elements(queue_dictionary, (void (*)(void *)) queue_destroy_and_destroy_elements);
+    dictionary_destroy_and_destroy_elements(queue_management_dictionary, (void (*)(void *)) free_queue_context);
 }
 
 void free_queue_message_manager(){
