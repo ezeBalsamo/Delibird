@@ -1,7 +1,7 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <general_logs.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
@@ -52,4 +52,8 @@ void* internal_object_in(t_identified_message* identified_message){
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message){
     t_identified_message* original_identified_message = internal_object_in(correlative_identified_message);
     return internal_object_in(original_identified_message);
+}
+
+void sem_initialize(sem_t* semaphore){
+    sem_init(semaphore, false, 0);
 }

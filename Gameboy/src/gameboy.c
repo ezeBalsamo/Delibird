@@ -9,6 +9,8 @@
 
 int main(int arguments_amount, char* arguments[]) {
 
+    initialize_garbage_collector();
+
     initialize_entry_point_logs_manager();
     initialize_entry_point_connection_builder();
     initialize_pretty_printer();

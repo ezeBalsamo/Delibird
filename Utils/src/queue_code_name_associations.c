@@ -4,7 +4,7 @@
 #include <common_structures.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 #include <general_logs.h>
 
 t_dictionary* queue_code_name_associations;

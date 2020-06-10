@@ -24,26 +24,6 @@ void log_succesful_initialize_entry_point_validator(){
     log_succesful_message(process_execution_logger(), "Entry point validator se ha inicializado correctamente!\n");
 }
 
-void log_request_with_event(t_request* request, char* event){
-    char* message = string_new();
-    string_append(&message, event);
-    string_append(&message, ":\n");
-
-    char* request_string = pretty_print_of(request -> operation, request -> structure);
-    string_append(&message, request_string);
-    log_succesful_message(process_execution_logger(), message);
-    free(request_string);
-    free(message);
-}
-
-void log_about_to_send_request(t_request* request){
-    log_request_with_event(request, "Pedido de enviar");
-}
-
-void log_request_sent(t_request* request){
-    log_request_with_event(request, "Pedido enviado");
-}
-
 void unknown_process_error_for(char* process_name){
     char* message = string_new();
     string_append(&message, process_name);

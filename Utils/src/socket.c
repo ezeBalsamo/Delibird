@@ -13,7 +13,7 @@
 #include <commons/process.h>
 #include <pthread_wrapper.h>
 #include <semaphore.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 #include <general_logs.h>
 
 #define THREAD_POOL_SIZE 25
@@ -40,13 +40,16 @@ char* get_local_ip_address() {
         free_system();
     }
 
-    while(interface_addresses != NULL) {
+    struct ifaddrs* interface_adress_to_iterate = interface_addresses;
 
-        if (found_local_ip_address_in(interface_addresses)) {
-            af_inet_address_interface = (struct sockaddr_in*) interface_addresses -> ifa_addr;
+    while(interface_adress_to_iterate != NULL) {
+
+        if (found_local_ip_address_in(interface_adress_to_iterate)) {
+            af_inet_address_interface = (struct sockaddr_in*) interface_adress_to_iterate -> ifa_addr;
             local_ip_address = inet_ntoa(af_inet_address_interface -> sin_addr);
         }
-        interface_addresses = interface_addresses->ifa_next;
+
+        interface_adress_to_iterate = interface_adress_to_iterate -> ifa_next;
     }
 
     freeifaddrs(interface_addresses);
@@ -215,7 +218,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
     }
 }
 
-void send_structure(t_serialization_information* serialization_information, int socket_fd) {
+void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd) {
 
     uint32_t total_amount_of_bytes =
             serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
@@ -234,10 +237,10 @@ void send_structure(t_serialization_information* serialization_information, int 
     free(serialized_request);
 }
 
-void serialize_and_send_structure(t_request* request, int socket_fd){
+void send_structure(t_request* request, int socket_fd){
 
     t_serialization_information* request_serialization_information = serialize(request);
-    send_structure(request_serialization_information, socket_fd);
+    send_serialized_structure(request_serialization_information, socket_fd);
     free_serialization_information(request_serialization_information);
 }
 
@@ -269,7 +272,7 @@ t_serialization_information* receive_structure(int socket_fd){
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
     queue = queue_create();
-    sem_init(&client_sockets_amount_in_queue, false, 0);
+    sem_initialize(&client_sockets_amount_in_queue);
 
     void* _thread_function(){
         while(true){
@@ -295,7 +298,10 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     while(true){
         int* client_socket_fd = safe_malloc(sizeof(int));
+        consider_as_garbage(client_socket_fd, free);
+
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
+        stop_considering_garbage(client_socket_fd);
 
         pthread_mutex_lock(&queue_mutex);
         queue_push(queue, (void*) client_socket_fd);
@@ -307,4 +313,13 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 void free_and_close_connection(void* socket_fd){
     close(*((int*) socket_fd));
     free(socket_fd);
+}
+
+void free_multithreaded_server(){
+    queue_destroy_and_destroy_elements(queue, free);
+
+    for(int i = 0; i < THREAD_POOL_SIZE; i++){
+        pthread_t thread = thread_pool[i];
+        safe_thread_cancel(thread);
+    }
 }

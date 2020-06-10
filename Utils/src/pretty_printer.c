@@ -5,7 +5,7 @@
 #include <serializable_objects.h>
 #include <queue_code_name_associations.h>
 #include <general_logs.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 
 t_list* printable_objects;
 

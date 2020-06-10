@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <general_logs.h>
-#include <free_system.h>
+#include <garbage_collector.h>
 #include <common_structures.h>
 #include "../include/matrix.h"
 
@@ -24,7 +24,7 @@ void add_column(t_matrix* self){
 
         for(uint32_t column_index = 1; column_index <= (self -> amount_of_columns) - 1; column_index++){
             void* element = old_column[column_index - 1];
-            insert_matrix_element_at(self, element, row_index, column_index);
+            matrix_insert_element_at(self, element, row_index, column_index);
         }
         free(old_column);
     }
@@ -101,7 +101,7 @@ t_matrix* matrix_create_of_size(uint32_t matrix_size, bool should_be_expandable,
     return matrix_create(matrix_size, matrix_size, should_be_expandable, should_be_squared);
 }
 
-void insert_matrix_element_at(t_matrix* self, void* element, uint32_t row_index, uint32_t column_index){
+void matrix_insert_element_at(t_matrix* self, void* element, uint32_t row_index, uint32_t column_index){
 
     assert_strictly_positive_indexes(row_index, column_index);
 
@@ -118,6 +118,12 @@ void* matrix_element_at(t_matrix* self, uint32_t row_index, uint32_t column_inde
         free_system();
     }
     return (self -> data)[row_index - 1][column_index - 1];
+}
+
+void* matrix_remove_element_at(t_matrix* self, uint32_t row_index, uint32_t column_index){
+    void* matrix_element = matrix_element_at(self, row_index, column_index);
+    matrix_insert_element_at(self, NULL, row_index, column_index);
+    return matrix_element;
 }
 
 void matrix_iterate_doing(t_matrix* self, void (*closure) (void*)){

@@ -5,6 +5,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/pretty_printer.h"
+#include "../../Utils/include/general_logs.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -24,7 +25,7 @@ void* queue_listener_thread(){
         log_successful_connection();
         log_about_to_send_request(request);
 
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
         free_request(request);
 
@@ -47,7 +48,7 @@ void* queue_listener_thread(){
 
 void subscriber_mode_execution(){
     pthread_t tid = default_safe_thread_create(queue_listener_thread, NULL);
-    thread_join(tid);
+    safe_thread_join(tid);
 }
 
 void publisher_mode_execution(){
@@ -64,7 +65,7 @@ void publisher_mode_execution(){
         log_successful_connection();
         log_about_to_send_request(request);
 
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         log_request_sent(request);
 
         free_and_close_connection_information(connection_information);

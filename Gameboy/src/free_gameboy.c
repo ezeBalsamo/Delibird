@@ -11,6 +11,7 @@ void free_system(){
     free_entry_point_connection_builder();
     free_pretty_printer();
 
+    free_garbage_collector();
     log_successful_clean_up();
     free_entry_point_logs_manager();
 

@@ -1,13 +1,16 @@
 #include "goal_calculator.h"
-#include <team_manager.h>
 #include <commons/string.h>
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
 
 t_list* requirements_of(t_trainer* trainer){
-    return list_difference(trainer -> desired_pokemons, trainer -> current_pokemons,
+    return list_difference(trainer -> required_pokemons, trainer -> current_pokemons,
                            (bool (*)(void *, void *)) string_equals_ignore_case);
+}
+
+bool can_catch_pokemons(t_trainer* trainer){
+    return list_size(trainer -> current_pokemons) < list_size(trainer -> required_pokemons);
 }
 
 t_list* goal_of(t_trainer* trainer){
@@ -68,11 +71,12 @@ t_list* unified_pokemon_goals(t_list* flattened_team_pokemon_goals) {
     return global_goal;
 }
 
-t_list* team_global_goal_according_to(t_list* trainers){
+t_list* team_global_goal_according_to(t_list* localizable_trainers){
     t_list* team_pokemon_goals = list_create();
 
-    for (int i = 0; i < list_size(trainers); i++){
-        t_trainer* trainer = list_get(trainers, i);
+    for (int i = 0; i < list_size(localizable_trainers); i++){
+        t_localizable_object* localizable_trainer = list_get(localizable_trainers, i);
+        t_trainer* trainer = localizable_trainer -> object;
         t_list* trainer_pokemon_goals = goal_of(trainer);
         list_add(team_pokemon_goals, trainer_pokemon_goals);
     }

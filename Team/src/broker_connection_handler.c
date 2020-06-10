@@ -1,18 +1,16 @@
 #include "../include/broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
+#include "../include/query_performer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/pretty_printer.h"
-#include "../include/query_performer.h"
+#include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <free_team.h>
-
-char* broker_ip;
-char* broker_port;
+#include <team_configuration_manager.h>
 
 sem_t subscriber_threads_request_sent;
 
@@ -47,9 +45,13 @@ void* retry_connection_thread(void* connection_information){
 }
 
 void execute_retry_connection_strategy(t_connection_information* connection_information){
-    log_failed_attempt_to_communicate_with_broker();
-    pthread_t reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
-    thread_join(reconnection_thread);
+    log_failed_attempt_to_communicate_with_broker("se procederá a reintentar");
+
+    pthread_t* reconnection_thread = safe_malloc(sizeof(pthread_t));
+    consider_as_garbage(reconnection_thread, (void (*)(void *)) safe_thread_pointer_cancel);
+
+    *reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
+    safe_thread_join(*reconnection_thread);
 }
 
 void* subscriber_thread(void* queue_operation_identifier){
@@ -57,33 +59,44 @@ void* subscriber_thread(void* queue_operation_identifier){
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
 
+    free(queue_operation_identifier);
+
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
     request -> sanitizer_function = free;
 
-    t_connection_information* connection_information = connect_to(broker_ip, broker_port);
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
+
+    consider_as_garbage(request, (void (*)(void *)) free_request);
+    consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
 
     if(!connection_information -> connection_was_succesful) {
         execute_retry_connection_strategy(connection_information);
     }
     else {
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
+
+        int socket_fd = connection_information -> socket_fd;
+
+        free_connection_information(connection_information);
+        stop_considering_garbage(connection_information);
+
+        free_request(request);
+        stop_considering_garbage(request);
+
         sem_post(&subscriber_threads_request_sent);
-        request -> sanitizer_function (request);
 
         while (true) {
-            t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
+            t_serialization_information* serialization_information = receive_structure(socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
-            char* request_as_string = request_pretty_print(deserialized_request);
-            printf("%s\n", request_as_string);
+            log_request_received_with(main_logger(), deserialized_request);
 
             query_perform(deserialized_request);
 
             free_serialization_information(serialization_information);
-            deserialized_request -> sanitizer_function (deserialized_request);
-            free(request_as_string);
+            free_request(deserialized_request);
         }
     }
 
@@ -110,9 +123,9 @@ void subscribe_to_queues(){
 
 void join_to_queues(){
 
-    thread_join(appeared_queue_tid);
-    thread_join(localized_queue_tid);
-    thread_join(caught_queue_tid);
+    safe_thread_join(appeared_queue_tid);
+    safe_thread_join(localized_queue_tid);
+    safe_thread_join(caught_queue_tid);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
@@ -125,10 +138,10 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     request -> structure = get_pokemon;
     request -> sanitizer_function = free;
 
-    t_connection_information* connection_information = connect_to(broker_ip, broker_port);
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        send_structure(request, connection_information -> socket_fd);
         request -> sanitizer_function (request);
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
@@ -137,13 +150,18 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 }
 
 void* initialize_broker_connection_handler(){
-    broker_ip = config_get_string_at("IP_BROKER");
-    broker_port = config_get_string_at("PUERTO_BROKER");
 
-    sem_init(&subscriber_threads_request_sent, false, 0);
+    sem_initialize(&subscriber_threads_request_sent);
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
     join_to_queues();
+
     return NULL;
+}
+
+void cancel_all_broker_connection_handler_threads(){
+    safe_thread_cancel(appeared_queue_tid);
+    safe_thread_cancel(localized_queue_tid);
+    safe_thread_cancel(caught_queue_tid);
 }

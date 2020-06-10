@@ -5,12 +5,21 @@
 #include <commons/collections/list.h>
 #include <semaphore.h>
 
+typedef struct Localizable_object{
+    int32_t pos_x;
+    int32_t pos_y;
+    void* object;
+}t_localizable_object;
+
+typedef struct Targetable_object{
+    bool is_being_targeted;
+    t_localizable_object* localizable_pokemon;
+}t_targetable_object;
+
 typedef struct Trainer{
-    uint32_t sequential_number;
-    uint32_t pos_x;
-    uint32_t pos_y;
+    int sequential_number;
     t_list* current_pokemons;
-    t_list* desired_pokemons;
+    t_list* required_pokemons;
 }t_trainer;
 
 typedef struct Pokemon_goal{
@@ -18,22 +27,19 @@ typedef struct Pokemon_goal{
     uint32_t quantity;
 }t_pokemon_goal;
 
-typedef struct Pokemon{
-    char* pokemon_name;
-    uint32_t pos_x;
-    uint32_t pos_y;
-}t_pokemon;
-
-typedef struct Trainer_with_lock{
-    t_trainer* trainer;
-    sem_t semaphore;
-}t_trainer_with_lock;
-
 void* initialize_team_manager();
 
-void with_trainers_do(void (*closure) (t_trainer*));
+void with_trainers_do(void (*closure) (t_localizable_object*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
+
+bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);
+
 bool global_goal_contains(char* pokemon_name);
+uint32_t amount_required_of(char* pokemon_name);
+
+void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name);
+void consider_global_goal_accomplished();
+
 t_list* trainers_x_positions();
 t_list* trainers_y_positions();
 

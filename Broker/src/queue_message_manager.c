@@ -103,7 +103,7 @@ void publish(uint32_t queue, t_serialization_information* serialization_informat
     t_list* subscribers_of_a_queue = list_filter(subscribers, _is_subscribed);
 
     void _send_message(void* subscriber){
-        send_structure(serialization_information, ((t_subscriber*) subscriber) -> socket_fd);
+        send_serialized_structure(serialization_information, ((t_subscriber *) subscriber)->socket_fd);
         log_succesful_message_sent_to_a_suscriber(serialization_information -> serialized_request); //loguea por cada suscriptor al cual se el fue enviado el mensaje.
     }
 
