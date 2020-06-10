@@ -141,6 +141,8 @@ void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_threa
     trainer_thread_context_executing = NULL;
     trainer_thread_context -> state = FINISHED;
 
+    reset_quantum_consumed();
+
     list_add(finished_trainer_thread_contexts, trainer_thread_context);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
 

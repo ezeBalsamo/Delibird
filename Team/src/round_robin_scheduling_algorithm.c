@@ -58,7 +58,7 @@ void initialize_round_robin_scheduling_algorithm(){
     round_robin_algorithm -> reset_quantum_consumed_function = round_robin_reset_quantum_consumed_function;
 
     initialize_quantum();
-    reset_quantum_consumed();
+    round_robin_reset_quantum_consumed_function();
 }
 
 t_scheduling_algorithm* round_robin_scheduling_algorithm(){
