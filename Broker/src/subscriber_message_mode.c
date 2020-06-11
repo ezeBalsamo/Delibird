@@ -1,5 +1,6 @@
 #include <message_role_identifier.h>
 #include <subscriber.h>
+#include <subscriber_context_provider.h>
 #include "../include/subscriber_message_mode.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 
@@ -14,9 +15,10 @@ bool subscriber_mode_can_handle(uint32_t operation){
 }
 
 void subscriber_mode_attending_message_function(t_connection_request* connection_request){
-    t_subscribe_me* suscribe_me = (t_subscribe_me*) (connection_request -> request) -> structure;
-    subscribe_client_to_queue(connection_request->socket_fd, suscribe_me->operation_queue);
-    send_all_messages(connection_request -> socket_fd, suscribe_me -> operation_queue);
+    t_subscribe_me* subscribe_me = (t_subscribe_me*) (connection_request -> request) -> structure;
+    t_subscriber_context* subscriber_context = create_subscriber_context(connection_request -> socket_fd, subscribe_me -> operation_queue, subscribe_me -> process_id);
+    subscribe_client_to_queue(subscriber_context);
+    send_all_messages(subscriber_context);
 }
 
 void initialize_subscriber_message_mode(){

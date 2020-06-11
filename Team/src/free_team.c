@@ -14,5 +14,5 @@ void free_system(){
     log_successful_clean_up();
     free_team_logs_manager();
 
-     exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }

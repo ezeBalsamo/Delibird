@@ -246,23 +246,28 @@ t_serialization_information* serialize_caught_pokemon(void* structure){
 t_serialization_information* serialize_subscribe_me(void* structure){
 
     t_subscribe_me* subscribe_me = (t_subscribe_me*) structure;
-    uint32_t amount_of_bytes_of_queue = sizeof(uint32_t);
+    uint32_t amount_of_bytes_of_subscribe_me = sizeof(uint32_t) + sizeof(uint32_t) + strlen(subscribe_me -> process_id) + 1;
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                            // operation
             + sizeof(uint32_t)                          // structure size
-            + amount_of_bytes_of_queue;                 // structure
+            + amount_of_bytes_of_subscribe_me;                 // structure
 
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = SUBSCRIBE_ME;
+    uint32_t subscriber_id_length = strlen(subscribe_me -> process_id) + 1;
 
     uint32_t offset = 0;
 
     memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(serialized_request + offset, &amount_of_bytes_of_queue, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_subscribe_me, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(subscribe_me -> operation_queue), sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, &subscriber_id_length, sizeof(uint32_t));
+    offset += sizeof(uint32_t);
+    memcpy(serialized_request + offset, subscribe_me -> process_id, subscriber_id_length);
 
     t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> serialized_request = serialized_request;

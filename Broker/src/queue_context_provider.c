@@ -8,17 +8,7 @@
 #include <semaphore.h>
 #include "../../Utils/include/pthread_wrapper.h"
 
-t_dictionary* queue_contexts_by_queue_name;
-
-t_queue_context* get_queue_context_of_queue_named(char* queue_name){
-    void* queue_context = dictionary_get(queue_contexts_by_queue_name, queue_name);
-    return (t_queue_context*) queue_context;
-}
-
-t_queue_context* get_context_of_operation_queue(uint32_t queue){
-    char* queue_name = queue_name_of(queue);
-    return get_queue_context_of_queue_named(queue_name);
-}
+t_dictionary* queue_context_by_queue_name;
 
 void initialize_and_load_queue_context_for(uint32_t queue_code){
 
@@ -30,18 +20,20 @@ void initialize_and_load_queue_context_for(uint32_t queue_code){
     pthread_mutex_init(&subscribers_mutex, NULL);
 
     t_queue_context* queue_context = safe_malloc(sizeof(t_queue_context));
-    queue_context -> operation = queue_code;
+    uint32_t operation = queue_code;
+    queue_context -> operation = operation;
     queue_context -> queue = queue;
     queue_context -> subscribers = subscribers;
     queue_context -> queue_mutex = queue_mutex;
     queue_context -> subscribers_mutex = subscribers_mutex;
+    queue_context -> queue_context_operations = new_queue_context_operations();
 
-    dictionary_put(queue_contexts_by_queue_name, queue_name_of(queue_code), (void*) queue_context);
+    dictionary_put(queue_context_by_queue_name, queue_name_of(queue_code), (void*) queue_context);
 }
 
-void initialize_queue_context_dictionary(){
+void initialize_queue_context_by_name(){
 
-    queue_contexts_by_queue_name = dictionary_create();
+    queue_context_by_queue_name = dictionary_create();
     initialize_and_load_queue_context_for(NEW_POKEMON);
     initialize_and_load_queue_context_for(APPEARED_POKEMON);
     initialize_and_load_queue_context_for(GET_POKEMON);
@@ -52,18 +44,17 @@ void initialize_queue_context_dictionary(){
 
 void initialize_queue_context_provider(){
 
-    initialize_queue_context_dictionary();
-    log_succesful_initialize_queue_message_manager();
+    initialize_queue_context_by_name();
+    log_succesful_initialize_queue_context_provider();
 }
 
-t_request* create_request_from(t_message_status* message_status){
+t_queue_context* queue_context_of_queue_named(char* queue_name){
+    return dictionary_get(queue_context_by_queue_name, queue_name);
+}
 
-    t_request* request = safe_malloc(sizeof(t_request));
-    request -> operation = IDENTIFIED_MESSAGE;
-    request -> structure = message_status -> identified_message;
-    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
-
-    return request;
+t_queue_context* queue_context_with_code(uint32_t queue){
+    char* queue_name = queue_name_of(queue);
+    return queue_context_of_queue_named(queue_name);
 }
 
 void free_queue_context(t_queue_context* queue_context){
@@ -74,5 +65,5 @@ void free_queue_context(t_queue_context* queue_context){
 }
 
 void free_queue_context_provider(){
-    dictionary_destroy_and_destroy_elements(queue_contexts_by_queue_name, (void (*)(void *)) free_queue_context);
+    dictionary_destroy_and_destroy_elements(queue_context_by_queue_name, (void (*)(void *)) free_queue_context);
 }

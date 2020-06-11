@@ -23,14 +23,6 @@ pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 sem_t client_sockets_amount_in_queue;
 t_queue* queue;
 
-void configure_socket_timeout_for(int socket_fd, int timeout_in_seconds){
-    struct timeval tv;
-    tv.tv_sec = timeout_in_seconds;
-    tv.tv_usec = 0;
-    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
-}
-
-
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
     return (interface_address -> ifa_addr -> sa_family == AF_INET) &&
@@ -96,6 +88,13 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     }
 
     return socket_fd;
+}
+
+void configure_socket_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
+    struct timeval tv;
+    tv.tv_sec = timeout_in_seconds;
+    tv.tv_usec = 0;
+    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 }
 
 void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
@@ -268,7 +267,10 @@ void* receive_ack(int socket_fd){
     if(recv(socket_fd, ack, sizeof(uint32_t), MSG_DONTWAIT) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");
         close(socket_fd);
-        return (void *) FAILED_ACK;
+        int* failed_ack = safe_malloc(sizeof(int));
+        *failed_ack = FAILED_ACK;
+        return (void*) failed_ack;
+        // TODO VER QUE ONDA CON ESTO: return (void *) FAILED_ACK;
     }
     return (void*) ack;
 }

@@ -1,6 +1,5 @@
 #include <message_role_identifier.h>
 #include <connection_handler.h>
-#include <queue_context_provider.h>
 #include <publisher.h>
 #include "../../Utils/include/socket.h"
 
@@ -14,10 +13,9 @@ bool publisher_mode_can_handle(uint32_t operation){
     return operation != SUBSCRIBE_ME;
 }
 
-void publisher_attending_message_function(t_connection_request* connection_request){
+void publisher_mode_attending_message_function(t_connection_request* connection_request){
 
     uint32_t message_id = update_and_get_message_id();
-
     t_identified_message* identified_message = create_identified_message(message_id, connection_request -> request);
 
     send_ack_message(message_id, connection_request -> socket_fd);
@@ -29,5 +27,5 @@ void publisher_attending_message_function(t_connection_request* connection_reque
 void initialize_publisher_message_mode(){
     publisher_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
-    publisher_message_mode -> attending_message_function = publisher_attending_message_function;
+    publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 }

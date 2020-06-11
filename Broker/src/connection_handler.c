@@ -1,22 +1,23 @@
 #include <stdlib.h>
 #include <message_role_identifier.h>
 #include <semaphore.h>
+#include <pthread.h>
 #include "connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 
 uint32_t message_id = 1;
-sem_t mutex_id;
+pthread_mutex_t mutex_id;
 
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
 }
 
 uint32_t update_and_get_message_id(){
-    sem_wait(&mutex_id);
+    pthread_mutex_lock(&mutex_id);
     message_id++;
-    sem_post(&mutex_id);
+    pthread_mutex_unlock(&mutex_id);
     return message_id;
 }
 
@@ -40,7 +41,7 @@ void* main_thread_handler(void* connection_fd){
 
 void* initialize_connection_handler(){
     log_server_initial_status();
-    sem_init(&mutex_id, false, 1);
+    pthread_mutex_init(&mutex_id, NULL);
     start_multithreaded_server(port(), main_thread_handler);
 
     return NULL;

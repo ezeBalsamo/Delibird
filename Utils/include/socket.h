@@ -11,8 +11,6 @@ typedef struct Connection_Information{
     bool connection_was_succesful;
 }t_connection_information;
 
-void configure_socket_timeout_for(int socket_fd, int timeout_in_seconds);
-
 void close_failed_connection(t_connection_information* connection_information);
 
 int reconnect(t_connection_information* connection_information);
@@ -32,6 +30,8 @@ void send_ack_message(uint32_t message_id, int socket_fd);
 void* receive_ack(int socket_fd);
 
 void* receive_ack_thread(void* subscriber_fd);
+
+void configure_socket_timeout_in_seconds(int socket_fd, int timeout_in_seconds);
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 
