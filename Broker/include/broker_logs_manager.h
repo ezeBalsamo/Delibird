@@ -1,7 +1,7 @@
 #ifndef DELIBIRD_BROKER_LOGS_MANAGER_H
 #define DELIBIRD_BROKER_LOGS_MANAGER_H
 
-#include "publish_message_mode.h"
+#include "publisher_message_mode.h"
 
 void initialize_broker_logs_manager();
 
@@ -31,7 +31,7 @@ void log_succesful_all_messages_of_a_queue_sent_to(int subscriber);
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation);
 
-void log_ack_received_error();
+void log_ack_failed_to_received_error();
 
 void log_subscriber_disconnection(int subscriber);
 

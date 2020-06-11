@@ -59,7 +59,7 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
 }
 
-bool are_equal_lists(t_list* one_list, t_list* another_list)
+bool are_equals_lists(t_list* one_list, t_list* another_list)
 {
     bool partial_result;
     bool iterate_result;

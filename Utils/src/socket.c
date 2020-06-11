@@ -23,6 +23,14 @@ pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 sem_t client_sockets_amount_in_queue;
 t_queue* queue;
 
+void configure_socket_timeout_for(int socket_fd, int timeout_in_seconds){
+    struct timeval tv;
+    tv.tv_sec = timeout_in_seconds;
+    tv.tv_usec = 0;
+    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+}
+
+
 int found_local_ip_address_in(struct ifaddrs* interface_address){
 
     return (interface_address -> ifa_addr -> sa_family == AF_INET) &&

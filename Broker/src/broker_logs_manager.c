@@ -91,13 +91,13 @@ void log_received_unknown_operation_error(){
 }
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
-    char* message = string_from_format("%s: %d", "No se encontro un rol que maneje a la siguiente operacion", operation);
+    char* message = string_from_format("No se encontro un rol que maneje a la siguiente operacion: %d\n", operation);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_ack_received_error(){
-    log_errorful_message(process_execution_logger(), "Se recibio un dato que no es igual al ack que envie.");
+void log_ack_failed_to_received_error(){
+    log_errorful_message(process_execution_logger(), "Se esperaba recibir un ack.");
 }
 
 void log_subscriber_disconnection(int subscriber){

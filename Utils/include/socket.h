@@ -11,6 +11,8 @@ typedef struct Connection_Information{
     bool connection_was_succesful;
 }t_connection_information;
 
+void configure_socket_timeout_for(int socket_fd, int timeout_in_seconds);
+
 void close_failed_connection(t_connection_information* connection_information);
 
 int reconnect(t_connection_information* connection_information);

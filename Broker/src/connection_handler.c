@@ -30,7 +30,7 @@ void* main_thread_handler(void* connection_fd){
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
 
-    message_role_identifier(connection_request);
+    attend_with_message_role_identifier(connection_request);
 
     free(serialization_information); // no libero con free_serialization_information porque la serialized_request se guarda en colas para reenviarse
     free(connection_request); // misma historia que arriba
