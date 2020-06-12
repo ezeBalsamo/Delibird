@@ -36,9 +36,9 @@ void log_subscriber_disconnection(t_subscriber_context* subscriber_context);
 
 void log_received_unknown_operation_error();
 
-void log_no_subscriber_found_in_message_status_subscribers_list_error(t_identified_message* identified_message);
+void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message);
 
-void log_no_subscriber_found_in_queue_subscribers_list_error(uint32_t queue_code);
+void log_subscriber_not_found_in_queue_subscribers_error(t_subscriber_context* subscriber_context, uint32_t queue_code);
 
 void free_broker_logs_manager();
 

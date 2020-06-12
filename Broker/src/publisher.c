@@ -78,16 +78,4 @@ void push_to_queue(t_message_status* message_status){
     log_succesful_new_message_pushed_to_a_queue(message_status -> identified_message, queue_context -> operation);
 
     publish(message_status, queue_context);
-
-    //TODO ESTO ES LA LOGICA DE BORRAR MENSAJE EN LA COLA, VER MAS ADELANTE EN QUE MOMENTO SE DEBERIA DE HACER ESTO.
-    //Ahora se esta haciendo cuando el message_status ya no tiene suscriptores a los cuales enviarle.
-/*    if(list_is_empty(message_status -> subscribers_to_send)){ //si el mensaje fue enviado a todos los suscriptores se borra.
-        for(int i = 0; i < list_size(queue -> elements); i++){
-            t_message_status* message_status_to_compare = (t_message_status*) list_get(queue->elements, i);
-            if(are_equals_message_status(message_status, message_status_to_compare)){
-                list_remove(queue -> elements, i);
-                free_message_status(message_status);
-            }
-        }
-    }*/
 }

@@ -112,7 +112,7 @@ void* subscriber_pokemon_operation_structure(){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);
-    subscribe_me -> process_id = process_id;
+    subscribe_me -> process_description = process_id;
     return (void*) subscribe_me;
 }
 

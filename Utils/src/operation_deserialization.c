@@ -208,7 +208,7 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *operation_queue;
-    subscribe_me -> process_id = process_id;
+    subscribe_me -> process_description = process_id;
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;

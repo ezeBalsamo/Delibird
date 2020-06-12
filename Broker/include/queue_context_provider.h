@@ -25,7 +25,6 @@ void initialize_queue_context_provider();
 
 t_queue_context* queue_context_of_queue_named(char* queue_name);
 t_queue_context* queue_context_with_code(uint32_t queue);
-t_queue_context_operations* new_queue_context_operations();
 
 void free_queue_context_provider();
 

@@ -16,7 +16,9 @@ bool subscriber_mode_can_handle(uint32_t operation){
 
 void subscriber_mode_attending_message_function(t_connection_request* connection_request){
     t_subscribe_me* subscribe_me = (t_subscribe_me*) (connection_request -> request) -> structure;
-    t_subscriber_context* subscriber_context = create_subscriber_context(connection_request -> socket_fd, subscribe_me -> operation_queue, subscribe_me -> process_id);
+    t_subscriber_context* subscriber_context =
+            create_subscriber_context(connection_request -> socket_fd, subscribe_me);
+
     subscribe_client_to_queue(subscriber_context);
     send_all_messages(subscriber_context);
 }

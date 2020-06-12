@@ -55,7 +55,7 @@ typedef struct Localized_pokemon{
 
 typedef struct Subscribe_me{
     uint32_t operation_queue;
-    char* process_id;
+    char* process_description;
 }t_subscribe_me;
 
 typedef struct Identified_message{

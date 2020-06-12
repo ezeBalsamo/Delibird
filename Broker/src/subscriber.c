@@ -6,6 +6,7 @@
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
+#include <free_broker.h>
 
 void configure_ack_timeout_for(int socket_fd){
 
@@ -16,47 +17,33 @@ void configure_ack_timeout_for(int socket_fd){
 void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     t_queue_context* queue_context = queue_context_with_code(subscriber_context -> operation_queue);
 
-    int socket_fd = subscriber_context -> socket_fd;
+    configure_ack_timeout_for(subscriber_context -> socket_fd);
 
-    configure_ack_timeout_for(socket_fd);
-    queue_context -> queue_context_operations -> add_subscriber_function (queue_context, (void*) &socket_fd);
+    /*TODO
+     * 0 - Llegamos acá porque claramente alguien se suscribió.
+     * 1 - Busquemos si ya estaba subscripto, esto quiere decir que para dicha cola, existe (list_remove_by_condition)
+     * un subscriber_context con process_description = al del subscriber_context que vino por parámetro.
+     * 2 - Si no estaba subscripto, (remove_by_contidion == NULL) agregamos a la cola con el add_subscriber_function
+     * 3 - Si estaba subscripto, es decir, remove_by_contidion != NULL, entonces, al que vino por parámetro le
+     * actualizamos el last_message_id_received con el que removimos. Finalmente, agregamos el nuevo subscriber_context
+     */
+
+    queue_context -> queue_context_operations -> add_subscriber_function (queue_context, (void*) subscriber_context);
     log_succesful_subscription_process(subscriber_context);
 }
 
-void revoke_suscription(t_message_status* message_status, t_queue_context* queue_context , t_subscriber_context* subscriber_context){
-
-    bool _are_equals_subscribers(t_subscriber_context* subscriber_to_compare){
-        return subscriber_context -> operation_queue == subscriber_to_compare -> operation_queue &&
-               subscriber_context -> socket_fd == subscriber_to_compare -> socket_fd &&
-               subscriber_context -> last_message_id_received == subscriber_to_compare -> last_message_id_received &&
-               string_equals_ignore_case(subscriber_context -> process_id, subscriber_to_compare -> process_id);
-    }
-
-    void* subscriber_found_in_message_status = list_remove_by_condition((message_status -> subscribers_to_send), (bool (*)(void *)) _are_equals_subscribers);
-    void* subscriber_found_in_subscribers = list_remove_by_condition(queue_context -> subscribers, (bool (*)(void *)) _are_equals_subscribers);
-
-    if(!subscriber_found_in_message_status){
-        log_no_subscriber_found_in_message_status_subscribers_list_error(message_status -> identified_message);
-    }
-
-    if(!subscriber_found_in_subscribers){
-        log_no_subscriber_found_in_queue_subscribers_list_error(queue_context -> operation);
-        }
-
-    else {
-        int subscriber_socket_fd = ((t_subscriber_context*) subscriber_found_in_subscribers) -> socket_fd;
-        close(subscriber_socket_fd);
-        log_subscriber_disconnection(subscriber_context);
-    }
+bool are_equals_subscribers(t_subscriber_context* subscriber_context, t_subscriber_context* another_subscriber_context){
+    return
+        subscriber_context -> operation_queue == another_subscriber_context -> operation_queue &&
+        subscriber_context -> socket_fd == another_subscriber_context -> socket_fd &&
+        subscriber_context -> last_message_id_received == another_subscriber_context -> last_message_id_received &&
+        string_equals_ignore_case(subscriber_context -> process_description, another_subscriber_context -> process_description);
 }
 
 bool is_still_subscribed(t_queue_context* queue_context, t_subscriber_context* subscriber_context){
 
     bool _is_subscribed(t_subscriber_context* subscriber_to_find, t_subscriber_context* subscriber_to_compare){
-       return subscriber_to_find -> operation_queue == subscriber_to_compare -> operation_queue &&
-              subscriber_to_find -> socket_fd == subscriber_to_compare -> socket_fd &&
-              subscriber_to_find -> last_message_id_received == subscriber_to_compare -> last_message_id_received &&
-              string_equals_ignore_case(subscriber_to_find -> process_id, subscriber_to_compare -> process_id);
+       return are_equals_subscribers(subscriber_to_find, subscriber_to_compare);
     }
 
     return list_contains(queue_context -> subscribers, subscriber_context, (bool (*)(void *, void*)) _is_subscribed);
@@ -64,7 +51,16 @@ bool is_still_subscribed(t_queue_context* queue_context, t_subscriber_context* s
 
 void send_all_messages(t_subscriber_context* subscriber_context) {
     t_queue_context* queue_context = queue_context_with_code(subscriber_context -> operation_queue);
-    t_list* queue_messages = (queue_context -> queue -> elements);
+    t_list* queue_messages = queue_context -> queue -> elements;
+
+    /*TODO
+     * Independientemente de si es nuevo o no, ya tiene el last_message_id_received actualizado
+     * Filtramos de la cola de mensajes aquellos que no le fueron enviados, es decir, los mensajes
+     * que tengan id_mensaje > a last_message_id_received.
+     * Analizar la necesidad de tener un subscribers_to_send, no me alcanza con el message_id y
+     * el subscribers_who_received? Tal vez hace falta entender que información se necesita.
+     * Si hacen falta 2 estados (recibido, no recibido) o más (SIN ENVIAR, ENVIADO, NO RECIBIDO, RECIBIDO)
+     */
 
     for(int i = 0; i < list_size(queue_messages) && is_still_subscribed(queue_context, subscriber_context); i++) {
 

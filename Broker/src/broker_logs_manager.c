@@ -23,7 +23,7 @@ void log_succesful_connection_of_a_process(){
 }
 
 void log_succesful_subscription_process(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se suscribió al proceso: %s a la cola de mensajes: %s correctamente!", subscriber_context -> process_id, queue_name_of(subscriber_context -> operation_queue));
+    char* message = string_from_format("Se suscribió al proceso: %s a la cola de mensajes: %s correctamente!", subscriber_context -> process_description, queue_name_of(subscriber_context -> operation_queue));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -40,7 +40,7 @@ void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identifie
 
 void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_context* subscriber_context){
     char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("Se envió el mensaje: %s al suscriptor: %s correctamente!", printed_object, subscriber_context -> process_id);
+    char* message = string_from_format("Se envió el mensaje: %s al suscriptor: %s correctamente!", printed_object, subscriber_context -> process_description);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
@@ -110,18 +110,20 @@ void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
 }
 
 void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se esperaba recibir un ack del suscriptor %s en el socket %d.", subscriber_context -> process_id, subscriber_context -> socket_fd);
+    char* message = string_from_format("Se esperaba recibir un ack del suscriptor %s en el socket %d.", subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_subscriber_disconnection(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se desconecto al suscriptor: %s con numero de socket: %d de la cola: %s", subscriber_context -> process_id, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
+    char* message = string_from_format("Se desconecto al suscriptor: %s con numero de socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_no_subscriber_found_in_message_status_subscribers_list_error(t_identified_message* identified_message){
+void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message){
+    //TODO mejorar ahora que tenes subscriber_context
+
     char* printed_object = request_pretty_print(identified_message -> request);
     char* message = string_from_format("No se encontro suscriptor para removerlo de la lista de este mensaje:", printed_object);
     log_errorful_message(process_execution_logger(), message);
@@ -129,7 +131,9 @@ void log_no_subscriber_found_in_message_status_subscribers_list_error(t_identifi
     free(message);
 }
 
-void log_no_subscriber_found_in_queue_subscribers_list_error(uint32_t queue_code){
+void log_subscriber_not_found_in_queue_subscribers_error(t_subscriber_context* subscriber_context, uint32_t queue_code){
+    //TODO mejorar ahora que tenes subscriber_context
+
     char* message = string_from_format("No se encontro suscriptor para removerlo de la lista de la siguiente cola de mensajes:", queue_name_of(queue_code));
     log_errorful_message(process_execution_logger(), message);
     free(message);

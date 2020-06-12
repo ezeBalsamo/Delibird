@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <commons/collections/dictionary.h>
 #include <semaphore.h>
+#include <queue_context_operations.h>
 #include "../../Utils/include/pthread_wrapper.h"
 
 t_dictionary* queue_context_by_queue_name;
@@ -60,7 +61,7 @@ t_queue_context* queue_context_with_code(uint32_t queue){
 void free_queue_context(t_queue_context* queue_context){
 
     queue_destroy_and_destroy_elements((queue_context -> queue), (void (*)(void *)) free_message_status);
-    list_destroy_and_destroy_elements(queue_context -> subscribers, free);
+    list_destroy_and_destroy_elements(queue_context -> subscribers, (void (*)(void *)) free_subscriber_context);
     free(queue_context);
 }
 
