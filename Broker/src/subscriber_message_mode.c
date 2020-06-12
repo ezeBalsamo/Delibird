@@ -3,6 +3,7 @@
 #include <subscriber_context_provider.h>
 #include "../include/subscriber_message_mode.h"
 #include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/socket.h"
 
 t_message_role_identifier* subscriber_message_mode;
 
@@ -20,6 +21,7 @@ void subscriber_mode_attending_message_function(t_connection_request* connection
             create_subscriber_context(connection_request -> socket_fd, subscribe_me);
 
     subscribe_client_to_queue(subscriber_context);
+    send_ack_message(true, connection_request -> socket_fd);
     send_all_messages(subscriber_context);
 }
 

@@ -56,6 +56,7 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
+    subscribe_me -> process_description = "SoyTeam1";
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
@@ -69,9 +70,16 @@ void* subscriber_thread(void* queue_operation_identifier){
     }
     else {
         serialize_and_send_structure(request, connection_information -> socket_fd);
+
+        void* ack = receive_ack(connection_information -> socket_fd);
+        int cast_ack = *((int*) ack);
+
+        if(cast_ack == FAILED_ACK){
+              free_system();
+        }
+        //todo log, "El broker me suscribio a tal cola correctamente".
         sem_post(&subscriber_threads_request_sent);
         request -> sanitizer_function (request);
-
         while (true) {
             t_serialization_information* serialization_information = receive_structure(connection_information -> socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
@@ -82,10 +90,10 @@ void* subscriber_thread(void* queue_operation_identifier){
             char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
 
-            query_perform(deserialized_request);
+//            query_perform(deserialized_request);
 
             free_serialization_information(serialization_information);
-            deserialized_request -> sanitizer_function (deserialized_request);
+//            deserialized_request -> sanitizer_function (deserialized_request);
             free(request_as_string);
         }
     }
@@ -103,19 +111,19 @@ pthread_t subscribe_to_queue(uint32_t queue_code){
 void subscribe_to_queues(){
 
     appeared_queue_tid = subscribe_to_queue(APPEARED_POKEMON);
-    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
-    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
+//    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
+//    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
 
-    sem_wait(&subscriber_threads_request_sent);
-    sem_wait(&subscriber_threads_request_sent);
+//    sem_wait(&subscriber_threads_request_sent);
+//    sem_wait(&subscriber_threads_request_sent);
     sem_wait(&subscriber_threads_request_sent);
 }
 
 void join_to_queues(){
 
     thread_join(appeared_queue_tid);
-    thread_join(localized_queue_tid);
-    thread_join(caught_queue_tid);
+//    thread_join(localized_queue_tid);
+//    thread_join(caught_queue_tid);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
@@ -146,7 +154,7 @@ void* initialize_broker_connection_handler(){
     sem_init(&subscriber_threads_request_sent, false, 0);
 
     subscribe_to_queues();
-    with_global_goal_do(send_get_pokemon_request_of);
+//    with_global_goal_do(send_get_pokemon_request_of);
     join_to_queues();
     return NULL;
 }

@@ -99,6 +99,18 @@ void log_succesful_all_messages_of_a_queue_sent_to(char* process_id){
     free(message);
 }
 
+void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context){
+    char* message = string_from_format("Se actualizo al suscriptor: %s su ultimo mensaje id recibido por: %zu", subscriber_context -> process_description ,  subscriber_context -> last_message_id_received);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_subscriber_disconnection(t_subscriber_context* subscriber_context){
+    char* message = string_from_format("Se desconecto al suscriptor: %s con numero de socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_received_unknown_operation_error(){
     log_errorful_message(process_execution_logger(), "No se recibió una operación válida para poder poner en una cola de mensajes.\n");
 }
@@ -115,27 +127,19 @@ void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context){
     free(message);
 }
 
-void log_subscriber_disconnection(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se desconecto al suscriptor: %s con numero de socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
-    log_errorful_message(process_execution_logger(), message);
-    free(message);
-}
-
 void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message){
-    //TODO mejorar ahora que tenes subscriber_context
 
     char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("No se encontro suscriptor para removerlo de la lista de este mensaje:", printed_object);
+    char* message = string_from_format("No se encontro al suscriptor: %s para removerlo de la lista de este mensaje:", subscriber_context -> process_description, printed_object);
     log_errorful_message(process_execution_logger(), message);
     free(printed_object);
     free(message);
 }
 
-void log_subscriber_not_found_in_queue_subscribers_error(t_subscriber_context* subscriber_context, uint32_t queue_code){
-    //TODO mejorar ahora que tenes subscriber_context
+void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code){
 
-    char* message = string_from_format("No se encontro suscriptor para removerlo de la lista de la siguiente cola de mensajes:", queue_name_of(queue_code));
-    log_errorful_message(process_execution_logger(), message);
+    char* message = string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s", subscriber_context -> process_description ,queue_name_of(queue_code));
+    log_warning(process_execution_logger(), message);
     free(message);
 }
 

@@ -27,7 +27,7 @@ t_request* create_request_from(t_message_status* message_status){
     return request;
 }
 
-void join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
+uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
         t_message_status* message_status, t_queue_context* queue_context){
 
     void *subscriber_ack;
@@ -38,29 +38,27 @@ void join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscribe
 
     if (cast_subscriber_ack == FAILED_ACK){
         log_failed_to_receive_ack_error(subscriber_context);
-        revoke_suscription(message_status, queue_context, subscriber_context);
     } else {
         move_subscriber_to_ACK(message_status, subscriber_context);
-        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context -> process_description);
+        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context -> process_description); //todo mejorar log
     }
+    return cast_subscriber_ack;
 }
 
 void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_context* subscriber_context){
 
     bool _are_equals_subscribers(t_subscriber_context* subscriber_to_compare){
-        return subscriber_context -> operation_queue == subscriber_to_compare -> operation_queue &&
-               subscriber_context -> socket_fd == subscriber_to_compare -> socket_fd &&
-               subscriber_context -> last_message_id_received == subscriber_to_compare -> last_message_id_received &&
-               string_equals_ignore_case(subscriber_context -> process_description, subscriber_to_compare -> process_description);
+        return are_equals_subscribers(subscriber_context, subscriber_to_compare);
     }
 
     void* subscriber_found =
             list_remove_by_condition(message_status -> subscribers_to_send, (bool (*)(void *)) _are_equals_subscribers);
 
     if(!subscriber_found){
-        log_no_subscriber_found_in_message_status_subscribers_list_error(message_status -> identified_message);
+        log_subscriber_not_found_in_message_status_subscribers_error(subscriber_context, message_status -> identified_message);
         free_system();
     }
+
     list_add(message_status -> subscribers_who_received, (void*) subscriber_found);
 }
 

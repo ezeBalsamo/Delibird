@@ -4,6 +4,7 @@
 #include <commons/collections/queue.h>
 #include <stdint.h>
 #include <zconf.h>
+#include "subscriber_context_provider.h"
 
 typedef struct Queue_context_operations{
     void (*add_subscriber_function) (void*, void*);
@@ -25,7 +26,7 @@ void initialize_queue_context_provider();
 
 t_queue_context* queue_context_of_queue_named(char* queue_name);
 t_queue_context* queue_context_with_code(uint32_t queue);
-
+t_subscriber_context* old_suscriptor_of(t_queue_context* queue_context, t_subscriber_context* subscriber_to_find);
 void free_queue_context_provider();
 
 #endif //TP_2020_1C_EL_KUELGUE_QUEUE_MESSAGE_MANAGER_H

@@ -28,17 +28,19 @@ void log_no_subscribers_for_request(t_request* request);
 
 void log_succesful_all_messages_of_a_queue_sent_to(char* process_id);
 
+void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context);
+
+void log_subscriber_disconnection(t_subscriber_context* subscriber_context);
+
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation);
 
 void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context);
-
-void log_subscriber_disconnection(t_subscriber_context* subscriber_context);
 
 void log_received_unknown_operation_error();
 
 void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message);
 
-void log_subscriber_not_found_in_queue_subscribers_error(t_subscriber_context* subscriber_context, uint32_t queue_code);
+void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code);
 
 void free_broker_logs_manager();
 

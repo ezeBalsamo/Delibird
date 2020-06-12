@@ -38,7 +38,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
         void _send_message(t_subscriber_context* subscriber_context) {
             int socket_fd;
-            subscriber_context -> socket_fd = socket_fd;
+            socket_fd = subscriber_context -> socket_fd;
             serialize_and_send_structure(request, socket_fd);
             log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
@@ -53,7 +53,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
             list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
 
         }
-        list_iterate(subscribers, (void (*) (void*)) _send_message);
+        list_iterate(subscribers, (void (*) (void *)) _send_message);
         log_succesful_message_sent_to_suscribers(request);
 
         join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
