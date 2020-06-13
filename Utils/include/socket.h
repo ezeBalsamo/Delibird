@@ -3,6 +3,8 @@
 
 #include "serialization_interface.h"
 
+#define FAILED_ACK 0
+
 typedef struct Connection_Information{
     int socket_fd;
     struct addrinfo* address_interface;
@@ -22,6 +24,10 @@ int accept_incoming_connections_on(int socket_fd);
 void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd);
 
 void send_structure(t_request* request, int socket_fd);
+
+void send_ack_message(uint32_t message_id, int socket_fd);
+
+void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds);
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 

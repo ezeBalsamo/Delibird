@@ -58,6 +58,8 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
+    subscribe_me -> process_description = "SoyTeam1";
+    //TODO agregar lógica de para diferenciar teams
 
     free(queue_operation_identifier);
 
@@ -77,6 +79,16 @@ void* subscriber_thread(void* queue_operation_identifier){
     else {
         send_structure(request, connection_information -> socket_fd);
 
+        void* ack = receive_ack_with_timeout_in_seconds(connection_information -> socket_fd, 5);
+        int cast_ack = *((int*) ack);
+
+        if(cast_ack == FAILED_ACK){
+            //TODO log, "falló la recepción del ack del broker"
+            free_system();
+        }
+
+        //todo log, "El broker me suscribio a tal cola correctamente".
+
         int socket_fd = connection_information -> socket_fd;
 
         free_connection_information(connection_information);
@@ -90,6 +102,9 @@ void* subscriber_thread(void* queue_operation_identifier){
         while (true) {
             t_serialization_information* serialization_information = receive_structure(socket_fd);
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+
+            t_identified_message* correlative_identified_message = deserialized_request -> structure;
+            send_ack_message(correlative_identified_message -> message_id, socket_fd);
 
             log_request_received_with(main_logger(), deserialized_request);
 

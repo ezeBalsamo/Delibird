@@ -18,7 +18,7 @@ typedef struct Serialization_information{
 }t_serialization_information;
 
 typedef struct Connection_request{
-    void* serialized_request;
+    t_request* request;
     int socket_fd;
 }t_connection_request;
 
@@ -57,6 +57,7 @@ typedef struct Localized_pokemon{
 
 typedef struct Subscribe_me{
     uint32_t operation_queue;
+    char* process_description;
 }t_subscribe_me;
 
 typedef struct Identified_message{
@@ -77,12 +78,18 @@ typedef struct Serializable_object{
     t_request* (*deserialize_function) (void* serialized_structure);
 }t_serializable_object;
 
+uint32_t internal_operation_in(t_identified_message* identified_message);
+uint32_t internal_operation_in_correlative(t_identified_message* correlative_identified_message);
 void* internal_object_in(t_identified_message* identified_message);
 void* internal_object_in_correlative(t_identified_message* correlative_identified_message);
+void* internal_request_in_correlative(t_identified_message* correlative_identified_message);
 
+void initialize_signal_handler();
 void sem_initialize(sem_t* semaphore);
 
 void* safe_malloc(size_t size);
+t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
+t_connection_request* create_connection_request(int connection_fd, t_request* request);
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);

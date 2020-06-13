@@ -1,4 +1,4 @@
-#include <queue_message_manager.h>
+#include <queue_context_provider.h>
 #include <broker_logs_manager.h>
 #include <stdlib.h>
 #include "../../Utils/include/pretty_printer.h"
@@ -10,7 +10,7 @@
 void free_system(){
     free_pretty_printer();
     free_serializable_objects();
-    free_queue_message_manager();
+    free_queue_context_provider();
     free_configuration_manager();
 
     free_garbage_collector();

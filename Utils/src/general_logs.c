@@ -112,7 +112,6 @@ void log_request_with_event(t_log* logger, t_request* request, char* event){
     free(message);
 }
 
-
 void log_request_received_with(t_log* logger, t_request* request){
     log_request_with_event(logger, request, "Pedido recibido");
 }

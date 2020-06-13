@@ -56,7 +56,6 @@ t_query_performer* query_performer_handle(uint32_t operation){
 }
 
 void query_perform(t_request* request) {
-    //parseo de la request deserializada (indentified message x2) al mensaje en si
     t_request* parse_request = internal_request_from(request);
 
     t_query_performer* query_performer = query_performer_handle(parse_request -> operation);

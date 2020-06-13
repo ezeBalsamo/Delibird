@@ -221,17 +221,17 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
 void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd) {
 
     uint32_t total_amount_of_bytes =
-            serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
+            serialization_information->amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void* serialized_request = safe_malloc(total_amount_of_bytes);
+    void *serialized_request = safe_malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
-            &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
+           &(serialization_information->amount_of_bytes), sizeof(uint32_t));
 
     memmove(serialized_request + sizeof(uint32_t),
-            serialization_information -> serialized_request,
-            serialization_information -> amount_of_bytes);
+            serialization_information->serialized_request,
+            serialization_information->amount_of_bytes);
 
     send_all(socket_fd, serialized_request, total_amount_of_bytes);
     free(serialized_request);
@@ -242,6 +242,40 @@ void send_structure(t_request* request, int socket_fd){
     t_serialization_information* request_serialization_information = serialize(request);
     send_serialized_structure(request_serialization_information, socket_fd);
     free_serialization_information(request_serialization_information);
+}
+
+void send_ack_message(uint32_t message_id, int socket_fd){
+
+    void* serialized_ack = safe_malloc(sizeof(uint32_t));
+    memcpy(serialized_ack, &message_id, sizeof(uint32_t));
+    send_all(socket_fd, serialized_ack, sizeof(uint32_t));
+    free(serialized_ack);
+}
+
+void set_receive_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
+    struct timeval timeval;
+    timeval.tv_sec = timeout_in_seconds;
+    timeval.tv_usec = 0;
+    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (struct timeval*) &timeval, sizeof timeval);
+}
+
+void reset_receive_timeout_for(int socket_fd){
+    set_receive_timeout_in_seconds(socket_fd, 0);
+}
+
+void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
+
+    set_receive_timeout_in_seconds(socket_fd, timeout_in_seconds);
+    uint32_t* ack = safe_malloc(sizeof(uint32_t));
+
+    if(recv(socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
+        log_syscall_error("Error al recibir mensaje ACK");
+        close(socket_fd);
+        *ack = FAILED_ACK;
+    }
+
+    reset_receive_timeout_for(socket_fd);
+    return (void*) ack;
 }
 
 t_serialization_information* receive_structure(int socket_fd){

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "../include/queue_message_manager.h"
+#include <subscriber.h>
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../include/connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -12,12 +12,13 @@
 int main() {
 
     initialize_garbage_collector();
+    initialize_signal_handler();
 
     initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();
     initialize_configuration_manager_named("broker");
-    initialize_queue_message_manager();
+    initialize_queue_context_provider();
 
     log_succesful_start_up();
 

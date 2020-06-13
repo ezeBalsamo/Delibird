@@ -68,6 +68,7 @@ t_operation_information* valid_chosen_operation(){
 
     if(arguments_amount_difference != 0){
         incorrect_arguments_amount_error();
+        free_system();
     }
 
     return operation_information_found;
@@ -107,9 +108,11 @@ void* publisher_pokemon_operation_structure(){
 void* subscriber_pokemon_operation_structure(){
 
     char* queue_name = gameboy_arguments[2];
+    char* process_id = gameboy_arguments[3];
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);
+    subscribe_me -> process_description = process_id;
     return (void*) subscribe_me;
 }
 
