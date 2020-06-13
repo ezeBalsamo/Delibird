@@ -14,6 +14,8 @@ bool publisher_mode_can_handle(uint32_t operation){
     return operation != SUBSCRIBE_ME;
 }
 
+void allocate_message(t_identified_message* identified_message){}
+
 void publisher_mode_attending_message_function(t_connection_request* connection_request){
 
     uint32_t message_id = update_and_get_message_id();
