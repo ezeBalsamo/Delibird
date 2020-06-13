@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <subscriber_message_mode.h>
 #include <broker_logs_manager.h>
-#include <free_broker.h>
 #include "../include/message_role_identifier.h"
 #include "../../Utils/include/common_structures.h"
 #include "../include/publisher_message_mode.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_list* messages_modes;
 

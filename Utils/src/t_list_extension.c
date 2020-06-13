@@ -1,4 +1,3 @@
-#include <commons/collections/queue.h>
 #include "../include/t_list_extension.h"
 
 t_list* list_flat(t_list* self){
@@ -11,11 +10,6 @@ t_list* list_flat(t_list* self){
     list_iterate(self, _add_all);
 
     return flattened_list;
-}
-
-void free_list_to_flat(t_list* self){
-    list_iterate(self, (void (*)(void *)) list_destroy);
-    list_destroy(self);
 }
 
 bool list_contains(t_list* self, void* element_to_find, bool (*comparer) (void*, void*)){
@@ -57,23 +51,4 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     }
 
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
-}
-
-bool are_equal_lists(t_list* one_list, t_list* another_list)
-{
-    bool partial_result;
-    bool iterate_result;
-    if(list_size(one_list) == list_size(another_list)){
-        for(int i = 0; i < list_size(one_list);i++){
-         void* one_element = list_get(one_list, i);
-         void* another_element = list_get(another_list, i);
-         partial_result = one_element == another_element;
-         iterate_result = partial_result * iterate_result;
-        }
-        return iterate_result;
-    }
-}
-
-void queue_iterator(t_queue* queue, void(*closure)(void*)){
-    return list_iterate(queue -> elements, closure);
 }

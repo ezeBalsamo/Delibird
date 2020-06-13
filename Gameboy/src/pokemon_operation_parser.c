@@ -8,12 +8,13 @@
 #include <get_pokemon_operation_parser.h>
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
-#include <free_gameboy.h>
 
 t_list* pokemon_operation_parsers;
 
 void initialize_pokemon_operation_parser_with(bool should_build_identified_message){
+
     initialize_new_pokemon_operation_parser_with(should_build_identified_message);
     initialize_appeared_pokemon_operation_parser_with(should_build_identified_message);
     initialize_get_pokemon_operation_parser_with(should_build_identified_message);

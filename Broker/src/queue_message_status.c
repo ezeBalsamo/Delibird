@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <free_broker.h>
 #include <pthread.h>
 #include <broker_logs_manager.h>
 #include <subscriber.h>
@@ -7,7 +6,7 @@
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
-#include "commons/string.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_message_status* create_message_status_for(t_identified_message* identified_message){
     t_message_status* message_status = safe_malloc(sizeof(t_message_status));

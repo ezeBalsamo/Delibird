@@ -1,11 +1,9 @@
 #include "../include/queue_context_provider.h"
-#include "commons/collections/queue.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 #include "subscriber.h"
 #include <stdlib.h>
 #include <commons/collections/dictionary.h>
-#include <semaphore.h>
 #include <queue_context_operations.h>
 #include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>

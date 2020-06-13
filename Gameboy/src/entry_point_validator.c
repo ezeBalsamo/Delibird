@@ -6,8 +6,8 @@
 #include <pokemon_operation_parser.h>
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
-#include <free_gameboy.h>
 
 char** gameboy_arguments;
 int gameboy_arguments_amount;

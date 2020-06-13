@@ -2,14 +2,13 @@
 #include <stdlib.h>
 #include <general_logs.h>
 #include <garbage_collector.h>
-#include <free_system.h>
 #include <zconf.h>
 #include <signal.h>
 #include <commons/string.h>
 
 void handler(){
-    char* message_handler = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
-    write(STDOUT_FILENO, message_handler, string_length(message_handler));
+    char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
+    write(STDOUT_FILENO, goodbye_message, string_length(goodbye_message));
     free_system();
 }
 

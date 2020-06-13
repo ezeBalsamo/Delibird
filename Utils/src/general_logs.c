@@ -124,10 +124,6 @@ void log_request_sent(t_request* request){
     log_request_with_event(process_execution_logger(), request, "Pedido enviado");
 }
 
-void log_request_received(t_request* request){
-    log_request_received_with(process_execution_logger(), request);
-}
-
 void log_unknown_chained_evaluation_type_error(){
     log_errorful_message(process_execution_logger(), "Se ha configurado una chained_evaluation con un tipo inválido.");
 }

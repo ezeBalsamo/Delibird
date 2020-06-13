@@ -6,7 +6,6 @@
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
-#include <free_broker.h>
 
 void update_last_message_id_received_for(t_subscriber_context* subscriber_context, uint32_t last_message_id_received){
     subscriber_context -> last_message_id_received = last_message_id_received;
@@ -65,7 +64,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
         t_message_status* message_status = list_get(messages_to_send, i);
 
         t_request* request = create_request_from(message_status);
-        serialize_and_send_structure(request, subscriber_context -> socket_fd);
+        send_structure(request, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 

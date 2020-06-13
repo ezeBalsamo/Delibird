@@ -4,7 +4,7 @@ set(SOURCES
         src/queue_context_provider.c
         src/connection_handler.c
         src/broker_logs_manager.c
-        src/free_broker.c
+        src/broker_sanitizer.c
         src/message_role_identifier.c
         src/publisher_message_mode.c
         src/subscriber_message_mode.c

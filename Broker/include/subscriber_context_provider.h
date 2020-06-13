@@ -1,7 +1,6 @@
 #ifndef DELIBIRD_SUBSCRIBER_CONTEXT_PROVIDER_H
 #define DELIBIRD_SUBSCRIBER_CONTEXT_PROVIDER_H
 
-#include <stdint.h>
 #include "../../Utils/include/common_structures.h"
 
 typedef struct Subscriber_context{

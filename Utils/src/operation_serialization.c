@@ -36,6 +36,12 @@ uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){
            + sizeof(uint32_t);                                  //Pos y
 }
 
+uint32_t amount_of_bytes_of_subscribe_me(t_subscribe_me* subscribe_me){
+    return sizeof(uint32_t)                                     //Operation queue
+            + sizeof(uint32_t)                                  //Process description name length
+            + strlen(subscribe_me -> process_description) + 1;  //Process description name
+}
+
 t_serialization_information* serialize(t_request* request){
 
     t_serializable_object* serializable_object = serializable_object_with_code(request -> operation);
@@ -246,11 +252,11 @@ t_serialization_information* serialize_caught_pokemon(void* structure){
 t_serialization_information* serialize_subscribe_me(void* structure){
 
     t_subscribe_me* subscribe_me = (t_subscribe_me*) structure;
-    uint32_t amount_of_bytes_of_subscribe_me = sizeof(uint32_t) + sizeof(uint32_t) + strlen(subscribe_me -> process_description) + 1;
+    uint32_t amount_of_bytes_of_subscribe = amount_of_bytes_of_subscribe_me(subscribe_me);
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                            // operation
             + sizeof(uint32_t)                          // structure size
-            + amount_of_bytes_of_subscribe_me;                 // structure
+            + amount_of_bytes_of_subscribe;          // structure
 
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
@@ -261,7 +267,7 @@ t_serialization_information* serialize_subscribe_me(void* structure){
 
     memcpy(serialized_request + offset, &operation, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    memcpy(serialized_request + offset, &amount_of_bytes_of_subscribe_me, sizeof(uint32_t));
+    memcpy(serialized_request + offset, &amount_of_bytes_of_subscribe, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(serialized_request + offset, &(subscribe_me -> operation_queue), sizeof(uint32_t));
     offset += sizeof(uint32_t);

@@ -2,9 +2,10 @@
 #include "../include/entry_point_logs_manager.h"
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <stdlib.h>
-#include <free_gameboy.h>
+
 
 t_list* processes_information;
 

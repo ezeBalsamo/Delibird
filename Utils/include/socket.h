@@ -3,6 +3,7 @@
 
 #include "serialization_interface.h"
 
+#define THREAD_POOL_SIZE 25
 #define FAILED_ACK 0
 
 typedef struct Connection_Information{
@@ -15,11 +16,7 @@ void close_failed_connection(t_connection_information* connection_information);
 
 int reconnect(t_connection_information* connection_information);
 
-int listen_at(char* port);
-
 t_connection_information* connect_to(char* ip, char* port);
-
-int accept_incoming_connections_on(int socket_fd);
 
 void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd);
 
@@ -29,9 +26,9 @@ void send_ack_message(uint32_t message_id, int socket_fd);
 
 void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds);
 
-void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
-
 t_serialization_information* receive_structure(int socket_fd);
+
+void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 
 void free_and_close_connection(void* socket_fd);
 void free_connection_information(t_connection_information* connection_information);

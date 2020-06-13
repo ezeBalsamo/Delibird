@@ -36,6 +36,9 @@ void* queue_listener_thread(){
             t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
             char* pretty_print_request = request_pretty_print(deserialized_request);
 
+            t_identified_message* identified_message = deserialized_request -> structure;
+            send_ack_message(identified_message -> message_id, connection_information -> socket_fd);
+
             printf("%s\n", pretty_print_request);
 
             free(pretty_print_request);

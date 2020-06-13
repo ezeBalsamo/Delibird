@@ -15,7 +15,7 @@ set(SOURCES
         src/get_pokemon_operation_parser.c
         src/catch_pokemon_operation_parser.c
         src/caught_pokemon_operation_parser.c
-        src/free_gameboy.c)
+        src/gameboy_sanitizer.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(gameboy ${SOURCES})

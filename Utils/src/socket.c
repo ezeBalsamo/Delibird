@@ -16,8 +16,6 @@
 #include <garbage_collector.h>
 #include <general_logs.h>
 
-#define THREAD_POOL_SIZE 25
-
 pthread_t thread_pool[THREAD_POOL_SIZE];
 pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
 sem_t client_sockets_amount_in_queue;
@@ -221,17 +219,17 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
 void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd) {
 
     uint32_t total_amount_of_bytes =
-            serialization_information->amount_of_bytes    // amount_of_bytes_of_request
+            serialization_information -> amount_of_bytes    // amount_of_bytes_of_request
             + sizeof(uint32_t);                             // total_amount
 
-    void *serialized_request = safe_malloc(total_amount_of_bytes);
+    void* serialized_request = safe_malloc(total_amount_of_bytes);
 
     memcpy(serialized_request,
-           &(serialization_information->amount_of_bytes), sizeof(uint32_t));
+            &(serialization_information -> amount_of_bytes), sizeof(uint32_t));
 
     memmove(serialized_request + sizeof(uint32_t),
-            serialization_information->serialized_request,
-            serialization_information->amount_of_bytes);
+            serialization_information -> serialized_request,
+            serialization_information -> amount_of_bytes);
 
     send_all(socket_fd, serialized_request, total_amount_of_bytes);
     free(serialized_request);

@@ -1,7 +1,6 @@
 #ifndef DELIBIRD_MESSAGE_ROLE_IDENTIFIER_H
 #define DELIBIRD_MESSAGE_ROLE_IDENTIFIER_H
 
-#include <stdint.h>
 #include <stdbool.h>
 #include "../../Utils/include/common_structures.h"
 

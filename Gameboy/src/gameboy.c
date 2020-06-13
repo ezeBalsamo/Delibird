@@ -5,10 +5,11 @@
 #include "../include/entry_point_executor.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
-#include "free_gameboy.h"
+#include "../../Utils/include/garbage_collector.h"
 
 int main(int arguments_amount, char* arguments[]) {
 
+    initialize_signal_handler();
     initialize_garbage_collector();
 
     initialize_entry_point_logs_manager();

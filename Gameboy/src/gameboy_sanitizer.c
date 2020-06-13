@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/general_logs.h"
-#include "free_gameboy.h"
+#include "../../Utils/include/garbage_collector.h"
 
 void free_system(){
     free_entry_point_validator();

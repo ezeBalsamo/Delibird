@@ -5,7 +5,7 @@
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
-#include "free_broker.h"
+#include "../../Utils/include/garbage_collector.h"
 
 void free_system(){
     free_pretty_printer();
