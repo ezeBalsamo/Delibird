@@ -1,0 +1,8 @@
+#ifndef DELIBIRD_DYNAMIC_PARTITION_MEMORY_MANAGER_H
+#define DELIBIRD_DYNAMIC_PARTITION_MEMORY_MANAGER_H
+
+#include "broker_memory_manager.h"
+
+t_memory_manager* initialize_dynamic_partition_memory_manager();
+
+#endif //DELIBIRD_DYNAMIC_PARTITION_MEMORY_MANAGER_H
