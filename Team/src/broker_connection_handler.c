@@ -92,7 +92,7 @@ void* subscriber_thread(void* queue_operation_identifier){
             char* request_as_string = request_pretty_print(deserialized_request);
             printf("%s\n", request_as_string);
 
-//            query_perform(deserialized_request);
+            query_perform(deserialized_request);
 
             free_serialization_information(serialization_information);
 //            deserialized_request -> sanitizer_function (deserialized_request);
@@ -113,19 +113,19 @@ pthread_t subscribe_to_queue(uint32_t queue_code){
 void subscribe_to_queues(){
 
     appeared_queue_tid = subscribe_to_queue(APPEARED_POKEMON);
-//    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
-//    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
+    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
+    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
 
-//    sem_wait(&subscriber_threads_request_sent);
-//    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
     sem_wait(&subscriber_threads_request_sent);
 }
 
 void join_to_queues(){
 
     thread_join(appeared_queue_tid);
-//    thread_join(localized_queue_tid);
-//    thread_join(caught_queue_tid);
+    thread_join(localized_queue_tid);
+    thread_join(caught_queue_tid);
 }
 
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
@@ -156,7 +156,7 @@ void* initialize_broker_connection_handler(){
     sem_init(&subscriber_threads_request_sent, false, 0);
 
     subscribe_to_queues();
-//    with_global_goal_do(send_get_pokemon_request_of);
+    with_global_goal_do(send_get_pokemon_request_of);
     join_to_queues();
     return NULL;
 }

@@ -649,3 +649,2878 @@
 
 [DEBUG] 19:51:35:146 Team/(17372:17372): Team se ha inicializado correctamente!
 
+[INFO] 15:49:29:291 Team/(7298:7298): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:49:29:291 Team/(7298:7298): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:49:29:291 Team/(7298:7298): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:49:29:294 Team/(7298:7298): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:49:29:294 Team/(7298:7298): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:28:54:712 Team/(7987:7987): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:28:54:714 Team/(7987:7987): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:28:54:714 Team/(7987:7987): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:28:54:714 Team/(7987:7987): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:28:54:714 Team/(7987:7987): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 14:31:04:752 Team/(7987:7997): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 14:31:04:752 Team/(7987:7994): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 14:31:04:752 Team/(7987:8000): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 14:31:04:753 Team/(7987:8222): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:31:04:754 Team/(7987:8223): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:31:04:755 Team/(7987:8221): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 14:33:15:821 Team/(7987:8223): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:33:15:824 Team/(7987:8222): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:33:15:825 Team/(7987:8221): Falló el reintento de comunicación con el Broker.
+[INFO] 14:33:45:822 Team/(7987:8223): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:33:45:824 Team/(7987:8222): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:33:45:826 Team/(7987:8221): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 14:35:55:566 Team/(7987:8221): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:35:55:566 Team/(7987:8223): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:35:55:566 Team/(7987:8222): Falló el reintento de comunicación con el Broker.
+[INFO] 14:36:25:566 Team/(7987:8221): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:36:25:566 Team/(7987:8222): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:36:25:566 Team/(7987:8223): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 14:38:35:310 Team/(7987:8222): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:38:35:310 Team/(7987:8221): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:38:35:310 Team/(7987:8223): Falló el reintento de comunicación con el Broker.
+[INFO] 14:39:05:310 Team/(7987:8222): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:39:05:310 Team/(7987:8221): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:39:05:310 Team/(7987:8223): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 14:41:15:54 Team/(7987:8223): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:41:15:54 Team/(7987:8221): Falló el reintento de comunicación con el Broker.
+[ERROR] 14:41:15:54 Team/(7987:8222): Falló el reintento de comunicación con el Broker.
+[INFO] 14:41:45:54 Team/(7987:8221): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:41:45:54 Team/(7987:8222): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:41:45:54 Team/(7987:8223): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 14:42:39:69 Team/(8674:8674): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:42:39:69 Team/(8674:8674): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:42:39:69 Team/(8674:8674): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:42:39:69 Team/(8674:8674): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:42:39:69 Team/(8674:8674): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:43:32:281 Team/(8828:8828): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:43:32:282 Team/(8828:8828): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:43:32:282 Team/(8828:8828): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:43:32:282 Team/(8828:8828): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:43:32:282 Team/(8828:8828): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:46:13:544 Team/(9261:9261): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:46:13:544 Team/(9261:9261): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:46:13:544 Team/(9261:9261): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:46:13:544 Team/(9261:9261): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:46:13:544 Team/(9261:9261): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:46:30:762 Team/(9361:9361): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:46:30:762 Team/(9361:9361): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:46:30:762 Team/(9361:9361): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:46:30:762 Team/(9361:9361): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:46:30:762 Team/(9361:9361): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:47:56:76 Team/(8021:8021): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:47:56:79 Team/(8021:8021): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:47:56:79 Team/(8021:8021): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:47:56:79 Team/(8021:8021): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:47:56:80 Team/(8021:8021): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 00:47:56:81 Team/(8021:8030): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 00:47:56:81 Team/(8021:8029): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:47:56:82 Team/(8021:8032): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:47:56:82 Team/(8021:8032): Falló el reintento de comunicación con el Broker.
+[INFO] 00:47:56:83 Team/(8021:8033): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:47:56:83 Team/(8021:8033): Falló el reintento de comunicación con el Broker.
+[ERROR] 00:47:56:85 Team/(8021:8031): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:47:56:86 Team/(8021:8034): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:47:56:86 Team/(8021:8034): Falló el reintento de comunicación con el Broker.
+[INFO] 00:48:26:83 Team/(8021:8032): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:48:26:83 Team/(8021:8032): Falló el reintento de comunicación con el Broker.
+[INFO] 00:48:26:84 Team/(8021:8033): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:48:26:84 Team/(8021:8033): Falló el reintento de comunicación con el Broker.
+[INFO] 00:48:26:87 Team/(8021:8034): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:48:26:87 Team/(8021:8034): Falló el reintento de comunicación con el Broker.
+[INFO] 00:50:46:833 Team/(8353:8353): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:50:46:833 Team/(8353:8353): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:50:46:833 Team/(8353:8353): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:50:46:833 Team/(8353:8353): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:50:46:833 Team/(8353:8353): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:51:16:344 Team/(8395:8395): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:51:16:345 Team/(8395:8395): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:51:16:347 Team/(8395:8395): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:51:16:347 Team/(8395:8395): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:51:16:347 Team/(8395:8395): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 00:51:16:348 Team/(8395:8401): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 00:51:16:348 Team/(8395:8400): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:51:16:348 Team/(8395:8403): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:51:16:348 Team/(8395:8403): Falló el reintento de comunicación con el Broker.
+[INFO] 00:51:16:352 Team/(8395:8404): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:51:16:352 Team/(8395:8404): Falló el reintento de comunicación con el Broker.
+[ERROR] 00:51:16:352 Team/(8395:8399): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:51:16:352 Team/(8395:8416): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:51:16:352 Team/(8395:8416): Falló el reintento de comunicación con el Broker.
+[INFO] 00:51:43:397 Team/(8516:8516): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:51:43:397 Team/(8516:8516): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:51:43:397 Team/(8516:8516): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:51:43:397 Team/(8516:8516): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:51:43:397 Team/(8516:8516): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:52:27:764 Team/(8636:8636): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:52:27:764 Team/(8636:8636): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:52:27:764 Team/(8636:8636): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:52:27:764 Team/(8636:8636): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:52:27:764 Team/(8636:8636): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:54:11:53 Team/(8741:8741): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:54:11:53 Team/(8741:8741): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:54:11:53 Team/(8741:8741): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:54:11:53 Team/(8741:8741): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:54:11:54 Team/(8741:8741): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 00:54:11:54 Team/(8741:8748): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 00:54:11:54 Team/(8741:8746): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 00:54:11:55 Team/(8741:8750): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 00:54:11:55 Team/(8741:8756): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:54:11:55 Team/(8741:8756): Falló el reintento de comunicación con el Broker.
+[INFO] 00:54:11:56 Team/(8741:8761): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 00:54:11:56 Team/(8741:8762): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 00:54:11:56 Team/(8741:8762): Falló el reintento de comunicación con el Broker.
+[ERROR] 00:54:11:56 Team/(8741:8761): Falló el reintento de comunicación con el Broker.
+[INFO] 00:54:29:306 Team/(8836:8836): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:54:29:306 Team/(8836:8836): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:54:29:306 Team/(8836:8836): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:54:29:307 Team/(8836:8836): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:54:29:307 Team/(8836:8836): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:55:32:183 Team/(9017:9017): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:55:32:183 Team/(9017:9017): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:55:32:183 Team/(9017:9017): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:55:32:183 Team/(9017:9017): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:55:32:183 Team/(9017:9017): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:58:12:548 Team/(9157:9157): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:58:12:548 Team/(9157:9157): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:58:12:548 Team/(9157:9157): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:58:12:548 Team/(9157:9157): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:58:12:548 Team/(9157:9157): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:00:44:121 Team/(9285:9285): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:00:44:121 Team/(9285:9285): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:00:44:121 Team/(9285:9285): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:00:44:121 Team/(9285:9285): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:00:44:121 Team/(9285:9285): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:04:34:696 Team/(9521:9521): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:04:34:696 Team/(9521:9521): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:04:34:696 Team/(9521:9521): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:04:34:696 Team/(9521:9521): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:04:34:696 Team/(9521:9521): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:05:12:611 Team/(9695:9695): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:05:12:612 Team/(9695:9695): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:05:12:612 Team/(9695:9695): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:05:12:612 Team/(9695:9695): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:05:12:612 Team/(9695:9695): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:09:28:415 Team/(9879:9879): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:09:28:415 Team/(9879:9879): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:09:28:415 Team/(9879:9879): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:09:28:416 Team/(9879:9879): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:09:28:416 Team/(9879:9879): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:09:28:416 Team/(9879:9890): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:09:28:416 Team/(9879:9889): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:09:28:417 Team/(9879:9891): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 01:09:28:417 Team/(9879:9896): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:09:28:417 Team/(9879:9896): Falló el reintento de comunicación con el Broker.
+[INFO] 01:09:28:417 Team/(9879:9902): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 01:09:28:417 Team/(9879:9899): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:09:28:417 Team/(9879:9902): Falló el reintento de comunicación con el Broker.
+[ERROR] 01:09:28:417 Team/(9879:9899): Falló el reintento de comunicación con el Broker.
+[INFO] 01:10:00:177 Team/(10005:10005): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:10:00:177 Team/(10005:10005): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:10:00:177 Team/(10005:10005): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:10:00:177 Team/(10005:10005): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:10:00:177 Team/(10005:10005): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:10:56:304 Team/(10132:10132): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:10:56:304 Team/(10132:10132): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:10:56:304 Team/(10132:10132): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:10:56:304 Team/(10132:10132): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:10:56:304 Team/(10132:10132): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:12:38:266 Team/(10325:10325): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:12:38:266 Team/(10325:10325): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:12:38:266 Team/(10325:10325): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:12:38:266 Team/(10325:10325): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:12:38:266 Team/(10325:10325): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:16:10:90 Team/(10651:10651): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:16:10:90 Team/(10651:10651): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:16:10:90 Team/(10651:10651): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:16:10:90 Team/(10651:10651): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:16:10:90 Team/(10651:10651): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:17:13:869 Team/(10825:10825): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:17:13:869 Team/(10825:10825): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:17:13:869 Team/(10825:10825): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:17:13:870 Team/(10825:10825): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:17:13:870 Team/(10825:10825): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:17:44:626 Team/(10949:10949): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:17:44:627 Team/(10949:10949): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:17:44:627 Team/(10949:10949): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:17:44:627 Team/(10949:10949): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:17:44:627 Team/(10949:10949): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:18:43:156 Team/(11099:11099): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:18:43:156 Team/(11099:11099): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:18:43:156 Team/(11099:11099): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:18:43:157 Team/(11099:11099): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:18:43:157 Team/(11099:11099): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:19:14:658 Team/(11220:11220): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:19:14:658 Team/(11220:11220): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:19:14:658 Team/(11220:11220): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:19:14:658 Team/(11220:11220): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:19:14:658 Team/(11220:11220): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:21:51:988 Team/(11862:11862): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:21:51:988 Team/(11862:11862): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:21:51:988 Team/(11862:11862): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:21:51:989 Team/(11862:11862): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:21:51:989 Team/(11862:11862): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:23:52:439 Team/(12058:12058): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:23:52:439 Team/(12058:12058): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:23:52:439 Team/(12058:12058): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:23:52:439 Team/(12058:12058): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:23:52:439 Team/(12058:12058): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:25:03:33 Team/(12608:12608): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:25:03:33 Team/(12608:12608): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:25:03:33 Team/(12608:12608): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:25:03:34 Team/(12608:12608): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:25:03:34 Team/(12608:12608): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:27:34:525 Team/(12856:12856): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:27:34:525 Team/(12856:12856): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:27:34:525 Team/(12856:12856): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:27:34:525 Team/(12856:12856): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:27:34:525 Team/(12856:12856): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:29:58:49 Team/(12991:12991): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:29:58:49 Team/(12991:12991): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:29:58:49 Team/(12991:12991): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:29:58:50 Team/(12991:12991): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:29:58:50 Team/(12991:12991): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:03:07:499 Team/(14970:14970): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:03:07:499 Team/(14970:14970): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:03:07:500 Team/(14970:14970): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:03:07:500 Team/(14970:14970): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:03:07:500 Team/(14970:14970): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:07:20:911 Team/(15249:15249): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:07:20:911 Team/(15249:15249): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:07:20:911 Team/(15249:15249): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:07:20:911 Team/(15249:15249): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:07:20:911 Team/(15249:15249): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:10:37:971 Team/(15431:15431): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:10:37:971 Team/(15431:15431): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:10:37:971 Team/(15431:15431): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:10:37:971 Team/(15431:15431): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:10:37:971 Team/(15431:15431): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:11:42:117 Team/(15619:15619): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:11:42:117 Team/(15619:15619): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:11:42:117 Team/(15619:15619): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:11:42:117 Team/(15619:15619): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:11:42:117 Team/(15619:15619): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:12:56:162 Team/(15888:15888): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:12:56:162 Team/(15888:15888): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:12:56:162 Team/(15888:15888): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:12:56:162 Team/(15888:15888): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:12:56:162 Team/(15888:15888): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:13:14:506 Team/(16032:16032): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:13:14:506 Team/(16032:16032): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:13:14:506 Team/(16032:16032): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:13:14:506 Team/(16032:16032): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:13:14:506 Team/(16032:16032): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:16:03:122 Team/(16301:16301): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:16:03:126 Team/(16301:16301): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:16:03:126 Team/(16301:16301): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:16:03:126 Team/(16301:16301): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:16:03:126 Team/(16301:16301): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:17:42:32 Team/(16520:16520): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:17:42:32 Team/(16520:16520): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:17:42:32 Team/(16520:16520): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:17:42:32 Team/(16520:16520): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:17:42:32 Team/(16520:16520): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:19:44:580 Team/(16725:16725): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:19:44:580 Team/(16725:16725): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:19:44:580 Team/(16725:16725): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:19:44:580 Team/(16725:16725): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:19:44:580 Team/(16725:16725): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:20:31:938 Team/(16896:16896): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:20:31:938 Team/(16896:16896): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:20:31:938 Team/(16896:16896): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:20:31:938 Team/(16896:16896): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:20:31:938 Team/(16896:16896): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:23:40:77 Team/(17098:17098): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:23:40:77 Team/(17098:17098): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:40:77 Team/(17098:17098): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:40:78 Team/(17098:17098): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:23:40:78 Team/(17098:17098): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:23:57:584 Team/(17234:17234): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:23:57:584 Team/(17234:17234): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:57:585 Team/(17234:17234): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:57:585 Team/(17234:17234): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:23:57:585 Team/(17234:17234): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:24:22:378 Team/(17296:17296): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:24:22:378 Team/(17296:17296): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:24:22:378 Team/(17296:17296): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:24:22:378 Team/(17296:17296): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:24:22:378 Team/(17296:17296): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:25:20:36 Team/(17451:17451): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:25:20:36 Team/(17451:17451): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:25:20:36 Team/(17451:17451): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:25:20:36 Team/(17451:17451): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:25:20:36 Team/(17451:17451): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 13:55:39:479 Team/(3302:3302): Pretty printer se ha inicializado correctamente!
+
+[INFO] 13:55:39:481 Team/(3302:3302): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 13:55:39:481 Team/(3302:3302): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 13:55:39:482 Team/(3302:3302): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 13:55:39:482 Team/(3302:3302): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:02:08:176 Team/(3704:3704): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:02:08:177 Team/(3704:3704): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:02:08:177 Team/(3704:3704): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:02:08:177 Team/(3704:3704): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:02:08:177 Team/(3704:3704): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:13:59:541 Team/(4878:4878): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:13:59:541 Team/(4878:4878): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:13:59:541 Team/(4878:4878): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:13:59:541 Team/(4878:4878): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:13:59:541 Team/(4878:4878): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:16:42:67 Team/(5099:5099): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:16:42:67 Team/(5099:5099): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:16:42:67 Team/(5099:5099): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:16:42:67 Team/(5099:5099): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:16:42:67 Team/(5099:5099): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 23:24:49:430 Team/(22659:22659): Pretty printer se ha inicializado correctamente!
+
+[INFO] 23:24:49:433 Team/(22659:22659): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 23:24:49:433 Team/(22659:22659): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 23:24:49:433 Team/(22659:22659): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 23:24:49:433 Team/(22659:22659): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 23:24:49:434 Team/(22659:22664): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 23:24:49:434 Team/(22659:22669): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 23:24:49:434 Team/(22659:22666): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 23:24:49:434 Team/(22659:22683): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:24:49:434 Team/(22659:22683): Falló el reintento de comunicación con el Broker.
+[INFO] 23:24:49:434 Team/(22659:22684): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:24:49:434 Team/(22659:22684): Falló el reintento de comunicación con el Broker.
+[INFO] 23:24:49:435 Team/(22659:22687): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:24:49:435 Team/(22659:22687): Falló el reintento de comunicación con el Broker.
+[INFO] 23:25:19:434 Team/(22659:22683): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:25:19:434 Team/(22659:22683): Falló el reintento de comunicación con el Broker.
+[INFO] 23:25:19:435 Team/(22659:22684): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:25:19:435 Team/(22659:22684): Falló el reintento de comunicación con el Broker.
+[INFO] 23:25:19:435 Team/(22659:22687): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:25:19:435 Team/(22659:22687): Falló el reintento de comunicación con el Broker.
+[INFO] 23:25:49:435 Team/(22659:22683): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 23:25:49:435 Team/(22659:22684): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:25:49:435 Team/(22659:22683): Falló el reintento de comunicación con el Broker.
+[ERROR] 23:25:49:435 Team/(22659:22684): Falló el reintento de comunicación con el Broker.
+[INFO] 23:25:49:435 Team/(22659:22687): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 23:25:49:435 Team/(22659:22687): Falló el reintento de comunicación con el Broker.
+[INFO] 00:57:12:622 Team/(28155:28155): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:57:12:624 Team/(28155:28155): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:57:12:624 Team/(28155:28155): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:57:12:624 Team/(28155:28155): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:57:12:624 Team/(28155:28155): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 00:58:18:797 Team/(28332:28332): Pretty printer se ha inicializado correctamente!
+
+[INFO] 00:58:18:798 Team/(28332:28332): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:58:18:798 Team/(28332:28332): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 00:58:18:798 Team/(28332:28332): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 00:58:18:798 Team/(28332:28332): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:24:39:891 Team/(29476:29476): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:24:39:891 Team/(29476:29476): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:24:39:891 Team/(29476:29476): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:24:39:891 Team/(29476:29476): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:24:39:891 Team/(29476:29476): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:24:39:901 Team/(29476:29480): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:24:39:902 Team/(29476:29509): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:24:39:902 Team/(29476:29510): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 01:24:39:902 Team/(29476:29511): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:24:39:902 Team/(29476:29511): Falló el reintento de comunicación con el Broker.
+[INFO] 01:24:39:902 Team/(29476:29512): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:24:39:902 Team/(29476:29512): Falló el reintento de comunicación con el Broker.
+[INFO] 01:24:39:902 Team/(29476:29513): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:24:39:902 Team/(29476:29513): Falló el reintento de comunicación con el Broker.
+[INFO] 01:28:35:803 Team/(30823:30823): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:28:35:803 Team/(30823:30823): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:28:35:803 Team/(30823:30823): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:28:35:803 Team/(30823:30823): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:28:35:803 Team/(30823:30823): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:28:35:804 Team/(30823:30829): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:28:35:804 Team/(30823:30827): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 01:28:35:804 Team/(30823:30828): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 01:28:35:805 Team/(30823:30830): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:28:35:805 Team/(30823:30830): Falló el reintento de comunicación con el Broker.
+[INFO] 01:28:35:805 Team/(30823:30831): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:28:35:805 Team/(30823:30831): Falló el reintento de comunicación con el Broker.
+[INFO] 01:28:35:805 Team/(30823:30832): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 01:28:35:805 Team/(30823:30832): Falló el reintento de comunicación con el Broker.
+[INFO] 01:29:42:872 Team/(31008:31008): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:29:42:872 Team/(31008:31008): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:29:42:872 Team/(31008:31008): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:29:42:872 Team/(31008:31008): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:29:42:872 Team/(31008:31008): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:31:13:926 Team/(31199:31199): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:31:13:927 Team/(31199:31199): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:31:13:927 Team/(31199:31199): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:31:13:927 Team/(31199:31199): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:31:13:927 Team/(31199:31199): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:32:10:708 Team/(31376:31376): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:32:10:708 Team/(31376:31376): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:32:10:709 Team/(31376:31376): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:32:10:709 Team/(31376:31376): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:32:10:709 Team/(31376:31376): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:33:49:645 Team/(31550:31550): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:33:49:645 Team/(31550:31550): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:33:49:645 Team/(31550:31550): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:33:49:646 Team/(31550:31550): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:33:49:646 Team/(31550:31550): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:35:40:979 Team/(31715:31715): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:35:40:979 Team/(31715:31715): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:35:40:980 Team/(31715:31715): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:35:40:980 Team/(31715:31715): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:35:40:980 Team/(31715:31715): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:36:19:944 Team/(31915:31915): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:36:19:944 Team/(31915:31915): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:36:19:944 Team/(31915:31915): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:36:19:944 Team/(31915:31915): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:36:19:944 Team/(31915:31915): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:44:12:178 Team/(32168:32168): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:44:12:178 Team/(32168:32168): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:44:12:178 Team/(32168:32168): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:44:12:178 Team/(32168:32168): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:44:12:178 Team/(32168:32168): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:47:28:828 Team/(32387:32387): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:47:28:828 Team/(32387:32387): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:47:28:828 Team/(32387:32387): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:47:28:828 Team/(32387:32387): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:47:28:828 Team/(32387:32387): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:54:03:697 Team/(32613:32613): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:54:03:698 Team/(32613:32613): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:54:03:698 Team/(32613:32613): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:54:03:698 Team/(32613:32613): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:54:03:698 Team/(32613:32613): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:58:06:966 Team/(32838:32838): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:58:06:966 Team/(32838:32838): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:58:06:966 Team/(32838:32838): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:58:06:966 Team/(32838:32838): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:58:06:966 Team/(32838:32838): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:09:55:110 Team/(33637:33637): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:09:55:110 Team/(33637:33637): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:09:55:110 Team/(33637:33637): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:09:55:110 Team/(33637:33637): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:09:55:110 Team/(33637:33637): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:31:22:686 Team/(34602:34602): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:31:22:686 Team/(34602:34602): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:31:22:686 Team/(34602:34602): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:31:22:686 Team/(34602:34602): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:31:22:686 Team/(34602:34602): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 02:31:22:694 Team/(34602:34614): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 02:31:22:696 Team/(34602:34640): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 02:31:22:696 Team/(34602:34640): Falló el reintento de comunicación con el Broker.
+[ERROR] 02:31:22:697 Team/(34602:34612): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 02:31:22:697 Team/(34602:34613): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 02:31:22:699 Team/(34602:34641): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 02:31:22:699 Team/(34602:34641): Falló el reintento de comunicación con el Broker.
+[INFO] 02:31:22:699 Team/(34602:34642): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 02:31:22:700 Team/(34602:34642): Falló el reintento de comunicación con el Broker.
+[INFO] 02:32:20:391 Team/(34804:34804): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:32:20:391 Team/(34804:34804): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:32:20:391 Team/(34804:34804): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:32:20:391 Team/(34804:34804): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:32:20:391 Team/(34804:34804): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:33:28:948 Team/(34900:34900): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:33:28:950 Team/(34900:34900): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:33:28:950 Team/(34900:34900): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:33:28:950 Team/(34900:34900): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:33:28:950 Team/(34900:34900): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:34:17:32 Team/(35044:35044): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:34:17:32 Team/(35044:35044): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:34:17:32 Team/(35044:35044): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:34:17:32 Team/(35044:35044): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:34:17:32 Team/(35044:35044): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:47:31:669 Team/(35646:35646): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:47:31:670 Team/(35646:35646): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:47:31:670 Team/(35646:35646): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:47:31:680 Team/(35646:35646): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:47:31:680 Team/(35646:35646): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:47:56:746 Team/(35720:35720): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:47:56:747 Team/(35720:35720): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:47:56:747 Team/(35720:35720): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:47:56:747 Team/(35720:35720): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:47:56:747 Team/(35720:35720): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:48:31:677 Team/(35817:35817): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:48:31:677 Team/(35817:35817): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:48:31:677 Team/(35817:35817): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:48:31:677 Team/(35817:35817): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:48:31:677 Team/(35817:35817): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:49:45:910 Team/(36010:36010): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:49:45:910 Team/(36010:36010): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:49:45:910 Team/(36010:36010): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:49:45:910 Team/(36010:36010): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:49:45:910 Team/(36010:36010): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:51:29:691 Team/(36220:36220): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:51:29:691 Team/(36220:36220): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:51:29:691 Team/(36220:36220): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:51:29:691 Team/(36220:36220): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:51:29:691 Team/(36220:36220): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:54:51:426 Team/(36490:36490): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:54:51:426 Team/(36490:36490): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:54:51:426 Team/(36490:36490): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:54:51:426 Team/(36490:36490): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:54:51:426 Team/(36490:36490): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:58:12:72 Team/(36724:36724): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:58:12:72 Team/(36724:36724): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:58:12:72 Team/(36724:36724): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:58:12:72 Team/(36724:36724): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:58:12:72 Team/(36724:36724): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:01:42:793 Team/(37018:37018): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:01:42:793 Team/(37018:37018): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:42:793 Team/(37018:37018): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:42:793 Team/(37018:37018): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:01:42:793 Team/(37018:37018): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:03:47:287 Team/(37211:37211): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:03:47:287 Team/(37211:37211): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:47:287 Team/(37211:37211): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:47:289 Team/(37211:37211): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:03:47:289 Team/(37211:37211): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:06:37:734 Team/(37501:37501): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:06:37:734 Team/(37501:37501): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:06:37:734 Team/(37501:37501): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:06:37:734 Team/(37501:37501): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:06:37:734 Team/(37501:37501): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:08:34:533 Team/(37723:37723): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:08:34:533 Team/(37723:37723): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:34:533 Team/(37723:37723): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:34:533 Team/(37723:37723): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:08:34:533 Team/(37723:37723): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:10:19:191 Team/(37942:37942): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:10:19:191 Team/(37942:37942): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:10:19:191 Team/(37942:37942): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:10:19:191 Team/(37942:37942): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:10:19:191 Team/(37942:37942): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:54:58:391 Team/(2889:2889): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:54:58:391 Team/(2889:2889): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:54:58:391 Team/(2889:2889): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:54:58:391 Team/(2889:2889): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:54:58:391 Team/(2889:2889): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:38:51:377 Team/(23960:23960): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:38:51:377 Team/(23960:23960): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:38:51:377 Team/(23960:23960): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:38:51:377 Team/(23960:23960): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:38:51:377 Team/(23960:23960): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:47:02:717 Team/(24760:24760): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:47:02:717 Team/(24760:24760): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:47:02:717 Team/(24760:24760): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:47:02:717 Team/(24760:24760): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:47:02:717 Team/(24760:24760): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:52:57:831 Team/(24978:24978): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:52:57:831 Team/(24978:24978): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:52:57:831 Team/(24978:24978): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:52:57:831 Team/(24978:24978): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:52:57:831 Team/(24978:24978): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:57:21:10 Team/(25644:25644): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:57:21:10 Team/(25644:25644): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:57:21:10 Team/(25644:25644): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:57:21:11 Team/(25644:25644): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:57:21:11 Team/(25644:25644): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 14:57:45:310 Team/(25783:25783): Pretty printer se ha inicializado correctamente!
+
+[INFO] 14:57:45:310 Team/(25783:25783): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:57:45:310 Team/(25783:25783): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 14:57:45:310 Team/(25783:25783): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 14:57:45:310 Team/(25783:25783): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:00:26:854 Team/(25967:25967): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:00:26:854 Team/(25967:25967): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:00:26:854 Team/(25967:25967): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:00:26:854 Team/(25967:25967): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:00:26:854 Team/(25967:25967): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:01:19:625 Team/(26064:26064): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:01:19:625 Team/(26064:26064): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:01:19:625 Team/(26064:26064): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:01:19:625 Team/(26064:26064): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:01:19:625 Team/(26064:26064): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:02:59:943 Team/(26523:26523): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:02:59:943 Team/(26523:26523): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:02:59:943 Team/(26523:26523): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:02:59:943 Team/(26523:26523): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:02:59:943 Team/(26523:26523): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 15:03:02:0 Team/(26523:26535): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 15:03:02:0 Team/(26523:26541): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 15:03:02:0 Team/(26523:26538): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 15:03:02:1 Team/(26523:26604): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:03:02:1 Team/(26523:26606): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:03:02:1 Team/(26523:26605): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:03:48:552 Team/(26721:26721): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:03:48:552 Team/(26721:26721): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:03:48:552 Team/(26721:26721): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:03:48:552 Team/(26721:26721): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:03:48:552 Team/(26721:26721): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:14:41:606 Team/(27168:27168): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:14:41:606 Team/(27168:27168): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:14:41:606 Team/(27168:27168): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:14:41:606 Team/(27168:27168): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:14:41:606 Team/(27168:27168): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:21:26:229 Team/(27970:27970): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:21:26:229 Team/(27970:27970): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:21:26:229 Team/(27970:27970): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:21:26:230 Team/(27970:27970): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:21:26:230 Team/(27970:27970): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:00:47:230 Team/(29275:29275): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:00:47:230 Team/(29275:29275): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:00:47:230 Team/(29275:29275): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:00:47:230 Team/(29275:29275): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:00:47:230 Team/(29275:29275): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:01:03:91 Team/(29341:29341): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:01:03:91 Team/(29341:29341): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:01:03:91 Team/(29341:29341): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:01:03:91 Team/(29341:29341): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:01:03:91 Team/(29341:29341): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 19:01:03:91 Team/(29341:29346): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 19:01:03:91 Team/(29341:29345): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 19:01:03:92 Team/(29341:29352): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 19:01:03:92 Team/(29341:29352): Falló el reintento de comunicación con el Broker.
+[INFO] 19:01:03:92 Team/(29341:29351): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 19:01:03:92 Team/(29341:29351): Falló el reintento de comunicación con el Broker.
+[ERROR] 19:01:03:92 Team/(29341:29347): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 19:01:03:92 Team/(29341:29378): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 19:01:03:92 Team/(29341:29378): Falló el reintento de comunicación con el Broker.
+[INFO] 19:01:20:619 Team/(29486:29486): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:01:20:619 Team/(29486:29486): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:01:20:619 Team/(29486:29486): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:01:20:620 Team/(29486:29486): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:01:20:620 Team/(29486:29486): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:03:57:856 Team/(29636:29636): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:03:57:856 Team/(29636:29636): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:03:57:857 Team/(29636:29636): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:03:57:857 Team/(29636:29636): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:03:57:857 Team/(29636:29636): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:04:15:17 Team/(29732:29732): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:04:15:18 Team/(29732:29732): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:04:15:18 Team/(29732:29732): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:04:15:18 Team/(29732:29732): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:04:15:18 Team/(29732:29732): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:05:01:666 Team/(29869:29869): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:05:01:666 Team/(29869:29869): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:01:666 Team/(29869:29869): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:01:666 Team/(29869:29869): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:05:01:666 Team/(29869:29869): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:05:14:133 Team/(29959:29959): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:05:14:133 Team/(29959:29959): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:14:133 Team/(29959:29959): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:14:133 Team/(29959:29959): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:05:14:133 Team/(29959:29959): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:05:29:164 Team/(30033:30033): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:05:29:164 Team/(30033:30033): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:29:164 Team/(30033:30033): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:05:29:164 Team/(30033:30033): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:05:29:164 Team/(30033:30033): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:06:06:786 Team/(30181:30181): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:06:06:787 Team/(30181:30181): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:06:06:787 Team/(30181:30181): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:06:06:787 Team/(30181:30181): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:06:06:787 Team/(30181:30181): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:06:13:753 Team/(30239:30239): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:06:13:753 Team/(30239:30239): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:06:13:753 Team/(30239:30239): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:06:13:753 Team/(30239:30239): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:06:13:753 Team/(30239:30239): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:07:37:691 Team/(30352:30352): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:07:37:691 Team/(30352:30352): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:07:37:691 Team/(30352:30352): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:07:37:691 Team/(30352:30352): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:07:37:691 Team/(30352:30352): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 19:07:37:693 Team/(30352:30355): Error de server al hacer bind: Address already in use
+[INFO] 19:07:37:693 Team/(30352:30355): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 19:08:36:691 Team/(30598:30598): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:08:36:691 Team/(30598:30598): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:08:36:691 Team/(30598:30598): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:08:36:691 Team/(30598:30598): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:08:36:691 Team/(30598:30598): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:09:32:733 Team/(30866:30866): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:09:32:733 Team/(30866:30866): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:09:32:733 Team/(30866:30866): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:09:32:733 Team/(30866:30866): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:09:32:733 Team/(30866:30866): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 19:09:32:735 Team/(30866:30870): Error al recibir estructura: Connection reset by peer
+[INFO] 19:09:32:735 Team/(30866:30870): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 19:14:45:164 Team/(31174:31174): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:14:45:164 Team/(31174:31174): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:14:45:164 Team/(31174:31174): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:14:45:164 Team/(31174:31174): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:14:45:164 Team/(31174:31174): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:17:46:542 Team/(31263:31263): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:17:46:542 Team/(31263:31263): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:17:46:543 Team/(31263:31263): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:17:46:543 Team/(31263:31263): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:17:46:543 Team/(31263:31263): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:18:12:432 Team/(31479:31479): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:18:12:432 Team/(31479:31479): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:18:12:432 Team/(31479:31479): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:18:12:432 Team/(31479:31479): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:18:12:432 Team/(31479:31479): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:19:42:70 Team/(31609:31609): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:19:42:70 Team/(31609:31609): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:19:42:70 Team/(31609:31609): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:19:42:70 Team/(31609:31609): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:19:42:70 Team/(31609:31609): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:20:35:44 Team/(31791:31791): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:20:35:45 Team/(31791:31791): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:20:35:45 Team/(31791:31791): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:20:35:45 Team/(31791:31791): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:20:35:45 Team/(31791:31791): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 19:20:42:518 Team/(31791:31803): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 19:20:43:228 Team/(31791:31836): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 19:20:43:228 Team/(31791:31836): Falló el reintento de comunicación con el Broker.
+[INFO] 19:21:41:105 Team/(31924:31924): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:21:41:105 Team/(31924:31924): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:21:41:105 Team/(31924:31924): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:21:41:105 Team/(31924:31924): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:21:41:105 Team/(31924:31924): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:24:43:365 Team/(32202:32202): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:24:43:365 Team/(32202:32202): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:24:43:365 Team/(32202:32202): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:24:43:365 Team/(32202:32202): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:24:43:365 Team/(32202:32202): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:25:33:547 Team/(32369:32369): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:25:33:548 Team/(32369:32369): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:25:33:548 Team/(32369:32369): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:25:33:548 Team/(32369:32369): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:25:33:548 Team/(32369:32369): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:27:35:822 Team/(32532:32532): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:27:35:822 Team/(32532:32532): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:27:35:822 Team/(32532:32532): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:27:35:822 Team/(32532:32532): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:27:35:823 Team/(32532:32532): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:30:19:944 Team/(32810:32810): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:30:19:944 Team/(32810:32810): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:30:19:944 Team/(32810:32810): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:30:19:945 Team/(32810:32810): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:30:19:945 Team/(32810:32810): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:32:31:398 Team/(33051:33051): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:32:31:398 Team/(33051:33051): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:32:31:398 Team/(33051:33051): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:32:31:399 Team/(33051:33051): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:32:31:399 Team/(33051:33051): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 19:33:11:445 Team/(33283:33283): Pretty printer se ha inicializado correctamente!
+
+[INFO] 19:33:11:445 Team/(33283:33283): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:33:11:445 Team/(33283:33283): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 19:33:11:445 Team/(33283:33283): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 19:33:11:445 Team/(33283:33283): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 19:33:11:447 Team/(33283:33288): Error al recibir estructura: Connection reset by peer
+[INFO] 19:33:11:447 Team/(33283:33288): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:23:58:447 Team/(6059:6059): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:23:58:487 Team/(6059:6059): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:23:58:493 Team/(6059:6059): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:23:58:508 Team/(6059:6059): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:23:58:511 Team/(6059:6059): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 21:23:59:462 Team/(6059:6059): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:24:08:6 Team/(6104:6104): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:24:09:43 Team/(6104:6104): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:24:09:50 Team/(6104:6104): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:24:09:65 Team/(6104:6104): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:24:09:69 Team/(6104:6104): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:24:10:579 Team/(6104:6108): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:24:11:418 Team/(6104:6104): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[ERROR] 21:24:11:724 Team/(6104:6112): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:24:11:929 Team/(6104:6110): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:24:11:931 Team/(6104:6140): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:24:12:13 Team/(6104:6139): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:26:18:433 Team/(6180:6180): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:26:18:469 Team/(6180:6180): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:26:18:475 Team/(6180:6180): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:26:18:493 Team/(6180:6180): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:26:18:497 Team/(6180:6180): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:26:18:992 Team/(6180:6184): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:26:19:432 Team/(6180:6189): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:26:19:508 Team/(6180:6187): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:26:21:329 Team/(6180:6215): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:26:21:357 Team/(6180:6212): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:26:21:358 Team/(6180:6217): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:26:21:358 Team/(6180:6215): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:26:21:364 Team/(6180:6212): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:26:21:365 Team/(6180:6217): Falló el reintento de comunicación con el Broker.
+[INFO] 21:26:22:475 Team/(6180:6180): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:28:56:807 Team/(6294:6294): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:28:56:807 Team/(6294:6294): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:28:56:808 Team/(6294:6294): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:28:56:808 Team/(6294:6294): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:28:56:808 Team/(6294:6294): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:28:56:808 Team/(6294:6302): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:28:56:809 Team/(6294:6301): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:28:56:808 Team/(6294:6300): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:28:56:809 Team/(6294:6331): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:28:56:809 Team/(6294:6331): Falló el reintento de comunicación con el Broker.
+[INFO] 21:28:56:811 Team/(6294:6332): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:28:56:811 Team/(6294:6333): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:28:56:811 Team/(6294:6333): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:28:56:811 Team/(6294:6332): Falló el reintento de comunicación con el Broker.
+[INFO] 21:28:58:277 Team/(6294:6294): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:29:02:213 Team/(6357:6357): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:29:02:251 Team/(6357:6357): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:29:02:257 Team/(6357:6357): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:29:02:272 Team/(6357:6357): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:29:02:276 Team/(6357:6357): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:29:02:719 Team/(6357:6361): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:29:03:516 Team/(6357:6362): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:29:04:820 Team/(6357:6357): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:29:04:822 Team/(6357:6369): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:29:04:821 Team/(6357:6363): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:30:23:960 Team/(6442:6442): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:30:23:997 Team/(6442:6442): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:30:24:3 Team/(6442:6442): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:30:24:18 Team/(6442:6442): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:30:24:22 Team/(6442:6442): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:30:25:408 Team/(6442:6446): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:30:26:727 Team/(6442:6449): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:30:26:729 Team/(6442:6448): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:30:26:807 Team/(6442:6473): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:30:26:808 Team/(6442:6478): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:30:26:889 Team/(6442:6479): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:30:26:892 Team/(6442:6473): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:30:26:894 Team/(6442:6478): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:30:26:895 Team/(6442:6479): Falló el reintento de comunicación con el Broker.
+[INFO] 21:30:29:473 Team/(6442:6442): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:30:49:963 Team/(6507:6507): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:30:49:998 Team/(6507:6507): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:30:50:4 Team/(6507:6507): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:30:50:19 Team/(6507:6507): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:30:50:22 Team/(6507:6507): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:30:50:863 Team/(6507:6515): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:30:51:970 Team/(6507:6526): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:30:52:344 Team/(6507:6526): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:30:50:863 Team/(6507:6511): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:30:52:345 Team/(6507:6513): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:30:52:759 Team/(6507:6543): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 21:30:52:836 Team/(6507:6544): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:30:52:837 Team/(6507:6543): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:30:52:839 Team/(6507:6544): Falló el reintento de comunicación con el Broker.
+[INFO] 21:30:54:849 Team/(6507:6507): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 21:40:17:200 Team/(7334:7334): Pretty printer se ha inicializado correctamente!
+
+[INFO] 21:40:17:263 Team/(7334:7334): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:40:17:275 Team/(7334:7334): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 21:40:17:300 Team/(7334:7334): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 21:40:17:307 Team/(7334:7334): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 21:40:20:198 Team/(7334:7342): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:40:20:697 Team/(7334:7361): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:40:21:702 Team/(7334:7361): Falló el reintento de comunicación con el Broker.
+[ERROR] 21:40:21:704 Team/(7334:7363): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 21:40:21:706 Team/(7334:7362): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 21:40:21:881 Team/(7334:7373): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:40:22:12 Team/(7334:7373): Falló el reintento de comunicación con el Broker.
+[INFO] 21:40:22:14 Team/(7334:7374): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 21:40:22:16 Team/(7334:7374): Falló el reintento de comunicación con el Broker.
+[INFO] 21:40:24:982 Team/(7334:7334): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 01:18:20:385 Team/(23166:23166): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:18:20:385 Team/(23166:23166): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:18:20:385 Team/(23166:23166): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:18:20:385 Team/(23166:23166): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:18:20:385 Team/(23166:23166): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 01:18:51:36 Team/(23166:23166): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:56:27:839 Team/(13283:13283): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:56:27:842 Team/(13283:13283): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:56:27:842 Team/(13283:13283): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:56:27:842 Team/(13283:13283): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:56:27:842 Team/(13283:13283): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:47:11:14 Team/(11925:11925): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:47:11:17 Team/(11925:11925): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:47:11:17 Team/(11925:11925): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:47:11:17 Team/(11925:11925): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:47:11:17 Team/(11925:11925): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 15:47:14:97 Team/(11925:11938): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 15:47:14:97 Team/(11925:11955): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 15:47:14:97 Team/(11925:11939): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 15:47:14:98 Team/(11925:11969): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:47:14:99 Team/(11925:11971): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:47:14:99 Team/(11925:11970): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 15:47:17:166 Team/(11925:11969): Falló el reintento de comunicación con el Broker.
+[ERROR] 15:47:17:166 Team/(11925:11971): Falló el reintento de comunicación con el Broker.
+[ERROR] 15:47:17:167 Team/(11925:11970): Falló el reintento de comunicación con el Broker.
+[INFO] 15:47:39:168 Team/(12113:12113): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:47:39:168 Team/(12113:12113): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:47:39:168 Team/(12113:12113): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:47:39:169 Team/(12113:12113): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:47:39:169 Team/(12113:12113): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 15:47:39:170 Team/(12113:12120): Falló la comunicación con Broker. Se procederá a reintentar.
+[ERROR] 15:47:39:170 Team/(12113:12122): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 15:47:39:171 Team/(12113:12127): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 15:47:39:171 Team/(12113:12126): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 15:47:39:171 Team/(12113:12126): Falló el reintento de comunicación con el Broker.
+[ERROR] 15:47:39:171 Team/(12113:12127): Falló el reintento de comunicación con el Broker.
+[ERROR] 15:47:39:171 Team/(12113:12125): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 15:47:39:171 Team/(12113:12129): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 15:47:39:171 Team/(12113:12129): Falló el reintento de comunicación con el Broker.
+[INFO] 15:48:04:729 Team/(12273:12273): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:48:04:729 Team/(12273:12273): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:48:04:729 Team/(12273:12273): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:48:04:729 Team/(12273:12273): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:48:04:729 Team/(12273:12273): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:49:20:898 Team/(12455:12455): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:49:20:898 Team/(12455:12455): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:49:20:898 Team/(12455:12455): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:49:20:898 Team/(12455:12455): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:49:20:898 Team/(12455:12455): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:52:33:592 Team/(12695:12695): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:52:33:592 Team/(12695:12695): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:52:33:592 Team/(12695:12695): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:52:33:592 Team/(12695:12695): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:52:33:592 Team/(12695:12695): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 15:54:07:429 Team/(12838:12838): Pretty printer se ha inicializado correctamente!
+
+[INFO] 15:54:07:429 Team/(12838:12838): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:54:07:429 Team/(12838:12838): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 15:54:07:429 Team/(12838:12838): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 15:54:07:429 Team/(12838:12838): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:01:38:987 Team/(13261:13261): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:01:38:987 Team/(13261:13261): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:01:38:987 Team/(13261:13261): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:01:38:987 Team/(13261:13261): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:01:38:987 Team/(13261:13261): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:04:41:446 Team/(13412:13412): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:04:41:446 Team/(13412:13412): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:04:41:446 Team/(13412:13412): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:04:41:447 Team/(13412:13412): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:04:41:447 Team/(13412:13412): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:06:27:916 Team/(13593:13593): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:06:27:916 Team/(13593:13593): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:06:27:916 Team/(13593:13593): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:06:27:916 Team/(13593:13593): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:06:27:916 Team/(13593:13593): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:10:28:456 Team/(13734:13734): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:10:28:456 Team/(13734:13734): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:10:28:456 Team/(13734:13734): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:10:28:457 Team/(13734:13734): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:10:28:457 Team/(13734:13734): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:12:39:60 Team/(13909:13909): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:12:39:60 Team/(13909:13909): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:12:39:61 Team/(13909:13909): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:12:39:61 Team/(13909:13909): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:12:39:61 Team/(13909:13909): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:13:55:666 Team/(14033:14033): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:13:55:666 Team/(14033:14033): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:13:55:666 Team/(14033:14033): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:13:55:666 Team/(14033:14033): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:13:55:666 Team/(14033:14033): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:16:58:762 Team/(14184:14184): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:16:58:762 Team/(14184:14184): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:16:58:762 Team/(14184:14184): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:16:58:762 Team/(14184:14184): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:16:58:762 Team/(14184:14184): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:18:19:923 Team/(14321:14321): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:18:19:923 Team/(14321:14321): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:18:19:923 Team/(14321:14321): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:18:19:923 Team/(14321:14321): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:18:19:923 Team/(14321:14321): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:19:27:885 Team/(14449:14449): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:19:27:885 Team/(14449:14449): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:19:27:885 Team/(14449:14449): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:19:27:885 Team/(14449:14449): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:19:27:885 Team/(14449:14449): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:19:47:739 Team/(14566:14566): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:19:47:739 Team/(14566:14566): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:19:47:739 Team/(14566:14566): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:19:47:739 Team/(14566:14566): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:19:47:739 Team/(14566:14566): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:20:59:347 Team/(14751:14751): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:20:59:347 Team/(14751:14751): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:20:59:347 Team/(14751:14751): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:20:59:348 Team/(14751:14751): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:20:59:348 Team/(14751:14751): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:24:30:901 Team/(14953:14953): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:24:30:901 Team/(14953:14953): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:24:30:901 Team/(14953:14953): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:24:30:901 Team/(14953:14953): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:24:30:901 Team/(14953:14953): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:27:27:316 Team/(15119:15119): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:27:27:316 Team/(15119:15119): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:27:27:316 Team/(15119:15119): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:27:27:317 Team/(15119:15119): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:27:27:317 Team/(15119:15119): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:30:25:770 Team/(15289:15289): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:30:25:770 Team/(15289:15289): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:30:25:770 Team/(15289:15289): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:30:25:770 Team/(15289:15289): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:30:25:770 Team/(15289:15289): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:32:20:802 Team/(15441:15441): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:32:20:803 Team/(15441:15441): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:32:20:803 Team/(15441:15441): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:32:20:803 Team/(15441:15441): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:32:20:803 Team/(15441:15441): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:34:21:403 Team/(15608:15608): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:34:21:403 Team/(15608:15608): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:34:21:403 Team/(15608:15608): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:34:21:403 Team/(15608:15608): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:34:21:403 Team/(15608:15608): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:36:39:870 Team/(15787:15787): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:36:39:870 Team/(15787:15787): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:36:39:870 Team/(15787:15787): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:36:39:870 Team/(15787:15787): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:36:39:870 Team/(15787:15787): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 16:36:39:874 Team/(15787:15789): Error al recibir estructura: Connection reset by peer
+[INFO] 16:36:39:874 Team/(15787:15789): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 16:38:20:791 Team/(15996:15996): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:38:20:791 Team/(15996:15996): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:38:20:791 Team/(15996:15996): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:38:20:792 Team/(15996:15996): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:38:20:792 Team/(15996:15996): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:39:31:442 Team/(15996:15996): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 16:40:14:763 Team/(16222:16222): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:40:14:763 Team/(16222:16222): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:40:14:763 Team/(16222:16222): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:40:14:764 Team/(16222:16222): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:40:14:764 Team/(16222:16222): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:43:38:267 Team/(16610:16610): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:43:38:267 Team/(16610:16610): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:43:38:267 Team/(16610:16610): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:43:38:267 Team/(16610:16610): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:43:38:267 Team/(16610:16610): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:45:18:467 Team/(16766:16766): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:45:18:467 Team/(16766:16766): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:45:18:467 Team/(16766:16766): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:45:18:467 Team/(16766:16766): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:45:18:467 Team/(16766:16766): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:46:33:676 Team/(16926:16926): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:46:33:676 Team/(16926:16926): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:46:33:676 Team/(16926:16926): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:46:33:676 Team/(16926:16926): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:46:33:676 Team/(16926:16926): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:48:12:523 Team/(17069:17069): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:48:12:523 Team/(17069:17069): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:48:12:523 Team/(17069:17069): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:48:12:523 Team/(17069:17069): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:48:12:523 Team/(17069:17069): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:49:14:559 Team/(17197:17197): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:49:14:559 Team/(17197:17197): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:49:14:559 Team/(17197:17197): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:49:14:560 Team/(17197:17197): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:49:14:560 Team/(17197:17197): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:49:17:467 Team/(17197:17197): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 16:49:23:229 Team/(17287:17287): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:49:23:229 Team/(17287:17287): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:49:23:229 Team/(17287:17287): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:49:23:229 Team/(17287:17287): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:49:23:229 Team/(17287:17287): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:53:41:461 Team/(17671:17671): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:53:41:461 Team/(17671:17671): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:53:41:461 Team/(17671:17671): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:53:41:461 Team/(17671:17671): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:53:41:461 Team/(17671:17671): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:54:54:68 Team/(17904:17904): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:54:54:68 Team/(17904:17904): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:54:54:68 Team/(17904:17904): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:54:54:68 Team/(17904:17904): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:54:54:68 Team/(17904:17904): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:56:37:750 Team/(18060:18060): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:56:37:750 Team/(18060:18060): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:56:37:750 Team/(18060:18060): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:56:37:750 Team/(18060:18060): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:56:37:750 Team/(18060:18060): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 16:57:41:583 Team/(18193:18193): Pretty printer se ha inicializado correctamente!
+
+[INFO] 16:57:41:583 Team/(18193:18193): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:57:41:583 Team/(18193:18193): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 16:57:41:583 Team/(18193:18193): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 16:57:41:583 Team/(18193:18193): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:05:52:540 Team/(18557:18557): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:05:52:540 Team/(18557:18557): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:05:52:540 Team/(18557:18557): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:05:52:540 Team/(18557:18557): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:05:52:540 Team/(18557:18557): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:09:01:86 Team/(18816:18816): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:09:01:87 Team/(18816:18816): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:09:01:87 Team/(18816:18816): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:09:01:87 Team/(18816:18816): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:09:01:87 Team/(18816:18816): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:12:24:358 Team/(18999:18999): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:12:24:358 Team/(18999:18999): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:12:24:358 Team/(18999:18999): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:12:24:358 Team/(18999:18999): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:12:24:358 Team/(18999:18999): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:13:26:978 Team/(19146:19146): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:13:26:978 Team/(19146:19146): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:13:26:978 Team/(19146:19146): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:13:26:978 Team/(19146:19146): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:13:26:978 Team/(19146:19146): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:16:36:28 Team/(19345:19345): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:16:36:28 Team/(19345:19345): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:16:36:28 Team/(19345:19345): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:16:36:28 Team/(19345:19345): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:16:36:28 Team/(19345:19345): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:19:58:692 Team/(19665:19665): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:19:58:692 Team/(19665:19665): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:19:58:692 Team/(19665:19665): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:19:58:692 Team/(19665:19665): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:19:58:692 Team/(19665:19665): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:21:04:156 Team/(19927:19927): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:21:04:156 Team/(19927:19927): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:21:04:156 Team/(19927:19927): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:21:04:157 Team/(19927:19927): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:21:04:157 Team/(19927:19927): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:21:24:566 Team/(20056:20056): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:21:24:566 Team/(20056:20056): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:21:24:566 Team/(20056:20056): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:21:24:566 Team/(20056:20056): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:21:24:566 Team/(20056:20056): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:43:07:988 Team/(25690:25690): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:43:07:989 Team/(25690:25690): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:43:07:989 Team/(25690:25690): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:43:07:989 Team/(25690:25690): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:43:07:989 Team/(25690:25690): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:45:00:723 Team/(25925:25925): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:45:00:723 Team/(25925:25925): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:45:00:723 Team/(25925:25925): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:45:00:724 Team/(25925:25925): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:45:00:724 Team/(25925:25925): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:45:52:383 Team/(26022:26022): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:45:52:384 Team/(26022:26022): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:45:52:384 Team/(26022:26022): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:45:52:384 Team/(26022:26022): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:45:52:384 Team/(26022:26022): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 17:47:02:234 Team/(26022:26025): Error al recibir estructura: Connection reset by peer
+[INFO] 17:47:02:234 Team/(26022:26025): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 17:47:09:660 Team/(26198:26198): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:47:09:660 Team/(26198:26198): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:47:09:660 Team/(26198:26198): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:47:09:660 Team/(26198:26198): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:47:09:660 Team/(26198:26198): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 17:48:42:968 Team/(26198:26203): Error al recibir estructura: Connection reset by peer
+[INFO] 17:48:42:969 Team/(26198:26203): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 17:48:54:891 Team/(26414:26414): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:48:54:891 Team/(26414:26414): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:48:54:891 Team/(26414:26414): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:48:54:891 Team/(26414:26414): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:48:54:891 Team/(26414:26414): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:49:10:230 Team/(26500:26500): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:49:10:230 Team/(26500:26500): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:49:10:230 Team/(26500:26500): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:49:10:230 Team/(26500:26500): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:49:10:230 Team/(26500:26500): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 17:49:17:822 Team/(26500:26504): Error al recibir estructura: Connection reset by peer
+[INFO] 17:49:17:822 Team/(26500:26504): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 17:53:55:856 Team/(26653:26653): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:53:55:856 Team/(26653:26653): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:53:55:856 Team/(26653:26653): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:53:55:856 Team/(26653:26653): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:53:55:856 Team/(26653:26653): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 17:56:51:877 Team/(26653:26653): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 17:56:58:238 Team/(26826:26826): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:56:58:238 Team/(26826:26826): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:56:58:238 Team/(26826:26826): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:56:58:238 Team/(26826:26826): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:56:58:238 Team/(26826:26826): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 17:58:04:593 Team/(26826:26829): Error al recibir estructura: Connection reset by peer
+[INFO] 17:58:04:593 Team/(26826:26829): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 17:58:10:932 Team/(26951:26951): Pretty printer se ha inicializado correctamente!
+
+[INFO] 17:58:10:932 Team/(26951:26951): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:58:10:932 Team/(26951:26951): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 17:58:10:932 Team/(26951:26951): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 17:58:10:932 Team/(26951:26951): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 18:00:27:374 Team/(26951:26955): Error al recibir estructura: Connection reset by peer
+[INFO] 18:00:27:374 Team/(26951:26955): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:00:33:674 Team/(27129:27129): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:00:33:674 Team/(27129:27129): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:00:33:674 Team/(27129:27129): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:00:33:674 Team/(27129:27129): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:00:33:674 Team/(27129:27129): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:01:17:979 Team/(27129:27129): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:01:51:61 Team/(27276:27276): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:01:51:61 Team/(27276:27276): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:01:51:61 Team/(27276:27276): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:01:51:61 Team/(27276:27276): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:01:51:61 Team/(27276:27276): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:03:12:943 Team/(27276:27276): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:03:19:551 Team/(27403:27403): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:03:19:552 Team/(27403:27403): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:03:19:552 Team/(27403:27403): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:03:19:552 Team/(27403:27403): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:03:19:552 Team/(27403:27403): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:05:02:955 Team/(27403:27403): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:06:16:443 Team/(27597:27597): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:06:16:443 Team/(27597:27597): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:06:16:443 Team/(27597:27597): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:06:16:443 Team/(27597:27597): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:06:16:443 Team/(27597:27597): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 18:48:03:338 Team/(27597:27604): Error al recibir estructura: Connection reset by peer
+[INFO] 18:48:03:338 Team/(27597:27604): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:50:03:104 Team/(30219:30219): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:50:03:104 Team/(30219:30219): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:03:104 Team/(30219:30219): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:03:105 Team/(30219:30219): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:50:03:105 Team/(30219:30219): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:50:40:443 Team/(30362:30362): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:50:40:443 Team/(30362:30362): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:40:443 Team/(30362:30362): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:40:443 Team/(30362:30362): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:50:40:443 Team/(30362:30362): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:50:50:248 Team/(30391:30391): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:50:50:248 Team/(30391:30391): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:50:248 Team/(30391:30391): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:50:50:248 Team/(30391:30391): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:50:50:248 Team/(30391:30391): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 18:50:50:253 Team/(30391:30393): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 18:50:50:253 Team/(30391:30394): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 18:50:50:253 Team/(30391:30394): Falló el reintento de comunicación con el Broker.
+[INFO] 18:50:58:89 Team/(30391:30391): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:51:13:945 Team/(30478:30478): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:51:13:945 Team/(30478:30478): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:51:13:945 Team/(30478:30478): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:51:13:945 Team/(30478:30478): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:51:13:945 Team/(30478:30478): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 18:52:03:133 Team/(30591:30591): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:52:03:133 Team/(30591:30591): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:52:03:133 Team/(30591:30591): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:52:03:133 Team/(30591:30591): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:52:03:133 Team/(30591:30591): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 18:52:23:377 Team/(30591:30595): Error al recibir estructura: Connection reset by peer
+[INFO] 18:52:23:377 Team/(30591:30595): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 18:52:40:643 Team/(30791:30791): Pretty printer se ha inicializado correctamente!
+
+[INFO] 18:52:40:643 Team/(30791:30791): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:52:40:643 Team/(30791:30791): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 18:52:40:643 Team/(30791:30791): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 18:52:40:643 Team/(30791:30791): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 20:54:31:628 Team/(37369:37369): Pretty printer se ha inicializado correctamente!
+
+[INFO] 20:54:31:628 Team/(37369:37369): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 20:54:31:628 Team/(37369:37369): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 20:54:31:631 Team/(37369:37369): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 20:54:31:631 Team/(37369:37369): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 20:59:46:937 Team/(37369:37375): Error al recibir estructura: Connection reset by peer
+[INFO] 20:59:46:937 Team/(37369:37375): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 01:11:56:489 Team/(45580:45580): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:11:56:490 Team/(45580:45580): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:11:56:490 Team/(45580:45580): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:11:56:491 Team/(45580:45580): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:11:56:491 Team/(45580:45580): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:12:50:329 Team/(45580:45585): Error al recibir estructura: Connection reset by peer
+[INFO] 01:12:50:329 Team/(45580:45585): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 01:13:01:328 Team/(45744:45744): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:13:01:328 Team/(45744:45744): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:13:01:328 Team/(45744:45744): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:13:01:328 Team/(45744:45744): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:13:01:328 Team/(45744:45744): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:13:56:247 Team/(45744:45747): Error al recibir estructura: Connection reset by peer
+[INFO] 01:13:56:247 Team/(45744:45747): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 01:46:42:947 Team/(47470:47470): Pretty printer se ha inicializado correctamente!
+
+[INFO] 01:46:42:947 Team/(47470:47470): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:46:42:948 Team/(47470:47470): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 01:46:42:948 Team/(47470:47470): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 01:46:42:948 Team/(47470:47470): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 01:50:40:913 Team/(47470:47477): Error al recibir estructura: Connection reset by peer
+[INFO] 01:50:40:913 Team/(47470:47477): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:23:26:325 Team/(49505:49505): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:23:26:325 Team/(49505:49505): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:26:325 Team/(49505:49505): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:23:26:325 Team/(49505:49505): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:23:26:325 Team/(49505:49505): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 02:23:31:540 Team/(49505:49511): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 02:23:31:540 Team/(49505:49511): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:27:55:321 Team/(49662:49662): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:27:55:322 Team/(49662:49662): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:27:55:322 Team/(49662:49662): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:27:55:322 Team/(49662:49662): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:27:55:322 Team/(49662:49662): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:33:39:588 Team/(49662:49662): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:34:03:57 Team/(49945:49945): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:34:03:57 Team/(49945:49945): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:34:03:57 Team/(49945:49945): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:34:03:57 Team/(49945:49945): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:34:03:58 Team/(49945:49945): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 02:34:08:212 Team/(49945:49947): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 02:34:08:212 Team/(49945:49947): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:36:49:682 Team/(50137:50137): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:36:49:682 Team/(50137:50137): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:36:49:682 Team/(50137:50137): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:36:49:682 Team/(50137:50137): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:36:49:682 Team/(50137:50137): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:38:30:445 Team/(50137:50137): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:38:42:86 Team/(50233:50233): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:38:42:86 Team/(50233:50233): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:38:42:87 Team/(50233:50233): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:38:42:87 Team/(50233:50233): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:38:42:87 Team/(50233:50233): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:41:10:72 Team/(50461:50461): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:41:10:72 Team/(50461:50461): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:41:10:72 Team/(50461:50461): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:41:10:72 Team/(50461:50461): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:41:10:72 Team/(50461:50461): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:43:05:217 Team/(50461:50461): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:43:32:95 Team/(50866:50866): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:43:32:95 Team/(50866:50866): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:43:32:95 Team/(50866:50866): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:43:32:95 Team/(50866:50866): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:43:32:95 Team/(50866:50866): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:50:25:208 Team/(50866:50866): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:50:47:748 Team/(51128:51128): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:50:47:748 Team/(51128:51128): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:50:47:748 Team/(51128:51128): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:50:47:748 Team/(51128:51128): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:50:47:748 Team/(51128:51128): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:52:28:255 Team/(51359:51359): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:52:28:255 Team/(51359:51359): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:52:28:255 Team/(51359:51359): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:52:28:255 Team/(51359:51359): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:52:28:255 Team/(51359:51359): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:54:09:26 Team/(51401:51401): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:54:09:27 Team/(51401:51401): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:54:09:27 Team/(51401:51401): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:54:09:27 Team/(51401:51401): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:54:09:27 Team/(51401:51401): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:55:34:808 Team/(51401:51401): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 02:56:16:925 Team/(51698:51698): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:56:16:925 Team/(51698:51698): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:56:16:925 Team/(51698:51698): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:56:16:926 Team/(51698:51698): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:56:16:926 Team/(51698:51698): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:57:09:889 Team/(51735:51735): Pretty printer se ha inicializado correctamente!
+
+[INFO] 02:57:09:889 Team/(51735:51735): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:57:09:889 Team/(51735:51735): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 02:57:09:889 Team/(51735:51735): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 02:57:09:890 Team/(51735:51735): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 02:59:59:264 Team/(51735:51735): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:00:01:736 Team/(51794:51794): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:00:01:736 Team/(51794:51794): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:00:01:736 Team/(51794:51794): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:00:01:736 Team/(51794:51794): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:00:01:736 Team/(51794:51794): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:00:01:739 Team/(51794:51799): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 03:00:01:740 Team/(51794:51800): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:00:01:740 Team/(51794:51800): Falló el reintento de comunicación con el Broker.
+[INFO] 03:00:18:248 Team/(51969:51969): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:00:18:248 Team/(51969:51969): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:00:18:249 Team/(51969:51969): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:00:18:249 Team/(51969:51969): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:00:18:249 Team/(51969:51969): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:00:23:380 Team/(51969:51974): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:00:23:380 Team/(51969:51974): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:01:39:521 Team/(52014:52014): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:01:39:521 Team/(52014:52014): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:39:521 Team/(52014:52014): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:39:521 Team/(52014:52014): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:01:39:521 Team/(52014:52014): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:01:39:522 Team/(52014:52019): Falló la comunicación con Broker. Se procederá a reintentar.
+[INFO] 03:01:39:524 Team/(52014:52020): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 03:01:39:524 Team/(52014:52020): Falló el reintento de comunicación con el Broker.
+[INFO] 03:01:47:601 Team/(52110:52110): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:01:47:601 Team/(52110:52110): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:47:602 Team/(52110:52110): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:01:47:602 Team/(52110:52110): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:01:47:602 Team/(52110:52110): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:01:52:724 Team/(52110:52119): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:01:52:724 Team/(52110:52119): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:02:06:334 Team/(52206:52206): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:02:06:334 Team/(52206:52206): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:02:06:334 Team/(52206:52206): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:02:06:334 Team/(52206:52206): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:02:06:334 Team/(52206:52206): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:02:11:412 Team/(52206:52213): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:02:11:412 Team/(52206:52213): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:02:22:332 Team/(52304:52304): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:02:22:332 Team/(52304:52304): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:02:22:332 Team/(52304:52304): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:02:22:332 Team/(52304:52304): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:02:22:332 Team/(52304:52304): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:03:27:420 Team/(52488:52488): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:03:27:420 Team/(52488:52488): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:27:420 Team/(52488:52488): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:27:420 Team/(52488:52488): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:03:27:420 Team/(52488:52488): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:03:54:497 Team/(52612:52612): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:03:54:497 Team/(52612:52612): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:54:497 Team/(52612:52612): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:03:54:498 Team/(52612:52612): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:03:54:498 Team/(52612:52612): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:06:34:882 Team/(52850:52850): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:06:34:882 Team/(52850:52850): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:06:34:882 Team/(52850:52850): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:06:34:882 Team/(52850:52850): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:06:34:882 Team/(52850:52850): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:06:39:960 Team/(52850:52855): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:06:39:960 Team/(52850:52855): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:07:12:730 Team/(52945:52945): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:07:12:730 Team/(52945:52945): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:07:12:730 Team/(52945:52945): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:07:12:730 Team/(52945:52945): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:07:12:730 Team/(52945:52945): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:07:33:125 Team/(52979:52979): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:07:33:125 Team/(52979:52979): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:07:33:125 Team/(52979:52979): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:07:33:125 Team/(52979:52979): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:07:33:125 Team/(52979:52979): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:07:38:324 Team/(52979:52984): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:07:38:324 Team/(52979:52984): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:08:10:974 Team/(53070:53070): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:08:10:975 Team/(53070:53070): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:10:975 Team/(53070:53070): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:10:975 Team/(53070:53070): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:08:10:975 Team/(53070:53070): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:08:25:579 Team/(53070:53070): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:08:28:170 Team/(53102:53102): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:08:28:170 Team/(53102:53102): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:28:170 Team/(53102:53102): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:08:28:170 Team/(53102:53102): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:08:28:170 Team/(53102:53102): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:08:33:364 Team/(53102:53104): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:08:33:364 Team/(53102:53104): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:11:09:185 Team/(53278:53278): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:11:09:185 Team/(53278:53278): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:11:09:185 Team/(53278:53278): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:11:09:186 Team/(53278:53278): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:11:09:186 Team/(53278:53278): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:11:14:388 Team/(53278:53285): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:11:14:388 Team/(53278:53285): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:11:25:480 Team/(53313:53313): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:11:25:480 Team/(53313:53313): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:11:25:481 Team/(53313:53313): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:11:25:481 Team/(53313:53313): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:11:25:481 Team/(53313:53313): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:11:30:516 Team/(53313:53317): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:11:30:516 Team/(53313:53317): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:13:27:811 Team/(53472:53472): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:13:27:811 Team/(53472:53472): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:13:27:811 Team/(53472:53472): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:13:27:811 Team/(53472:53472): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:13:27:811 Team/(53472:53472): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:13:30:822 Team/(53472:53472): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:13:35:465 Team/(53504:53504): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:13:35:466 Team/(53504:53504): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:13:35:466 Team/(53504:53504): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:13:35:466 Team/(53504:53504): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:13:35:466 Team/(53504:53504): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:13:40:564 Team/(53504:53508): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:13:40:564 Team/(53504:53508): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:17:26:589 Team/(54016:54016): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:17:26:589 Team/(54016:54016): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:17:26:589 Team/(54016:54016): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:17:26:589 Team/(54016:54016): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:17:26:590 Team/(54016:54016): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:17:31:732 Team/(54016:54037): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:17:31:732 Team/(54016:54037): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:17:45:66 Team/(54145:54145): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:17:45:66 Team/(54145:54145): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:17:45:66 Team/(54145:54145): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:17:45:67 Team/(54145:54145): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:17:45:67 Team/(54145:54145): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:17:49:751 Team/(54145:54145): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:19:20:315 Team/(54279:54279): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:19:20:316 Team/(54279:54279): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:19:20:316 Team/(54279:54279): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:19:20:316 Team/(54279:54279): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:19:20:316 Team/(54279:54279): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:19:25:312 Team/(54279:54279): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:19:32:36 Team/(54313:54313): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:19:32:37 Team/(54313:54313): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:19:32:41 Team/(54313:54313): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:19:32:41 Team/(54313:54313): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:19:32:42 Team/(54313:54313): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:19:37:176 Team/(54313:54317): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:19:37:176 Team/(54313:54317): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:22:41:806 Team/(54490:54490): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:22:41:806 Team/(54490:54490): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:22:41:806 Team/(54490:54490): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:22:41:806 Team/(54490:54490): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:22:41:806 Team/(54490:54490): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:22:47:450 Team/(54490:54490): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:22:50:413 Team/(54522:54522): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:22:50:413 Team/(54522:54522): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:22:50:413 Team/(54522:54522): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:22:50:413 Team/(54522:54522): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:22:50:413 Team/(54522:54522): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:23:21:569 Team/(54689:54689): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:23:21:569 Team/(54689:54689): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:23:21:570 Team/(54689:54689): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:23:21:570 Team/(54689:54689): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:23:21:570 Team/(54689:54689): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:23:29:264 Team/(54689:54689): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:23:32:571 Team/(54719:54719): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:23:32:571 Team/(54719:54719): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:23:32:571 Team/(54719:54719): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:23:32:571 Team/(54719:54719): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:23:32:571 Team/(54719:54719): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:24:47:232 Team/(54909:54909): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:24:47:232 Team/(54909:54909): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:24:47:232 Team/(54909:54909): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:24:47:233 Team/(54909:54909): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:24:47:233 Team/(54909:54909): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:25:09:724 Team/(54909:54909): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:25:12:996 Team/(54946:54946): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:25:12:997 Team/(54946:54946): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:25:12:999 Team/(54946:54946): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:25:12:999 Team/(54946:54946): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:25:12:999 Team/(54946:54946): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:25:18:164 Team/(54946:54948): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:25:18:166 Team/(54946:54948): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:38:12:687 Team/(55944:55944): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:38:12:687 Team/(55944:55944): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:38:12:687 Team/(55944:55944): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:38:12:687 Team/(55944:55944): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:38:12:687 Team/(55944:55944): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:38:41:913 Team/(55977:55977): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:38:41:913 Team/(55977:55977): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:38:41:913 Team/(55977:55977): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:38:41:913 Team/(55977:55977): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:38:41:913 Team/(55977:55977): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:40:31:648 Team/(56173:56173): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:40:31:648 Team/(56173:56173): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:40:31:648 Team/(56173:56173): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:40:31:648 Team/(56173:56173): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:40:31:648 Team/(56173:56173): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:40:36:482 Team/(56173:56178): Error al recibir mensaje ACK: Interrupted system call
+[INFO] 03:40:36:482 Team/(56173:56178): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:41:14:277 Team/(56351:56351): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:41:14:277 Team/(56351:56351): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:41:14:277 Team/(56351:56351): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:41:14:279 Team/(56351:56351): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:41:14:279 Team/(56351:56351): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:42:15:588 Team/(56390:56390): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:42:15:588 Team/(56390:56390): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:42:15:588 Team/(56390:56390): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:42:15:588 Team/(56390:56390): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:42:15:588 Team/(56390:56390): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:42:20:628 Team/(56390:56395): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:42:20:628 Team/(56390:56395): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:44:51:591 Team/(56641:56641): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:44:51:591 Team/(56641:56641): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:44:51:591 Team/(56641:56641): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:44:51:591 Team/(56641:56641): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:44:51:591 Team/(56641:56641): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:46:07:92 Team/(56688:56688): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:46:07:92 Team/(56688:56688): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:46:07:92 Team/(56688:56688): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:46:07:92 Team/(56688:56688): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:46:07:92 Team/(56688:56688): [36mTeam se ha inicializado correctamente!
+[0m
+[ERROR] 03:46:12:308 Team/(56688:56693): Error al recibir mensaje ACK: Resource temporarily unavailable
+[INFO] 03:46:12:308 Team/(56688:56693): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 03:48:32:902 Team/(56871:56871): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:48:32:902 Team/(56871:56871): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:48:32:902 Team/(56871:56871): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:48:32:902 Team/(56871:56871): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:48:32:902 Team/(56871:56871): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:49:34:7 Team/(57037:57037): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:49:34:7 Team/(57037:57037): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:49:34:7 Team/(57037:57037): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:49:34:7 Team/(57037:57037): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:49:34:7 Team/(57037:57037): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:49:57:937 Team/(57073:57073): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:49:57:937 Team/(57073:57073): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:49:57:937 Team/(57073:57073): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:49:57:937 Team/(57073:57073): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:49:57:937 Team/(57073:57073): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:59:45:861 Team/(58165:58165): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:59:45:861 Team/(58165:58165): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:59:45:862 Team/(58165:58165): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:59:45:862 Team/(58165:58165): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:59:45:862 Team/(58165:58165): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 03:59:59:386 Team/(58198:58198): Pretty printer se ha inicializado correctamente!
+
+[INFO] 03:59:59:387 Team/(58198:58198): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:59:59:387 Team/(58198:58198): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 03:59:59:387 Team/(58198:58198): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 03:59:59:387 Team/(58198:58198): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 04:04:47:57 Team/(58926:58926): Pretty printer se ha inicializado correctamente!
+
+[INFO] 04:04:47:57 Team/(58926:58926): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:04:47:57 Team/(58926:58926): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:04:47:57 Team/(58926:58926): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 04:04:47:57 Team/(58926:58926): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 04:06:23:556 Team/(59128:59128): Pretty printer se ha inicializado correctamente!
+
+[INFO] 04:06:23:556 Team/(59128:59128): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:06:23:556 Team/(59128:59128): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:06:23:556 Team/(59128:59128): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 04:06:23:556 Team/(59128:59128): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 04:10:35:644 Team/(59562:59562): Pretty printer se ha inicializado correctamente!
+
+[INFO] 04:10:35:644 Team/(59562:59562): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:10:35:644 Team/(59562:59562): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:10:35:645 Team/(59562:59562): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 04:10:35:645 Team/(59562:59562): [36mTeam se ha inicializado correctamente!
+[0m
+[INFO] 04:14:04:355 Team/(59562:59562): [36mTeam ha liberado toda la memoria ocupada exitosamente!
+[0m
+[INFO] 04:14:25:497 Team/(59877:59877): Pretty printer se ha inicializado correctamente!
+
+[INFO] 04:14:25:497 Team/(59877:59877): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:14:25:497 Team/(59877:59877): Los serializable_objects se han inicializado correctamente!
+
+[INFO] 04:14:25:498 Team/(59877:59877): El configuration_manager se ha inicializado correctamente!
+
+[INFO] 04:14:25:498 Team/(59877:59877): [36mTeam se ha inicializado correctamente!
+[0m

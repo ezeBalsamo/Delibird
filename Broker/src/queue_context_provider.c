@@ -62,11 +62,10 @@ t_queue_context* queue_context_with_code(uint32_t queue){
 t_subscriber_context* old_suscriptor_of(t_queue_context* queue_context, t_subscriber_context* subscriber_to_find){
 
     bool _was_subscribed(t_subscriber_context* subscriber_to_compare){
-        return subscriber_to_find -> operation_queue == subscriber_to_compare -> operation_queue &&
-               string_equals_ignore_case(subscriber_to_find -> process_description, subscriber_to_compare -> process_description);
+        return are_equivalent_subscribers(subscriber_to_find, subscriber_to_compare);
     }
 
-    return list_remove_by_condition(queue_context -> queue -> elements, (bool (*)(void *)) _was_subscribed);
+    return list_remove_by_condition(queue_context -> subscribers, (bool (*)(void *)) _was_subscribed);
 }
 
 void free_queue_context(t_queue_context* queue_context){

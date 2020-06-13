@@ -32,16 +32,18 @@ uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subsc
         t_message_status* message_status, t_queue_context* queue_context){
 
     void *subscriber_ack;
+    uint32_t expected_ack = message_status -> identified_message -> message_id;
 
     pthread_join(waiting_for_ack_thread, &subscriber_ack);
 
     uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
 
-    if (cast_subscriber_ack == FAILED_ACK){
+    if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
         log_failed_to_receive_ack_error(subscriber_context);
     } else {
+        subscriber_context -> last_message_id_received = expected_ack;
         move_subscriber_to_ACK(message_status, subscriber_context);
-        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context); //todo mejorar log
+        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context);
     }
     return cast_subscriber_ack;
 }
@@ -55,12 +57,12 @@ void* receive_ack_thread(void* subscriber_fd){
 
 void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_context* subscriber_context){
 
-    bool _are_equals_subscribers(t_subscriber_context* subscriber_to_compare){
-        return are_equals_subscribers(subscriber_context, subscriber_to_compare);
+    bool _are_equivalents_subscribers(t_subscriber_context* subscriber_to_compare){
+        return are_equivalent_subscribers(subscriber_context, subscriber_to_compare);
     }
 
     void* subscriber_found =
-            list_remove_by_condition(message_status -> subscribers_to_send, (bool (*)(void *)) _are_equals_subscribers);
+            list_remove_by_condition(message_status -> subscribers_to_send, (bool (*)(void *)) _are_equivalents_subscribers);
 
     if(!subscriber_found){
         log_subscriber_not_found_in_message_status_subscribers_error(subscriber_context, message_status -> identified_message);

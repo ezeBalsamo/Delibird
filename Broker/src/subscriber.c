@@ -28,11 +28,10 @@ void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     log_succesful_subscription_process(subscriber_context);
 }
 
-bool are_equals_subscribers(t_subscriber_context* subscriber_context, t_subscriber_context* another_subscriber_context){
-    return
-        subscriber_context -> last_message_id_received == another_subscriber_context -> last_message_id_received &&
-        subscriber_context -> operation_queue == another_subscriber_context -> operation_queue &&
-        string_equals_ignore_case(subscriber_context -> process_description, another_subscriber_context -> process_description);
+bool are_equivalent_subscribers(t_subscriber_context* subscriber_context, t_subscriber_context* another_subscriber_context) {
+    return subscriber_context -> operation_queue == another_subscriber_context -> operation_queue &&
+           string_equals_ignore_case(subscriber_context -> process_description,
+                                     another_subscriber_context -> process_description);
 }
 
 void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* messages_to_send, t_subscriber_context* subscriber_context){
@@ -41,7 +40,7 @@ void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* mess
 
         t_list* subscribers_to_send = message_status -> subscribers_to_send;
 
-        if(!list_contains(subscribers_to_send, subscriber_context, (bool (*) (void*, void*)) are_equals_subscribers)){
+        if(!list_contains(subscribers_to_send, subscriber_context, (bool (*) (void*, void*)) are_equivalent_subscribers)){
             list_add(subscribers_to_send, (void*) subscriber_context);
         }
     }
