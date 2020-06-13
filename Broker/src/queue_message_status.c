@@ -41,7 +41,7 @@ uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subsc
         log_failed_to_receive_ack_error(subscriber_context);
     } else {
         move_subscriber_to_ACK(message_status, subscriber_context);
-        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context -> process_description); //todo mejorar log
+        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context); //todo mejorar log
     }
     return cast_subscriber_ack;
 }

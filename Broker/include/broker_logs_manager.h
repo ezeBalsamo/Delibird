@@ -26,7 +26,7 @@ void log_succesful_get_and_update_subscribers_to_send(t_identified_message* iden
 
 void log_no_subscribers_for_request(t_request* request);
 
-void log_succesful_all_messages_of_a_queue_sent_to(char* process_id);
+void log_succesful_all_messages_of_a_queue_sent_to(t_subscriber_context* subscriber_context);
 
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context);
 

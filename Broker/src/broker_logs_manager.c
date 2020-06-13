@@ -1,7 +1,6 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <subscriber_context_provider.h>
-#include <queue_context_provider.h>
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -23,7 +22,7 @@ void log_succesful_connection_of_a_process(){
 }
 
 void log_succesful_subscription_process(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se suscribió al proceso: %s a la cola de mensajes: %s correctamente!", subscriber_context -> process_description, queue_name_of(subscriber_context -> operation_queue));
+    char* message = string_from_format("Se suscribió al proceso: %s con socket: %d a la cola de mensajes: %s correctamente!", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -31,7 +30,7 @@ void log_succesful_subscription_process(t_subscriber_context* subscriber_context
 
 void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identified_message, uint32_t queue_code){
     char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se pusheo el mensaje: %s a la cola de mensajes: %s correctamente!", printed_object, queue_name_of(queue_code));
+    char* message = string_from_format("Se pusheo el mensaje:\n%s\na la cola de mensajes: %s correctamente!", printed_object, queue_name_of(queue_code));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
@@ -40,7 +39,7 @@ void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identifie
 
 void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_context* subscriber_context){
     char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("Se envió el mensaje: %s al suscriptor: %s correctamente!", printed_object, subscriber_context -> process_description);
+    char* message = string_from_format("Se envió correctamente el mensaje:\n%s\nal suscriptor: %s con socket: %d", printed_object, subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
@@ -71,7 +70,7 @@ void log_structure_received(void* serialized_request){
 
 void log_succesful_message_sent_to_suscribers(t_request* request){
     char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("El mensaje fue enviado correctamente a todos los suscriptores:\n %s", printed_object);
+    char* message = string_from_format("El siguiente mensaje fue enviado correctamente a todos los suscriptores:\n %s", printed_object);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
     free(message);
@@ -79,7 +78,7 @@ void log_succesful_message_sent_to_suscribers(t_request* request){
 
 void log_succesful_get_and_update_subscribers_to_send(t_identified_message* identified_message){
     char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje: %s correctamente.",printed_object);
+    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje:\n%s\n",printed_object);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
     free(message);
@@ -87,26 +86,26 @@ void log_succesful_get_and_update_subscribers_to_send(t_identified_message* iden
 
 void log_no_subscribers_for_request(t_request* request){
     char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra este mensaje: %s", printed_object);
+    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra este mensaje:\n%s", printed_object);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
     free(message);
 }
 
-void log_succesful_all_messages_of_a_queue_sent_to(char* process_id){
-    char* message = string_from_format("Se le enviaron todos los mensajes de una cola correctamente al siguiente suscriptor: %s", process_id);
+void log_succesful_all_messages_of_a_queue_sent_to(t_subscriber_context* subscriber_context){
+    char* message = string_from_format("Se le enviaron correctamente todos los mensajes de la cola: %s al siguiente suscriptor: %s con socket: %d", queue_name_of(subscriber_context ->operation_queue), subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se actualizo al suscriptor: %s su ultimo mensaje id recibido por: %zu", subscriber_context -> process_description ,  subscriber_context -> last_message_id_received);
+    char* message = string_from_format("Se le actualizo al suscriptor: %s su ultimo mensaje id recibido con el id: %zu", subscriber_context -> process_description ,  subscriber_context -> last_message_id_received);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_subscriber_disconnection(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se desconecto al suscriptor: %s con numero de socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
+    char* message = string_from_format("Se desconecto al suscriptor: %s con socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
@@ -138,7 +137,7 @@ void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_c
 
 void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code){
 
-    char* message = string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s", subscriber_context -> process_description ,queue_name_of(queue_code));
+    char* message = string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s\n Es un nuevo suscriptor.", subscriber_context -> process_description ,queue_name_of(queue_code));
     log_warning(process_execution_logger(), message);
     free(message);
 }
