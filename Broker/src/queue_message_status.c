@@ -6,6 +6,7 @@
 #include "../include/queue_message_status.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/socket.h"
+#include "../../Utils/include/configuration_manager.h"
 #include "commons/string.h"
 
 t_message_status* create_message_status_for(t_identified_message* identified_message){
@@ -43,6 +44,13 @@ uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subsc
         log_succesful_all_messages_of_a_queue_sent_to(subscriber_context -> process_description); //todo mejorar log
     }
     return cast_subscriber_ack;
+}
+
+void* receive_ack_thread(void* subscriber_fd){
+    int cast_subscriber_fd = *((int *) subscriber_fd);
+    int timeout_in_seconds = config_get_int_at("ACK_TIMEOUT");
+
+    return receive_ack_with_timeout_in_seconds(cast_subscriber_fd, timeout_in_seconds);
 }
 
 void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_context* subscriber_context){

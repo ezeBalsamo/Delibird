@@ -7,7 +7,7 @@
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 
-uint32_t message_id = 1;
+uint32_t message_id = 0;
 pthread_mutex_t mutex_id;
 
 char* port(){

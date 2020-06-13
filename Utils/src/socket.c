@@ -90,13 +90,6 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     return socket_fd;
 }
 
-void configure_socket_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
-    struct timeval tv;
-    tv.tv_sec = timeout_in_seconds;
-    tv.tv_usec = 0;
-    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
-}
-
 void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
     bool reuse_ports = true;
 
@@ -251,33 +244,35 @@ void serialize_and_send_structure(t_request* request, int socket_fd){
 void send_ack_message(uint32_t message_id, int socket_fd){
 
     void* serialized_ack = safe_malloc(sizeof(uint32_t));
-
     memcpy(serialized_ack, &message_id, sizeof(uint32_t));
-
     send_all(socket_fd, serialized_ack, sizeof(uint32_t));
     free(serialized_ack);
 }
 
-void* receive_ack(int socket_fd){
-
-    uint32_t* ack = safe_malloc(sizeof(uint32_t));
-
-    //Es MSG_DONTWAIT porque tiene timeout para recibir cosas.
-
-    if(recv(socket_fd, ack, sizeof(uint32_t), MSG_DONTWAIT) == -1) {
-        log_syscall_error("Error al recibir mensaje ACK");
-        close(socket_fd);
-        int* failed_ack = safe_malloc(sizeof(int));
-        *failed_ack = FAILED_ACK;
-        return (void*) failed_ack;
-        // TODO VER QUE ONDA CON ESTO: return (void *) FAILED_ACK;
-    }
-    return (void*) ack;
+void set_receive_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
+    struct timeval timeval;
+    timeval.tv_sec = timeout_in_seconds;
+    timeval.tv_usec = 0;
+    setsockopt(socket_fd, SOL_SOCKET, SO_RCVTIMEO, (struct timeval*) &timeval, sizeof timeval);
 }
 
-void* receive_ack_thread(void* subscriber_fd){
-    int cast_subscriber_fd = *((int *) subscriber_fd);
-    return receive_ack(cast_subscriber_fd);
+void reset_receive_timeout_for(int socket_fd){
+    set_receive_timeout_in_seconds(socket_fd, 0);
+}
+
+void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds){
+
+    set_receive_timeout_in_seconds(socket_fd, timeout_in_seconds);
+    uint32_t* ack = safe_malloc(sizeof(uint32_t));
+
+    if(recv(socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
+        log_syscall_error("Error al recibir mensaje ACK");
+        close(socket_fd);
+        *ack = FAILED_ACK;
+    }
+
+    reset_receive_timeout_for(socket_fd);
+    return (void*) ack;
 }
 
 t_serialization_information* receive_structure(int socket_fd){

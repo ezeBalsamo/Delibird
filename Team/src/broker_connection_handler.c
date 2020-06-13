@@ -71,12 +71,14 @@ void* subscriber_thread(void* queue_operation_identifier){
     else {
         serialize_and_send_structure(request, connection_information -> socket_fd);
 
-        void* ack = receive_ack(connection_information -> socket_fd);
+        void* ack = receive_ack_with_timeout_in_seconds(connection_information -> socket_fd, 5);
         int cast_ack = *((int*) ack);
 
         if(cast_ack == FAILED_ACK){
+            //TODO log, "falló la recepción del ack del broker"
               free_system();
         }
+
         //todo log, "El broker me suscribio a tal cola correctamente".
         sem_post(&subscriber_threads_request_sent);
         request -> sanitizer_function (request);

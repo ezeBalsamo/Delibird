@@ -42,7 +42,6 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
             serialize_and_send_structure(request, socket_fd);
             log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
-
             pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &socket_fd);
 
             t_subscriber_ack_thread* subscriber_ack_thread = safe_malloc(sizeof(t_subscriber_ack_thread));

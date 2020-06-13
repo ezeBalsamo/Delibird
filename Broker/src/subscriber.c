@@ -8,19 +8,12 @@
 #include <commons/string.h>
 #include <free_broker.h>
 
-void configure_ack_timeout_for(int socket_fd){
-
-    int timeout_in_seconds = config_get_int_at("ACK_TIMEOUT");
-    configure_socket_timeout_in_seconds(socket_fd, timeout_in_seconds);
-}
-
 void update_last_message_id_received_for(t_subscriber_context* subscriber_context, uint32_t last_message_id_received){
     subscriber_context -> last_message_id_received = last_message_id_received;
 }
 
 void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     t_queue_context* queue_context = queue_context_with_code(subscriber_context -> operation_queue);
-    configure_ack_timeout_for(subscriber_context -> socket_fd);
 
     t_subscriber_context* old_subscriptor = old_suscriptor_of(queue_context, subscriber_context);
 
