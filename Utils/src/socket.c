@@ -280,6 +280,7 @@ void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds)
 
     set_receive_timeout_in_seconds(socket_fd, timeout_in_seconds);
     uint32_t* ack = safe_malloc(sizeof(uint32_t));
+    consider_as_garbage(ack,free);
 
     if(recv(socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");

@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include <broker_logs_manager.h>
 #include <subscriber.h>
+#include <stdlib.h>
 #include "publisher.h"
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/socket.h"
@@ -15,6 +16,11 @@ void update_subscribers_to_send(t_message_status* message_status, t_queue_contex
     pthread_mutex_unlock(&(queue_context -> subscribers_mutex));
 }
 
+void free_subscriber_ack_thread(t_subscriber_ack_thread* subscriber_ack_thread){
+    pthread_cancel(subscriber_ack_thread -> subscriber_thread);
+    free(subscriber_ack_thread);
+}
+
 void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t_queue_context* queue_context){
 
     for(int i = 0; i < list_size(waiting_for_ack_subscribers_threads); i++){
@@ -22,8 +28,10 @@ void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t
         t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(waiting_for_ack_subscribers_threads, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
-        join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
+    join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
     }
+    list_destroy_and_destroy_elements(waiting_for_ack_subscribers_threads,
+                                      (void (*)(void *)) free_subscriber_ack_thread);
 }
 
 void publish(t_message_status* message_status, t_queue_context* queue_context) {
@@ -34,6 +42,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
     if (list_is_empty(subscribers)) {
         log_no_subscribers_for_request(request);
+        list_destroy(waiting_for_ack_subscribers_threads);
     } else {
 
         void _send_message(t_subscriber_context* subscriber_context) {
@@ -56,6 +65,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
         join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
     }
+    free_request(request);
 }
 
 void push_to_queue(t_message_status* message_status){

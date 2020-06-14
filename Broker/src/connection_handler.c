@@ -6,6 +6,7 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
+#include "../../Utils/include/garbage_collector.h"
 
 uint32_t message_id = 0;
 pthread_mutex_t mutex_id;
@@ -26,15 +27,14 @@ void* main_thread_handler(void* connection_fd){
     t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
     log_succesful_connection_of_a_process();
 
+    consider_as_garbage(serialization_information, (void (*)(void *)) free_serialization_information);
+
     t_request* request = deserialize(serialization_information -> serialized_request);
     log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
 
     attend_with_message_role_identifier(connection_request);
-
-    free(serialization_information); // no libero con free_serialization_information porque la serialized_request se guarda en colas para reenviarse
-    free(connection_request); // misma historia que arriba
 
     return NULL;
 }

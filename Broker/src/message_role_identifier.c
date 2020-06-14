@@ -10,7 +10,7 @@
 t_list* messages_modes;
 
 void free_message_identifier(){
-    list_destroy_and_destroy_elements(messages_modes, free);
+    list_destroy(messages_modes);
 }
 
 void initialize_message_role_identifier(){
@@ -25,8 +25,6 @@ void initialize_message_role_identifier(){
 
 t_message_role_identifier* find_message_role_identifier(uint32_t operation){
 
-    initialize_message_role_identifier();
-
     bool _can_handle (void* message_role_identifier){
         t_message_role_identifier* cast_message_role_identifier = (t_message_role_identifier*) message_role_identifier;
         return (*(cast_message_role_identifier -> can_handle_function)) (operation);
@@ -38,8 +36,6 @@ t_message_role_identifier* find_message_role_identifier(uint32_t operation){
         log_invalid_operation_to_message_role_identifier_error(operation);
         free_system();
     }
-
-    free_message_identifier();
 
     return message_role_identifier;
 }

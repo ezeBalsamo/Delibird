@@ -44,6 +44,7 @@ uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subsc
         move_subscriber_to_ACK(message_status, subscriber_context);
         log_succesful_all_messages_of_a_queue_sent_to(subscriber_context);
     }
+
     return cast_subscriber_ack;
 }
 
@@ -72,11 +73,7 @@ void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_conte
 }
 
 void free_message_status(t_message_status* message_status){
-    free_identified_message(message_status -> identified_message);
-    list_destroy_and_destroy_elements(message_status -> subscribers_who_received,
-                                      (void (*)(void *)) free_subscriber_context);
-
-    list_destroy_and_destroy_elements(message_status -> subscribers_to_send,
-                                        (void (*)(void *)) free_subscriber_context);
+    list_destroy(message_status -> subscribers_who_received);
+    list_destroy(message_status -> subscribers_to_send);
     free(message_status);
 }

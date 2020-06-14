@@ -206,21 +206,21 @@ t_request* deserialize_caught_pokemon(void* serialized_structure){
 
 t_request* deserialize_subscribe_me(void* serialized_structure){
 
-    uint32_t* operation_queue = safe_malloc(sizeof(uint32_t));
+    uint32_t operation_queue;
     uint32_t process_description_length;
     char* process_description;
 
     uint32_t offset = 0;
 
-    memcpy(operation_queue, serialized_structure, sizeof(uint32_t));
+    memcpy(&operation_queue, serialized_structure, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&process_description_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    process_description = safe_malloc(sizeof(process_description_length));
-    memcpy(process_description, serialized_structure + offset, process_description_length);
+    process_description = safe_malloc(process_description_length);
+    memcpy(process_description, serialized_structure + offset, (process_description_length));
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
-    subscribe_me -> operation_queue = *operation_queue;
+    subscribe_me -> operation_queue = operation_queue;
     subscribe_me -> process_description = process_description;
 
     t_request* request = safe_malloc(sizeof(t_request));

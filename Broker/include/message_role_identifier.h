@@ -9,6 +9,8 @@ typedef struct MessageRoleIdentifier{
     void (*attending_message_function) (t_connection_request* connection_request);
 }t_message_role_identifier;
 
+void initialize_message_role_identifier();
 void attend_with_message_role_identifier(t_connection_request* connection_request);
+void free_message_identifier();
 
 #endif //DELIBIRD_MESSAGE_ROLE_IDENTIFIER_H

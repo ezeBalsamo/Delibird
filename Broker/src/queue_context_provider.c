@@ -69,7 +69,7 @@ t_subscriber_context* old_suscriptor_of(t_queue_context* queue_context, t_subscr
 void free_queue_context(t_queue_context* queue_context){
 
     list_destroy_and_destroy_elements((queue_context -> messages), (void (*)(void *)) free_message_status);
-    list_destroy_and_destroy_elements(queue_context -> subscribers, (void (*)(void *)) free_subscriber_context);
+    list_destroy_and_destroy_elements(queue_context -> subscribers, (void (*)(void *)) free);
     free(queue_context -> queue_context_operations);
     free(queue_context);
 }
