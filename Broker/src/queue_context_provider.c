@@ -14,7 +14,7 @@ void initialize_and_load_queue_context_for(uint32_t queue_code){
 
     pthread_mutex_t queue_mutex;
     pthread_mutex_t subscribers_mutex;
-    t_queue* queue = queue_create();
+    t_list* messages = list_create();
     t_list* subscribers = list_create();
     pthread_mutex_init(&queue_mutex, NULL);
     pthread_mutex_init(&subscribers_mutex, NULL);
@@ -22,7 +22,7 @@ void initialize_and_load_queue_context_for(uint32_t queue_code){
     t_queue_context* queue_context = safe_malloc(sizeof(t_queue_context));
     uint32_t operation = queue_code;
     queue_context -> operation = operation;
-    queue_context -> queue = queue;
+    queue_context -> messages = messages;
     queue_context -> subscribers = subscribers;
     queue_context -> queue_mutex = queue_mutex;
     queue_context -> subscribers_mutex = subscribers_mutex;
@@ -68,8 +68,9 @@ t_subscriber_context* old_suscriptor_of(t_queue_context* queue_context, t_subscr
 
 void free_queue_context(t_queue_context* queue_context){
 
-    queue_destroy_and_destroy_elements((queue_context -> queue), (void (*)(void *)) free_message_status);
+    list_destroy_and_destroy_elements((queue_context -> messages), (void (*)(void *)) free_message_status);
     list_destroy_and_destroy_elements(queue_context -> subscribers, (void (*)(void *)) free_subscriber_context);
+    free(queue_context -> queue_context_operations);
     free(queue_context);
 }
 
