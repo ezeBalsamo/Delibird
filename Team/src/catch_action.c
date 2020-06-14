@@ -5,20 +5,6 @@
 #include <stdlib.h>
 #include <team_logs_manager.h>
 
-t_thread_action* catch_thread_action_for(t_localizable_object* localizable_pokemon){
-
-    t_catch_action* catch_action = safe_malloc(sizeof(t_catch_action));
-    catch_action -> localizable_pokemon = localizable_pokemon;
-
-    t_thread_action* thread_action = new_thread_action();
-    thread_action -> request -> operation = CATCH;
-    thread_action -> request -> structure = catch_action;
-    thread_action -> request -> sanitizer_function = free;
-    thread_action -> execution_function = (void (*)(void *)) catch_action_execution_function;
-
-    return thread_action;
-}
-
 t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_context){
 
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
@@ -49,7 +35,29 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
 
         catch_action_completed_by(trainer_thread_context);
     } else {
-        //TODO: traer implementación de nico de serialize_send_structure_and_wait_for_ack(request, socket_fd);
-    }
+        int ack =
+                serialize_and_send_structure_and_wait_for_ack(
+                        request,
+                        connection_information -> socket_fd,
+                        ack_timeout());
 
+        free_and_close_connection_information(connection_information);
+        free_request(request);
+
+        catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
+    }
+}
+
+t_thread_action* catch_thread_action_for(t_localizable_object* localizable_pokemon){
+
+    t_catch_action* catch_action = safe_malloc(sizeof(t_catch_action));
+    catch_action -> localizable_pokemon = localizable_pokemon;
+
+    t_thread_action* thread_action = new_thread_action();
+    thread_action -> request -> operation = CATCH;
+    thread_action -> request -> structure = catch_action;
+    thread_action -> request -> sanitizer_function = free;
+    thread_action -> execution_function = (void (*)(void *)) catch_action_execution_function;
+
+    return thread_action;
 }

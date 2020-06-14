@@ -14,6 +14,7 @@ void execute_trainer_thread_context();
 void preempt_due_to(char* reason);
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void assert_all_trainer_thread_contexts_have_finished();
+void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);
 int finished_trainer_thread_contexts_amount();
 
 void free_dispatcher();

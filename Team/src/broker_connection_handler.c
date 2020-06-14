@@ -79,7 +79,7 @@ void* subscriber_thread(void* queue_operation_identifier){
         execute_retry_connection_strategy(connection_information);
     }
 
-    serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, 5);
+    serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
     log_succesful_suscription_to(subscribe_me -> operation_queue);
 
     int socket_fd = connection_information -> socket_fd;

@@ -10,7 +10,8 @@ enum Thread_states{
 };
 
 enum thread_action_types{
-    MOVEMENT, CATCH
+    MOVEMENT, CATCH, WAITING_CATCH_RESPONSE,
+    WAITING_FOR_MORE_POKEMONS
 };
 
 typedef struct Thread_action{

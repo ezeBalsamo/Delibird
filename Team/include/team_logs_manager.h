@@ -25,6 +25,7 @@ void log_trainer_added_to_new(t_localizable_object* localizable_trainer);
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason);
 void log_trainer_movement(t_localizable_object* localizable_trainer);
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason);
+void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context);
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer);
 void log_unknown_thread_action_type_error();
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context);

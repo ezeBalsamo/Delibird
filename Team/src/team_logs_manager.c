@@ -172,6 +172,13 @@ void log_trainer_execution(t_localizable_object* localizable_trainer, char* reas
     log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "ejecución", reason);
 }
 
+void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context){
+    t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+    char* reason = thread_action_reason_for(trainer_thread_context);
+
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "cola de bloqueados", reason);
+}
+
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer){
     char* reason = string_new();
     string_append(&reason, "Atrapó todos los pokemones que requería.");
@@ -185,7 +192,7 @@ void log_unknown_thread_action_type_error(){
 
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context){
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
-    char* action_to_perform = thread_action_as_string(trainer_thread_context);
+    char* action_to_perform = thread_action_reason_for(trainer_thread_context);
     char* message =
             string_from_format("Acción a realizar por el entrenador %d: %s",
                     trainer -> sequential_number,
@@ -226,7 +233,7 @@ void log_expected_to_be_not_empty_error_for(char* state_structure_name){
 }
 
 void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context){
-    char* action_to_perform = thread_action_as_string(trainer_thread_context);
+    char* action_to_perform = thread_action_reason_for(trainer_thread_context);
     char* message = string_from_format("Se esperaba que ningún hilo estuviese ejecutando.\n"
                                        "Información del hilo actualmente ejecutando: %s", action_to_perform);
 

@@ -10,7 +10,7 @@ t_identified_chained_evaluation* first_evaluation;
 
 bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_context){
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
-    bool are_there_pokemons = list_is_empty(pokemons_waiting_for_be_caught);
+    bool are_there_pokemons = !list_is_empty(pokemons_waiting_for_be_caught);
     list_destroy(pokemons_waiting_for_be_caught);
 
     return are_there_pokemons;
@@ -28,10 +28,6 @@ void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thre
     prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
 }
 
-void trainer_thread_context_has_become_schedulable_blocked(t_trainer_thread_context* trainer_thread_context){
-    //TODO -> esto no va acá, lo dejo para que compile
-}
-
 bool can_be_scheduled_function(t_trainer_thread_context* trainer_thread_context){
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
     return can_catch_pokemons(trainer);
@@ -41,13 +37,9 @@ t_basic_evaluation* ready_or_schedulable_blocked_state_chained_evaluation(){
     t_basic_evaluation* basic_evaluation = safe_malloc(sizeof(t_basic_evaluation));
     basic_evaluation -> satisfy_function = (bool (*)(void *)) can_be_moved_to_ready_function;
     basic_evaluation -> success_function = (void (*)(void *)) prepare_for_movement_action_function;
-    basic_evaluation -> failure_function = (void (*)(void *)) trainer_thread_context_has_become_schedulable_blocked;
+    basic_evaluation -> failure_function = (void (*)(void *)) prepare_for_waiting_for_more_pokemons_action;
 
     return basic_evaluation;
-}
-
-void trainer_thread_context_has_become_non_schedulable_blocked(t_trainer_thread_context* trainer_thread_context){
-    //TODO -> esto no va acá, lo dejo para que compile
 }
 
 bool has_finished_function(t_trainer_thread_context* trainer_thread_context){
@@ -69,7 +61,7 @@ t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_fi
     t_chained_on_succesful_evaluation* chained_on_succesful_evaluation = safe_malloc(sizeof(t_chained_on_succesful_evaluation));
     chained_on_succesful_evaluation -> satisfy_function = (bool (*)(void *)) can_be_scheduled_function;
     chained_on_succesful_evaluation -> next_evaluation = next_evaluation;
-    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) trainer_thread_context_has_become_non_schedulable_blocked;
+    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) trainer_thread_context_has_entered_deadlock_zone;
 
     return chained_on_succesful_evaluation;
 }

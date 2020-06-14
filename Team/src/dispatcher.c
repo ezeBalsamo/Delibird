@@ -30,18 +30,18 @@ void initialize_dispatcher(){
 }
 
 void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
-    trainer_thread_context -> state = NEW;
     list_add(new_trainer_thread_contexts, (void *) trainer_thread_context);
     log_trainer_added_to_new(trainer_thread_context -> localizable_trainer);
 }
 
-bool can_be_schedule(void* to_be_defined){
-    // TODO implementar lógica de filtrado de hilos bloqueados
-    return true;
+bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){
+
+    t_thread_action* thread_action = trainer_thread_context -> thread_action;
+    return thread_action -> request -> operation == WAITING_FOR_MORE_POKEMONS;
 }
 
 t_list* schedulable_blocked_trainer_thread_contexts(){
-    return list_filter(blocked_trainer_thread_contexts, can_be_schedule);
+    return list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) can_be_schedule);
 }
 
 t_list* schedulable_trainer_thread_contexts(){
@@ -102,7 +102,7 @@ void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* train
     remove_from_new_or_blocked(trainer_thread_context);
     pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
 
-    schedule(trainer_thread_context, move_to_pokemon_reason_for(trainer_thread_context));
+    schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
 }
 
 bool is_anybody_executing(){
@@ -117,7 +117,7 @@ void execute_trainer_thread_context(){
     trainer_thread_context_executing -> state = EXECUTE;
 
     log_trainer_execution(trainer_thread_context_executing -> localizable_trainer,
-                          thread_action_as_string(trainer_thread_context_executing));
+                          thread_action_reason_for(trainer_thread_context_executing));
 
     sem_post(&trainer_thread_context_executing -> semaphore);
 }
@@ -136,19 +136,37 @@ void consider_continue_executing(){
     }
 }
 
-void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
+void free_current_execution_doing(void (*state_function) ()){
 
     trainer_thread_context_executing = NULL;
-    trainer_thread_context -> state = FINISHED;
-
     reset_quantum_consumed();
-
-    list_add(finished_trainer_thread_contexts, trainer_thread_context);
-    log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-
+    state_function();
     pthread_mutex_unlock(&execute_mutex);
+}
+
+void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
+
+    void _finished_function(){
+        trainer_thread_context -> state = FINISHED;
+        list_add(finished_trainer_thread_contexts, trainer_thread_context);
+        log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
+    }
+
+    free_current_execution_doing(_finished_function);
+
     consider_global_goal_accomplished();
     consider_continue_executing();
+}
+
+void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context){
+
+    void _blocked_function(){
+        trainer_thread_context -> state = BLOCKED;
+        list_add(blocked_trainer_thread_contexts, trainer_thread_context);
+        log_trainer_blocked(trainer_thread_context);
+    }
+
+    free_current_execution_doing(_blocked_function);
 }
 
 void assert_all_trainer_thread_contexts_have_finished(){
