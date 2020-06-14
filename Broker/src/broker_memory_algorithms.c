@@ -1,8 +1,11 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
-#include <dynamic_partition_memory_manager.h>
+#include "../include/first_fit_search_parition_algorithm.h"
+#include "../include/fifo_free_partition_algorithm.h"
+#include "../include/dynamic_partition_message_allocator.h"
 #include "../include/broker_memory_algorithms.h"
+
 t_memory_manager* memory_manager;
 
 bool is_dynamic_memory_algorithm(char* memory_algorithm){
@@ -44,14 +47,6 @@ t_message_allocator* initialize_message_allocator(){
     }
 }
 
-t_block_manager* first_fit_search_partition_algorithm(){
-    return NULL;
-}
-
-void* get_first_fit_search_partition_algorithm(){
-    return first_fit_search_partition_algorithm;
-}
-
 void* get_search_partition_algorithm() {
     char *search_algorithm = config_get_string_at("ALGORITMO_PARTICION_LIBRE");
 
@@ -64,12 +59,6 @@ void* get_search_partition_algorithm() {
     } else {
         //log error
     }
-}
-//---
-void fifo_partition_algorithm(){}
-
-void* get_fifo_free_partition_algorithm(){
-    return fifo_partition_algorithm;
 }
 
 void* get_free_partition_algorithm() {
@@ -85,5 +74,5 @@ void* get_free_partition_algorithm() {
         //log error
     }
 }
-
+//uff mama
 void compact_memory_algorithm(){};

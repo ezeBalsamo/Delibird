@@ -1,7 +1,6 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
-#include <dynamic_partition_memory_manager.h>
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
 
@@ -18,7 +17,7 @@ void initialize_broker_memory_manager(){
     //initial block manager, with all the memory
     t_block_manager* initial_block_manager = safe_malloc(sizeof(t_block_manager));
     initial_block_manager->free_block = true;
-    initial_block_manager->memory_block_size = memory_size;
+    initial_block_manager->block_size = memory_size;
     initial_block_manager->initial_position = safe_malloc(memory_size);
     initial_block_manager->memory_block = NULL;
 
