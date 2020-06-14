@@ -19,7 +19,7 @@ typedef struct Memory_block{
 typedef struct Block_manager{
     bool free_block;
     void* initial_position;
-    uint32_t block_size;
+    uint32_t memory_block_size;
     t_memory_block* memory_block;
 
 }t_block_manager;

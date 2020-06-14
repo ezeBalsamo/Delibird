@@ -16,6 +16,8 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
 
 void log_succesful_initialize_queue_context_provider();
 
+void log_successful_initialize_broker_memory_manager();
+
 void log_server_initial_status();
 
 void log_structure_received(void* serialized_request);

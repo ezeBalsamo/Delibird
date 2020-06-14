@@ -5,6 +5,4 @@
 
 t_message_allocator* initialize_dynamic_partition_message_allocator();
 
-void* get_dynamic_partition_allocate_message_algorithm();
-
 #endif //DELIBIRD_DYNAMIC_PARTITION_MEMORY_MANAGER_H

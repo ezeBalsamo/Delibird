@@ -29,16 +29,16 @@ bool is_fifo_free_partition_algorithm(char* free_algorithm){
     return string_equals_ignore_case("FIFO",free_algorithm);
 }
 
-void* get_allocate_message_algorithm(){
+t_message_allocator* initialize_message_allocator(){
     char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
 
     if(is_dynamic_memory_algorithm(memory_algorithm)){
 
-        return get_dynamic_partition_allocate_message_algorithm();
+        return initialize_dynamic_partition_message_allocator();
 
     }else if (is_buddy_system_memory_algorithm(memory_algorithm)){
 
-        //return get_buddy_system_allocate_message_algorithm();
+        //return initialize_buddy_system_message_allocator();
     }else{
         //log error
     }
@@ -85,4 +85,5 @@ void* get_free_partition_algorithm() {
         //log error
     }
 }
+
 void compact_memory_algorithm(){};

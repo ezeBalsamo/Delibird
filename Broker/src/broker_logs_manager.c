@@ -55,7 +55,9 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
 void log_succesful_initialize_queue_context_provider(){
     log_succesful_message(process_execution_logger(), "El queue_context_provider se ha inicializado correctamente!\n");
 }
-
+void log_successful_initialize_broker_memory_manager(){
+    log_succesful_message(process_execution_logger(), "El broker_memory_manager se ha inicializado correctamente!\n");
+}
 void log_server_initial_status(){
     log_succesful_message(process_execution_logger(), "El server multihilo fue levantado y esta esperando recibir información.\n");
 }

@@ -1,7 +1,7 @@
 #ifndef DELIBIRD_BROKER_MEMORY_ALGORITHMS_H
 #define DELIBIRD_BROKER_MEMORY_ALGORITHMS_H
 
-void* get_allocate_message_algorithm();
+t_message_allocator* initialize_message_allocator();
 
 void* get_search_partition_algorithm();
 void* get_free_partition_algorithm();
