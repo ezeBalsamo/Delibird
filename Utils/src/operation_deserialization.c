@@ -226,7 +226,7 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
-    request -> sanitizer_function = free;
+    request -> sanitizer_function = (void (*)(void *)) free_subscribe_me;
 
     return request;
 }

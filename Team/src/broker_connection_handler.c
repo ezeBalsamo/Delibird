@@ -11,12 +11,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <team_configuration_manager.h>
+#include <commons/string.h>
 
 sem_t subscriber_threads_request_sent;
 
 pthread_t appeared_queue_tid;
 pthread_t localized_queue_tid;
 pthread_t caught_queue_tid;
+
+char* team_process_description;
 
 void sleep_for(int reconnection_time_in_seconds){
     struct timespec deadline;
@@ -58,15 +61,14 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
-    subscribe_me -> process_description = "SoyTeam1";
-    //TODO agregar lógica de para diferenciar teams
+    subscribe_me -> process_description = string_duplicate(team_process_description);
 
     free(queue_operation_identifier);
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
-    request -> sanitizer_function = free;
+    request -> sanitizer_function = (void (*)(void *)) free_subscribe_me;
 
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
@@ -152,9 +154,17 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     free_and_close_connection_information(connection_information);
 }
 
+void initialize_team_process_description(){
+    t_list* config_values = all_config_values();
+    team_process_description = process_description_for("TEAM", config_values);
+    list_destroy_and_destroy_elements(config_values, free);
+    consider_as_garbage(team_process_description, free);
+}
+
 void* initialize_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
+    initialize_team_process_description();
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);

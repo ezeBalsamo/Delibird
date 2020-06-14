@@ -55,7 +55,7 @@ bool global_goal_contains(char* pokemon_name){
 
 void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name){
     t_trainer* trainer = localizable_trainer -> object;
-    list_add(trainer -> current_pokemons, pokemon_name);
+    list_add(trainer -> current_pokemons, string_duplicate(pokemon_name));
 }
 
 void assert_equals_size_between_trainers_and_finished_trainer_thread_contexts(){

@@ -105,27 +105,29 @@ void* publisher_pokemon_operation_structure(){
     return structure;
 }
 
-char* process_id_prefixed_by(char* process_name_prefix){
-    unsigned int hash_sum = 0;
+t_list* gameboy_arguments_to_hash(){
+    t_list* gameboy_arguments_to_hash = list_create();
 
     for(int i = 1; i < gameboy_arguments_amount; i++){
-        char* gameboy_argument = gameboy_arguments[i];
-        hash_sum += hash(gameboy_argument);
+        char* argument = gameboy_arguments[i];
+        list_add(gameboy_arguments_to_hash, string_duplicate(argument));
     }
 
-    char* process_description = string_from_format("%s-%u", process_name_prefix, hash_sum);
-
-    // Se toma la decisión de considerarlo basura ya que cambiar pokemon_operation_sanitizer_function
-    // es más complejo para lo que representa la solución al problema
-    consider_as_garbage(process_description, free);
-
-    return process_description;
+    return gameboy_arguments_to_hash;
 }
 
 void* subscriber_pokemon_operation_structure(){
 
+    t_list* arguments_to_hash = gameboy_arguments_to_hash();
+
     char* queue_name = gameboy_arguments[2];
-    char* process_description = process_id_prefixed_by("GAMEBOY");
+    char* process_description = process_description_for("GAMEBOY", arguments_to_hash);
+
+    list_destroy_and_destroy_elements(arguments_to_hash, free);
+
+    // Se toma la decisión de considerarlo basura ya que cambiar pokemon_operation_sanitizer_function
+    // es más complejo para lo que representa la solución al problema
+    consider_as_garbage(process_description, free);
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);

@@ -69,6 +69,17 @@ unsigned int hash(char* value){
     return hash;
 }
 
+char* process_description_for(char* process_name, t_list* strings_to_hash){
+    unsigned long long hash_sum = 0;
+
+    for(int i = 0; i < list_size(strings_to_hash); i++){
+        char* string = list_get(strings_to_hash, i);
+        hash_sum += hash(string);
+    }
+
+    return string_from_format("%s-%llu", process_name, hash_sum);
+}
+
 void free_request(t_request* self){
     self -> sanitizer_function (self -> structure);
     free(self);
@@ -100,6 +111,11 @@ void free_serialization_information(t_serialization_information* serialization_i
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
     list_destroy_and_destroy_elements(localized_pokemon->positions,free);
     free(localized_pokemon);
+}
+
+void free_subscribe_me(t_subscribe_me* subscribe_me){
+    free(subscribe_me -> process_description);
+    free(subscribe_me);
 }
 
 uint32_t internal_operation_in(t_identified_message* identified_message){
