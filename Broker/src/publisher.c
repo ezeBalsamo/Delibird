@@ -22,7 +22,7 @@ void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t
         t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(waiting_for_ack_subscribers_threads, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
-        join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status, queue_context);
+        join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
     }
 }
 
@@ -63,7 +63,7 @@ void push_to_queue(t_message_status* message_status){
     uint32_t operation = internal_operation_in(message_status -> identified_message);
 
     if(operation == IDENTIFIED_MESSAGE){ //caso en donde es un identified con otro identified adentro.
-        uint32_t internal_operation = internal_operation_in_correlative(message_status->identified_message);
+        uint32_t internal_operation = internal_operation_in_correlative(message_status -> identified_message);
         operation = internal_operation;
     }
 
@@ -72,7 +72,7 @@ void push_to_queue(t_message_status* message_status){
     update_subscribers_to_send(message_status, queue_context);
     log_succesful_get_and_update_subscribers_to_send(message_status -> identified_message);
 
-    queue_context -> queue_context_operations -> push_message_status_to_queue_function (queue_context, message_status);
+    queue_context -> queue_context_operations -> add_message_status_to_queue_function (queue_context, message_status);
     log_succesful_new_message_pushed_to_a_queue(message_status -> identified_message, queue_context -> operation);
 
     publish(message_status, queue_context);

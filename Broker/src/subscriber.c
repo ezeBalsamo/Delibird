@@ -49,7 +49,7 @@ void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* mess
 
 void send_all_messages(t_subscriber_context* subscriber_context) {
     t_queue_context* queue_context = queue_context_with_code(subscriber_context -> operation_queue);
-    t_list* queue_messages = queue_context -> queue -> elements;
+    t_list* queue_messages = queue_context -> messages;
 
     bool _has_to_be_send(t_message_status* message_status){
         return message_status -> identified_message -> message_id > subscriber_context -> last_message_id_received;
@@ -68,6 +68,6 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
+        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
     }
 }
