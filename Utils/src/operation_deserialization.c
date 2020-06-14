@@ -3,6 +3,7 @@
 #include <string.h>
 #include <serialization_interface.h>
 #include <serializable_objects.h>
+#include <garbage_collector.h>
 
 t_request* deserialize(void* serialized_request){
     uint32_t operation;
@@ -56,6 +57,8 @@ t_request* deserialize_new_pokemon(void* serialized_structure) {
     request -> operation = NEW_POKEMON;
     request -> structure = (void*) new_pokemon;
     request -> sanitizer_function = free;
+
+    consider_as_garbage(pokemon_name, free);
     return request;
 }
 
@@ -86,6 +89,8 @@ t_request* deserialize_appeared_pokemon(void* serialized_structure) {
     request -> operation = APPEARED_POKEMON;
     request -> structure = (void*) appeared_pokemon;
     request -> sanitizer_function = free;
+
+    consider_as_garbage(pokemon_name, free);
     return request;
 }
 
@@ -108,6 +113,7 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
     request -> structure = (void*) get_pokemon;
     request -> sanitizer_function = free;
 
+    consider_as_garbage(pokemon_name, free);
     return request;
 }
 
@@ -143,6 +149,8 @@ t_request* deserialize_localized_pokemon(void* serialized_structure){
     request -> operation = LOCALIZED_POKEMON;
     request -> structure = (void*) localized_pokemon;
     request -> sanitizer_function = (void (*)(void *)) free_localized_pokemon;
+
+    consider_as_garbage(pokemon_name, free);
     return request;
 }
 
@@ -173,6 +181,8 @@ t_request* deserialize_catch_pokemon(void* serialized_structure) {
     request -> operation = CATCH_POKEMON;
     request -> structure = (void*) catch_pokemon;
     request -> sanitizer_function = free;
+
+    consider_as_garbage(pokemon_name, free);
     return request;
 }
 
@@ -190,6 +200,7 @@ t_request* deserialize_caught_pokemon(void* serialized_structure){
     request -> operation = CAUGHT_POKEMON;
     request -> structure = (void*) caught_pokemon;
     request -> sanitizer_function = free;
+
     return request;
 }
 

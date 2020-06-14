@@ -3,7 +3,6 @@
 #include "../include/entry_point_logs_manager.h"
 #include "../include/entry_point_validator.h"
 #include "../../Utils/include/logger.h"
-#include "../../Utils/include/pretty_printer.h"
 
 void initialize_entry_point_logs_manager(){
     initialize_logger_for("Gameboy");
@@ -14,7 +13,7 @@ void initialize_entry_point_logs_manager(){
 void log_successful_connection(){
     char* message = string_new();
     string_append(&message, "Conexión establecida al proceso ");
-    string_append(&message, valid_chosen_process() -> name);
+    string_append(&message, valid_process_name_for_connection());
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -52,6 +51,10 @@ void log_no_parser_suitable_for_operation_error_for(char* operation_name){
     char* message = string_from_format("No se ha encontrado un parser compatible para la operación %s.", operation_name);
     log_errorful_message(process_execution_logger(), message);
     free(message);
+}
+
+void log_operation_only_allowed_for_susbcriber_mode_error(){
+    log_errorful_message(process_execution_logger(), "Se intentó ejecutar una función que sólo tiene sentido en modo suscriptor\n");
 }
 
 void free_entry_point_logs_manager(){

@@ -11,8 +11,8 @@
 
 int main() {
 
-    initialize_garbage_collector();
     initialize_signal_handler();
+    initialize_garbage_collector();
 
     initialize_broker_logs_manager();
     initialize_pretty_printer();

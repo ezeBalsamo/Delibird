@@ -64,7 +64,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
         t_message_status* message_status = list_get(messages_to_send, i);
 
         t_request* request = create_request_from(message_status);
-        send_structure(request, subscriber_context -> socket_fd);
+        serialize_and_send_structure(request, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 

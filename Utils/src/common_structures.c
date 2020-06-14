@@ -12,9 +12,19 @@ void handler(){
     free_system();
 }
 
+void handle_signal(int signal_number, void (*handler_function) ()){
+
+    struct sigaction signal_action = {.sa_handler = handler_function};
+
+    if(sigaction(signal_number, &signal_action, NULL) == -1){
+        log_syscall_error("Error en la creación de una acción de signals");
+        free_system();
+    }
+}
+
 void initialize_signal_handler(){
-    signal(SIGINT, handler);
-    signal(SIGTERM, handler);
+    handle_signal(SIGINT, handler);
+    handle_signal(SIGTERM, handler);
 }
 
 void* safe_malloc(size_t size){
@@ -40,6 +50,23 @@ t_connection_request* create_connection_request(int connection_fd, t_request* re
     connection_request -> request = request;
 
     return connection_request;
+}
+
+unsigned int hash(char* value){
+    unsigned int hash = 0;
+    int value_length = string_length(value);
+
+    for(int index = 0; index < value_length; index++) {
+        unsigned char c = value[index];
+        hash += c;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
+    }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+
+    return hash;
 }
 
 void free_request(t_request* self){

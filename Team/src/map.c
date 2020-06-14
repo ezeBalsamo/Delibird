@@ -74,8 +74,11 @@ t_list* not_yet_targeted_pokemons(){
     t_list* not_yet_targeted_pokemons = list_create();
 
     void _load_not_yet_targeted_pokemons(char* pokemon_name, void* targetable_pokemons){
+        (void) pokemon_name;
+
         t_list* filtered_not_yet_targeted_pokemons = list_filter((t_list*) targetable_pokemons, is_not_targeted);
         list_add_all(not_yet_targeted_pokemons, filtered_not_yet_targeted_pokemons);
+
         list_destroy(filtered_not_yet_targeted_pokemons);
     }
 

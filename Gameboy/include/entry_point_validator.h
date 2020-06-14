@@ -27,6 +27,8 @@ void* pokemon_operation_sanitizer_function();
 
 bool is_subscriber_mode();
 
+int suscriber_mode_time_in_seconds();
+
 void free_entry_point_validator();
 
 #endif //ENTRY_POINT_VALIDATOR_H

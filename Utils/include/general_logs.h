@@ -25,5 +25,7 @@ void log_request_sent(t_request* request);
 void log_request_received_with(t_log* logger, t_request* request);
 void log_unknown_chained_evaluation_type_error();
 void log_garbage_to_stop_considering_that_not_found_error();
+void log_failed_ack_error();
+void log_succesful_suscription_to(uint32_t operation_queue);
 
 #endif //DELIBIRD_GENERAL_LOGS_H

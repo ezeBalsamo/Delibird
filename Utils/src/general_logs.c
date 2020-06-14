@@ -2,6 +2,7 @@
 #include <pretty_printer.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <queue_code_name_associations.h>
 #include "../include/general_logs.h"
 #include "logger.h"
 #include "string.h"
@@ -130,4 +131,15 @@ void log_unknown_chained_evaluation_type_error(){
 
 void log_garbage_to_stop_considering_that_not_found_error(){
     log_errorful_message(process_execution_logger(), "Se esperaba encontrar un objeto designado como basura.");
+}
+
+void log_failed_ack_error(){
+    log_errorful_message(process_execution_logger(), "Se recibió un ACK no esperado\n");
+}
+
+void log_succesful_suscription_to(uint32_t operation_queue){
+    char* message = string_from_format("Suscripción exitosa a la cola %s", queue_name_of(operation_queue));
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
 }
