@@ -52,8 +52,8 @@ t_connection_request* create_connection_request(int connection_fd, t_request* re
     return connection_request;
 }
 
-unsigned int hash(char* value){
-    unsigned int hash = 0;
+unsigned long long hash(char* value){
+    unsigned long long hash = 0;
     int value_length = string_length(value);
 
     for(int index = 0; index < value_length; index++) {
