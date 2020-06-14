@@ -47,3 +47,7 @@ void* initialize_connection_handler(){
     return NULL;
 
 }
+
+void free_connection_handler(){
+    free_multithreaded_server();
+}
