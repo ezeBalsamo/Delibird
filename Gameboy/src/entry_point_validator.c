@@ -105,14 +105,33 @@ void* publisher_pokemon_operation_structure(){
     return structure;
 }
 
+t_list* gameboy_arguments_to_hash(){
+    t_list* gameboy_arguments_to_hash = list_create();
+
+    for(int i = 1; i < gameboy_arguments_amount; i++){
+        char* argument = gameboy_arguments[i];
+        list_add(gameboy_arguments_to_hash, string_duplicate(argument));
+    }
+
+    return gameboy_arguments_to_hash;
+}
+
 void* subscriber_pokemon_operation_structure(){
 
+    t_list* arguments_to_hash = gameboy_arguments_to_hash();
+
     char* queue_name = gameboy_arguments[2];
-    char* process_id = gameboy_arguments[3];
+    char* process_description = process_description_for("GAMEBOY", arguments_to_hash);
+
+    list_destroy_and_destroy_elements(arguments_to_hash, free);
+
+    // Se toma la decisión de considerarlo basura ya que cambiar pokemon_operation_sanitizer_function
+    // es más complejo para lo que representa la solución al problema
+    consider_as_garbage(process_description, free);
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = queue_code_of(queue_name);
-    subscribe_me -> process_description = process_id;
+    subscribe_me -> process_description = process_description;
     return (void*) subscribe_me;
 }
 
@@ -122,6 +141,15 @@ char* valid_process_name_for_connection(){
 
 bool is_subscriber_mode(){
     return role_mode -> is_subscriber_mode;
+}
+
+int suscriber_mode_time_in_seconds(){
+    if(!is_subscriber_mode()){
+        log_operation_only_allowed_for_susbcriber_mode_error();
+        free_system();
+    }
+
+    return atoi(gameboy_arguments[3]);
 }
 
 void free_entry_point_validator(){

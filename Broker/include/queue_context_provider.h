@@ -8,7 +8,7 @@
 
 typedef struct Queue_context{
     uint32_t operation;
-    t_queue* queue;
+    t_list* messages;
     pthread_mutex_t queue_mutex;
     t_list* subscribers;
     pthread_mutex_t subscribers_mutex;

@@ -20,4 +20,4 @@ set(SOURCES
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(gameboy ${SOURCES})
 
-target_link_libraries(gameboy utils)
+target_link_libraries(gameboy utils -lrt)

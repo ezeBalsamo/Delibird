@@ -12,8 +12,8 @@
 
 int main() {
 
-    initialize_garbage_collector();
     initialize_signal_handler();
+    initialize_garbage_collector();
 
     initialize_broker_logs_manager();
     initialize_pretty_printer();
@@ -23,8 +23,10 @@ int main() {
     initialize_broker_memory_manager();
     log_succesful_start_up();
 
-    pthread_t connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
-    safe_thread_join(connection_handler_thread);
+    pthread_t* connection_handler_thread = malloc(sizeof(pthread_t));
+    consider_as_garbage(connection_handler_thread, (void (*)(void *)) (safe_thread_pointer_cancel));
+    *connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
+    safe_thread_join(*connection_handler_thread);
     log_successful_execution();
 
     free_system();

@@ -17,7 +17,7 @@ void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     t_subscriber_context* old_subscriptor = old_suscriptor_of(queue_context, subscriber_context);
 
     if(!old_subscriptor){
-        log_subscriber_not_found_in_queue_subscribers_warning(subscriber_context, queue_context -> operation); //todo mejorar. Poner que puede ser un nuevo suscriptor
+        log_subscriber_not_found_in_queue_subscribers_warning(subscriber_context, queue_context -> operation);
     } else {
         update_last_message_id_received_for(subscriber_context, old_subscriptor -> last_message_id_received);
         log_update_of_message_id_received_for(subscriber_context);
@@ -49,7 +49,7 @@ void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* mess
 
 void send_all_messages(t_subscriber_context* subscriber_context) {
     t_queue_context* queue_context = queue_context_with_code(subscriber_context -> operation_queue);
-    t_list* queue_messages = queue_context -> queue -> elements;
+    t_list* queue_messages = queue_context -> messages;
 
     bool _has_to_be_send(t_message_status* message_status){
         return message_status -> identified_message -> message_id > subscriber_context -> last_message_id_received;
@@ -64,10 +64,10 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
         t_message_status* message_status = list_get(messages_to_send, i);
 
         t_request* request = create_request_from(message_status);
-        send_structure(request, subscriber_context -> socket_fd);
+        serialize_and_send_structure(request, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
+        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
     }
 }

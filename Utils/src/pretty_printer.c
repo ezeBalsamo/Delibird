@@ -27,8 +27,47 @@ char* get_pokemon_as_string(t_get_pokemon* get_pokemon){
             get_pokemon -> pokemon_name);
 }
 
-char* localized_pokemon_as_string(void* to_be_defined){
-    //TODO to be defined
+char* localized_pokemon_as_string(t_localized_pokemon* localized_pokemon){
+    char* message_without_positions =
+            string_from_format("Operación: %s\nArgumentos: Pokemon: %s, cantidad: %d, ",
+                    queue_name_of(LOCALIZED_POKEMON),
+                    localized_pokemon -> pokemon_name,
+                    localized_pokemon -> quantity);
+
+    char* message_with_position_quantity;
+
+    if(localized_pokemon -> quantity == 1){
+        message_with_position_quantity = string_from_format("%sPosición: ", message_without_positions);
+    }else{
+        message_with_position_quantity = string_from_format("%sPosiciones: ", message_without_positions);
+    }
+
+    char* message_with_positions = string_new();
+    string_append(&message_with_positions, message_with_position_quantity);
+
+    for(int i = 0; i < ((localized_pokemon -> quantity) * 2); i+=2){
+        void* x_position = list_get(localized_pokemon -> positions, i);
+        uint32_t cast_x_position = *((uint32_t*) x_position);
+
+        void* y_position = list_get(localized_pokemon -> positions, i + 1);
+        uint32_t cast_y_position = *((uint32_t*) y_position);
+
+        string_append(&message_with_positions, "(");
+        string_append(&message_with_positions, string_itoa(cast_x_position));
+        string_append(&message_with_positions, ", ");
+        string_append(&message_with_positions, string_itoa(cast_y_position));
+        string_append(&message_with_positions, ")");
+
+        int index_to_know_remaining_positions = i + 2;
+        if(index_to_know_remaining_positions < ((localized_pokemon -> quantity) * 2)){
+            string_append(&message_with_positions, ", ");
+        }
+    }
+
+    free(message_without_positions);
+    free(message_with_position_quantity);
+
+    return message_with_positions;
 }
 
 char* catch_pokemon_as_string(t_catch_pokemon* catch_pokemon){

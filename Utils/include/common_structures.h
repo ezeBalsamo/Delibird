@@ -85,16 +85,22 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
 void* internal_request_in_correlative(t_identified_message* correlative_identified_message);
 
 void initialize_signal_handler();
+void handle_signal(int signal_number, void (*handler_function) ());
+
 void sem_initialize(sem_t* semaphore);
 
 void* safe_malloc(size_t size);
 t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
 t_connection_request* create_connection_request(int connection_fd, t_request* request);
+
+char* process_description_for(char* process_name, t_list* strings_to_hash);
+
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_connection_request(t_connection_request* connection_request);
 void free_serialization_information(t_serialization_information* serialization_information);
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon);
+void free_subscribe_me(t_subscribe_me* subscribe_me);
 void free_char_array(char**);
 
 #endif //COMMON_STRUCTURES_H

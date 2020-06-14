@@ -3,6 +3,7 @@
 #include <roots.h>
 #include <stdlib.h>
 #include <general_logs.h>
+#include <commons/string.h>
 
 t_config* config;
 
@@ -25,6 +26,19 @@ char* config_get_string_at(char* key){
 
 char** config_get_char_array_at(char* key){
     return config_get_array_value(config, key);
+}
+
+t_list* all_config_values(){
+    t_list* config_values = list_create();
+
+    void _load_in_config_values(char* key, void* value){
+        (void) value;
+        char* cast_value = config_get_string_at(key);
+        list_add(config_values, string_duplicate(cast_value));
+    }
+
+    dictionary_iterator(config -> properties, _load_in_config_values);
+    return config_values;
 }
 
 void free_configuration_manager(){

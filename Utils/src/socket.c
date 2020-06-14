@@ -235,7 +235,7 @@ void send_serialized_structure(t_serialization_information* serialization_inform
     free(serialized_request);
 }
 
-void send_structure(t_request* request, int socket_fd){
+void serialize_and_send_structure(t_request* request, int socket_fd){
 
     t_serialization_information* request_serialization_information = serialize(request);
     send_serialized_structure(request_serialization_information, socket_fd);
@@ -248,6 +248,21 @@ void send_ack_message(uint32_t message_id, int socket_fd){
     memcpy(serialized_ack, &message_id, sizeof(uint32_t));
     send_all(socket_fd, serialized_ack, sizeof(uint32_t));
     free(serialized_ack);
+}
+
+int serialize_and_send_structure_and_wait_for_ack(t_request* request, int socket_fd, int timeout_in_seconds){
+    serialize_and_send_structure(request, socket_fd);
+
+    void* ack = receive_ack_with_timeout_in_seconds(socket_fd, timeout_in_seconds);
+    int cast_ack = *((int*) ack);
+    free(ack);
+
+    if(cast_ack == FAILED_ACK){
+        log_failed_ack_error();
+        free_system();
+    }
+
+    return cast_ack;
 }
 
 void set_receive_timeout_in_seconds(int socket_fd, int timeout_in_seconds){

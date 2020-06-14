@@ -18,11 +18,11 @@ int reconnect(t_connection_information* connection_information);
 
 t_connection_information* connect_to(char* ip, char* port);
 
-void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd);
-
-void send_structure(t_request* request, int socket_fd);
+void serialize_and_send_structure(t_request* request, int socket_fd);
 
 void send_ack_message(uint32_t message_id, int socket_fd);
+
+int serialize_and_send_structure_and_wait_for_ack(t_request* request, int socket_fd, int timeout_in_seconds);
 
 void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds);
 

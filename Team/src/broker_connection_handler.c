@@ -11,12 +11,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <team_configuration_manager.h>
+#include <commons/string.h>
 
 sem_t subscriber_threads_request_sent;
 
 pthread_t appeared_queue_tid;
 pthread_t localized_queue_tid;
 pthread_t caught_queue_tid;
+
+char* team_process_description;
 
 void sleep_for(int reconnection_time_in_seconds){
     struct timespec deadline;
@@ -58,15 +61,14 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
-    subscribe_me -> process_description = "SoyTeam1";
-    //TODO agregar lógica de para diferenciar teams
+    subscribe_me -> process_description = string_duplicate(team_process_description);
 
     free(queue_operation_identifier);
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
-    request -> sanitizer_function = free;
+    request -> sanitizer_function = (void (*)(void *)) free_subscribe_me;
 
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
@@ -76,46 +78,34 @@ void* subscriber_thread(void* queue_operation_identifier){
     if(!connection_information -> connection_was_succesful) {
         execute_retry_connection_strategy(connection_information);
     }
-    else {
-        send_structure(request, connection_information -> socket_fd);
 
-        void* ack = receive_ack_with_timeout_in_seconds(connection_information -> socket_fd, 5);
-        int cast_ack = *((int*) ack);
+    serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, 5);
+    log_succesful_suscription_to(subscribe_me -> operation_queue);
 
-        if(cast_ack == FAILED_ACK){
-            //TODO log, "falló la recepción del ack del broker"
-            free_system();
-        }
+    int socket_fd = connection_information -> socket_fd;
 
-        //todo log, "El broker me suscribio a tal cola correctamente".
+    free_connection_information(connection_information);
+    stop_considering_garbage(connection_information);
 
-        int socket_fd = connection_information -> socket_fd;
+    free_request(request);
+    stop_considering_garbage(request);
 
-        free_connection_information(connection_information);
-        stop_considering_garbage(connection_information);
+    sem_post(&subscriber_threads_request_sent);
 
-        free_request(request);
-        stop_considering_garbage(request);
+    while (true) {
+        t_serialization_information* serialization_information = receive_structure(socket_fd);
+        t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
-        sem_post(&subscriber_threads_request_sent);
+        t_identified_message* correlative_identified_message = deserialized_request -> structure;
+        send_ack_message(correlative_identified_message -> message_id, socket_fd);
 
-        while (true) {
-            t_serialization_information* serialization_information = receive_structure(socket_fd);
-            t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+        log_request_received_with(main_logger(), deserialized_request);
 
-            t_identified_message* correlative_identified_message = deserialized_request -> structure;
-            send_ack_message(correlative_identified_message -> message_id, socket_fd);
+        query_perform(deserialized_request);
 
-            log_request_received_with(main_logger(), deserialized_request);
-
-            query_perform(deserialized_request);
-
-            free_serialization_information(serialization_information);
-            free_request(deserialized_request);
-        }
+        free_serialization_information(serialization_information);
+        free_request(deserialized_request);
     }
-
-    return NULL;
 }
 
 pthread_t subscribe_to_queue(uint32_t queue_code){
@@ -156,7 +146,7 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-        send_structure(request, connection_information -> socket_fd);
+        serialize_and_send_structure(request, connection_information -> socket_fd);
         request -> sanitizer_function (request);
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
@@ -164,9 +154,17 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     free_and_close_connection_information(connection_information);
 }
 
+void initialize_team_process_description(){
+    t_list* config_values = all_config_values();
+    team_process_description = process_description_for("TEAM", config_values);
+    list_destroy_and_destroy_elements(config_values, free);
+    consider_as_garbage(team_process_description, free);
+}
+
 void* initialize_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
+    initialize_team_process_description();
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
