@@ -24,10 +24,7 @@ typedef struct Block_manager{
 
 }t_block_manager;
 
-typedef struct Memory_manager{
-    t_list* blocks_manager;
-    //message_allocator, cuando llamo allocate, el memory manager llama a este bicho que va a tener estos
-    //habria que mandarle la lista de bloques capaz
+typedef struct Message_allocator{
     void (*allocate_message_function) (t_identified_message* message);
 
     t_block_manager* (*find_available_partition_algorithm) (uint32_t message_size); //first fit, best fit
@@ -35,6 +32,13 @@ typedef struct Memory_manager{
     void (*compact_memory_function) ();
     uint32_t min_partition_size;
     uint32_t max_search_tries;
+
+}t_message_allocator;
+typedef struct Memory_manager{
+    t_list* blocks_manager;
+    //message_allocator, cuando llamo allocate, el memory manager llama a este bicho que va a tener estos
+    //habria que mandarle la lista de bloques capaz
+    t_message_allocator* message_allocator;
 
 }t_memory_manager;
 

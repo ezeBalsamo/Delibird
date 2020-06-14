@@ -26,9 +26,9 @@ void dynamic_partition_allocate_message(t_identified_message* message){
     uint32_t search_failed_count = 0;
 
     t_block_manager* block_manager_found;  //para referenciarlo afuera
-    while(search_failed_count <= dynamic_partition_memory_manager->max_search_tries){
+    while(search_failed_count <= dynamic_partition_memory_manager->message_allocator->max_search_tries){
 
-        block_manager_found =  dynamic_partition_memory_manager->find_available_partition_algorithm (new_memory_block->message_size);
+        block_manager_found =  dynamic_partition_memory_manager->message_allocator->find_available_partition_algorithm (new_memory_block->message_size);
         if (block_manager_found != NULL){
             break;
         }

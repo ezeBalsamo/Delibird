@@ -86,17 +86,23 @@ void* get_free_partition_algorrithm() {
     }
 }
 //---
+void initialize_message_allocator(){
+    t_message_allocator* message_allocator = safe_malloc(sizeof(t_message_allocator));
+    message_allocator->allocate_message_function = get_allocate_message_algorithm(); //CASTEAR ESTO?
+    message_allocator->find_available_partition_algorithm = get_search_partition_algorithm();
+    message_allocator->free_partition_algorithm = get_free_partition_algorrithm();
+
+    message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
+    message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
+    memory_manager->message_allocator = message_allocator;
+}
+
 void initialize_broker_memory_manager(){
 
     memory_manager = safe_malloc(sizeof(t_memory_manager));
     memory_manager->blocks_manager = list_create();
+    initialize_message_allocator();
 
-    memory_manager->allocate_message_function = get_allocate_message_algorithm(); //CASTEAR ESTO?
-    memory_manager->find_available_partition_algorithm = get_search_partition_algorithm();
-    memory_manager->free_partition_algorithm = get_free_partition_algorrithm();
-
-    memory_manager->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
-    memory_manager->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
 
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
     //initial block manager, with all the memory
@@ -110,5 +116,5 @@ void initialize_broker_memory_manager(){
 }
 
 void allocate_message(t_identified_message* message){
-    memory_manager->allocate_message_function (message);
+    memory_manager->message_allocator->allocate_message_function (message);
 }
