@@ -137,7 +137,9 @@ void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_c
 
 void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code){
 
-    char* message = string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s\n Es un nuevo suscriptor.", subscriber_context -> process_description ,queue_name_of(queue_code));
+    char* message =
+            string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s\n Es un nuevo suscriptor.",
+                    subscriber_context -> process_description ,queue_name_of(queue_code));
     log_warning(process_execution_logger(), message);
     free(message);
 }

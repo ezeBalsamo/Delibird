@@ -17,7 +17,7 @@ void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     t_subscriber_context* old_subscriptor = old_suscriptor_of(queue_context, subscriber_context);
 
     if(!old_subscriptor){
-        log_subscriber_not_found_in_queue_subscribers_warning(subscriber_context, queue_context -> operation); //todo mejorar. Poner que puede ser un nuevo suscriptor
+        log_subscriber_not_found_in_queue_subscribers_warning(subscriber_context, queue_context -> operation);
     } else {
         update_last_message_id_received_for(subscriber_context, old_subscriptor -> last_message_id_received);
         log_update_of_message_id_received_for(subscriber_context);
