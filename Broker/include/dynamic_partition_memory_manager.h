@@ -3,6 +3,6 @@
 
 #include "broker_memory_manager.h"
 
-t_memory_manager* initialize_dynamic_partition_memory_manager();
+void* get_dynamic_partition_allocate_message_algorithm();
 
 #endif //DELIBIRD_DYNAMIC_PARTITION_MEMORY_MANAGER_H

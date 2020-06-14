@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <subscriber.h>
+#include <broker_memory_manager.h>
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../include/connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -19,7 +20,7 @@ int main() {
     initialize_serializable_objects();
     initialize_configuration_manager_named("broker");
     initialize_queue_context_provider();
-
+    initialize_broker_memory_manager();
     log_succesful_start_up();
 
     pthread_t connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
