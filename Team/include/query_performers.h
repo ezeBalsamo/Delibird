@@ -1,5 +1,5 @@
-#ifndef DELIBIRD_QUERY_PERFORMER_H
-#define DELIBIRD_QUERY_PERFORMER_H
+#ifndef DELIBIRD_QUERY_PERFORMERS_H
+#define DELIBIRD_QUERY_PERFORMERS_H
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -10,6 +10,10 @@ typedef struct Query_performer{
     void (*perform_function) (t_identified_message* correlative_identified_message);
 }t_query_performer;
 
+void initialize_query_performers();
+
 void query_perform(t_request* request);
 
-#endif //DELIBIRD_QUERY_PERFORMER_H
+void free_query_performers();
+
+#endif //DELIBIRD_QUERY_PERFORMERS_H

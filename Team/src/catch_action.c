@@ -28,7 +28,7 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
 
     if(!connection_information -> connection_was_succesful) {
         t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
-        log_succesfully_caught(catch_action -> localizable_pokemon);
+        log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
 
         free_and_close_connection_information(connection_information);
         free_request(request);

@@ -9,6 +9,7 @@
 #include <team_manager.h>
 #include <trainer_threads.h>
 #include <dispatching_reasons.h>
+#include <team_pretty_prints.h>
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
@@ -205,18 +206,37 @@ void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_co
 
 }
 
-void log_succesfully_caught(t_localizable_object* localizable_pokemon){
-    char* pokemon_name = localizable_pokemon -> object;
-    char* localizable_pokemon_string =
-            string_from_format("%s, ubicado en (%d, %d)",
-                               pokemon_name,
-                               localizable_pokemon -> pos_x,
-                               localizable_pokemon -> pos_y);
+void log_failed_caught_of(t_localizable_object* localizable_pokemon){
+    char* localizable_pokemon_string = localizable_pokemon_as_string(localizable_pokemon);
+    char* message = string_from_format("Se denegó la captura de %s", localizable_pokemon_string);
 
-    char* default_action = string_from_format("%s, fue atrapado exitosamente", localizable_pokemon_string);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
 
-    log_failed_attempt_to_communicate_with_broker(default_action);
     free(localizable_pokemon_string);
+    free(message);
+}
+
+char* succesfully_caught_description_for(t_localizable_object* localizable_pokemon){
+
+    char* localizable_pokemon_string = localizable_pokemon_as_string(localizable_pokemon);
+    char* message = string_from_format("%s, fue atrapado exitosamente", localizable_pokemon_string);
+
+    free(localizable_pokemon_string);
+    return message;
+}
+
+void log_succesfully_caught(t_localizable_object* localizable_pokemon){
+
+    char* message = succesfully_caught_description_for(localizable_pokemon);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_succesfully_caught_due_to_failed_communication_with_broker(t_localizable_object* localizable_pokemon){
+    char* default_action = succesfully_caught_description_for(localizable_pokemon);
+    log_failed_attempt_to_communicate_with_broker(default_action);
     free(default_action);
 }
 
@@ -239,6 +259,13 @@ void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context
 
     log_errorful_message(process_execution_logger(), message);
     free(action_to_perform);
+    free(message);
+}
+
+void log_message_id_not_required(uint32_t message_id){
+    char* message = string_from_format("Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje %d", message_id);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
