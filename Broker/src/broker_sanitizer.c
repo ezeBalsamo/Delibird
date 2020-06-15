@@ -14,8 +14,8 @@ void free_system(){
     free_queue_context_provider();
     free_configuration_manager();
     free_message_identifier();
-    free_garbage_collector();
     free_connection_handler();
+    free_garbage_collector();
 
     log_successful_clean_up();
     free_broker_logs_manager();

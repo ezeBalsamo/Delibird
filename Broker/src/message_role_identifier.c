@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <subscriber_message_mode.h>
 #include <broker_logs_manager.h>
-#include <pthread.h>
 #include "../include/message_role_identifier.h"
 #include "../../Utils/include/common_structures.h"
 #include "../include/publisher_message_mode.h"
@@ -11,21 +10,17 @@
 t_list* messages_modes;
 
 void free_message_identifier(){
-    list_destroy(messages_modes);
+    list_destroy_and_destroy_elements(messages_modes, free);
 }
 
 void initialize_message_role_identifier(){
-    pthread_mutex_t modes_mutex;
     messages_modes = list_create();
-    pthread_mutex_init(&modes_mutex, NULL);
 
     initialize_publisher_message_mode();
     initialize_subscriber_message_mode();
 
-    pthread_mutex_lock(&modes_mutex);
     list_add(messages_modes, publisher_mode());
     list_add(messages_modes, subscriber_mode());
-    pthread_mutex_unlock(&modes_mutex);
 }
 
 t_message_role_identifier* find_message_role_identifier(uint32_t operation){

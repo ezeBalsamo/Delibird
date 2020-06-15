@@ -69,7 +69,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-       ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
+        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
     }
     list_destroy(messages_to_send);
 }

@@ -280,7 +280,7 @@ void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds)
 
     set_receive_timeout_in_seconds(socket_fd, timeout_in_seconds);
     uint32_t* ack = safe_malloc(sizeof(uint32_t));
-    consider_as_garbage(ack,free);
+    consider_as_garbage(ack, free);
 
     if(recv(socket_fd, ack, sizeof(uint32_t), MSG_WAITALL) == -1) {
         log_syscall_error("Error al recibir mensaje ACK");
@@ -356,6 +356,10 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
         sem_post(&client_sockets_amount_in_queue);
         pthread_mutex_unlock(&queue_mutex);
     }
+}
+
+void close_connection(int socket_fd){
+    close(socket_fd);
 }
 
 void free_and_close_connection(void* socket_fd){

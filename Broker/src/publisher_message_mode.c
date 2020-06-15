@@ -4,7 +4,6 @@
 #include <publisher_message_mode.h>
 #include <stdlib.h>
 #include "../../Utils/include/socket.h"
-#include "../../Utils/include/garbage_collector.h"
 
 t_message_role_identifier* publisher_message_mode;
 
@@ -32,7 +31,4 @@ void initialize_publisher_message_mode(){
     publisher_message_mode = safe_malloc(sizeof(t_message_role_identifier));
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
-
-    consider_as_garbage(publisher_message_mode, free);
-
 }
