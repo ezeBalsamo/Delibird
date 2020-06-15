@@ -27,7 +27,7 @@ t_request* create_request_from(t_message_status* message_status){
     return request;
 }
 
-uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
+void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
         t_message_status* message_status){
 
     void *subscriber_ack;
@@ -45,7 +45,7 @@ uint32_t join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subsc
         log_succesful_all_messages_of_a_queue_sent_to(subscriber_context);
     }
 
-    return cast_subscriber_ack;
+    return subscriber_ack;
 }
 
 void* receive_ack_thread(void* subscriber_fd){

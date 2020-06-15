@@ -28,7 +28,8 @@ void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t
         t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(waiting_for_ack_subscribers_threads, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
-        join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
+    void* ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
+    free(ack);
     }
     list_destroy_and_destroy_elements(waiting_for_ack_subscribers_threads,
                                       (void (*)(void *)) free_subscriber_ack_thread);
