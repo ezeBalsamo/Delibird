@@ -52,3 +52,14 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
 
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
 }
+
+void list_add_as_set(t_list* self, void* element){
+
+    bool _equality(void* element_to_find, void* element_to_compare){
+        return element_to_find == element_to_compare;
+    }
+
+    if(!list_contains(self, element, _equality)){
+        list_add(self, element);
+    }
+}

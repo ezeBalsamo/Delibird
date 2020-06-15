@@ -52,9 +52,11 @@ void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context)
 void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_thread_context, int message_id){
 
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
+    t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
 
+    free_thread_action(trainer_thread_context -> thread_action);
     trainer_thread_context -> thread_action =
-            waiting_catch_response_thread_action_for(catch_action, message_id);;
+            waiting_catch_response_thread_action_for(localizable_pokemon, message_id);;
 
     trainer_thread_context_has_become_blocked(trainer_thread_context);
 }

@@ -4,6 +4,7 @@
 #include <map.h>
 #include <dispatcher.h>
 #include <gameboy_connection_handler.h>
+#include <broker_connection_handler.h>
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
@@ -17,6 +18,7 @@ void free_system(){
     free_map();
     free_team_manager();
     free_gameboy_connection_handler();
+    free_broker_connection_handler();
 
     free_garbage_collector();
     free_configuration_manager();

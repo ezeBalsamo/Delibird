@@ -6,6 +6,7 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/t_list_extension.h"
 
 t_list* new_trainer_thread_contexts;
 t_queue* ready_trainer_thread_contexts;
@@ -42,6 +43,16 @@ bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){
 
 t_list* schedulable_blocked_trainer_thread_contexts(){
     return list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) can_be_schedule);
+}
+
+bool cant_be_schedule(t_trainer_thread_context* trainer_thread_context){
+
+    t_thread_action* thread_action = trainer_thread_context -> thread_action;
+    return thread_action -> request -> operation != WAITING_FOR_MORE_POKEMONS;
+}
+
+t_list* non_schedulable_blocked_trainer_thread_contexts(){
+    return list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) cant_be_schedule);
 }
 
 t_list* schedulable_trainer_thread_contexts(){
@@ -144,9 +155,17 @@ void free_current_execution_doing(void (*state_function) ()){
     pthread_mutex_unlock(&execute_mutex);
 }
 
+void remove_from_blocked_if_necessary(t_trainer_thread_context* trainer_thread_context){
+
+    if(trainer_thread_context -> state == BLOCKED){
+        remove_from(blocked_trainer_thread_contexts, trainer_thread_context);
+    }
+}
+
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
     void _finished_function(){
+        remove_from_blocked_if_necessary(trainer_thread_context);
         trainer_thread_context -> state = FINISHED;
         list_add(finished_trainer_thread_contexts, trainer_thread_context);
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
@@ -162,7 +181,7 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
 
     void _blocked_function(){
         trainer_thread_context -> state = BLOCKED;
-        list_add(blocked_trainer_thread_contexts, trainer_thread_context);
+        list_add_as_set(blocked_trainer_thread_contexts, trainer_thread_context);
         log_trainer_blocked(trainer_thread_context);
     }
 

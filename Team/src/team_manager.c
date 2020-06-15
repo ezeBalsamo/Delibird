@@ -12,8 +12,11 @@
 t_list* localized_trainers;
 t_list* global_goal;
 
+bool global_goal_accomplished;
+
 void* initialize_team_manager(){
 
+    global_goal_accomplished = false;
     localized_trainers = parsed_trainers();
     global_goal = team_global_goal_according_to(localized_trainers);
     initialize_map();
@@ -78,7 +81,7 @@ void consider_global_goal_accomplished(){
         return has_no_requeriments_left;
     }
 
-    bool global_goal_accomplished =
+    global_goal_accomplished =
             list_all_satisfy(localized_trainers, _has_no_requirements_left);
 
     if(global_goal_accomplished){
@@ -86,6 +89,10 @@ void consider_global_goal_accomplished(){
         assert_equals_size_between_trainers_and_finished_trainer_thread_contexts();
         log_global_goal_accomplished();
     }
+}
+
+bool is_global_goal_accomplished(){
+    return global_goal_accomplished;
 }
 
 t_list* trainers_x_positions(){

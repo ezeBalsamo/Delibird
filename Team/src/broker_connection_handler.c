@@ -1,7 +1,7 @@
 #include "../include/broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
-#include "../include/query_performer.h"
+#include "../include/query_performers.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
@@ -92,7 +92,7 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     sem_post(&subscriber_threads_request_sent);
 
-    while (true) {
+    while (!is_global_goal_accomplished()){
         t_serialization_information* serialization_information = receive_structure(socket_fd);
         t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
@@ -106,6 +106,8 @@ void* subscriber_thread(void* queue_operation_identifier){
         free_serialization_information(serialization_information);
         free_request(deserialized_request);
     }
+
+    return NULL;
 }
 
 pthread_t subscribe_to_queue(uint32_t queue_code){
@@ -147,10 +149,11 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
     if(connection_information -> connection_was_succesful){
         serialize_and_send_structure(request, connection_information -> socket_fd);
-        request -> sanitizer_function (request);
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
     }
+
+    free_request(request);
     free_and_close_connection_information(connection_information);
 }
 
@@ -158,13 +161,13 @@ void initialize_team_process_description(){
     t_list* config_values = all_config_values();
     team_process_description = process_description_for("TEAM", config_values);
     list_destroy_and_destroy_elements(config_values, free);
-    consider_as_garbage(team_process_description, free);
 }
 
 void* initialize_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
     initialize_team_process_description();
+    initialize_query_performers();
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
@@ -177,4 +180,10 @@ void cancel_all_broker_connection_handler_threads(){
     safe_thread_cancel(appeared_queue_tid);
     safe_thread_cancel(localized_queue_tid);
     safe_thread_cancel(caught_queue_tid);
+}
+
+void free_broker_connection_handler(){
+    free(team_process_description);
+    free_query_performers();
+    cancel_all_broker_connection_handler_threads();
 }
