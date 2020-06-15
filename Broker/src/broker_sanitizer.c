@@ -13,6 +13,7 @@ void free_system(){
     free_serializable_objects();
     free_queue_context_provider();
     free_configuration_manager();
+    free_message_identifier();
     free_garbage_collector();
     free_connection_handler();
 
