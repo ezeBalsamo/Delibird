@@ -217,7 +217,7 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
     memcpy(&process_description_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     process_description = safe_malloc(process_description_length);
-    memcpy(process_description, serialized_structure + offset, (process_description_length));
+    memcpy(process_description, serialized_structure + offset, process_description_length);
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = operation_queue;

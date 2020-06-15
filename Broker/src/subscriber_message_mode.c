@@ -1,4 +1,4 @@
-#include <message_role_identifier.h>
+#include <messages_roles.h>
 #include <subscriber.h>
 #include <subscriber_context_provider.h>
 #include <stdlib.h>
@@ -7,9 +7,9 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/garbage_collector.h"
 
-t_message_role_identifier* subscriber_message_mode;
+t_message_role* subscriber_message_mode;
 
-t_message_role_identifier* subscriber_mode(){
+t_message_role* subscriber_mode(){
     return subscriber_message_mode;
 }
 
@@ -31,7 +31,7 @@ void subscriber_mode_attending_message_function(t_connection_request* connection
 }
 
 void initialize_subscriber_message_mode(){
-    subscriber_message_mode = safe_malloc(sizeof(t_message_role_identifier));
+    subscriber_message_mode = safe_malloc(sizeof(t_message_role));
     subscriber_message_mode -> can_handle_function  = subscriber_mode_can_handle;
     subscriber_message_mode -> attending_message_function = subscriber_mode_attending_message_function;
 }

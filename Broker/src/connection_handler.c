@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <message_role_identifier.h>
+#include <messages_roles.h>
 #include <semaphore.h>
 #include <pthread.h>
 #include "connection_handler.h"
@@ -34,7 +34,7 @@ void* main_thread_handler(void* connection_fd){
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
 
-    attend_with_message_role_identifier(connection_request);
+    attend_with_message_role(connection_request);
 
     return NULL;
 }
