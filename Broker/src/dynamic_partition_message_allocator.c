@@ -43,7 +43,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
         search_failed_count++;
 
         if (search_failed_count > dynamic_partition_message_allocator->max_search_tries){
-            dynamic_partition_message_allocator->compact_memory_algorithm();
+            dynamic_partition_message_allocator->compact_memory_algorithm(blocks_manager);
             search_failed_count=0;
         }
     }

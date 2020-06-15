@@ -29,7 +29,7 @@ typedef struct Message_allocator{
 
     t_block_manager* (*find_available_partition_algorithm) (uint32_t message_size,t_list* blocks_manager); //first fit, best fit
     void (*free_partition_algorithm) (t_list* blocks_manager); //FIFO/LRU
-    void (*compact_memory_algorithm) ();
+    void (*compact_memory_algorithm) (t_list* blocks_manager);
     uint32_t min_partition_size;
     uint32_t max_search_tries;
 
