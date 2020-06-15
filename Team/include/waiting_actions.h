@@ -7,6 +7,7 @@
 typedef struct Waiting_catch_response_action{
     t_catch_action* catch_action;
     int message_id;
+    bool caught_succeeded;
 }t_waiting_catch_response_action;
 
 t_thread_action* waiting_catch_response_thread_action_for(t_catch_action* catch_action, int message_id);

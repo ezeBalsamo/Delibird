@@ -9,6 +9,8 @@
 t_identified_chained_evaluation* first_evaluation;
 
 bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_context){
+    (void) trainer_thread_context;
+
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
     bool are_there_pokemons = !list_is_empty(pokemons_waiting_for_be_caught);
     list_destroy(pokemons_waiting_for_be_caught);

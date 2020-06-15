@@ -92,7 +92,7 @@ void* subscriber_thread(void* queue_operation_identifier){
 
     sem_post(&subscriber_threads_request_sent);
 
-    while (true) {
+    while (!is_global_goal_accomplished()){
         t_serialization_information* serialization_information = receive_structure(socket_fd);
         t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
@@ -106,6 +106,8 @@ void* subscriber_thread(void* queue_operation_identifier){
         free_serialization_information(serialization_information);
         free_request(deserialized_request);
     }
+
+    return NULL;
 }
 
 pthread_t subscribe_to_queue(uint32_t queue_code){

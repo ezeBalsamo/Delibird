@@ -8,6 +8,7 @@ void initialize_dispatcher();
 
 void new_thread_created_for(t_trainer_thread_context* t_trainer_thread_context);
 t_list* schedulable_trainer_thread_contexts();
+t_list* non_schedulable_blocked_trainer_thread_contexts();
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context);
 bool is_anybody_executing();
 void execute_trainer_thread_context();
