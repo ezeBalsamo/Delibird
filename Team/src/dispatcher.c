@@ -155,7 +155,7 @@ void free_current_execution_doing(void (*state_function) ()){
     pthread_mutex_unlock(&execute_mutex);
 }
 
-void consider_removing_from_blocked(t_trainer_thread_context* trainer_thread_context){
+void remove_from_blocked_if_necessary(t_trainer_thread_context* trainer_thread_context){
 
     if(trainer_thread_context -> state == BLOCKED){
         remove_from(blocked_trainer_thread_contexts, trainer_thread_context);
@@ -165,7 +165,7 @@ void consider_removing_from_blocked(t_trainer_thread_context* trainer_thread_con
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
     void _finished_function(){
-        consider_removing_from_blocked(trainer_thread_context);
+        remove_from_blocked_if_necessary(trainer_thread_context);
         trainer_thread_context -> state = FINISHED;
         list_add(finished_trainer_thread_contexts, trainer_thread_context);
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
