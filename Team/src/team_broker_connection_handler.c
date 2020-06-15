@@ -1,4 +1,4 @@
-#include "../include/broker_connection_handler.h"
+#include "../include/team_broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
 #include "../include/query_performers.h"
@@ -57,19 +57,42 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
     safe_thread_join(*reconnection_thread);
 }
 
-void* subscriber_thread(void* queue_operation_identifier){
+t_request* subscribe_me_request_for(uint32_t operation_queue){
 
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
-    subscribe_me -> operation_queue = *((uint32_t*) queue_operation_identifier);
+    subscribe_me -> operation_queue = operation_queue;
     subscribe_me -> process_description = string_duplicate(team_process_description);
-
-    free(queue_operation_identifier);
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = SUBSCRIBE_ME;
     request -> structure = subscribe_me;
     request -> sanitizer_function = (void (*)(void *)) free_subscribe_me;
 
+    return request;
+}
+
+void consume_messages_from(int socket_fd){
+
+    t_serialization_information* serialization_information = receive_structure(socket_fd);
+    t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+
+    t_identified_message* correlative_identified_message = deserialized_request -> structure;
+    send_ack_message(correlative_identified_message -> message_id, socket_fd);
+
+    log_request_received_with(main_logger(), deserialized_request);
+
+    query_perform(deserialized_request);
+
+    free_serialization_information(serialization_information);
+    free_request(deserialized_request);
+}
+
+void* subscriber_thread(void* queue_operation_identifier){
+
+    uint32_t operation_queue = *((uint32_t*) queue_operation_identifier);
+    free(queue_operation_identifier);
+
+    t_request* request = subscribe_me_request_for(operation_queue);
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     consider_as_garbage(request, (void (*)(void *)) free_request);
@@ -80,7 +103,7 @@ void* subscriber_thread(void* queue_operation_identifier){
     }
 
     serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
-    log_succesful_suscription_to(subscribe_me -> operation_queue);
+    log_succesful_suscription_to(operation_queue);
 
     int socket_fd = connection_information -> socket_fd;
 
@@ -93,19 +116,9 @@ void* subscriber_thread(void* queue_operation_identifier){
     sem_post(&subscriber_threads_request_sent);
 
     while (!is_global_goal_accomplished()){
-        t_serialization_information* serialization_information = receive_structure(socket_fd);
-        t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
-
-        t_identified_message* correlative_identified_message = deserialized_request -> structure;
-        send_ack_message(correlative_identified_message -> message_id, socket_fd);
-
-        log_request_received_with(main_logger(), deserialized_request);
-
-        query_perform(deserialized_request);
-
-        free_serialization_information(serialization_information);
-        free_request(deserialized_request);
+        consume_messages_from(socket_fd);
     }
+
 
     return NULL;
 }
@@ -167,7 +180,6 @@ void* initialize_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
     initialize_team_process_description();
-    initialize_query_performers();
 
     subscribe_to_queues();
     with_global_goal_do(send_get_pokemon_request_of);
@@ -184,6 +196,5 @@ void cancel_all_broker_connection_handler_threads(){
 
 void free_broker_connection_handler(){
     free(team_process_description);
-    free_query_performers();
     cancel_all_broker_connection_handler_threads();
 }

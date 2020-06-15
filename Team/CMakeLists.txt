@@ -1,7 +1,7 @@
 include_directories(include)
 set(SOURCES
-        src/broker_connection_handler.c
-        src/gameboy_connection_handler.c
+        src/team_broker_connection_handler.c
+        src/team_gameboy_connection_handler.c
         src/map.c
         src/team.c
         src/team_logs_manager.c
