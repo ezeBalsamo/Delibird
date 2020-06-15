@@ -13,7 +13,7 @@ int main() {
 
     initialize_signal_handler();
     initialize_garbage_collector();
-
+    initialize_messages_roles();
     initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();

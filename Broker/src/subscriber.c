@@ -6,6 +6,7 @@
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
+#include <stdlib.h>
 
 void update_last_message_id_received_for(t_subscriber_context* subscriber_context, uint32_t last_message_id_received){
     subscriber_context -> last_message_id_received = last_message_id_received;
@@ -68,6 +69,9 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-        ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
+        void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
+        ack = *((uint32_t *) ack_result);
+        free(ack_result);
     }
+    list_destroy(messages_to_send);
 }

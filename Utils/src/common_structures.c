@@ -91,11 +91,6 @@ void free_identified_message(t_identified_message* identified_message){
     free(identified_message);
 }
 
-void free_connection_request(t_connection_request* connection_request){
-    free_request(connection_request -> request);
-    free(connection_request);
-}
-
 void free_char_array(char** char_array){
     //itero hasta que lo que apunta char array sea null, en cuyo caso null evalua como false
     for (int i = 0; char_array[i]; i++ ){
