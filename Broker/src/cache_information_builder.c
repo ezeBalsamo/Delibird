@@ -38,7 +38,7 @@ char* block_info_as_string(t_block_manager* block){
         string_append(&lru_value,string_itoa(block->memory_block->lru_value));
 
         char* queue = "Cola: ";
-        string_append(&queue,queue_name_of(block->memory_block->message_queue_code));
+        string_append(&queue,queue_name_of(block->memory_block->message_operation));
 
         char* id = "ID: ";
         string_append(&id,string_itoa(block->memory_block->message_id));

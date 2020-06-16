@@ -11,16 +11,23 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
 
     //Obtengo el mensaje
     t_request* message_request = message->request;
-
+    uint32_t message_id = message->message_id;
     uint32_t operation = internal_operation_in(message);
+
     if(operation == IDENTIFIED_MESSAGE){
+        message_id = ((t_identified_message*)message->request->structure) -> message_id;
         message_request = (t_request*) internal_request_in_correlative(message);
     }
     //instancio un bloque de memoria, ingresando el espacio que va a ocupar su mensaje
     t_memory_block* memory_block_to_save = safe_malloc(sizeof(t_memory_block));
+
+    memory_block_to_save->message_id = message_id;
+    memory_block_to_save->message_operation = message_request->operation;
+
     t_serialization_information* request_serialized = serialize(message_request); //TODO: OJO!!
-    memory_block_to_save->message_size = request_serialized->amount_of_bytes;
-    memory_block_to_save->message = request_serialized->serialized_request;
+
+    memory_block_to_save->message_size = size_to_allocate_for(message_request); //request_serialized->amount_of_bytes incluye bytes que no quiero
+    memory_block_to_save->message = ((t_request*) request_serialized->serialized_request) -> structure;
     //lru value
     //id bloque
 

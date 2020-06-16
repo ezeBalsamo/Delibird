@@ -7,12 +7,12 @@
 #include "../../Utils/include/common_structures.h"
 
 typedef struct Memory_block{
-    //info del bloque en si:
-    uint32_t identified_block_number;
-    uint32_t lru_value;
-    uint32_t message_size;
-    uint32_t message_queue_code;
+    //info del bloque en si: (metadata)
     uint32_t message_id;
+    uint32_t message_operation;
+    uint32_t message_size;
+    uint32_t lru_value;
+
     void* message; //polimorfico segun anexo 2
 
 }t_memory_block;

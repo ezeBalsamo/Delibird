@@ -319,3 +319,33 @@ t_serialization_information* serialize_identified_message(void* structure){
 
     return serialization_information;
 }
+
+uint32_t size_to_allocate_for(t_request* request){
+    uint32_t size = 0;
+    switch (request->operation) {
+        case NEW_POKEMON:{
+            t_new_pokemon* new_pokemon = (t_new_pokemon*) request->structure;
+            return amount_of_bytes_of_new(new_pokemon);
+        }
+        case LOCALIZED_POKEMON:{
+            t_localized_pokemon* localized_pokemon = (t_localized_pokemon*) request->structure;
+            return amount_of_bytes_of_localized(localized_pokemon);
+        }
+        case GET_POKEMON:{
+            t_get_pokemon* get_pokemon = (t_get_pokemon*) request->structure;
+            return amount_of_bytes_of_get(get_pokemon);
+        }
+        case APPEARED_POKEMON:{
+            t_appeared_pokemon* appeared_pokemon = (t_appeared_pokemon*) request->structure;
+            return amount_of_bytes_of_appeared(appeared_pokemon);
+        }
+        case CATCH_POKEMON:{
+            t_catch_pokemon* catch_pokemon = (t_catch_pokemon*) request->structure;
+            return amount_of_bytes_of_catch(catch_pokemon);
+        }
+        case CAUGHT_POKEMON:{
+            return sizeof(uint32_t); //caught status 0-1
+        }
+    }
+    return size;
+}
