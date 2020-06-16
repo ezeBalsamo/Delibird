@@ -3,8 +3,6 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
 #include "../../Utils/include/logger.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <appeared_query_performer.h>
 
 t_query_performer* query_performer;
