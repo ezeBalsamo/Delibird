@@ -1,5 +1,5 @@
 #include "../include/broker_memory_manager.h"
-#include "../include/first_fit_search_parition_algorithm.h"
+#include "../include/first_fit_search_partition_algorithm.h"
 
 
 t_block_manager* first_fit_search_partition_algorithm(uint32_t message_size,t_list* blocks_manager){

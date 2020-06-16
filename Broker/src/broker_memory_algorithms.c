@@ -1,13 +1,11 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
-#include "../include/first_fit_search_parition_algorithm.h"
+#include "../include/first_fit_search_partition_algorithm.h"
 #include "../include/fifo_free_partition_algorithm.h"
 #include "../include/dynamic_partition_message_allocator.h"
 #include "../include/broker_memory_algorithms.h"
 #include "../../Utils/include/t_list_extension.h"
-
-t_memory_manager* memory_manager;
 
 bool is_dynamic_memory_algorithm(char* memory_algorithm){
     return string_equals_ignore_case("PD",memory_algorithm);

@@ -11,6 +11,7 @@ typedef struct Memory_block{
     uint32_t identified_block_number;
     uint32_t lru_value;
     uint32_t message_size;
+    uint32_t message_queue_code;
     uint32_t message_id;
     void* message; //polimorfico segun anexo 2
 
@@ -45,5 +46,6 @@ typedef struct Memory_manager{
 
 void initialize_broker_memory_manager();
 void allocate_message(t_identified_message* message);
+char* dump_cache();
 
 #endif //DELIBIRD_BROKER_MEMORY_MANAGER_H

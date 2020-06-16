@@ -5,13 +5,28 @@
 #include <zconf.h>
 #include <signal.h>
 #include <commons/string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include "../../Broker/include/broker_memory_manager.h"
 
 void handler(){
     char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
     write(STDOUT_FILENO, goodbye_message, string_length(goodbye_message));
     free_system();
 }
+void cache_handler(){
+    struct stat st = {0};
 
+    if (stat("../logs/cache_dump", &st) == -1) {
+        mkdir("../logs/cache_dump", 0700);
+    }
+    int fd = open("../logs/cache_dump", O_WRONLY);
+    char* dump_info = dump_cache();
+
+    write(fd,dump_info,string_length(dump_info));
+    close(fd);
+}
 void handle_signal(int signal_number, void (*handler_function) ()){
 
     struct sigaction signal_action = {.sa_handler = handler_function};
@@ -25,6 +40,7 @@ void handle_signal(int signal_number, void (*handler_function) ()){
 void initialize_signal_handler(){
     handle_signal(SIGINT, handler);
     handle_signal(SIGTERM, handler);
+    handle_signal(SIGUSR1, cache_handler);
 }
 
 void* safe_malloc(size_t size){
