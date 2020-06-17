@@ -9,12 +9,14 @@
 #include <commons/collections/dictionary.h>
 #include <map_update_trigger.h>
 #include <team_logs_manager.h>
+#include <appeared_query_performer.h>
 
 t_matrix* map;
 t_dictionary* pokemon_occurrences;
 
 pthread_mutex_t map_mutex;
 pthread_mutex_t ocurrences_mutex;
+extern pthread_mutex_t targetable_status_mutex;
 
 void free_targetable_pokemon(t_targetable_object* targetable_pokemon){
     t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
@@ -104,7 +106,10 @@ void load_pokemon_in_map(t_targetable_object* targetable_pokemon){
     pthread_mutex_lock(&ocurrences_mutex);
     add_occurrence_of(targetable_pokemon);
     pthread_mutex_unlock(&ocurrences_mutex);
-    
+    pthread_mutex_unlock(&targetable_status_mutex);
+    printf("\x1b[36msalí del mutex de targetable status\n");
+    printf("\x1b[36m%s, ubicado en (%d, %d), targetable?: %d\n", pokemon_name, localizable_pokemon -> pos_x, localizable_pokemon -> pos_y, targetable_pokemon -> is_being_targeted);
+
     if(targetable_pokemon -> is_being_targeted){
         map_updated_with_insertion_of(localizable_pokemon);
     }
@@ -188,4 +193,6 @@ void free_targetable_pokemons(t_list* targetable_pokemons){
 void free_map(){
     dictionary_destroy_and_destroy_elements(pokemon_occurrences, (void (*)(void *)) free_targetable_pokemons);
     matrix_destroy(map);
+    pthread_mutex_destroy(&map_mutex);
+    pthread_mutex_destroy(&ocurrences_mutex);
 }

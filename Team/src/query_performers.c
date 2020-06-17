@@ -2,14 +2,17 @@
 #include <map.h>
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
 #include <query_performers.h>
 #include <appeared_query_performer.h>
 #include <localized_query_performer.h>
 #include <caught_query_performer.h>
 #include <team_logs_manager.h>
+#include <pthread.h>
 
 t_list* query_performers;
+pthread_mutex_t targetable_status_mutex;
 
 t_request* internal_request_from(t_request* deserialized_request){
 
@@ -20,6 +23,9 @@ t_request* internal_request_from(t_request* deserialized_request){
 }
 
 void initialize_query_performers(){
+
+    safe_mutex_initialize(&targetable_status_mutex);
+
     initialize_appeared_query_performer();
     initialize_localized_query_performer();
     initialize_caught_query_performer();
@@ -56,4 +62,5 @@ void query_perform(t_request* request){
 
 void free_query_performers(){
     list_destroy_and_destroy_elements(query_performers, free);
+    pthread_mutex_destroy(&targetable_status_mutex);
 }
