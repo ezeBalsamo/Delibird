@@ -4,7 +4,7 @@
 
 uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(new_pokemon -> pokemon_name) + 1            //Pokemon name
+           + strlen(new_pokemon -> pokemon_name)                //Pokemon name
            + sizeof(uint32_t)                                   //Pos x
            + sizeof(uint32_t)                                   //Pos y
            + sizeof(uint32_t);                                  //Cantidad
@@ -12,26 +12,26 @@ uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon){
 
 uint32_t amount_of_bytes_of_appeared(t_appeared_pokemon* appeared_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
-            + strlen(appeared_pokemon -> pokemon_name) + 1      //Pokemon name
+            + strlen(appeared_pokemon -> pokemon_name)          //Pokemon name
             + sizeof(uint32_t)                                  //Pos x
             + sizeof(uint32_t);                                 //Pos y
 }
 
 uint32_t amount_of_bytes_of_get(t_get_pokemon* get_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(get_pokemon -> pokemon_name) + 1;    	    //Pokemon name
+           + strlen(get_pokemon -> pokemon_name);       	    //Pokemon name
 }
 
 uint32_t amount_of_bytes_of_localized(t_localized_pokemon * localized_pokemon){
     return sizeof(uint32_t)                                                 //Pokemon name length
-           + strlen(localized_pokemon -> pokemon_name) + 1                  //Pokemon name
+           + strlen(localized_pokemon -> pokemon_name)                      //Pokemon name
            + sizeof(uint32_t)                                               //quantity
            + (list_size(localized_pokemon->positions) *sizeof(uint32_t));   //positions
 }
 
 uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){
     return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(catch_pokemon -> pokemon_name) + 1          //Pokemon name
+           + strlen(catch_pokemon -> pokemon_name)              //Pokemon name
            + sizeof(uint32_t)                                   //Pos x
            + sizeof(uint32_t);                                  //Pos y
 }
@@ -39,7 +39,7 @@ uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){
 uint32_t amount_of_bytes_of_subscribe_me(t_subscribe_me* subscribe_me){
     return sizeof(uint32_t)                                     //Operation queue
             + sizeof(uint32_t)                                  //Process description name length
-            + strlen(subscribe_me -> process_description) + 1;  //Process description name
+            + strlen(subscribe_me -> process_description);      //Process description name
 }
 
 t_serialization_information* serialize(t_request* request){
@@ -60,7 +60,7 @@ t_serialization_information* serialize_new_pokemon(void* structure){
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = NEW_POKEMON;
-    uint32_t pokemon_name_length = strlen(new_pokemon -> pokemon_name) + 1;
+    uint32_t pokemon_name_length = strlen(new_pokemon -> pokemon_name);
 
     uint32_t offset = 0;
 
@@ -96,7 +96,7 @@ t_serialization_information* serialize_appeared_pokemon(void* structure){
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = APPEARED_POKEMON;
-    uint32_t pokemon_name_length = strlen(appeared_pokemon -> pokemon_name) + 1;
+    uint32_t pokemon_name_length = strlen(appeared_pokemon -> pokemon_name);
 
     uint32_t offset = 0;
 
@@ -130,7 +130,7 @@ t_serialization_information* serialize_get_pokemon(void* structure){
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = GET_POKEMON;
-    uint32_t pokemon_name_length = strlen(get_pokemon -> pokemon_name) + 1;
+    uint32_t pokemon_name_length = strlen(get_pokemon -> pokemon_name);
 
     uint32_t offset = 0;
 
@@ -160,7 +160,7 @@ t_serialization_information* serialize_localized_pokemon(void* structure) {
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = LOCALIZED_POKEMON;
-    uint32_t pokemon_name_length = strlen(localized_pokemon -> pokemon_name) + 1;
+    uint32_t pokemon_name_length = strlen(localized_pokemon -> pokemon_name);
 
     uint32_t offset = 0;
 
@@ -200,7 +200,7 @@ t_serialization_information* serialize_catch_pokemon(void* structure){
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = CATCH_POKEMON;
-    uint32_t pokemon_name_length = strlen(catch_pokemon -> pokemon_name) + 1;
+    uint32_t pokemon_name_length = strlen(catch_pokemon -> pokemon_name);
 
     uint32_t offset = 0;
 
@@ -256,12 +256,12 @@ t_serialization_information* serialize_subscribe_me(void* structure){
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                            // operation
             + sizeof(uint32_t)                          // structure size
-            + amount_of_bytes_of_subscribe;          // structure
+            + amount_of_bytes_of_subscribe;             // structure
 
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 
     uint32_t operation = SUBSCRIBE_ME;
-    uint32_t subscriber_id_length = strlen(subscribe_me -> process_description) + 1;
+    uint32_t subscriber_id_length = strlen(subscribe_me -> process_description);
 
     uint32_t offset = 0;
 
