@@ -28,8 +28,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
 
     memory_block_to_save->message_size = size_to_allocate_for(message_request); //request_serialized->amount_of_bytes incluye bytes que no quiero
     memory_block_to_save->message = ((t_request*) request_serialized->serialized_request) -> structure;
-    //lru value
-    //id bloque
+    memory_block_to_save->lru_value = 0; //TODO: operacion para standarizar tiempo
 
     uint32_t search_failed_count = 0;
 
@@ -59,7 +58,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     //creando uno nuevo que tenga la memoria restante, que este libre
     t_block_manager* new_block_manager = safe_malloc(sizeof(t_block_manager));
     new_block_manager->free_block = true;
-    new_block_manager->block_size = block_manager_found->block_size - memory_block_to_save->message_size;
+    uint32_t memory_size_to_partition = block_manager_found->block_size;
     new_block_manager->initial_position = block_manager_found->initial_position + new_block_manager->block_size;
 
     block_manager_found->free_block = false;
@@ -71,6 +70,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     }
 
     new_block_manager->initial_position = block_manager_found->initial_position + block_manager_found->block_size;
+    new_block_manager->block_size = memory_size_to_partition - block_manager_found->block_size;
 
     list_add(blocks_manager,(void*) new_block_manager);
 }

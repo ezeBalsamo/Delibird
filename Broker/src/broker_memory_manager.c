@@ -4,6 +4,7 @@
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
 #include <cache_information_builder.h>
+#include <stdlib.h>
 
 t_memory_manager* memory_manager;
 
@@ -33,4 +34,9 @@ void allocate_message(t_identified_message* message){
 
 char* dump_cache(){
     return cache_info_builder(memory_manager->blocks_manager);
+}
+void free_broker_memory_manager(){
+    list_destroy_and_destroy_elements(memory_manager->blocks_manager,(void (*)(void *)) free);
+    free(memory_manager->message_allocator);
+    free(memory_manager);
 }

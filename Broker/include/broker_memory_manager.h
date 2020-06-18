@@ -17,7 +17,7 @@ typedef struct Memory_block{
 
 }t_memory_block;
 
-typedef struct Block_manager{
+typedef struct Block_information{
     bool free_block;
     void* initial_position;
     uint32_t block_size;
@@ -37,6 +37,7 @@ typedef struct Message_allocator{
 }t_message_allocator;
 
 typedef struct Memory_manager{
+
     t_list* blocks_manager;
 
     t_message_allocator* message_allocator;
@@ -45,6 +46,7 @@ typedef struct Memory_manager{
 
 
 void initialize_broker_memory_manager();
+void free_broker_memory_manager();
 void allocate_message(t_identified_message* message);
 char* dump_cache();
 
