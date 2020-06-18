@@ -53,6 +53,12 @@ void log_no_parser_suitable_for_operation_error_for(char* operation_name){
     free(message);
 }
 
+void log_invalid_caught_status_error(char* status){
+    char* message = string_from_format("Se ingreso el argumento: %s el cual es distinto a OK o FAIL.", status);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_operation_only_allowed_for_susbcriber_mode_error(){
     log_errorful_message(process_execution_logger(), "Se intentó ejecutar una función que sólo tiene sentido en modo suscriptor\n");
 }

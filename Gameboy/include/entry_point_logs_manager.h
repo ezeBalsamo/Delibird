@@ -12,6 +12,7 @@ void unknown_operation_error_for(char* process_name, char* operation_name);
 void incorrect_arguments_amount_error();
 void log_no_parser_suitable_for_operation_error_for(char* operation_name);
 void log_operation_only_allowed_for_susbcriber_mode_error();
+void log_invalid_caught_status_error(char* status);
 
 void free_entry_point_logs_manager();
 
