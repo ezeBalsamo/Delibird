@@ -12,6 +12,4 @@ typedef struct Subscriber_context{
 
 t_subscriber_context* create_subscriber_context(int socket_fd, t_subscribe_me* subscribe_me);
 
-void free_subscriber_context(t_subscriber_context* subscriber_context);
-
 #endif //DELIBIRD_SUBSCRIBER_CONTEXT_PROVIDER_H

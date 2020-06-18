@@ -1,13 +1,14 @@
-#include <message_role_identifier.h>
+#include <messages_roles.h>
 #include <connection_handler.h>
 #include <publisher.h>
 #include <publisher_message_mode.h>
 #include <broker_memory_manager.h>
+#include <stdlib.h>
 #include "../../Utils/include/socket.h"
 
-t_message_role_identifier* publisher_message_mode;
+t_message_role* publisher_message_mode;
 
-t_message_role_identifier* publisher_mode(){
+t_message_role* publisher_mode(){
     return publisher_message_mode;
 }
 
@@ -24,10 +25,12 @@ void publisher_mode_attending_message_function(t_connection_request* connection_
     t_message_status* message_status = create_message_status_for(identified_message);
 
     push_to_queue(message_status);
+
+    free(connection_request);
 }
 
 void initialize_publisher_message_mode(){
-    publisher_message_mode = safe_malloc(sizeof(t_message_role_identifier));
+    publisher_message_mode = safe_malloc(sizeof(t_message_role));
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 }

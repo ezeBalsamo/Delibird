@@ -1,7 +1,7 @@
 include_directories(include)
 set(SOURCES
-        src/broker_connection_handler.c
-        src/gameboy_connection_handler.c
+        src/team_broker_connection_handler.c
+        src/team_gameboy_connection_handler.c
         src/map.c
         src/team.c
         src/team_logs_manager.c
@@ -10,7 +10,7 @@ set(SOURCES
         src/team_serializable_objects.c
         src/trainers_parser.c
         src/goal_calculator.c
-        src/query_performer.c
+        src/query_performers.c
         src/appeared_query_performer.c
         src/localized_query_performer.c
         src/caught_query_performer.c
@@ -30,7 +30,8 @@ set(SOURCES
         src/distance_calculator.c
         src/trainer_thread_context_state_chained_evaluation.c
         src/dispatching_reasons.c
-        )
+        src/waiting_actions.c
+        src/team_pretty_prints.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

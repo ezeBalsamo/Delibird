@@ -1,5 +1,4 @@
 #include "subscriber_context_provider.h"
-#include <stdlib.h>
 
 t_subscriber_context* create_subscriber_context(int socket_fd, t_subscribe_me* subscribe_me){
 
@@ -10,9 +9,4 @@ t_subscriber_context* create_subscriber_context(int socket_fd, t_subscribe_me* s
     subscriber_context -> last_message_id_received = 0; //lo inicializo en 0 por las dudas de que hayan problemas si no lo inicializo ahora.
 
     return  subscriber_context;
-}
-
-void free_subscriber_context(t_subscriber_context* subscriber_context){
-    free(subscriber_context -> process_description);
-    free(subscriber_context);
 }

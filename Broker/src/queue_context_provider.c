@@ -6,6 +6,7 @@
 #include <commons/collections/dictionary.h>
 #include <queue_context_operations.h>
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/socket.h"
 #include <commons/string.h>
 
 t_dictionary* queue_context_by_queue_name;
@@ -66,10 +67,16 @@ t_subscriber_context* old_suscriptor_of(t_queue_context* queue_context, t_subscr
     return list_remove_by_condition(queue_context -> subscribers, (bool (*)(void *)) _was_subscribed);
 }
 
+void free_and_close_subscriber_connection(t_subscriber_context* subscriber){
+    close_connection(subscriber -> socket_fd);
+    free(subscriber);
+}
+
 void free_queue_context(t_queue_context* queue_context){
 
-    list_destroy_and_destroy_elements((queue_context -> messages), (void (*)(void *)) free_message_status);
-    list_destroy_and_destroy_elements(queue_context -> subscribers, (void (*)(void *)) free_subscriber_context);
+    list_destroy_and_destroy_elements(queue_context -> messages, (void (*)(void *)) free_message_status);
+    list_iterate(queue_context->subscribers, (void (*)(void *)) free_and_close_subscriber_connection);
+    list_destroy(queue_context -> subscribers);
     free(queue_context -> queue_context_operations);
     free(queue_context);
 }

@@ -1,10 +1,10 @@
-#include <query_performer.h>
+#include <query_performers.h>
 #include <map.h>
 #include "appeared_query_performer.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
 t_query_performer* appeared_pokemon_query_performer;
-pthread_mutex_t targetable_status_mutex;
+extern pthread_mutex_t targetable_status_mutex;
 
 t_query_performer* appeared_query_performer(){
     return appeared_pokemon_query_performer;
@@ -31,7 +31,6 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
     targetable_pokemon -> is_being_targeted = should_be_targeted;
     targetable_pokemon -> localizable_pokemon = localizable_pokemon;
 
-    pthread_mutex_destroy(&targetable_status_mutex);
     return targetable_pokemon;
 }
 
@@ -51,9 +50,6 @@ bool appeared_query_performer_can_handle(uint32_t operation){
 }
 
 void initialize_appeared_query_performer(){
-
-    safe_mutex_initialize(&targetable_status_mutex);
-
     appeared_pokemon_query_performer = safe_malloc(sizeof(t_query_performer));
     appeared_pokemon_query_performer -> can_handle_function = appeared_query_performer_can_handle;
     appeared_pokemon_query_performer -> perform_function = appeared_query_performer_function;

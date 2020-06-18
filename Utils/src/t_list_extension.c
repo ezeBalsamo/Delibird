@@ -62,4 +62,14 @@ t_list* list_swap(t_list* self, int i ,int j){
 
     list_replace(self,i,second_element_to_swap);
     list_replace(self,j,element_to_swap);
+}  
+void list_add_as_set(t_list* self, void* element){
+
+    bool _equality(void* element_to_find, void* element_to_compare){
+        return element_to_find == element_to_compare;
+    }
+
+    if(!list_contains(self, element, _equality)){
+        list_add(self, element);
+    }
 }

@@ -25,13 +25,17 @@ void log_trainer_added_to_new(t_localizable_object* localizable_trainer);
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason);
 void log_trainer_movement(t_localizable_object* localizable_trainer);
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason);
+void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context);
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer);
 void log_unknown_thread_action_type_error();
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context);
+void log_failed_caught_of(t_localizable_object* localizable_pokemon);
 void log_succesfully_caught(t_localizable_object* localizable_pokemon);
+void log_succesfully_caught_due_to_failed_communication_with_broker(t_localizable_object* localizable_pokemon);
 void log_expected_to_be_empty_error_for(char* state_structure_name);
 void log_expected_to_be_not_empty_error_for(char* state_structure_name);
 void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context);
+void log_message_id_not_required(uint32_t message_id);
 void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
 void log_global_goal_accomplished();
 

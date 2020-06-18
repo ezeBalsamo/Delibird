@@ -357,8 +357,12 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
     }
 }
 
+void close_connection(int socket_fd){
+    close(socket_fd);
+}
+
 void free_and_close_connection(void* socket_fd){
-    close(*((int*) socket_fd));
+    close_connection(*((int*) socket_fd));
     free(socket_fd);
 }
 
