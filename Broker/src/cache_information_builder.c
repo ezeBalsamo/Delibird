@@ -10,11 +10,11 @@ char* pointer_address_as_string(void* block_position_pointer){
     char position[32];
     int amount_of_characters = sprintf(position,"%p",block_position_pointer);
 
-    char *initial_address_position = safe_malloc(amount_of_characters);
+    char *address_position = safe_malloc(amount_of_characters+1);
 
-    memcpy(initial_address_position,&position[0], amount_of_characters);
-
-    return initial_address_position;
+    memcpy(address_position,&position[0], amount_of_characters+1);
+    string_append(&address_position,"\0");
+    return address_position;
 }
 // 0x000 - 0x3FF [X] Size:1024b LRU:<VALOR> Cola: <COLA> ID: <ID>
 // 0x400 - 0x7FE [L] Size:1024b
