@@ -4,6 +4,7 @@
 #include <serialization_interface.h>
 #include <serializable_objects.h>
 #include <garbage_collector.h>
+#include <commons/string.h>
 
 t_request* deserialize(void* serialized_request){
     uint32_t operation;
@@ -38,7 +39,7 @@ t_request* deserialize_new_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length);
+    pokemon_name = safe_malloc(pokemon_name_length + 1);
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
@@ -47,6 +48,7 @@ t_request* deserialize_new_pokemon(void* serialized_structure) {
     offset += sizeof(uint32_t);
     memcpy(&quantity, serialized_structure + offset, sizeof(uint32_t));
 
+    string_append(&pokemon_name, "\0");
     t_new_pokemon* new_pokemon = safe_malloc(sizeof(t_new_pokemon));
     new_pokemon -> pokemon_name = pokemon_name;
     new_pokemon -> pos_x = pos_x;
@@ -73,13 +75,14 @@ t_request* deserialize_appeared_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length);
+    pokemon_name = safe_malloc(pokemon_name_length + 1);
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&pos_y, serialized_structure + offset, sizeof(uint32_t));
 
+    string_append(&pokemon_name, "\0");
     t_appeared_pokemon* appeared_pokemon = safe_malloc(sizeof(t_appeared_pokemon));
     appeared_pokemon -> pokemon_name = pokemon_name;
     appeared_pokemon -> pos_x = pos_x;
@@ -102,9 +105,10 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length);
+    pokemon_name = safe_malloc(pokemon_name_length + 1);
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
 
+    string_append(&pokemon_name, "\0");
     t_get_pokemon* get_pokemon = safe_malloc(sizeof(t_get_pokemon));
     get_pokemon -> pokemon_name = pokemon_name;
 
@@ -126,7 +130,7 @@ t_request* deserialize_localized_pokemon(void* serialized_structure){
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length);
+    pokemon_name = safe_malloc(pokemon_name_length + 1);
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&quantity, serialized_structure + offset, sizeof(uint32_t));
@@ -140,6 +144,7 @@ t_request* deserialize_localized_pokemon(void* serialized_structure){
         list_add(positions, (void *) position);
     }
 
+    string_append(&pokemon_name, "\0");
     t_localized_pokemon* localized_pokemon = safe_malloc(sizeof(t_localized_pokemon));
     localized_pokemon -> pokemon_name = pokemon_name;
     localized_pokemon -> quantity = quantity;
@@ -165,13 +170,14 @@ t_request* deserialize_catch_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length);
+    pokemon_name = safe_malloc(pokemon_name_length + 1);
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
     memcpy(&pos_y, serialized_structure + offset, sizeof(uint32_t));
 
+    string_append(&pokemon_name, "\0");
     t_catch_pokemon* catch_pokemon = safe_malloc(sizeof(t_catch_pokemon));
     catch_pokemon -> pokemon_name = pokemon_name;
     catch_pokemon -> pos_x = pos_x;
@@ -216,9 +222,10 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
     offset += sizeof(uint32_t);
     memcpy(&process_description_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    process_description = safe_malloc(process_description_length);
+    process_description = safe_malloc(process_description_length + 1);
     memcpy(process_description, serialized_structure + offset, process_description_length);
 
+    string_append(&process_description, "\0");
     t_subscribe_me* subscribe_me = safe_malloc(sizeof(t_subscribe_me));
     subscribe_me -> operation_queue = operation_queue;
     subscribe_me -> process_description = process_description;
