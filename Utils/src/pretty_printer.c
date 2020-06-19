@@ -77,9 +77,15 @@ char* catch_pokemon_as_string(t_catch_pokemon* catch_pokemon){
 }
 
 char* caught_pokemon_as_string(t_caught_pokemon* caught_pokemon){
+    char* caught_status_to_print;
 
-    return string_from_format("Operación: CAUGHT_POKEMON\nArgumentos: caught_status: %d",
-            caught_pokemon -> caught_status);
+    if(caught_pokemon -> caught_status == 1){
+       caught_status_to_print = "OK";
+    } else {
+        caught_status_to_print = "FAIL";
+    }
+    return string_from_format("Operación: CAUGHT_POKEMON\nArgumentos: caught_status: %s",
+            caught_status_to_print);
 }
 
 char* subscribe_me_as_string(t_subscribe_me* subscribe_me){
