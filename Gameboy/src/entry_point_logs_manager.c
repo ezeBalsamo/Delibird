@@ -54,7 +54,7 @@ void log_no_parser_suitable_for_operation_error_for(char* operation_name){
 }
 
 void log_invalid_caught_status_error(char* status){
-    char* message = string_from_format("Se ingreso el argumento: %s el cual es distinto a OK o FAIL.", status);
+    char* message = string_from_format("El argumento: %s no es válido. Ingrese: OK o FAIL.", status);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }

@@ -10,14 +10,19 @@ bool caught_pokemon_can_handle(uint32_t operation_code){
     return operation_code == CAUGHT_POKEMON;
 }
 
-void* caught_pokemon_parse_function(char** arguments){
-    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_caught_pokemon));
-    char* caught_status = arguments[1];
+void is_valid_caught_status(char* caught_status){
     if(!string_equals_ignore_case(caught_status, "OK") &&
-    !string_equals_ignore_case(caught_status, "FAIL")){
+       !string_equals_ignore_case(caught_status, "FAIL")){
         log_invalid_caught_status_error(caught_status);
         free_system();
     }
+}
+
+void* caught_pokemon_parse_function(char** arguments){
+    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_caught_pokemon));
+    char* caught_status = arguments[1];
+
+    is_valid_caught_status(caught_status);
 
     if(string_equals_ignore_case(caught_status, "OK")){
         caught_pokemon -> caught_status = 1;
