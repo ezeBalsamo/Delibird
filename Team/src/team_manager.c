@@ -1,7 +1,7 @@
 #include <trainers_parser.h>
 #include <goal_calculator.h>
 #include <team_manager.h>
-#include <map.h>
+#include <pokemon_occurrences.h>
 #include <stdlib.h>
 #include <trainer_threads.h>
 #include <commons/string.h>
@@ -19,7 +19,7 @@ void* initialize_team_manager(){
     global_goal_accomplished = false;
     localized_trainers = parsed_trainers();
     global_goal = team_global_goal_according_to(localized_trainers);
-    initialize_map();
+    initialize_pokemon_occurrences();
     initialize_trainer_threads();
 
     return NULL;
@@ -93,22 +93,6 @@ void consider_global_goal_accomplished(){
 
 bool is_global_goal_accomplished(){
     return global_goal_accomplished;
-}
-
-t_list* trainers_x_positions(){
-    void* _x_position_of(void* localized_trainer){
-        return (void*) &(((t_localizable_object*) localized_trainer) -> pos_x);
-    }
-
-    return list_map(localized_trainers, _x_position_of);
-}
-
-t_list* trainers_y_positions(){
-    void* _y_position_of(void* localized_trainer){
-        return (void*) &(((t_localizable_object*) localized_trainer) -> pos_y);
-    }
-
-    return list_map(localized_trainers, _y_position_of);
 }
 
 void with_trainers_do(void (*closure) (t_localizable_object*)){

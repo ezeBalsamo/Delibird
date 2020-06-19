@@ -1,6 +1,6 @@
 #include <goal_calculator.h>
 #include <dispatcher.h>
-#include <map.h>
+#include <pokemon_occurrences.h>
 #include <distance_calculator.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include "trainer_thread_context_state_chained_evaluation.h"

@@ -2,7 +2,7 @@
 #define DELIBIRD_MOVEMENT_ACTION_H
 
 #include "team_manager.h"
-#include "map.h"
+#include "pokemon_occurrences.h"
 #include "trainer_threads.h"
 
 typedef struct Movement_action{

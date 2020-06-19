@@ -142,7 +142,7 @@ void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context*
     char* message =
             string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s\n Es un nuevo suscriptor.",
                     process_description, queue_name);
-    log_warning(process_execution_logger(), message);
+    log_warning_message(process_execution_logger(), message);
     free(message);
 }
 
