@@ -1,7 +1,7 @@
 #include <team_serializable_objects.h>
 #include <team_logs_manager.h>
 #include <stdlib.h>
-#include <map.h>
+#include <pokemon_occurrences.h>
 #include <dispatcher.h>
 #include <team_gameboy_connection_handler.h>
 #include <team_broker_connection_handler.h>
@@ -17,7 +17,7 @@ void free_system(){
     free_query_performers();
     free_dispatcher();
     free_trainer_threads();
-    free_map();
+    free_pokemon_occurrences();
     free_team_manager();
     free_gameboy_connection_handler();
     free_broker_connection_handler();

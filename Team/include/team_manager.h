@@ -42,8 +42,5 @@ void consider_global_goal_accomplished();
 
 bool is_global_goal_accomplished();
 
-t_list* trainers_x_positions();
-t_list* trainers_y_positions();
-
 void free_team_manager();
 #endif //DELIBIRD_TEAM_MANAGER_H

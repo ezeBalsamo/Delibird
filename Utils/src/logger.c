@@ -67,6 +67,10 @@ void log_errorful_message(t_log* logger, char* message){
     log_error(logger, message);
 }
 
+void log_warning_message(t_log* logger, char* message){
+    log_warning(logger, message);
+}
+
 void free_loggers(){
     dictionary_destroy_and_destroy_elements(loggers_by_name, (void (*)(void *)) log_destroy);
 }

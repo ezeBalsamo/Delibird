@@ -20,7 +20,7 @@ void log_no_schedulable_threads_available_for(char* pokemon_name);
 void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number);
 void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_name);
 void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name);
-void log_incorrent_pokemon_removed_error_for(char* pokemon_name_to_remove, char* pokemon_name_removed);
+void log_targetable_pokemon_not_found_error_for(t_localizable_object* localizable_pokemon);
 void log_trainer_added_to_new(t_localizable_object* localizable_trainer);
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason);
 void log_trainer_movement(t_localizable_object* localizable_trainer);

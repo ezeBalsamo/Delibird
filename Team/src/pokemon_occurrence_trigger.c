@@ -1,11 +1,11 @@
-#include <map_update_trigger.h>
+#include <pokemon_occurrence_trigger.h>
 #include <dispatcher.h>
 #include <team_logs_manager.h>
 #include <trainer_threads.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include <distance_calculator.h>
 
-void map_updated_with_insertion_of(t_localizable_object* localizable_pokemon){
+void chase(t_localizable_object* localizable_pokemon){
 
     t_list* trainer_thread_contexts = schedulable_trainer_thread_contexts();
 

@@ -19,8 +19,8 @@ void initialize_team_logs_manager(){
 
 void log_failed_attempt_to_communicate_with_broker(char* default_action){
     char* message = string_from_format("Falló la comunicación con Broker. Por defecto, %s.", default_action);
-    log_errorful_message(main_logger(), message);
-    log_errorful_message(process_execution_logger(), message);
+    log_warning_message(main_logger(), message);
+    log_warning_message(process_execution_logger(), message);
     free(message);
 }
 
@@ -111,13 +111,17 @@ void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name){
     free(message);
 }
 
-void log_incorrent_pokemon_removed_error_for(char* pokemon_name_to_remove, char* pokemon_name_removed){
-    char* message = string_from_format("Se esperaba remover %s pero en su lugar se encontraba %s",
-            pokemon_name_to_remove, pokemon_name_removed);
+void log_targetable_pokemon_not_found_error_for(t_localizable_object* localizable_pokemon){
+
+    char* message = string_from_format(
+            "No se ha encontrado cargado en las ocurrencias al pokemon %s, ubicado en (%d, %d).",
+            localizable_pokemon -> object,
+            localizable_pokemon -> pos_x,
+            localizable_pokemon -> pos_y);
+
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
-
 
 void log_trainer_dispatch_action_with_reason(t_localizable_object* localizable_trainer, char* action_name, char* state_structure_name, char* reason){
     t_trainer* trainer = localizable_trainer -> object;
