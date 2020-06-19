@@ -204,7 +204,7 @@ t_request* deserialize_caught_pokemon(void* serialized_structure){
 
     memcpy(&caught_status, serialized_structure + offset, sizeof(uint32_t));
 
-    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_catch_pokemon));
+    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_caught_pokemon));
     caught_pokemon->caught_status = caught_status;
 
     t_request* request = safe_malloc(sizeof(t_request));
