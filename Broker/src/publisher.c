@@ -8,6 +8,7 @@
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/garbage_collector.h"
 
 void update_subscribers_to_send(t_message_status* message_status, t_queue_context* queue_context){
 
@@ -28,8 +29,8 @@ void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t
         t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(waiting_for_ack_subscribers_threads, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
-    void* ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
-    free(ack);
+        void* ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
+        free(ack);
     }
     list_destroy_and_destroy_elements(waiting_for_ack_subscribers_threads,
                                       (void (*)(void *)) free_subscriber_ack_thread);
@@ -47,6 +48,9 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
     } else {
 
         void _send_message(t_subscriber_context* subscriber_context) {
+
+            if(has_stable_connection(subscriber_context)){
+
             serialize_and_send_structure(request, subscriber_context -> socket_fd);
             log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
@@ -59,14 +63,15 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
             subscriber_ack_thread -> message_status = message_status;
 
             list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
-
+            }
         }
         list_iterate(subscribers, (void (*) (void *)) _send_message);
         log_succesful_message_sent_to_suscribers(request);
 
         join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
     }
-    free_request(request);
+    consider_as_garbage(request, (void (*)(void *)) free_request); //tengo que hacer esto porque no puedo romper lo de adentro.
+                                                                   //Puedo hacer free(request) nada mas pero no se liberaria mas adelante toda la estructura.
 }
 
 void push_to_queue(t_message_status* message_status){

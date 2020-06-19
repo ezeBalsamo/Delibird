@@ -5,6 +5,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/t_list_extension.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <stdlib.h>
 
@@ -59,7 +60,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
     t_list* messages_to_send = list_filter(queue_messages, (bool (*)(void*)) _has_to_be_send);
     add_subscriber_to_all_messages_status_subscribers_to_send_list(messages_to_send, subscriber_context);
 
-    uint32_t ack;
+    uint32_t ack = 1; //le pongo 1 por ponerle cualquier numero que sea distinto a FAILED_ACK.
     for(int i = 0; i < list_size(messages_to_send) && ack != FAILED_ACK; i++) {
 
         t_message_status* message_status = list_get(messages_to_send, i);
@@ -72,6 +73,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
         void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
         ack = *((uint32_t *) ack_result);
         free(ack_result);
+        free(request);
     }
     list_destroy(messages_to_send);
 }
