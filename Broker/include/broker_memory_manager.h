@@ -36,14 +36,6 @@ typedef struct Message_allocator{
 
 }t_message_allocator;
 
-typedef struct Memory_manager{
-
-    t_list* blocks_information;
-
-    t_message_allocator* message_allocator;
-
-}t_memory_manager;
-
 
 void initialize_broker_memory_manager();
 void free_broker_memory_manager();

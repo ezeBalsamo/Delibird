@@ -1,8 +1,6 @@
 #include "cache_information_builder.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 #include <commons/temporal.h>
-#include <stdio.h>
-#include <string.h>
 #include <broker_memory_manager.h>
 #include <commons/string.h>
 
@@ -52,11 +50,12 @@ char* block_information_as_string(t_block_information* block_information){
 
     char* memory_block_info = string_new();
     if (block_information->is_free == false){
+
         char* memory_block = memory_block_as_string(block_information->memory_block);
         string_append(&memory_block_info,memory_block);
     }
 
-    char* block_info = string_from_format("%s - %s %s %s%s%s",initial_address_position,last_address_position,symbol,block_size_info,memory_block_info);
+    char* block_info = string_from_format("%s - %s %s %s%s",initial_address_position,last_address_position,symbol,block_size_info,memory_block_info);
 
     return block_info;
 }
@@ -69,6 +68,7 @@ char* build_using(t_list* blocks_information){
         t_block_information* block = (t_block_information*) list_get(blocks_information,i);
 
         char* partition_number = string_itoa(i);
+
         char* block_info = block_information_as_string(block);
 
         char* partition_info = string_from_format("Partición %s: %s\n",partition_number,block_info);
@@ -79,18 +79,11 @@ char* build_using(t_list* blocks_information){
 }
 
 char* cache_information_builder(t_list* blocks_information){
-    char* cache_info = string_new();
-    string_append(&cache_info,"------------------\nDump: ");
-
     char* actual_time = temporal_get_string_time();
-    string_append(&cache_info,actual_time); //TODO: dia actual
 
-    string_append(&cache_info,"\n");
     char* cache_blocks_info = build_using(blocks_information);
-    string_append(&cache_info, cache_blocks_info);
 
-    string_append(&cache_info,"\n------------------");
+    char* cache_info = string_from_format("------------------\nDump: %s\n%s\n------------------",actual_time,cache_blocks_info);
 
     return cache_info;
-
 }

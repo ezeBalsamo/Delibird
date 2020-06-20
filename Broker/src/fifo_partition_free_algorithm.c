@@ -3,13 +3,14 @@
 #include "../include/broker_memory_manager.h"
 #include "../include/fifo_partition_free_algorithm.h"
 
+bool is_not_free(void* block_information){
+    return ((t_block_information*) block_information) -> is_free == false;
+}
 
 void fifo_partition_free_algorithm(t_list* blocks_information){
     //busco el primero no ocupado
-    bool _is_not_free(void* block_information){
-        return ((t_block_information*) block_information) -> is_free == false;
-    }
-    t_block_information* block_found = (t_block_information*) list_find(blocks_information,_is_not_free);
+
+    t_block_information* block_found = (t_block_information*) list_find(blocks_information,is_not_free);
 
     //vacio este bloque:
     block_found->is_free = true;
