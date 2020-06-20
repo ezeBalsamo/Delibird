@@ -58,6 +58,10 @@ bool is_not_targeted(void* targetable_pokemon){
     return !(((t_targetable_object*) targetable_pokemon) -> is_being_targeted);
 }
 
+t_localizable_object* localizable_pokemon_from_targetable(t_targetable_object* targetable_pokemon){
+    return targetable_pokemon -> localizable_pokemon;
+}
+
 t_list* not_yet_targeted_pokemons(){
     t_list* not_yet_targeted_pokemons = list_create();
 
@@ -66,7 +70,6 @@ t_list* not_yet_targeted_pokemons(){
 
         t_list* filtered_not_yet_targeted_pokemons = list_filter((t_list*) targetable_pokemons, is_not_targeted);
         list_add_all(not_yet_targeted_pokemons, filtered_not_yet_targeted_pokemons);
-
         list_destroy(filtered_not_yet_targeted_pokemons);
     }
 
@@ -81,8 +84,8 @@ void new_occurrence_of(t_targetable_object* targetable_pokemon){
     pthread_mutex_unlock(&ocurrences_mutex);
     pthread_mutex_unlock(&targetable_status_mutex);
 
-    if(targetable_pokemon -> is_being_targeted){
-        chase(targetable_pokemon -> localizable_pokemon);
+    if(targetable_pokemon -> should_be_targeted){
+        chase(targetable_pokemon);
     }
 }
 
@@ -97,11 +100,14 @@ void consider_become_targetable_next_pokemon_named(char* pokemon_name){
 
         t_list* targetable_pokemons = occurrences_of(pokemon_name);
 
-        if (!list_is_empty(targetable_pokemons)){
-            t_targetable_object* targetable_pokemon = list_get(targetable_pokemons, 0);
-            targetable_pokemon -> is_being_targeted = true;
+        t_targetable_object* targetable_pokemon_found = list_find(targetable_pokemons, is_not_targeted);
+
+        list_destroy(targetable_pokemons);
+
+        if(targetable_pokemon_found){
+            targetable_pokemon_found -> should_be_targeted = true;
             sem_wait(&trainer_thread_context_has_become_blocked_semaphore);
-            chase(targetable_pokemon -> localizable_pokemon);
+            chase(targetable_pokemon_found);
         }
     }
 }

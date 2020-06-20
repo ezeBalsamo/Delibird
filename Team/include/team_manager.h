@@ -13,6 +13,7 @@ typedef struct Localizable_object{
 
 typedef struct Targetable_object{
     bool is_being_targeted;
+    bool should_be_targeted;
     t_localizable_object* localizable_pokemon;
 }t_targetable_object;
 

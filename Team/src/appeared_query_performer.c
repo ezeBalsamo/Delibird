@@ -29,7 +29,8 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
     pthread_mutex_unlock(&targetable_status_mutex);
 
     t_targetable_object* targetable_pokemon = safe_malloc(sizeof(t_targetable_object));
-    targetable_pokemon -> is_being_targeted = should_be_targeted;
+    targetable_pokemon -> should_be_targeted = should_be_targeted;
+    targetable_pokemon -> is_being_targeted = false;
     targetable_pokemon -> localizable_pokemon = localizable_pokemon;
 
     return targetable_pokemon;

@@ -88,7 +88,21 @@ void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_threa
     }
 }
 
-void remove_from_new_or_blocked(t_trainer_thread_context* trainer_thread_context){
+void consider_continue_executing(){
+    if(!queue_is_empty(ready_trainer_thread_contexts)){
+        execute_trainer_thread_context();
+    }
+}
+
+void free_current_execution_doing(void (*state_function) ()){
+    reset_quantum_consumed();
+    state_function();
+    trainer_thread_context_executing = NULL;
+    pthread_mutex_unlock(&execute_mutex);
+    consider_continue_executing();
+}
+
+void consider_removing_from_new_or_blocked(t_trainer_thread_context* trainer_thread_context){
 
     if(trainer_thread_context -> state == NEW){
         remove_from(new_trainer_thread_contexts, trainer_thread_context);
@@ -112,10 +126,17 @@ void schedule(t_trainer_thread_context* trainer_thread_context, char* reason){
 
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
 
-    remove_from_new_or_blocked(trainer_thread_context);
-    pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
+    if(trainer_thread_context -> state == EXECUTE){
+        void _coming_from_execute_function(){
+            schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
+        }
 
-    schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
+        free_current_execution_doing(_coming_from_execute_function);
+    }else{
+        consider_removing_from_new_or_blocked(trainer_thread_context);
+        pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
+        schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
+    }
 }
 
 bool is_anybody_executing(){
@@ -143,20 +164,6 @@ void preempt_due_to(char* preemption_reason){
     sem_wait(&trainer_thread_context_to_schedule -> semaphore);
 }
 
-void consider_continue_executing(){
-    if(!queue_is_empty(ready_trainer_thread_contexts)){
-        execute_trainer_thread_context();
-    }
-}
-
-void free_current_execution_doing(void (*state_function) ()){
-
-    trainer_thread_context_executing = NULL;
-    reset_quantum_consumed();
-    state_function();
-    pthread_mutex_unlock(&execute_mutex);
-}
-
 void remove_from_blocked_if_necessary(t_trainer_thread_context* trainer_thread_context){
 
     if(trainer_thread_context -> state == BLOCKED){
@@ -176,7 +183,6 @@ void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_threa
     free_current_execution_doing(_finished_function);
 
     consider_global_goal_accomplished();
-    consider_continue_executing();
 }
 
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context){
@@ -189,6 +195,7 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
     }
 
     free_current_execution_doing(_blocked_function);
+    sem_wait(&trainer_thread_context -> semaphore);
 }
 
 void assert_all_trainer_thread_contexts_have_finished(){
@@ -223,6 +230,10 @@ void free_dispatcher(){
     queue_destroy(ready_trainer_thread_contexts);
     list_destroy(blocked_trainer_thread_contexts);
     list_destroy(finished_trainer_thread_contexts);
+
+    pthread_mutex_destroy(&execute_mutex);
+    pthread_mutex_destroy(&schedulable_trainer_thread_contexts_mutex);
+    pthread_mutex_destroy(&ready_queue_mutex);
 
     free_scheduling_algorithm();
 }

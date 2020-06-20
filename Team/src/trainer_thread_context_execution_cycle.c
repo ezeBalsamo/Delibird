@@ -42,7 +42,6 @@ void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context)
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
     t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
 
-    free_thread_action(trainer_thread_context -> thread_action);
     update_current_pokemons_after_caught(trainer_thread_context -> localizable_trainer, localizable_pokemon -> object);
 
     trainer_thread_context_state_chained_evaluation_value_when_caught_for(trainer_thread_context);

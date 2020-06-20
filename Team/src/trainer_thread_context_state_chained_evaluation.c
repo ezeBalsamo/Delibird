@@ -21,13 +21,14 @@ bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_con
 void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thread_context){
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
 
-    t_localizable_object* localizable_pokemon =
-            closest_pokemon_to(pokemons_waiting_for_be_caught,
-                               trainer_thread_context -> localizable_trainer);
+    t_targetable_object* targetable_pokemon =
+            closest_targetable_pokemon(pokemons_waiting_for_be_caught,
+                                       trainer_thread_context->localizable_trainer);
 
     list_destroy(pokemons_waiting_for_be_caught);
 
-    prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
+    targetable_pokemon -> is_being_targeted = true;
+    prepare_for_movement_action(trainer_thread_context, targetable_pokemon -> localizable_pokemon);
 }
 
 bool can_be_scheduled_function(t_trainer_thread_context* trainer_thread_context){

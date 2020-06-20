@@ -1,7 +1,6 @@
 #include <commons/string.h>
 #include <dispatcher.h>
 #include "round_robin_scheduling_algorithm.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/configuration_manager.h"
 
 t_scheduling_algorithm* round_robin_algorithm;

@@ -196,5 +196,6 @@ void cancel_all_broker_connection_handler_threads(){
 
 void free_broker_connection_handler(){
     free(team_process_description);
+    sem_destroy(&subscriber_threads_request_sent);
     cancel_all_broker_connection_handler_threads();
 }
