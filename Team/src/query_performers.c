@@ -1,5 +1,5 @@
 #include <team_manager.h>
-#include <map.h>
+#include <pokemon_occurrences.h>
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"

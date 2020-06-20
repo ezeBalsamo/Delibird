@@ -2,7 +2,7 @@ include_directories(include)
 set(SOURCES
         src/team_broker_connection_handler.c
         src/team_gameboy_connection_handler.c
-        src/map.c
+        src/pokemon_occurrences.c
         src/team.c
         src/team_logs_manager.c
         src/team_configuration_manager.c
@@ -15,7 +15,7 @@ set(SOURCES
         src/localized_query_performer.c
         src/caught_query_performer.c
         src/team_sanitizer.c
-        src/map_update_trigger.c
+        src/pokemon_occurrence_trigger.c
         src/dispatcher.c
         src/trainer_threads.c
         src/scheduling_algorithm.c

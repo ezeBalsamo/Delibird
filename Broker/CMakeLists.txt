@@ -18,7 +18,9 @@ set(SOURCES
         src/broker_memory_algorithms.c
         src/first_fit_search_partition_algorithm.c
         src/fifo_free_partition_algorithm.c
-        src/cache_information_builder.c src/initialize_signal_broker_handler.c include/initialize_signal_broker_handler.h)
+        src/cache_information_builder.c
+        src/subscriber_context_provider.c
+        src/broker_signal_handler.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(broker ${SOURCES})

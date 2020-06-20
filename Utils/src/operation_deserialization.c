@@ -39,7 +39,8 @@ t_request* deserialize_new_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length + 1);
+    uint32_t pokemon_name_length_including_with_trailing_null = pokemon_name_length + 2;
+    pokemon_name = calloc(pokemon_name_length_including_with_trailing_null, sizeof(char));
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
@@ -75,7 +76,8 @@ t_request* deserialize_appeared_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length + 1);
+    uint32_t pokemon_name_length_including_with_trailing_null = pokemon_name_length + 2;
+    pokemon_name = calloc(pokemon_name_length_including_with_trailing_null, sizeof(char));
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
@@ -105,7 +107,8 @@ t_request* deserialize_get_pokemon(void* serialized_structure){
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length + 1);
+    uint32_t pokemon_name_length_including_with_trailing_null = pokemon_name_length + 2;
+    pokemon_name = calloc(pokemon_name_length_including_with_trailing_null, sizeof(char));
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
 
     string_append(&pokemon_name, "\0");
@@ -130,7 +133,8 @@ t_request* deserialize_localized_pokemon(void* serialized_structure){
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length + 1);
+    uint32_t pokemon_name_length_including_with_trailing_null = pokemon_name_length + 2;
+    pokemon_name = calloc(pokemon_name_length_including_with_trailing_null, sizeof(char));
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&quantity, serialized_structure + offset, sizeof(uint32_t));
@@ -170,7 +174,8 @@ t_request* deserialize_catch_pokemon(void* serialized_structure) {
 
     memcpy(&pokemon_name_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    pokemon_name = safe_malloc(pokemon_name_length + 1);
+    uint32_t pokemon_name_length_including_with_trailing_null = pokemon_name_length + 2;
+    pokemon_name = calloc(pokemon_name_length_including_with_trailing_null, sizeof(char));
     memcpy(pokemon_name, serialized_structure + offset, pokemon_name_length);
     offset += pokemon_name_length;
     memcpy(&pos_x, serialized_structure + offset, sizeof(uint32_t));
@@ -199,7 +204,7 @@ t_request* deserialize_caught_pokemon(void* serialized_structure){
 
     memcpy(&caught_status, serialized_structure + offset, sizeof(uint32_t));
 
-    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_catch_pokemon));
+    t_caught_pokemon* caught_pokemon = safe_malloc(sizeof(t_caught_pokemon));
     caught_pokemon->caught_status = caught_status;
 
     t_request* request = safe_malloc(sizeof(t_request));
@@ -222,7 +227,8 @@ t_request* deserialize_subscribe_me(void* serialized_structure){
     offset += sizeof(uint32_t);
     memcpy(&process_description_length, serialized_structure + offset, sizeof(uint32_t));
     offset += sizeof(uint32_t);
-    process_description = safe_malloc(process_description_length + 1);
+    uint32_t process_description_length_with_trailing_null = process_description_length + 2;
+    process_description = calloc(process_description_length_with_trailing_null, sizeof(char));
     memcpy(process_description, serialized_structure + offset, process_description_length);
 
     string_append(&process_description, "\0");

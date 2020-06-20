@@ -17,13 +17,13 @@ void initialize_broker_memory_manager(){
 
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
     //initial block manager, with all the memory
-    t_block_manager* initial_block_manager = safe_malloc(sizeof(t_block_manager));
-    initial_block_manager->free_block = true;
-    initial_block_manager->block_size = memory_size;
-    initial_block_manager->initial_position = safe_malloc(memory_size);
-    initial_block_manager->memory_block = NULL;
+    t_block_information* initial_block_information = safe_malloc(sizeof(t_block_information));
+    initial_block_information->free_block = true;
+    initial_block_information->block_size = memory_size;
+    initial_block_information->initial_position = safe_malloc(memory_size);
+    initial_block_information->memory_block = NULL;
 
-    list_add(memory_manager->blocks_manager,(void*) initial_block_manager);
+    list_add(memory_manager->blocks_manager,(void*) initial_block_information);
 
     log_successful_initialize_broker_memory_manager();
 }

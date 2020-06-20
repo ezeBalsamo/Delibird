@@ -1,5 +1,5 @@
 #include <query_performers.h>
-#include <map.h>
+#include <pokemon_occurrences.h>
 #include "appeared_query_performer.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
@@ -12,7 +12,7 @@ t_query_performer* appeared_query_performer(){
 
 bool should_be_targeted_pokemon_named(char* pokemon_name){
     uint32_t amount_required = amount_required_of(pokemon_name);
-    uint32_t ocurrences = occurrences_amount_in_map_of(pokemon_name);
+    uint32_t ocurrences = occurrences_of_pokemon_named(pokemon_name);
     return ocurrences < amount_required;
 }
 
@@ -41,7 +41,7 @@ void appeared_query_performer_function(t_identified_message* correlative_identif
     if(global_goal_contains(appeared_pokemon -> pokemon_name)){
 
         t_targetable_object* targetable_pokemon = targetable_pokemon_according_to(appeared_pokemon);
-        load_pokemon_in_map(targetable_pokemon);
+        new_occurrence_of(targetable_pokemon);
     }
 }
 

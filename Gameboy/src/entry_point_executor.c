@@ -8,6 +8,7 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/logger.h"
 #include <signal.h>
+#include <stdlib.h>
 
 timer_t timer;
 
@@ -110,8 +111,9 @@ void publisher_mode_execution(){
     log_about_to_send_request(request);
 
     serialize_and_send_structure(request, connection_information -> socket_fd);
-    receive_ack_with_timeout_in_seconds(connection_information -> socket_fd, 5);
+    void* ack = receive_ack_with_timeout_in_seconds(connection_information -> socket_fd, 5);
     log_request_sent(request);
+    free(ack);
 
     free_request(request);
     free_and_close_connection_information(connection_information);

@@ -18,7 +18,7 @@ char* pointer_address_as_string(void* block_position_pointer){
 }
 // 0x000 - 0x3FF [X] Size:1024b LRU:<VALOR> Cola: <COLA> ID: <ID>
 // 0x400 - 0x7FE [L] Size:1024b
-char* block_info_as_string(t_block_manager* block){
+char* block_info_as_string(t_block_information* block){
     char* block_info = string_new();
 
     char* symbol = "[X] ";
@@ -69,7 +69,7 @@ char* get_cache_info(t_list* blocks_manager){
     char* cache_partitions_info = string_new();
 
     for(int i = 0; i<list_size(blocks_manager); i++){
-        t_block_manager* block = (t_block_manager*) list_get(blocks_manager,i);
+        t_block_information* block = (t_block_information*) list_get(blocks_manager,i);
 
         string_append(&cache_partitions_info,"Particion ");
         char* partition_number = string_itoa(i);

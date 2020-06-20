@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <subscriber.h>
 #include <broker_memory_manager.h>
-#include <initialize_signal_broker_handler.h>
+#include <broker_signal_handler.h>
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../include/connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -12,7 +12,6 @@
 #include "../../Utils/include/garbage_collector.h"
 
 int main() {
-
     initialize_broker_signal_handler();
     initialize_garbage_collector();
     initialize_messages_roles();
@@ -29,7 +28,6 @@ int main() {
     *connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
     safe_thread_join(*connection_handler_thread);
     log_successful_execution();
-
     free_broker_memory_manager();
     free_system();
 

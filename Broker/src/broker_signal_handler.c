@@ -1,9 +1,8 @@
-#include <commons/string.h>
-#include <fcntl.h>
-#include <broker_memory_manager.h>
-#include "initialize_signal_broker_handler.h"
 #include <signal.h>
+#include "../include/broker_signal_handler.h"
+#include "../../Utils/include/common_structures.h"
 #include <commons/log.h>
+#include <broker_memory_manager.h>
 #include <stdlib.h>
 
 void cache_handler(){
@@ -13,10 +12,8 @@ void cache_handler(){
     free(cache_info);
 }
 
-
 void initialize_broker_signal_handler(){
     initialize_signal_handler();
+    signal(SIGPIPE, SIG_IGN);
     handle_signal(SIGUSR1,cache_handler);
 }
-
-

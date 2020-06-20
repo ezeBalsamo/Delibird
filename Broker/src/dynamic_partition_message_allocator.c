@@ -15,7 +15,6 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     uint32_t operation = internal_operation_in(message);
 
     if(operation == IDENTIFIED_MESSAGE){
-        message_id = ((t_identified_message*)message->request->structure) -> message_id;
         message_request = (t_request*) internal_request_in_correlative(message);
     }
     //instancio un bloque de memoria, ingresando el espacio que va a ocupar su mensaje
@@ -24,7 +23,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     memory_block_to_save->message_id = message_id;
     memory_block_to_save->message_operation = message_request->operation;
 
-    t_serialization_information* request_serialized = serialize(message_request); //TODO: OJO!!
+    t_serialization_information* request_serialized = serialize(message_request);
 
     memory_block_to_save->message_size = size_to_allocate_for(message_request); //request_serialized->amount_of_bytes incluye bytes que no quiero
     memory_block_to_save->message = ((t_request*) request_serialized->serialized_request) -> structure;
@@ -32,17 +31,17 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
 
     uint32_t search_failed_count = 0;
 
-    t_block_manager* block_manager_found;  //para referenciarlo afuera
+    t_block_information* block_information_found;  //para referenciarlo afuera
     while(search_failed_count <= dynamic_partition_message_allocator->max_search_tries){
 
-        block_manager_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
-        if (block_manager_found != NULL){
+        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
+        if (block_information_found != NULL){
             break;
         }
         dynamic_partition_message_allocator->free_partition_algorithm (blocks_manager);
 
-        block_manager_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
-        if (block_manager_found != NULL){
+        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
+        if (block_information_found != NULL){
             break;
         }
 
@@ -56,23 +55,23 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
 
     //encontre un block manager disponible, ahora tengo que particionarlo con la cantidad que necesito (> min)
     //creando uno nuevo que tenga la memoria restante, que este libre
-    t_block_manager* new_block_manager = safe_malloc(sizeof(t_block_manager));
-    new_block_manager->free_block = true;
-    uint32_t memory_size_to_partition = block_manager_found->block_size;
-    new_block_manager->initial_position = block_manager_found->initial_position + new_block_manager->block_size;
+    t_block_information* new_block_information = safe_malloc(sizeof(t_block_information));
+    new_block_information->free_block = true;
+    uint32_t memory_size_to_partition = block_information_found->block_size;
+    new_block_information->initial_position = block_information_found->initial_position + new_block_information->block_size;
 
-    block_manager_found->free_block = false;
-    block_manager_found->memory_block = memory_block_to_save;
-    block_manager_found->block_size = dynamic_partition_message_allocator->min_partition_size;
+    block_information_found->free_block = false;
+    block_information_found->memory_block = memory_block_to_save;
+    block_information_found->block_size = dynamic_partition_message_allocator->min_partition_size;
 
     if(memory_block_to_save->message_size > dynamic_partition_message_allocator->min_partition_size){
-        block_manager_found->block_size = memory_block_to_save->message_size;
+        block_information_found->block_size = memory_block_to_save->message_size;
     }
 
-    new_block_manager->initial_position = block_manager_found->initial_position + block_manager_found->block_size;
-    new_block_manager->block_size = memory_size_to_partition - block_manager_found->block_size;
+    new_block_information->initial_position = block_information_found->initial_position + block_information_found->block_size;
+    new_block_information->block_size = memory_size_to_partition - block_information_found->block_size;
 
-    list_add(blocks_manager,(void*) new_block_manager);
+    list_add(blocks_manager,(void*) new_block_information);
 }
 
 t_message_allocator* initialize_dynamic_partition_message_allocator(){
