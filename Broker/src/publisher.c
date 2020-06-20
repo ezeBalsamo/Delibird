@@ -49,8 +49,6 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
         void _send_message(t_subscriber_context* subscriber_context) {
 
-            if(has_stable_connection(subscriber_context)){
-
             serialize_and_send_structure(request, subscriber_context -> socket_fd);
             log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
@@ -63,15 +61,17 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
             subscriber_ack_thread -> message_status = message_status;
 
             list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
-            }
         }
-        list_iterate(subscribers, (void (*) (void *)) _send_message);
+
+        t_list* subscribers_with_connection_active = list_filter(subscribers, (bool (*)(void *)) has_active_connection);
+        list_iterate(subscribers_with_connection_active, (void (*) (void *)) _send_message);
         log_succesful_message_sent_to_suscribers(request);
 
         join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
     }
+
     consider_as_garbage(request, (void (*)(void *)) free_request); //tengo que hacer esto porque no puedo romper lo de adentro.
-                                                                   //Puedo hacer free(request) nada mas pero no se liberaria mas adelante toda la estructura.
+                                                                   // Puedo hacer free(request) nada mas pero no se liberaria mas adelante toda la estructura.
 }
 
 void push_to_queue(t_message_status* message_status){
