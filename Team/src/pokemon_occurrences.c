@@ -82,7 +82,7 @@ void new_occurrence_of(t_targetable_object* targetable_pokemon){
     pthread_mutex_unlock(&targetable_status_mutex);
 
     if(targetable_pokemon -> is_being_targeted){
-        chase(targetable_pokemon->localizable_pokemon);
+        chase(targetable_pokemon -> localizable_pokemon);
     }
 }
 
@@ -91,14 +91,18 @@ uint32_t occurrences_of_pokemon_named(char* pokemon_name){
     return list_size(targetable_pokemons);
 }
 
-void become_targetable_next_pokemon_named(char* pokemon_name){
+void consider_become_targetable_next_pokemon_named(char* pokemon_name){
 
-    t_list* targetable_pokemons = occurrences_of(pokemon_name);
+    if (amount_required_of(pokemon_name) > 0){
 
-    if (!list_is_empty(targetable_pokemons)){
-        t_targetable_object* targetable_pokemon = list_get(targetable_pokemons, 0);
-        targetable_pokemon -> is_being_targeted = true;
-        chase(targetable_pokemon -> localizable_pokemon);
+        t_list* targetable_pokemons = occurrences_of(pokemon_name);
+
+        if (!list_is_empty(targetable_pokemons)){
+            t_targetable_object* targetable_pokemon = list_get(targetable_pokemons, 0);
+            targetable_pokemon -> is_being_targeted = true;
+            sem_wait(&trainer_thread_context_has_become_blocked_semaphore);
+            chase(targetable_pokemon -> localizable_pokemon);
+        }
     }
 }
 
@@ -121,8 +125,7 @@ void remove_occurrence_of(t_localizable_object* localizable_pokemon){
 
     free_targetable_pokemon(targetable_pokemon_found);
 
-    sem_wait(&trainer_thread_context_has_become_blocked_semaphore);
-    become_targetable_next_pokemon_named(pokemon_name);
+    consider_become_targetable_next_pokemon_named(pokemon_name);
 }
 
 void initialize_occurrence_of(t_pokemon_goal* pokemon_goal){

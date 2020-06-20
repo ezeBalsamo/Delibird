@@ -1,5 +1,6 @@
 #include <query_performers.h>
 #include <pokemon_occurrences.h>
+#include <team_logs_manager.h>
 #include "appeared_query_performer.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
@@ -37,11 +38,14 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
 void appeared_query_performer_function(t_identified_message* correlative_identified_message){
 
     t_appeared_pokemon* appeared_pokemon = internal_object_in_correlative(correlative_identified_message);
+    char* pokemon_name = appeared_pokemon -> pokemon_name;
 
-    if(global_goal_contains(appeared_pokemon -> pokemon_name)){
+    if(global_goal_contains(pokemon_name)){
 
         t_targetable_object* targetable_pokemon = targetable_pokemon_according_to(appeared_pokemon);
         new_occurrence_of(targetable_pokemon);
+    }else{
+        log_appeared_pokemon_not_necessary_for_global_goal(pokemon_name);
     }
 }
 

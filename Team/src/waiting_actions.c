@@ -6,8 +6,6 @@
 #include <team_logs_manager.h>
 #include <pthread.h>
 
-extern sem_t trainer_thread_context_has_become_blocked_semaphore;
-
 void waiting_catch_response_action_execution_function(t_trainer_thread_context* trainer_thread_context){
     t_waiting_catch_response_action* waiting_catch_response_action =
             internal_thread_action_in(trainer_thread_context);
@@ -23,9 +21,8 @@ void waiting_catch_response_action_execution_function(t_trainer_thread_context* 
         catch_action_completed_by(trainer_thread_context);
     }else{
         log_failed_caught_of(localizable_pokemon);
-        remove_occurrence_of(localizable_pokemon);
         prepare_for_waiting_for_more_pokemons_action(trainer_thread_context);
-        sem_post(&trainer_thread_context_has_become_blocked_semaphore);
+        remove_occurrence_of(localizable_pokemon);
     }
 }
 

@@ -37,6 +37,8 @@ void log_expected_to_be_not_empty_error_for(char* state_structure_name);
 void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context);
 void log_message_id_not_required(uint32_t message_id);
 void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
+void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name);
+void log_global_goal_not_consistent_with_trainers_requirements_error();
 void log_global_goal_accomplished();
 
 void free_team_logs_manager();

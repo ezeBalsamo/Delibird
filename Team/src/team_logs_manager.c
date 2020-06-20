@@ -280,6 +280,16 @@ void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_gl
     log_errorful_message(process_execution_logger(), message);
 }
 
+void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name){
+    char* message = string_from_format("El pokemon %s no es requerido para completar el objetivo global.", pokemon_name);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_global_goal_not_consistent_with_trainers_requirements_error(){
+    log_errorful_message(process_execution_logger(), "Los requerimientos globales no coinciden con los requerimientos de los entrenadores.");
+}
+
 void log_global_goal_accomplished(){
     char* message = "Team ha cumplido su objetivo global.";
     log_succesful_message(main_logger(), message);

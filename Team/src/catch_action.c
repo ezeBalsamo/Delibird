@@ -26,15 +26,7 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
 
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
-    if(!connection_information -> connection_was_succesful) {
-        t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
-        log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
-
-        free_and_close_connection_information(connection_information);
-        free_request(request);
-
-        catch_action_completed_by(trainer_thread_context);
-    } else {
+    if(connection_information -> connection_was_succesful) {
         int ack =
                 serialize_and_send_structure_and_wait_for_ack(
                         request,
@@ -45,6 +37,14 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
         free_request(request);
 
         catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
+    } else {
+        t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
+        log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
+
+        free_and_close_connection_information(connection_information);
+        free_request(request);
+
+        catch_action_completed_by(trainer_thread_context);
     }
 }
 
