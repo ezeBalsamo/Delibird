@@ -62,8 +62,3 @@ void gamecard_query_perform(t_request* request) {
     query_performer->perform_function (request->structure);
 
 }
-
-void free_gamecard_query_performers(){
-    list_destroy_and_destroy_elements(query_performers, free);
-}
-

@@ -16,7 +16,7 @@ void log_initiating_communication_retry_process_with_broker_from_gamecard(){
     char* message = "Inicio del proceso de reintento de comunicación con el Broker.";
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
-} //es identico al de team, se podria pasar a Utils
+}
 
 void log_succesful_retry_of_communication_with_broker_from_gamecard(){
     char* message = "El proceso de reintento de comunicación con el Broker ha sido exitoso.";
@@ -62,7 +62,11 @@ void log_queue_thread_create_error_from_gamecard(){
     exit(EXIT_FAILURE);
 }
 
-void log_invalid_operation_to_query_performer_from_gamecard(uint32_t operation){}
+void log_invalid_operation_to_query_performer_from_gamecard(uint32_t operation){
+    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u", operation);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
 
 void free_gamecard_logs_manager(){
     free_loggers();

@@ -10,8 +10,8 @@ t_gamecard_query_performer* get_query_performer(){
     return get_pokemon_query_performer;
 }
 
-void get_query_performer_function(t_identified_message* correlative_identified_message){
-    printf("Se recibio el mensaje GET_POKEMON con id = %d", correlative_identified_message -> message_id);
+void get_query_performer_function(t_identified_message* identified_message){
+    printf("Se recibio el mensaje GET_POKEMON con id = %d\n", identified_message -> message_id);
     //TODO: Implementar lógica
 
 }

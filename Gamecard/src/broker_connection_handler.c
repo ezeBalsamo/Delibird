@@ -1,4 +1,3 @@
-#include "../include/gamecard_sanitizer.h"
 #include "../include/gamecard_logs_manager.h"
 #include "../include/gamecard_query_performer.h"
 #include "../include/gamecard_configuration_manager.h"
@@ -11,8 +10,6 @@
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include <commons/string.h>
 
 pthread_t new_queue_tid;
@@ -152,7 +149,6 @@ void initialize_gamecard_process_description(){
     t_list* config_values = all_config_values();
     gamecard_process_description = process_description_for("GAMECARD", config_values);
     list_destroy_and_destroy_elements(config_values, free);
-    consider_as_garbage(gamecard_process_description, free);
 }
 
 void* initialize_gamecard_broker_connection_handler(){

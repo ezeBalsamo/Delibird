@@ -1,9 +1,11 @@
 #include "../include/gameboy_connection_handler.h"
+#include "../include/gamecard_query_performer.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pretty_printer.h"
+#include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 char* port(){
     return config_get_string_at("PUERTO");
@@ -15,13 +17,16 @@ void* main_thread_handler(void* connection_fd){
     t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
     t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
-    char* request_as_string = request_pretty_print(deserialized_request);
-    printf("%s\n", request_as_string);
+    //Loguear y mostrar por consola mensaje recibido
+    log_request_received_with(main_logger(), deserialized_request);
+
+    //Realizar lógica
+    //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp
+    gamecard_query_perform(deserialized_request);
 
     free_and_close_connection(connection_fd);
     free_serialization_information(serialization_information);
     free(deserialized_request);
-    free(request_as_string);
 
     return NULL;
 }

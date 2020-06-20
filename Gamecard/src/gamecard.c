@@ -1,4 +1,3 @@
-#include "../include/gamecard_sanitizer.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/pretty_printer.h"
