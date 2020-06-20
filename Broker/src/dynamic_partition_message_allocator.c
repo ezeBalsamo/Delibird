@@ -6,7 +6,7 @@
 
 t_message_allocator* dynamic_partition_message_allocator;
 
-void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_manager){
+void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
     //Obtengo el mensaje
@@ -34,13 +34,13 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     t_block_information* block_information_found;  //para referenciarlo afuera
     while(search_failed_count <= dynamic_partition_message_allocator->max_search_tries){
 
-        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
+        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_information);
         if (block_information_found != NULL){
             break;
         }
-        dynamic_partition_message_allocator->free_partition_algorithm (blocks_manager);
+        dynamic_partition_message_allocator->free_partition_algorithm (blocks_information);
 
-        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_manager);
+        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_information);
         if (block_information_found != NULL){
             break;
         }
@@ -48,7 +48,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
         search_failed_count++;
 
         if (search_failed_count > dynamic_partition_message_allocator->max_search_tries){
-            dynamic_partition_message_allocator->compact_memory_algorithm(blocks_manager);
+            dynamic_partition_message_allocator->compact_memory_algorithm(blocks_information);
             search_failed_count=0;
         }
     }
@@ -71,7 +71,7 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     new_block_information->initial_position = block_information_found->initial_position + block_information_found->block_size;
     new_block_information->block_size = memory_size_to_partition - block_information_found->block_size;
 
-    list_add(blocks_manager,(void*) new_block_information);
+    list_add(blocks_information,(void*) new_block_information);
 }
 
 t_message_allocator* initialize_dynamic_partition_message_allocator(){

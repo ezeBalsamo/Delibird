@@ -74,10 +74,10 @@ void* get_free_partition_algorithm() {
     }
 }
 //uff mama
-int find_index_of_furthest_occupied_block_information(t_list* blocks_manager){
+int find_index_of_furthest_occupied_block_information(t_list* blocks_information){
     //itero desde el final, devuelvo el primero, seria como un find inverso
-    for(int i = list_size(blocks_manager);i < 0;i--){
-        t_block_information* block_information = (t_block_information*) list_get(blocks_manager,i);
+    for(int i = list_size(blocks_information);i < 0;i--){
+        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
         if (block_information->free_block == false){
             return i;
         }
@@ -85,18 +85,18 @@ int find_index_of_furthest_occupied_block_information(t_list* blocks_manager){
     return 0;
 }
 
-void compact_memory_algorithm(t_list* blocks_manager){
+void compact_memory_algorithm(t_list* blocks_information){
     //1. acomodar todas las particiones libres por un lado y las ocupadas por otro
     //basicamente swapeo cualquier part libre con la mas lejana de las ocupadas
     //uint32_t initial_index_of_free_partitions = 0;
-    for (int i = 0; i < list_size(blocks_manager);i++){
+    for (int i = 0; i < list_size(blocks_information);i++){
 
-        t_block_information* block_information = (t_block_information*) list_get(blocks_manager,i);
+        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
 
         if (block_information->free_block){
 
-            int furthest_occupied_block_index = find_index_of_furthest_occupied_block_information(blocks_manager);
-            list_swap(blocks_manager,i,furthest_occupied_block_index);
+            int furthest_occupied_block_index = find_index_of_furthest_occupied_block_information(blocks_information);
+            list_swap(blocks_information,i,furthest_occupied_block_index);
 
             //si pasa esta condicion, llegue a casos del tipo  x-x-x-l-l, por ende no tiene sentido seguir iterando
             /*if(i>furthest_occupied_block_index){
@@ -106,14 +106,14 @@ void compact_memory_algorithm(t_list* blocks_manager){
         }
     }
     //2. Eliminar particiones vacias contiguas, lograr 1 sola particion vacia de mayor tamaño
-    for (int i = 0 /*initial_index_of_free_partitions*/; i < list_size(blocks_manager)-1;i++){
-        t_block_information* master_block = (t_block_information*) list_get(blocks_manager,i);
+    for (int i = 0 /*initial_index_of_free_partitions*/; i < list_size(blocks_information)-1;i++){
+        t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
         if (master_block->free_block){
 
-            t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_manager,i+1);
+            t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
 
             master_block->block_size += block_to_compact->block_size;
-            if ((i+1) == list_size(blocks_manager)){
+            if ((i+1) == list_size(blocks_information)){
                 break;
             }
             i--;

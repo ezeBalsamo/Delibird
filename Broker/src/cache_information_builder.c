@@ -65,11 +65,11 @@ char* block_info_as_string(t_block_information* block){
     return block_info;
 }
 
-char* get_cache_info(t_list* blocks_manager){
+char* get_cache_info(t_list* blocks_information){
     char* cache_partitions_info = string_new();
 
-    for(int i = 0; i<list_size(blocks_manager); i++){
-        t_block_information* block = (t_block_information*) list_get(blocks_manager,i);
+    for(int i = 0; i<list_size(blocks_information); i++){
+        t_block_information* block = (t_block_information*) list_get(blocks_information,i);
 
         string_append(&cache_partitions_info,"Particion ");
         char* partition_number = string_itoa(i);
@@ -86,7 +86,7 @@ char* get_cache_info(t_list* blocks_manager){
     return cache_partitions_info;
 }
 
-char* cache_info_builder(t_list* blocks_manager){
+char* cache_info_builder(t_list* blocks_information){
     char* cache_info = string_new();
     string_append(&cache_info,"------------------\nDump: ");
 
@@ -94,7 +94,7 @@ char* cache_info_builder(t_list* blocks_manager){
     string_append(&cache_info,actual_time); //TODO: dia actual
 
     string_append(&cache_info,"\n");
-    char* cache_blocks_info = get_cache_info(blocks_manager);
+    char* cache_blocks_info = get_cache_info(blocks_information);
     string_append(&cache_info, cache_blocks_info);
 
     string_append(&cache_info,"\n------------------");
