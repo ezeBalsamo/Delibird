@@ -7,8 +7,7 @@
 void fifo_partition_free_algorithm(t_list* blocks_information){
     //busco el primero no ocupado
     bool _is_not_free(void* block_information){
-        bool is_not_free = ((t_block_information*) block_information) -> is_free == false;
-        return is_not_free;
+        return ((t_block_information*) block_information) -> is_free == false;
     }
     t_block_information* block_found = (t_block_information*) list_find(blocks_information,_is_not_free);
 
