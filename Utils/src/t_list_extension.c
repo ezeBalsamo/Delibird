@@ -53,15 +53,15 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
 }
 
-t_list* list_swap(t_list* self, int i ,int j){
-    if (list_size(self)< i || list_size(self)<j){
+t_list* list_swap(t_list* self, int index ,int another_index){
+    if (list_size(self)< index || list_size(self)<another_index){
         //TODO: romper
     }
-    void* element_to_swap = list_get(self,i);
-    void* second_element_to_swap = list_get(self,j);
+    void* element_to_swap = list_get(self,index);
+    void* second_element_to_swap = list_get(self,another_index);
 
-    list_replace(self,i,second_element_to_swap);
-    list_replace(self,j,element_to_swap);
+    list_replace(self,index,second_element_to_swap);
+    list_replace(self,another_index,element_to_swap);
 }  
 void list_add_as_set(t_list* self, void* element){
 

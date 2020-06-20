@@ -7,60 +7,56 @@
 #include <commons/string.h>
 
 char* pointer_address_as_string(void* block_position_pointer){
-    char position[32];
-    int amount_of_characters = sprintf(position,"%p",block_position_pointer);
 
-    char *address_position = safe_malloc(amount_of_characters+1);
+    char* address_position = string_from_format("%p",block_position_pointer);
 
-    memcpy(address_position,&position[0], amount_of_characters+1);
-    string_append(&address_position,"\0");
     return address_position;
 }
+
+char* memory_block_as_string(t_memory_block* memory_block){
+
+    char* lru_value = string_new();
+    string_append(&lru_value,"LRU: ");
+    char* time = string_itoa(memory_block->lru_value);
+    string_append(&lru_value,time);
+
+    char* queue = string_new();
+    string_append(&queue," Cola: ");
+    string_append(&queue,queue_name_of(memory_block->message_operation));
+
+    char* id = string_new();
+    string_append(&id," ID: ");
+    string_append(&id,string_itoa(memory_block->message_id));
+
+    return string_from_format("%s%s%s",lru_value,queue,id);
+}
+
 // 0x000 - 0x3FF [X] Size:1024b LRU:<VALOR> Cola: <COLA> ID: <ID>
 // 0x400 - 0x7FE [L] Size:1024b
 char* block_info_as_string(t_block_information* block){
-    char* block_info = string_new();
 
     char* symbol = "[X] ";
-    if (block->free_block){
+    if (block->is_free){
         symbol = "[L] ";
     }
-    string_append(&block_info,symbol);
+
     char* initial_address_position = pointer_address_as_string(block->initial_position);
 
     char* last_address_position = pointer_address_as_string(block->initial_position+block->block_size);
 
-    char* block_size_info = string_new();
-    string_append(&block_size_info, "Size: ");
-    string_append(&block_size_info, string_itoa(block->block_size));
-    string_append(&block_size_info, "b "); //piden la b de byte
+    char* block_size = string_itoa(block->block_size);
+
+    char* block_size_info = string_from_format("Size: %sb ",block_size);
+
+
 
     char* memory_block_info = string_new();
-    if (block->free_block == false){
-        char* lru_value = string_new();
-        string_append(&lru_value,"LRU: ");
-        char* time = string_itoa(block->memory_block->lru_value);
-        string_append(&lru_value,time);
-
-        char* queue = string_new();
-        string_append(&queue," Cola: ");
-        string_append(&queue,queue_name_of(block->memory_block->message_operation));
-
-        char* id = string_new();
-        string_append(&id," ID: ");
-        string_append(&id,string_itoa(block->memory_block->message_id));
-
-        string_append(&memory_block_info,lru_value);
-        string_append(&memory_block_info,queue);
-        string_append(&memory_block_info,id);
+    if (block->is_free == false){
+        char* memory_block = memory_block_as_string(block->memory_block);
+        string_append(&memory_block_info,memory_block);
     }
 
-    string_append(&block_info,initial_address_position);
-    string_append(&block_info, " - ");
-    string_append(&block_info,last_address_position);
-    string_append(&block_info,"   ");
-    string_append(&block_info,block_size_info);
-    string_append(&block_info,memory_block_info);
+    char* block_info = string_from_format("%s - %s %s %s%s%s",initial_address_position,last_address_position,symbol,block_size_info,memory_block_info);
 
     return block_info;
 }
@@ -69,24 +65,20 @@ char* get_cache_info(t_list* blocks_information){
     char* cache_partitions_info = string_new();
 
     for(int i = 0; i<list_size(blocks_information); i++){
+
         t_block_information* block = (t_block_information*) list_get(blocks_information,i);
 
-        string_append(&cache_partitions_info,"Particion ");
         char* partition_number = string_itoa(i);
-
-        //Particion N:
-        string_append(&cache_partitions_info,partition_number);
-        string_append(&cache_partitions_info,": ");
-        //resto de la info
         char* block_info = block_info_as_string(block);
 
-        string_append(&cache_partitions_info,block_info);
-        string_append(&cache_partitions_info,"\n");
+        char* partition_info = string_from_format("Partición %s: %s\n",partition_number,block_info);
+
+        string_append(&cache_partitions_info,partition_info);
     }
     return cache_partitions_info;
 }
 
-char* cache_info_builder(t_list* blocks_information){
+char* cache_information_builder(t_list* blocks_information){
     char* cache_info = string_new();
     string_append(&cache_info,"------------------\nDump: ");
 

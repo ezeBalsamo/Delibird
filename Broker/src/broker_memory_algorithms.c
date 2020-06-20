@@ -1,8 +1,8 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
-#include "../include/first_fit_search_partition_algorithm.h"
-#include "../include/fifo_free_partition_algorithm.h"
+#include "../include/first_fit_available_partition_search_algorithm.h"
+#include "../include/fifo_partition_free_algorithm.h"
 #include "../include/dynamic_partition_message_allocator.h"
 #include "../include/broker_memory_algorithms.h"
 #include "../../Utils/include/t_list_extension.h"
@@ -27,7 +27,7 @@ bool is_lru_free_partition_algorithm(char* free_algorithm){
     return string_equals_ignore_case("LRU",free_algorithm);
 }
 
-bool is_fifo_free_partition_algorithm(char* free_algorithm){
+bool is_fifo_partition_free_algorithm(char* free_algorithm){
     return string_equals_ignore_case("FIFO",free_algorithm);
 }
 
@@ -46,11 +46,11 @@ t_message_allocator* initialize_message_allocator(){
     }
 }
 
-void* get_search_partition_algorithm() {
+void* get_available_partition_search_algorithm() {
     char *search_algorithm = config_get_string_at("ALGORITMO_PARTICION_LIBRE");
 
     if (is_first_fit_search_algorithm(search_algorithm)) {
-        return get_first_fit_search_partition_algorithm();
+        return get_first_fit_available_partition_search_algorithm();
 
     } else if (is_best_fit_search_algorithm(search_algorithm)) {
 
@@ -63,8 +63,8 @@ void* get_search_partition_algorithm() {
 void* get_free_partition_algorithm() {
     char *free_partition_algorithm = config_get_string_at("ALGORITMO_REEMPLAZO");
 
-    if (is_fifo_free_partition_algorithm(free_partition_algorithm)) {
-        return get_fifo_free_partition_algorithm();
+    if (is_fifo_partition_free_algorithm(free_partition_algorithm)) {
+        return get_fifo_partition_free_algorithm();
 
     } else if (is_lru_free_partition_algorithm(free_partition_algorithm)) {
 
@@ -78,7 +78,7 @@ int find_index_of_furthest_occupied_block_information(t_list* blocks_information
     //itero desde el final, devuelvo el primero, seria como un find inverso
     for(int i = list_size(blocks_information);i < 0;i--){
         t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
-        if (block_information->free_block == false){
+        if (block_information->is_free == false){
             return i;
         }
     }
@@ -86,29 +86,22 @@ int find_index_of_furthest_occupied_block_information(t_list* blocks_information
 }
 
 void compact_memory_algorithm(t_list* blocks_information){
-    //1. acomodar todas las particiones libres por un lado y las ocupadas por otro
-    //basicamente swapeo cualquier part libre con la mas lejana de las ocupadas
-    //uint32_t initial_index_of_free_partitions = 0;
+
     for (int i = 0; i < list_size(blocks_information);i++){
 
         t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
 
-        if (block_information->free_block){
+        if (block_information->is_free){
 
             int furthest_occupied_block_index = find_index_of_furthest_occupied_block_information(blocks_information);
             list_swap(blocks_information,i,furthest_occupied_block_index);
 
-            //si pasa esta condicion, llegue a casos del tipo  x-x-x-l-l, por ende no tiene sentido seguir iterando
-            /*if(i>furthest_occupied_block_index){
-                initial_index_of_free_partitions = i;
-                break;
-            }*/
         }
     }
     //2. Eliminar particiones vacias contiguas, lograr 1 sola particion vacia de mayor tamaño
-    for (int i = 0 /*initial_index_of_free_partitions*/; i < list_size(blocks_information)-1;i++){
+    for (int i = 0; i < list_size(blocks_information)-1;i++){
         t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
-        if (master_block->free_block){
+        if (master_block->is_free){
 
             t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
 

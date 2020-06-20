@@ -56,11 +56,11 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     //encontre un block manager disponible, ahora tengo que particionarlo con la cantidad que necesito (> min)
     //creando uno nuevo que tenga la memoria restante, que este libre
     t_block_information* new_block_information = safe_malloc(sizeof(t_block_information));
-    new_block_information->free_block = true;
+    new_block_information->is_free = true;
     uint32_t memory_size_to_partition = block_information_found->block_size;
     new_block_information->initial_position = block_information_found->initial_position + new_block_information->block_size;
 
-    block_information_found->free_block = false;
+    block_information_found->is_free = false;
     block_information_found->memory_block = memory_block_to_save;
     block_information_found->block_size = dynamic_partition_message_allocator->min_partition_size;
 
@@ -79,7 +79,7 @@ t_message_allocator* initialize_dynamic_partition_message_allocator(){
     dynamic_partition_message_allocator = safe_malloc(sizeof(t_message_allocator));
     dynamic_partition_message_allocator->allocate_message_function = dynamic_partition_allocate_message; //CASTEAR ESTO?
 
-    dynamic_partition_message_allocator->find_available_partition_algorithm = get_search_partition_algorithm(); //FF/BF
+    dynamic_partition_message_allocator->find_available_partition_algorithm = get_available_partition_search_algorithm(); //FF/BF
     dynamic_partition_message_allocator->free_partition_algorithm = get_free_partition_algorithm(); //FIFO/LRU
     dynamic_partition_message_allocator->compact_memory_algorithm = compact_memory_algorithm;
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");

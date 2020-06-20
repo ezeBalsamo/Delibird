@@ -18,7 +18,7 @@ void initialize_broker_memory_manager(){
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
     //initial block manager, with all the memory
     t_block_information* initial_block_information = safe_malloc(sizeof(t_block_information));
-    initial_block_information->free_block = true;
+    initial_block_information->is_free = true;
     initial_block_information->block_size = memory_size;
     initial_block_information->initial_position = safe_malloc(memory_size);
     initial_block_information->memory_block = NULL;
@@ -33,7 +33,7 @@ void allocate_message(t_identified_message* message){
 }
 
 char* dump_cache(){
-    return cache_info_builder(memory_manager->blocks_information);
+    return cache_information_builder(memory_manager->blocks_information);
 }
 void free_broker_memory_manager(){
     list_destroy_and_destroy_elements(memory_manager->blocks_information,(void (*)(void *)) free);

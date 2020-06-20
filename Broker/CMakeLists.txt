@@ -16,8 +16,8 @@ set(SOURCES
         src/broker_memory_manager.c
         src/dynamic_partition_message_allocator.c
         src/broker_memory_algorithms.c
-        src/first_fit_search_partition_algorithm.c
-        src/fifo_free_partition_algorithm.c
+        src/first_fit_available_partition_search_algorithm.c
+        src/fifo_partition_free_algorithm.c
         src/cache_information_builder.c
         src/subscriber_context_provider.c
         src/broker_signal_handler.c)

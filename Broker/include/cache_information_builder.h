@@ -3,6 +3,6 @@
 
 #include <commons/collections/list.h>
 
-char* cache_info_builder(t_list* blocks_information);
+char* cache_information_builder(t_list* blocks_information);
 
 #endif //DELIBIRD_CACHE_INFORMATION_BUILDER_H

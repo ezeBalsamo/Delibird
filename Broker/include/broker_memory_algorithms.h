@@ -3,9 +3,9 @@
 
 t_message_allocator* initialize_message_allocator();
 
-void* get_search_partition_algorithm();
+void* get_available_partition_search_algorithm();
 void* get_free_partition_algorithm();
 void compact_memory_algorithm();
 
 
-#endif //DELIBIRD_BROKER_MEMORY_ALGORITHMS_H
+#endif //DELIBIRD_BROKER_MEMORY_ALGORITHMSbroker_H

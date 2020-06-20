@@ -28,7 +28,6 @@ int main() {
     *connection_handler_thread = default_safe_thread_create(initialize_connection_handler, NULL);
     safe_thread_join(*connection_handler_thread);
     log_successful_execution();
-    free_broker_memory_manager();
     free_system();
 
     return EXIT_SUCCESS;

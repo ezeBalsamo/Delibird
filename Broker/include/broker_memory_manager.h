@@ -18,7 +18,7 @@ typedef struct Memory_block{
 }t_memory_block;
 
 typedef struct Block_information{
-    bool free_block;
+    bool is_free;
     void* initial_position;
     uint32_t block_size;
     t_memory_block* memory_block;
