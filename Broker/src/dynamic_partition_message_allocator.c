@@ -34,13 +34,13 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     t_block_information* block_information_found;  //para referenciarlo afuera
     while(search_failed_count <= dynamic_partition_message_allocator->max_search_tries){
 
-        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_information);
+        block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information);
         if (block_information_found != NULL){
             break;
         }
         dynamic_partition_message_allocator->free_partition_algorithm (blocks_information);
 
-        block_information_found = dynamic_partition_message_allocator->find_available_partition_algorithm (memory_block_to_save->message_size, blocks_information);
+        block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information);
         if (block_information_found != NULL){
             break;
         }
@@ -79,7 +79,7 @@ t_message_allocator* initialize_dynamic_partition_message_allocator(){
     dynamic_partition_message_allocator = safe_malloc(sizeof(t_message_allocator));
     dynamic_partition_message_allocator->allocate_message_function = dynamic_partition_allocate_message; //CASTEAR ESTO?
 
-    dynamic_partition_message_allocator->find_available_partition_algorithm = get_available_partition_search_algorithm(); //FF/BF
+    dynamic_partition_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
     dynamic_partition_message_allocator->free_partition_algorithm = get_free_partition_algorithm(); //FIFO/LRU
     dynamic_partition_message_allocator->compact_memory_algorithm = compact_memory_algorithm;
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");

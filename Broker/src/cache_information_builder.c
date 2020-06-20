@@ -33,26 +33,26 @@ char* memory_block_as_string(t_memory_block* memory_block){
 
 // 0x000 - 0x3FF [X] Size:1024b LRU:<VALOR> Cola: <COLA> ID: <ID>
 // 0x400 - 0x7FE [L] Size:1024b
-char* block_info_as_string(t_block_information* block){
+char* block_information_as_string(t_block_information* block_information){
 
     char* symbol = "[X] ";
-    if (block->is_free){
+    if (block_information->is_free){
         symbol = "[L] ";
     }
 
-    char* initial_address_position = pointer_address_as_string(block->initial_position);
+    char* initial_address_position = pointer_address_as_string(block_information->initial_position);
 
-    char* last_address_position = pointer_address_as_string(block->initial_position+block->block_size);
+    char* last_address_position = pointer_address_as_string(block_information->initial_position+block_information->block_size);
 
-    char* block_size = string_itoa(block->block_size);
+    char* block_size = string_itoa(block_information->block_size);
 
     char* block_size_info = string_from_format("Size: %sb ",block_size);
 
 
 
     char* memory_block_info = string_new();
-    if (block->is_free == false){
-        char* memory_block = memory_block_as_string(block->memory_block);
+    if (block_information->is_free == false){
+        char* memory_block = memory_block_as_string(block_information->memory_block);
         string_append(&memory_block_info,memory_block);
     }
 
@@ -69,7 +69,7 @@ char* build_using(t_list* blocks_information){
         t_block_information* block = (t_block_information*) list_get(blocks_information,i);
 
         char* partition_number = string_itoa(i);
-        char* block_info = block_info_as_string(block);
+        char* block_info = block_information_as_string(block);
 
         char* partition_info = string_from_format("Partición %s: %s\n",partition_number,block_info);
 
