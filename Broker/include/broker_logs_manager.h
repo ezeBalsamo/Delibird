@@ -40,6 +40,8 @@ void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_c
 
 void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code);
 
+void log_cache_dump_information(char* cache_information);
+
 void free_broker_logs_manager();
 
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H

@@ -61,7 +61,7 @@ char* block_info_as_string(t_block_information* block){
     return block_info;
 }
 
-char* get_cache_info(t_list* blocks_information){
+char* build_using(t_list* blocks_information){
     char* cache_partitions_info = string_new();
 
     for(int i = 0; i<list_size(blocks_information); i++){
@@ -86,7 +86,7 @@ char* cache_information_builder(t_list* blocks_information){
     string_append(&cache_info,actual_time); //TODO: dia actual
 
     string_append(&cache_info,"\n");
-    char* cache_blocks_info = get_cache_info(blocks_information);
+    char* cache_blocks_info = build_using(blocks_information);
     string_append(&cache_info, cache_blocks_info);
 
     string_append(&cache_info,"\n------------------");

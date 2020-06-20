@@ -76,13 +76,29 @@ void* get_free_partition_algorithm() {
 //uff mama
 int find_index_of_furthest_occupied_block_information(t_list* blocks_information){
     //itero desde el final, devuelvo el primero, seria como un find inverso
-    for(int i = list_size(blocks_information);i < 0;i--){
-        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
+    for(int i = list_size(blocks_information);i > 0;i--){
+        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i-1);
         if (block_information->is_free == false){
             return i;
         }
     }
     return 0;
+}
+
+void combine_all_free_partitions(t_list* blocks_information){
+    for (int i = 0; i < list_size(blocks_information)-1;i++){
+        t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
+        if (master_block->is_free){
+
+            t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
+
+            master_block->block_size += block_to_compact->block_size;
+            if ((i+1) == list_size(blocks_information)){
+                break;
+            }
+            i--;
+        }
+    }
 }
 
 void compact_memory_algorithm(t_list* blocks_information){
@@ -98,18 +114,7 @@ void compact_memory_algorithm(t_list* blocks_information){
 
         }
     }
-    //2. Eliminar particiones vacias contiguas, lograr 1 sola particion vacia de mayor tamaño
-    for (int i = 0; i < list_size(blocks_information)-1;i++){
-        t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
-        if (master_block->is_free){
+    //2. Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
+    combine_all_free_partitions(blocks_information);
 
-            t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
-
-            master_block->block_size += block_to_compact->block_size;
-            if ((i+1) == list_size(blocks_information)){
-                break;
-            }
-            i--;
-        }
-    }
 }
