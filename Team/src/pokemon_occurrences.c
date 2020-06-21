@@ -15,7 +15,6 @@ t_dictionary* targetable_pokemons_by_name;
 
 pthread_mutex_t ocurrences_mutex;
 extern pthread_mutex_t targetable_status_mutex;
-sem_t trainer_thread_context_has_become_blocked_semaphore;
 
 void free_targetable_pokemon(t_targetable_object* targetable_pokemon){
     t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
@@ -99,15 +98,12 @@ void consider_become_targetable_next_pokemon_named(char* pokemon_name){
     if (amount_required_of(pokemon_name) > 0){
 
         t_list* targetable_pokemons = occurrences_of(pokemon_name);
-
         t_targetable_object* targetable_pokemon_found = list_find(targetable_pokemons, is_not_targeted);
 
         list_destroy(targetable_pokemons);
 
         if(targetable_pokemon_found){
             targetable_pokemon_found -> should_be_targeted = true;
-            sem_wait(&trainer_thread_context_has_become_blocked_semaphore);
-            chase(targetable_pokemon_found);
         }
     }
 }
@@ -130,7 +126,6 @@ void remove_occurrence_of(t_localizable_object* localizable_pokemon){
     }
 
     free_targetable_pokemon(targetable_pokemon_found);
-
     consider_become_targetable_next_pokemon_named(pokemon_name);
 }
 
@@ -146,10 +141,7 @@ void initialize_occurrence_of(t_pokemon_goal* pokemon_goal){
 void initialize_pokemon_occurrences(){
 
     targetable_pokemons_by_name = dictionary_create();
-
     safe_mutex_initialize(&ocurrences_mutex);
-    sem_initialize(&trainer_thread_context_has_become_blocked_semaphore);
-
     with_global_goal_do(initialize_occurrence_of);
 }
 

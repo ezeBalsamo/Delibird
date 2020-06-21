@@ -90,9 +90,13 @@ void free_thread_action(t_thread_action* thread_action){
     free(thread_action);
 }
 
+void free_trainer_thread_context(t_trainer_thread_context* trainer_thread_context){
+    free_thread_action(trainer_thread_context -> thread_action);
+    free(trainer_thread_context);
+}
 
 void free_trainer_threads(){
     list_destroy_and_destroy_elements(trainers_tids, free);
-    list_destroy_and_destroy_elements(trainer_thread_contexts, (void (*)(void *)) free);
+    list_destroy_and_destroy_elements(trainer_thread_contexts, (void (*)(void *)) free_trainer_thread_context);
     free_trainer_thread_context_state_chained_evaluation();
 }

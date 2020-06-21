@@ -21,8 +21,8 @@ void waiting_catch_response_action_execution_function(t_trainer_thread_context* 
         catch_action_completed_by(trainer_thread_context);
     }else{
         log_failed_caught_of(localizable_pokemon);
-        prepare_for_waiting_for_more_pokemons_action(trainer_thread_context);
         remove_occurrence_of(localizable_pokemon);
+        prepare_for_waiting_for_more_pokemons_action(trainer_thread_context);
     }
 }
 

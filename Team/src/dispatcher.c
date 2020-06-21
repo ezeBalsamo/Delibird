@@ -18,8 +18,6 @@ pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
 pthread_mutex_t ready_queue_mutex;
 pthread_mutex_t execute_mutex;
 
-extern sem_t trainer_thread_context_has_become_blocked_semaphore;
-
 void initialize_dispatcher(){
     new_trainer_thread_contexts = list_create();
     ready_trainer_thread_contexts = queue_create();
@@ -191,7 +189,6 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
         trainer_thread_context -> state = BLOCKED;
         list_add_as_set(blocked_trainer_thread_contexts, trainer_thread_context);
         log_trainer_blocked(trainer_thread_context);
-        sem_post(&trainer_thread_context_has_become_blocked_semaphore);
     }
 
     free_current_execution_doing(_blocked_function);

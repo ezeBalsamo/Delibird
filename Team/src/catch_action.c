@@ -33,19 +33,16 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
                         connection_information -> socket_fd,
                         ack_timeout());
 
-        free_and_close_connection_information(connection_information);
-        free_request(request);
-
         catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
     } else {
         t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
         log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
 
-        free_and_close_connection_information(connection_information);
-        free_request(request);
-
         catch_action_completed_by(trainer_thread_context);
     }
+
+    free_and_close_connection_information(connection_information);
+    free_request(request);
 }
 
 t_thread_action* catch_thread_action_for(t_localizable_object* localizable_pokemon){

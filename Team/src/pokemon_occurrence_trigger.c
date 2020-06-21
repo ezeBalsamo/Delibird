@@ -17,13 +17,12 @@ void chase(t_targetable_object* targetable_pokemon){
     if(list_is_empty(trainer_thread_contexts)){
         log_no_schedulable_threads_available_for(localizable_pokemon -> object);
         pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
-        list_destroy(trainer_thread_contexts);
     }else{
         t_trainer_thread_context* trainer_thread_context =
                 trainer_thread_context_closest_to(trainer_thread_contexts, localizable_pokemon);
-
-        list_destroy(trainer_thread_contexts);
         targetable_pokemon -> is_being_targeted = true;
         prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
     }
+
+    list_destroy(trainer_thread_contexts);
 }
