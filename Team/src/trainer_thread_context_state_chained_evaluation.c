@@ -93,3 +93,16 @@ void trainer_thread_context_state_chained_evaluation_value_when_caught_for(t_tra
 void free_trainer_thread_context_state_chained_evaluation(){
     free_chained_evaluation(first_evaluation);
 }
+
+void trainer_thread_context_state_chained_evaluation_value_when_caught_failed_for(t_trainer_thread_context* trainer_thread_context){
+
+    t_basic_evaluation* basic_evaluation = ready_or_schedulable_blocked_state_chained_evaluation();
+
+    t_identified_chained_evaluation* identified_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    identified_chained_evaluation -> chained_evaluation_type = BASIC;
+    identified_chained_evaluation -> evaluation = basic_evaluation;
+
+    execute_evaluation_for(identified_chained_evaluation, trainer_thread_context);
+
+    free_chained_evaluation(identified_chained_evaluation);
+}

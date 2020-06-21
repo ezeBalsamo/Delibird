@@ -48,6 +48,10 @@ void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context)
     remove_occurrence_of(localizable_pokemon);
 }
 
+void catch_action_failed_by(t_trainer_thread_context* trainer_thread_context){
+    trainer_thread_context_state_chained_evaluation_value_when_caught_failed_for(trainer_thread_context);
+}
+
 void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_thread_context, int message_id){
 
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);

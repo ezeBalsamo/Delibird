@@ -119,7 +119,6 @@ void* subscriber_thread(void* queue_operation_identifier){
         consume_messages_from(socket_fd);
     }
 
-
     return NULL;
 }
 

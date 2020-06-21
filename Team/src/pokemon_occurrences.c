@@ -54,7 +54,10 @@ bool is_of(t_targetable_object* targetable_pokemon, t_localizable_object* locali
 }
 
 bool is_not_targeted(void* targetable_pokemon){
-    return !(((t_targetable_object*) targetable_pokemon) -> is_being_targeted);
+    t_targetable_object* cast_targetable_pokemon = (t_targetable_object*) targetable_pokemon;
+    return
+        cast_targetable_pokemon -> should_be_targeted &&
+        !cast_targetable_pokemon -> is_being_targeted;
 }
 
 t_localizable_object* localizable_pokemon_from_targetable(t_targetable_object* targetable_pokemon){
