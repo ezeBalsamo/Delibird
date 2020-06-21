@@ -54,6 +54,7 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
 }
 
 t_list* list_swap(t_list* self, int index ,int another_index){
+
     if (list_size(self)< index || list_size(self)<another_index){
         //TODO: romper
     }
