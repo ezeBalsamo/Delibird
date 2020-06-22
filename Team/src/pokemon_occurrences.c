@@ -60,8 +60,8 @@ bool is_not_targeted(void* targetable_pokemon){
         !cast_targetable_pokemon -> is_being_targeted;
 }
 
-t_localizable_object* localizable_pokemon_from_targetable(t_targetable_object* targetable_pokemon){
-    return targetable_pokemon -> localizable_pokemon;
+bool should_not_be_targeted(t_targetable_object* targetable_pokemon){
+    return !targetable_pokemon -> should_be_targeted;
 }
 
 t_list* not_yet_targeted_pokemons(){
@@ -101,9 +101,8 @@ void consider_become_targetable_next_pokemon_named(char* pokemon_name){
     if (amount_required_of(pokemon_name) > 0){
 
         t_list* targetable_pokemons = occurrences_of(pokemon_name);
-        t_targetable_object* targetable_pokemon_found = list_find(targetable_pokemons, is_not_targeted);
-
-        list_destroy(targetable_pokemons);
+        t_targetable_object* targetable_pokemon_found =
+                list_find(targetable_pokemons, (bool (*)(void *)) should_not_be_targeted);
 
         if(targetable_pokemon_found){
             targetable_pokemon_found -> should_be_targeted = true;

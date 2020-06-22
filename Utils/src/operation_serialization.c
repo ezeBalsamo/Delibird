@@ -23,10 +23,10 @@ uint32_t amount_of_bytes_of_get(t_get_pokemon* get_pokemon){
 }
 
 uint32_t amount_of_bytes_of_localized(t_localized_pokemon * localized_pokemon){
-    return sizeof(uint32_t)                                                 //Pokemon name length
-           + strlen(localized_pokemon -> pokemon_name)                      //Pokemon name
-           + sizeof(uint32_t)                                               //quantity
-           + (list_size(localized_pokemon->positions) *sizeof(uint32_t));   //positions
+    return sizeof(uint32_t)                                                     //Pokemon name length
+           + strlen(localized_pokemon -> pokemon_name)                          //Pokemon name
+           + sizeof(uint32_t)                                                   //quantity
+           + (list_size(localized_pokemon -> positions) * sizeof(uint32_t));    //positions
 }
 
 uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){

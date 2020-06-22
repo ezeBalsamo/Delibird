@@ -44,7 +44,7 @@ void* closest_targetable_pokemon_to_trainer(t_targetable_object* targetable_poke
 
 t_targetable_object* closest_targetable_pokemon(t_list* targetable_pokemons, t_localizable_object* localizable_trainer){
 
-    t_localizable_object* seed_targetable_pokemon = list_get(targetable_pokemons, 0);
+    t_targetable_object* seed_targetable_pokemon = list_get(targetable_pokemons, 0);
 
     void* _closest_targetable_pokemon_to(void* targetable_pokemon, void* another_targetable_pokemon){
         return closest_targetable_pokemon_to_trainer(targetable_pokemon, another_targetable_pokemon, localizable_trainer);

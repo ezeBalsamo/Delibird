@@ -17,7 +17,7 @@ void log_query_performer_not_found_error_for(uint32_t operation);
 void log_trainer_thread_create_error();
 void log_succesful_creation_of_thread_of_trainer(uint32_t sequential_number);
 void log_no_schedulable_threads_available_for(char* pokemon_name);
-void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number);
+void log_trainer_thread_context_not_found_error_for(uint32_t sequential_number);
 void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_name);
 void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name);
 void log_targetable_pokemon_not_found_error_for(t_localizable_object* localizable_pokemon);
@@ -39,6 +39,7 @@ void log_message_id_not_required(uint32_t message_id);
 void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
 void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name);
 void log_global_goal_not_consistent_with_trainers_requirements_error();
+void log_invalid_transition_error();
 void log_global_goal_accomplished();
 
 void free_team_logs_manager();

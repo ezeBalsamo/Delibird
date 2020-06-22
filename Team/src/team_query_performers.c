@@ -4,7 +4,7 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include <appeared_query_performer.h>
 #include <localized_query_performer.h>
 #include <caught_query_performer.h>
@@ -22,7 +22,7 @@ t_request* internal_request_from(t_request* deserialized_request){
     return original_identified_message -> request;
 }
 
-void initialize_query_performers(){
+void initialize_team_query_performers(){
 
     safe_mutex_initialize(&targetable_status_mutex);
 
@@ -60,7 +60,7 @@ void query_perform(t_request* request){
     query_performer -> perform_function (request -> structure);
 }
 
-void free_query_performers(){
+void free_team_query_performers(){
     list_destroy_and_destroy_elements(query_performers, free);
     pthread_mutex_destroy(&targetable_status_mutex);
 }

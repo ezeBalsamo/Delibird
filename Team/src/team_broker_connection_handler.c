@@ -1,7 +1,7 @@
 #include "../include/team_broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
-#include "../include/query_performers.h"
+#include "../include/team_query_performers.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"

@@ -1,4 +1,4 @@
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include "localized_query_performer.h"
 
 t_query_performer* localized_pokemon_query_performer;

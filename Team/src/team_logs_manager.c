@@ -93,7 +93,7 @@ void log_no_schedulable_threads_available_for(char* pokemon_name){
     free(message);
 }
 
-void log_synchronizable_trainer_not_found_error_for(uint32_t sequential_number){
+void log_trainer_thread_context_not_found_error_for(uint32_t sequential_number){
     char* message = string_from_format("Se esperaba encontrar al entrenador %u en las colas de new o blocked.", sequential_number);
     log_errorful_message(process_execution_logger(), message);
     free(message);
@@ -288,6 +288,10 @@ void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name){
 
 void log_global_goal_not_consistent_with_trainers_requirements_error(){
     log_errorful_message(process_execution_logger(), "Los requerimientos globales no coinciden con los requerimientos de los entrenadores.");
+}
+
+void log_invalid_transition_error(){
+    log_errorful_message(process_execution_logger(), "Se intentó hacer una transición de estados inválida.");
 }
 
 void log_global_goal_accomplished(){

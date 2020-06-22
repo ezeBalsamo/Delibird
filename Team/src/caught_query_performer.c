@@ -1,4 +1,4 @@
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include <trainer_threads.h>
 #include <waiting_actions.h>
 #include <dispatcher.h>
@@ -56,7 +56,7 @@ void caught_query_performer_function(t_identified_message* correlative_identifie
         t_caught_pokemon* caught_pokemon = internal_object_in(identified_message);
 
         waiting_catch_response_action -> caught_succeeded = caught_pokemon -> caught_status;
-//        sem_post(&trainer_thread_context_found -> semaphore); //TODO VER SI ESTO ES NECESARIO
+        sem_post(&trainer_thread_context_found -> semaphore);
         execute_trainer_thread_context_action(trainer_thread_context_found);
     }else{
         log_message_id_not_required(message_id);

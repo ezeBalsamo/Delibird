@@ -2,6 +2,7 @@
 #include <team_logs_manager.h>
 #include <scheduling_algorithm.h>
 #include <dispatching_reasons.h>
+#include <state_transitions.h>
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/common_structures.h"
@@ -24,6 +25,7 @@ void initialize_dispatcher(){
     blocked_trainer_thread_contexts = list_create();
     finished_trainer_thread_contexts = list_create();
 
+    initialize_state_transitions();
     initialize_scheduling_algorithm();
 
     safe_mutex_initialize(&schedulable_trainer_thread_contexts_mutex);
@@ -41,15 +43,15 @@ bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){
     return thread_action -> request -> operation == WAITING_FOR_MORE_POKEMONS;
 }
 
+bool cant_be_schedule(t_trainer_thread_context* trainer_thread_context){
+
+    return !can_be_schedule(trainer_thread_context);
+}
+
 t_list* schedulable_blocked_trainer_thread_contexts(){
     return list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) can_be_schedule);
 }
 
-bool cant_be_schedule(t_trainer_thread_context* trainer_thread_context){
-
-    t_thread_action* thread_action = trainer_thread_context -> thread_action;
-    return thread_action -> request -> operation != WAITING_FOR_MORE_POKEMONS;
-}
 
 t_list* non_schedulable_blocked_trainer_thread_contexts(){
     return list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) cant_be_schedule);
@@ -81,7 +83,7 @@ void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_threa
 
     if (!trainer_thread_context_found) {
         t_trainer* trainer = trainer_thread_context_to_find -> localizable_trainer -> object;
-        log_synchronizable_trainer_not_found_error_for(trainer -> sequential_number);
+        log_trainer_thread_context_not_found_error_for(trainer -> sequential_number);
         free_system();
     }
 }
@@ -100,15 +102,22 @@ void free_current_execution_doing(void (*state_function) ()){
     consider_continue_executing();
 }
 
-void consider_removing_from_new_or_blocked(t_trainer_thread_context* trainer_thread_context){
+void remove_from_new(t_trainer_thread_context* trainer_thread_context){
+    remove_from(new_trainer_thread_contexts, trainer_thread_context);
+}
 
-    if(trainer_thread_context -> state == NEW){
-        remove_from(new_trainer_thread_contexts, trainer_thread_context);
-    }
+void remove_from_blocked(t_trainer_thread_context* trainer_thread_context){
+    remove_from(blocked_trainer_thread_contexts, trainer_thread_context);
+}
 
-    if (trainer_thread_context -> state == BLOCKED){
-        remove_from(blocked_trainer_thread_contexts, trainer_thread_context);
-    }
+void add_to_blocked(t_trainer_thread_context* trainer_thread_context){
+    trainer_thread_context -> state = BLOCKED;
+    list_add(blocked_trainer_thread_contexts, trainer_thread_context);
+}
+
+void add_to_finished(t_trainer_thread_context* trainer_thread_context){
+    trainer_thread_context -> state = FINISHED;
+    list_add(finished_trainer_thread_contexts, trainer_thread_context);
 }
 
 void schedule(t_trainer_thread_context* trainer_thread_context, char* reason){
@@ -124,17 +133,8 @@ void schedule(t_trainer_thread_context* trainer_thread_context, char* reason){
 
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
 
-    if(trainer_thread_context -> state == EXECUTE){
-        void _coming_from_execute_function(){
-            schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
-        }
-
-        free_current_execution_doing(_coming_from_execute_function);
-    }else{
-        consider_removing_from_new_or_blocked(trainer_thread_context);
-        pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
-        schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
-    }
+    t_state_transition* state_transition = state_transition_for(trainer_thread_context, READY);
+    (state_transition -> state_transition_function) (trainer_thread_context);
 }
 
 bool is_anybody_executing(){
@@ -162,25 +162,10 @@ void preempt_due_to(char* preemption_reason){
     sem_wait(&trainer_thread_context_to_schedule -> semaphore);
 }
 
-void remove_from_blocked_if_necessary(t_trainer_thread_context* trainer_thread_context){
-
-    if(trainer_thread_context -> state == BLOCKED){
-        remove_from(blocked_trainer_thread_contexts, trainer_thread_context);
-    }
-}
-
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
-    void _finished_function(){
-        remove_from_blocked_if_necessary(trainer_thread_context);
-        trainer_thread_context -> state = FINISHED;
-        list_add(finished_trainer_thread_contexts, trainer_thread_context);
-        log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-    }
-
-    free_current_execution_doing(_finished_function);
-
-    consider_global_goal_accomplished();
+    t_state_transition* state_transition = state_transition_for(trainer_thread_context, FINISHED);
+    (state_transition -> state_transition_function) (trainer_thread_context);
 }
 
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context){
@@ -233,4 +218,5 @@ void free_dispatcher(){
     pthread_mutex_destroy(&ready_queue_mutex);
 
     free_scheduling_algorithm();
+    free_state_transitions();
 }

@@ -1,6 +1,6 @@
 #include <dispatcher.h>
 #include <team_configuration_manager.h>
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include "../include/team_logs_manager.h"
 #include "../include/team_serializable_objects.h"
 #include "../include/team_broker_connection_handler.h"
@@ -19,7 +19,7 @@ int main(void) {
     initialize_pretty_printer();
     initialize_team_serializable_objects();
     initialize_team_configuration_manager();
-    initialize_query_performers();
+    initialize_team_query_performers();
 
     initialize_dispatcher();
 
