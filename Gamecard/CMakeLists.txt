@@ -4,7 +4,7 @@ set(SOURCES
         src/gamecard_sanitizer.c
         src/gamecard_logs_manager.c
         src/gamecard_serializable_objects.c
-        src/gamecard_query_performer.c
+        src/gamecard_query_performers.c
         src/gamecard_configuration_manager.c
         src/filesystem.c
         src/gameboy_connection_handler.c

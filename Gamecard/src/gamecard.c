@@ -10,7 +10,7 @@
 #include "../include/broker_connection_handler.h"
 #include "../include/gameboy_connection_handler.h"
 #include "../include/gamecard_configuration_manager.h"
-
+#include "../include/gamecard_query_performers.h"
 #include <stdlib.h>
 
 
@@ -24,6 +24,7 @@ int main(void) {
     initialize_pretty_printer();
     initialize_gamecard_serializable_objects();
     initialize_gamecard_configuration_manager();
+    initialize_gamecard_query_performers();
     //TODO: Inicializar FS con funcion: initialize_filesystem();
 
     log_succesful_start_up();

@@ -1,5 +1,5 @@
 #include "../include/gameboy_connection_handler.h"
-#include "../include/gamecard_query_performer.h"
+#include "../include/gamecard_query_performers.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pretty_printer.h"

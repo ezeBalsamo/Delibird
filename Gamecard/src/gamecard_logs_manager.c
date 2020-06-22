@@ -68,6 +68,12 @@ void log_invalid_operation_to_query_performer_from_gamecard(uint32_t operation){
     free(message);
 }
 
+void log_query_performer_not_found_error_from_gamecard_for(uint32_t operation){
+    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u", operation);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_gamecard_logs_manager(){
     free_loggers();
 }

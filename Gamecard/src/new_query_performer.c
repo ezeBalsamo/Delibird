@@ -1,5 +1,5 @@
 #include "new_query_performer.h"
-#include "gamecard_query_performer.h"
+#include "gamecard_query_performers.h"
 #include "../../Utils/include/common_structures.h"
 #include <stdlib.h>
 #include <stdio.h>
