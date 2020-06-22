@@ -75,8 +75,8 @@ void consume_messages_from(int socket_fd){
     t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
 
     //Aviso al Broker la recepcion del mensaje
-    t_identified_message* correlative_identified_message = deserialized_request -> structure;
-    send_ack_message(correlative_identified_message -> message_id, socket_fd);
+    t_identified_message* identified_message = deserialized_request -> structure;
+    send_ack_message(identified_message -> message_id, socket_fd);
 
     //Loguear y mostrar por consola mensaje recibido
     log_request_received_with(main_logger(), deserialized_request);

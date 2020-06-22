@@ -57,7 +57,6 @@ void gamecard_query_perform(t_request* request) {
     t_request* parse_request = internal_request_in(request);
 
     //Obtengo el Query Performer capaz de manejar el mensaje que me llegó
-    //t_gamecard_query_performer* query_performer = query_performer_handle(parse_request->operation);
     t_gamecard_query_performer* query_performer = query_performer_handle(parse_request->operation);
 
     //Ejecuto la función que tiene la lógica implementada para el mensaje que me llegó
