@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <general_logs.h>
 #include <garbage_collector.h>
-#include <zconf.h>
 #include <signal.h>
 #include <commons/string.h>
+#include <unistd.h>
+#include "../../Broker/include/broker_memory_manager.h"
 
 void handler(){
     char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";

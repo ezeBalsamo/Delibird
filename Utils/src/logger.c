@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <roots.h>
+#include <garbage_collector.h>
+#include <general_logs.h>
 
 t_dictionary* loggers_by_name;
 char* process_execution_log_name = "process-execution.log";
@@ -27,6 +29,19 @@ void create_directory_if_necessary(){
     }
 
     free(path);
+}
+t_log* existing_log_found_for(char* log_name){
+    t_log* logger_found = (t_log*) dictionary_get(loggers_by_name,log_name);
+
+    if (logger_found == NULL){
+        log_errorful_not_existing_log(log_name);
+        free_system();
+    }
+    return logger_found;
+}
+
+t_log* logger_named(char* log_name){
+    return existing_log_found_for(log_name);
 }
 
 void create_log_named(char* log_name){
