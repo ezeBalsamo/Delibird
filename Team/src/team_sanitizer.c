@@ -19,8 +19,8 @@ void free_system(){
     free_trainer_threads();
     free_pokemon_occurrences();
     free_team_manager();
-    free_gameboy_connection_handler();
-    free_broker_connection_handler();
+    free_team_gameboy_connection_handler();
+    free_team_broker_connection_handler();
 
     free_garbage_collector();
     free_configuration_manager();

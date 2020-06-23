@@ -175,7 +175,7 @@ void initialize_team_process_description(){
     list_destroy_and_destroy_elements(config_values, free);
 }
 
-void* initialize_broker_connection_handler(){
+void* initialize_team_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
     initialize_team_process_description();
@@ -193,7 +193,7 @@ void cancel_all_broker_connection_handler_threads(){
     safe_thread_cancel(caught_queue_tid);
 }
 
-void free_broker_connection_handler(){
+void free_team_broker_connection_handler(){
     free(team_process_description);
     sem_destroy(&subscriber_threads_request_sent);
     cancel_all_broker_connection_handler_threads();

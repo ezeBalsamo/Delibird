@@ -31,7 +31,7 @@ void* main_thread_handler(void* connection_fd){
     return NULL;
 }
 
-void* initialize_gameboy_connection_handler(){
+void* initialize_team_gameboy_connection_handler(){
 
     query_performer = appeared_query_performer();
     start_multithreaded_server(own_port(), main_thread_handler);
@@ -39,6 +39,6 @@ void* initialize_gameboy_connection_handler(){
     return NULL;
 }
 
-void free_gameboy_connection_handler(){
+void free_team_gameboy_connection_handler(){
     free_multithreaded_server();
 }
