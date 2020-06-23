@@ -24,23 +24,11 @@ void initialize_quantum(){
     maximum_quantum = config_get_int_at("QUANTUM");
 }
 
-char* quantum_consumed_reason(){
-    //Se aloca memoria en lugar de devolver el string porque los
-    //otros motivos de logueo de schedule la alocan y la función
-    //que loguea asume eso y realiza un free
-
-    char* reason = string_new();
-    string_append(&reason, "Quantum agotado");
-
-    return reason;
-}
-
 void round_robin_execution_cycle_consumed_function(){
     quantum_consumed++;
 
     if(quantum_consumed == maximum_quantum){
-        reset_quantum_consumed();
-        preempt_due_to(quantum_consumed_reason());
+        preempt();
     }
 }
 

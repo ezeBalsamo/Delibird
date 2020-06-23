@@ -51,6 +51,19 @@ char* waiting_for_more_pokemons_reason(){
     return string_from_format("%s","Esperar a que aparezcan más pokemones.");
 }
 
+char* quantum_consumed_reason(){
+    //Se aloca memoria en lugar de devolver el string porque los
+    //otros motivos de logueo de schedule la alocan y la función
+    //que loguea asume eso y realiza un free
+
+    return string_from_format("%s", "Quantum agotado");
+}
+
+char* preemption_reason(){
+    //TODO: sumarle la lógica para cuando SJF CD
+    return quantum_consumed_reason();
+}
+
 char* thread_action_reason_for(t_trainer_thread_context* trainer_thread_context){
     uint32_t thread_action_type = trainer_thread_context -> thread_action -> request -> operation;
     char* reason = NULL;

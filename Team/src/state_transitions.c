@@ -6,44 +6,64 @@
 #include <dispatching_reasons.h>
 #include <pthread.h>
 #include <scheduling_algorithm.h>
+#include <round_robin_scheduling_algorithm.h>
 
 t_list* state_transitions;
-extern pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
 
 void new_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
     remove_from_new(trainer_thread_context);
-    pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
     schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
 }
 
 void ready_to_execute_transition_function(t_trainer_thread_context* trainer_thread_context){
-   /* if(should_execute(trainer_thread_context)){
+
+    if(should_execute(trainer_thread_context)){
         execute_trainer_thread_context();
     }
-    */
 }
 
 void blocked_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
     remove_from_blocked(trainer_thread_context);
-    pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
     schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
 }
 
-void execute_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
-    void _coming_from_execute_function(){
+void execute_to_ready_transition_due_to_default_catch_for(t_trainer_thread_context* trainer_thread_context){
+    void _to_ready_function(){
         schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
     }
 
-    free_current_execution_doing(_coming_from_execute_function);
+    free_current_execution_doing(_to_ready_function);
+}
+
+void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context* trainer_thread_context){
+
+    t_trainer_thread_context* trainer_thread_context_to_schedule;
+
+    void _to_ready_function(){
+        trainer_thread_context_to_schedule = trainer_thread_context;
+        schedule(trainer_thread_context_to_schedule, preemption_reason());
+    }
+
+    free_current_execution_doing(_to_ready_function);
+    sem_wait(&trainer_thread_context_to_schedule -> semaphore);
+}
+
+void execute_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
+
+    if(preemption_must_take_place()){
+        execute_to_ready_transition_due_to_preemption_for(trainer_thread_context);
+    }else{
+        execute_to_ready_transition_due_to_default_catch_for(trainer_thread_context);
+    }
 }
 
 void execute_to_finished_transition_function(t_trainer_thread_context* trainer_thread_context){
-    void _finished_function(){
+    void _to_finished_function(){
         add_to_finished(trainer_thread_context);
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
     }
 
-    free_current_execution_doing(_finished_function);
+    free_current_execution_doing(_to_finished_function);
     consider_global_goal_accomplished();
 }
 
@@ -57,22 +77,20 @@ void blocked_to_finished_transition_function(t_trainer_thread_context* trainer_t
 }
 
 void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
-    void _blocked_function(){
+    void _to_blocked_function(){
         add_to_blocked(trainer_thread_context);
         log_trainer_blocked(trainer_thread_context);
     }
 
-    free_current_execution_doing(_blocked_function);
-    sem_wait(&trainer_thread_context -> semaphore);
+    free_current_execution_doing(_to_blocked_function);
 }
 
 void blocked_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
 
     log_trainer_blocked(trainer_thread_context);
-    sem_wait(&trainer_thread_context -> semaphore);
 }
 
-void load_new_state_transition(uint32_t to_state, uint32_t from_state, void (*state_function) (t_trainer_thread_context*)){
+void load_new_state_transition(uint32_t from_state, uint32_t to_state, void (*state_function) (t_trainer_thread_context*)){
     t_state_transition* state_transition = safe_malloc(sizeof(t_state_transition));
     state_transition -> from_state = from_state;
     state_transition -> to_state = to_state;

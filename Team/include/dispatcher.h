@@ -23,7 +23,8 @@ void consider_continue_executing();
 
 bool is_anybody_executing();
 void execute_trainer_thread_context();
-void preempt_due_to(char* reason);
+void preempt();
+bool preemption_must_take_place();
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void assert_all_trainer_thread_contexts_have_finished();
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);

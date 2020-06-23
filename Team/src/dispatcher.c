@@ -15,6 +15,8 @@ t_trainer_thread_context* trainer_thread_context_executing;
 t_list* blocked_trainer_thread_contexts;
 t_list* finished_trainer_thread_contexts;
 
+bool must_preempt;
+
 pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
 pthread_mutex_t ready_queue_mutex;
 pthread_mutex_t execute_mutex;
@@ -27,6 +29,8 @@ void initialize_dispatcher(){
 
     initialize_state_transitions();
     initialize_scheduling_algorithm();
+
+    must_preempt = false;
 
     safe_mutex_initialize(&schedulable_trainer_thread_contexts_mutex);
     safe_mutex_initialize(&ready_queue_mutex);
@@ -128,13 +132,14 @@ void schedule(t_trainer_thread_context* trainer_thread_context, char* reason){
     log_trainer_schedule(trainer_thread_context -> localizable_trainer, reason);
     trainer_thread_context -> state = READY;
 
-    trainer_thread_context_ready(trainer_thread_context);
+    t_state_transition* state_transition = state_transition_for(trainer_thread_context, EXECUTE);
+    state_transition -> state_transition_function (trainer_thread_context);
 }
 
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context){
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, READY);
-    (state_transition -> state_transition_function) (trainer_thread_context);
+    state_transition -> state_transition_function (trainer_thread_context);
 }
 
 bool is_anybody_executing(){
@@ -154,30 +159,27 @@ void execute_trainer_thread_context(){
     sem_post(&trainer_thread_context_executing -> semaphore);
 }
 
-void preempt_due_to(char* preemption_reason){
-    t_trainer_thread_context* trainer_thread_context_to_schedule = trainer_thread_context_executing;
-    trainer_thread_context_executing = NULL;
-    pthread_mutex_unlock(&execute_mutex);
-    schedule(trainer_thread_context_to_schedule, preemption_reason);
-    sem_wait(&trainer_thread_context_to_schedule -> semaphore);
+bool preemption_must_take_place(){
+    return must_preempt;
+}
+
+void preempt(){
+    must_preempt = true;
+    t_state_transition* state_transition = state_transition_for(trainer_thread_context_executing, READY);
+    state_transition -> state_transition_function (trainer_thread_context_executing);
+    must_preempt = false;
 }
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, FINISHED);
-    (state_transition -> state_transition_function) (trainer_thread_context);
+    state_transition -> state_transition_function (trainer_thread_context);
 }
 
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context){
 
-    void _blocked_function(){
-        trainer_thread_context -> state = BLOCKED;
-        list_add_as_set(blocked_trainer_thread_contexts, trainer_thread_context);
-        log_trainer_blocked(trainer_thread_context);
-    }
-
-    free_current_execution_doing(_blocked_function);
-    sem_wait(&trainer_thread_context -> semaphore);
+    t_state_transition* state_transition = state_transition_for(trainer_thread_context, BLOCKED);
+    state_transition -> state_transition_function (trainer_thread_context);
 }
 
 void assert_all_trainer_thread_contexts_have_finished(){
