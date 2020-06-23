@@ -149,3 +149,9 @@ void log_succesful_suscription_to(uint32_t operation_queue){
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
+
+void log_errorful_not_existing_log(char* log_name){
+    char* message = string_from_format("El log solicitado: '%s' no existe.",log_name);
+    log_errorful_message(process_execution_logger(),message);
+    free(message);
+}

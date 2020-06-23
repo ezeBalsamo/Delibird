@@ -6,11 +6,12 @@
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/queue_code_name_associations.h"
 
+char* cache_dump_log_name = "cache_dump.log";
 
 void initialize_broker_logs_manager(){
     initialize_logger_for("Broker");
     create_main_logger();
-    create_log_named("cache_dump.log");
+    create_log_named(cache_dump_log_name);
     create_process_execution_logger();
 }
 
@@ -55,7 +56,8 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
 //---------------------------------------------------------------------
 
 void log_cache_dump_information(char* cache_info){
-    log_info(cache_dump_logger(), cache_info);
+    t_log* cache_dump_logger_found = logger_named(cache_dump_log_name);
+    log_info(cache_dump_logger_found, cache_info);
     log_succesful_message(process_execution_logger(), "Se recibio el pedido de dump a la cache y fue realizado correctamente!");
 }
 void log_succesful_initialize_queue_context_provider(){
