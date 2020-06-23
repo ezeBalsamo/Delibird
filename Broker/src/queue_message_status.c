@@ -39,7 +39,7 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
 
     if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
         log_failed_to_receive_ack_error(subscriber_context);
-        set_inestable_connection(subscriber_context);
+        set_inactive_connection_for(subscriber_context);
 
     } else {
         subscriber_context -> last_message_id_received = expected_ack;

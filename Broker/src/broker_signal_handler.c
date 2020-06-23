@@ -13,6 +13,5 @@ void cache_handler(){
 
 void initialize_broker_signal_handler(){
     initialize_signal_handler();
-    signal(SIGPIPE, SIG_IGN);
     handle_signal(SIGUSR1,cache_handler);
 }

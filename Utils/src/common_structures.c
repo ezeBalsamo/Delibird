@@ -13,6 +13,10 @@ void handler(){
     free_system();
 }
 
+void sigpipe_handler(){
+    log_syscall_error("Se produjo una señal SIGPIPE");
+}
+
 void handle_signal(int signal_number, void (*handler_function) ()){
 
     struct sigaction signal_action = {.sa_handler = handler_function};
@@ -26,6 +30,7 @@ void handle_signal(int signal_number, void (*handler_function) ()){
 void initialize_signal_handler(){
     handle_signal(SIGINT, handler);
     handle_signal(SIGTERM, handler);
+    handle_signal(SIGPIPE, sigpipe_handler);
 }
 
 void* safe_malloc(size_t size){
