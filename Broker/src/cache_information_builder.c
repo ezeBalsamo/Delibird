@@ -3,6 +3,7 @@
 #include <commons/temporal.h>
 #include <broker_memory_manager.h>
 #include <commons/string.h>
+#include <stdlib.h>
 
 char* pointer_address_as_string(void* block_position_pointer){
 
@@ -29,14 +30,14 @@ char* memory_block_as_string(t_memory_block* memory_block){
     return string_from_format("%s%s%s",lru_value,queue,id);
 }
 
+char* block_information_availabity_as_string(t_block_information* block_information){
+    return block_information -> is_free ? "[L]" : "[X]";
+}
 // 0x000 - 0x3FF [X] Size:1024b LRU:<VALOR> Cola: <COLA> ID: <ID>
 // 0x400 - 0x7FE [L] Size:1024b
 char* block_information_as_string(t_block_information* block_information){
 
-    char* symbol = "[X] ";
-    if (block_information->is_free){
-        symbol = "[L] ";
-    }
+    char* symbol = block_information_availabity_as_string(block_information);
 
     char* initial_address_position = pointer_address_as_string(block_information->initial_position);
 
@@ -49,7 +50,7 @@ char* block_information_as_string(t_block_information* block_information){
 
 
     char* memory_block_info = string_new();
-    if (block_information->is_free == false){
+    if (!block_information->is_free){
 
         char* memory_block = memory_block_as_string(block_information->memory_block);
         string_append(&memory_block_info,memory_block);
@@ -74,7 +75,12 @@ char* build_using(t_list* blocks_information){
         char* partition_info = string_from_format("Partición %s: %s\n",partition_number,block_info);
 
         string_append(&cache_partitions_info,partition_info);
+
+        free(partition_number);
+        free(block_info);
+        free(partition_info);
     }
+
     return cache_partitions_info;
 }
 
@@ -84,6 +90,7 @@ char* cache_information_builder(t_list* blocks_information){
     char* cache_blocks_info = build_using(blocks_information);
 
     char* cache_info = string_from_format("------------------\nDump: %s\n%s\n------------------",actual_time,cache_blocks_info);
-
+    free(actual_time);
+    free(cache_blocks_info);
     return cache_info;
 }

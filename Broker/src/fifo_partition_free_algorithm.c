@@ -4,7 +4,7 @@
 #include "../include/fifo_partition_free_algorithm.h"
 
 bool is_not_free(void* block_information){
-    return ((t_block_information*) block_information) -> is_free == false;
+    return !((t_block_information*) block_information) -> is_free;
 }
 
 void fifo_partition_free_algorithm(t_list* blocks_information){

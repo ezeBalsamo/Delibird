@@ -16,7 +16,7 @@ t_block_information*  find_block_to_allocate_message(t_list* blocks_information,
         if (block_information_found != NULL){
             return block_information_found;
         }
-        dynamic_partition_message_allocator->free_partition_algorithm (blocks_information);
+        dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
 
         block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information);
         if (block_information_found != NULL){
@@ -85,7 +85,7 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     return memory_block_to_save;
 }
 //ACA ARRANCA LA PAPA
-void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
+void partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
     t_memory_block* memory_block_to_save = build_memory_block_from_message(message);
@@ -104,13 +104,13 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
 t_message_allocator* initialize_dynamic_partition_message_allocator(){
 
     dynamic_partition_message_allocator = safe_malloc(sizeof(t_message_allocator));
-    dynamic_partition_message_allocator->allocate_message_function = dynamic_partition_allocate_message; //CASTEAR ESTO?
+    dynamic_partition_message_allocator->allocate_message_function = partition_allocate_message;
 
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
     dynamic_partition_message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
 
-    dynamic_partition_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(dynamic_partition_message_allocator->max_search_tries); //FF/BF
-    dynamic_partition_message_allocator->free_partition_algorithm = get_free_partition_algorithm(); //FIFO/LRU
+    dynamic_partition_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
+    dynamic_partition_message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
     dynamic_partition_message_allocator->memory_compaction_algorithm = memory_compaction_algorithm;
 
     return dynamic_partition_message_allocator;

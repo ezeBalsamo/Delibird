@@ -45,21 +45,21 @@ void* get_available_partition_search_algorithm() {
     return dictionary_get(algorithms,search_algorithm);
 }
 
-void* get_free_partition_algorithm() {
-    char *free_partition_algorithm = config_get_string_at("ALGORITMO_REEMPLAZO");
+void* get_partition_free_algorithm() {
+    char *partition_free_algorithm = config_get_string_at("ALGORITMO_REEMPLAZO");
 
-    return dictionary_get(algorithms,free_partition_algorithm);
+    return dictionary_get(algorithms,partition_free_algorithm);
 }
 
 int find_index_of_furthest_occupied_block_information(t_list* blocks_information){
     //itero desde el final, devuelvo el primero, seria como un find inverso
     for(int i = list_size(blocks_information);i > 0;i--){
         t_block_information* block_information = (t_block_information*) list_get(blocks_information,i-1);
-        if (block_information->is_free == false){
+        if (!block_information->is_free ){
             return i-1;
         }
     }
-    return 0;
+    return -1;
 }
 
 void combine_all_free_partitions(t_list* blocks_information){
@@ -77,7 +77,10 @@ void combine_all_free_partitions(t_list* blocks_information){
         }
     }
 }
+bool all_blocks_are_free_according_to(int furthest_occupied_block_index){
+    return furthest_occupied_block_index == -1;
 
+}
 void memory_compaction_algorithm(t_list* blocks_information){
 
     for (int i = 0; i < list_size(blocks_information);i++){
@@ -88,10 +91,12 @@ void memory_compaction_algorithm(t_list* blocks_information){
 
             int furthest_occupied_block_index = find_index_of_furthest_occupied_block_information(blocks_information);
             //solo swapear si el bloque vacio necesita ser reordenado
+            if (all_blocks_are_free_according_to(furthest_occupied_block_index)){
+                break;
+            }
             if(i < furthest_occupied_block_index){
                 list_swap(blocks_information,i,furthest_occupied_block_index);
             }
-
 
         }
     }
