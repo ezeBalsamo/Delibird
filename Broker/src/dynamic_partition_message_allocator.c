@@ -62,12 +62,12 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
 
 t_request* message_request_from_identified_message(t_identified_message* message){
     uint32_t operation = internal_operation_in(message);
-    return operation == IDENTIFIED_MESSAGE ? message->request : (t_request *) internal_request_in_correlative(message);
+    return operation == IDENTIFIED_MESSAGE ?  (t_request *) internal_request_in_correlative(message) : message->request;
 }
 
 t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     //Obtengo el mensaje
-    t_request* message_request = message_request_from_identified_message;
+    t_request* message_request = message_request_from_identified_message(message);
 
     t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 

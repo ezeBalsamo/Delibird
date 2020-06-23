@@ -14,6 +14,7 @@ void initialize_broker_memory_algorithms(){
     algorithms = dictionary_create();
     dictionary_put(algorithms,"FIFO", (void*)fifo_partition_free_algorithm);
     dictionary_put(algorithms,"FF", (void*)first_fit_available_partition_search_algorithm);
+    dictionary_put(algorithms,"PD", (void*)initialize_dynamic_partition_message_allocator);
 }
 
 bool is_dynamic_memory_algorithm(char* memory_algorithm){
@@ -24,19 +25,13 @@ bool is_buddy_system_memory_algorithm(char* memory_algorithm){
     return string_equals_ignore_case("BD",memory_algorithm);
 }
 
-t_message_allocator* initialize_message_allocator(){
+t_message_allocator* initialize_message_allocator() {
+
     char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
+    void* initialize_message_allocator_from_dictionary = dictionary_get(algorithms, memory_algorithm);
+    t_message_allocator *(*initialize_message_allocator_function)() = (t_message_allocator *(*)()) initialize_message_allocator_from_dictionary;
 
-    if(is_dynamic_memory_algorithm(memory_algorithm)){
-
-        return initialize_dynamic_partition_message_allocator();
-
-    }else if (is_buddy_system_memory_algorithm(memory_algorithm)){
-
-        //return initialize_buddy_system_message_allocator();
-    }else{
-        //log error
-    }
+    return initialize_message_allocator_function();
 }
 
 void* get_available_partition_search_algorithm() {

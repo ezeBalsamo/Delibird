@@ -1,6 +1,7 @@
 #include <logger.h>
 #include <commons/string.h>
 #include <garbage_collector.h>
+#include <general_logs.h>
 #include "../include/t_list_extension.h"
 
 t_list* list_flat(t_list* self){
@@ -59,8 +60,7 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
 t_list* list_swap(t_list* self, int index ,int another_index){
 
     if (list_size(self)< index || list_size(self)<another_index){
-        char *message = string_from_format("Hubo un error swapeando el indice i:'%d' con j:'%d' cuando el tamaño de lista es: '%u'",index,another_index,list_size(self));
-        log_errorful_message(process_execution_logger(),message);
+        log_list_invalid_index_access( index,  another_index, self);
         free_system();
     }
     void* element_to_swap = list_get(self,index);

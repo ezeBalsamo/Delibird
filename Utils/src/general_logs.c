@@ -83,6 +83,12 @@ void log_pthread_create_error(unsigned int process_id){
     free(message);
 }
 
+void log_list_invalid_index_access(int index, int another_index,t_list* self){
+    char *message = string_from_format("Hubo un error swapeando el indice i:'%d' con j:'%d' cuando el tamaño de lista es: '%u'",index,another_index,list_size(self));
+    log_errorful_message(process_execution_logger(),message);
+    free(message);
+}
+
 void log_queue_name_not_found_error(uint32_t queue_code){
     char* message = string_from_format("No se encontró una cola para el código: %lu", queue_code);
     log_errorful_message(process_execution_logger(), message);

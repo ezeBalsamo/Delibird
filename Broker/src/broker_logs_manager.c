@@ -11,6 +11,7 @@ void initialize_broker_logs_manager(){
     initialize_logger_for("Broker");
     create_main_logger();
     create_log_named("cache_dump.log");
+    create_process_execution_logger();
 }
 
 //LOGS MAIN, LOS QUE VAN SI O SI EN EL TP.
