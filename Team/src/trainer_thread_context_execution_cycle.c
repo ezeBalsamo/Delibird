@@ -66,6 +66,7 @@ void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_
 
 void prepare_for_waiting_for_more_pokemons_action(t_trainer_thread_context* trainer_thread_context){
 
+    free_thread_action(trainer_thread_context -> thread_action);
     trainer_thread_context -> thread_action = waiting_for_more_pokemons_thread_action();
     trainer_thread_context_has_become_blocked(trainer_thread_context);
 }
