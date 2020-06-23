@@ -7,6 +7,7 @@
 
 t_dictionary* loggers_by_name;
 char* process_execution_log_name = "process-execution.log";
+char* cache_dump_log_name = "cache_dump.log";
 char* main_log_name = "main.log";
 char* program_name;
 
@@ -53,6 +54,10 @@ t_log* main_logger(){
 
 void create_process_execution_logger(){
     create_log_named(process_execution_log_name);
+}
+
+t_log* cache_dump_logger(){
+    return dictionary_get(loggers_by_name, cache_dump_log_name);
 }
 
 t_log* process_execution_logger(){

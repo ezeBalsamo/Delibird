@@ -78,7 +78,7 @@ void combine_all_free_partitions(t_list* blocks_information){
     }
 }
 
-void compact_memory_algorithm(t_list* blocks_information){
+void memory_compaction_algorithm(t_list* blocks_information){
 
     for (int i = 0; i < list_size(blocks_information);i++){
 
