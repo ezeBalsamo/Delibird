@@ -24,7 +24,7 @@ t_block_information*  find_block_to_allocate_message(t_list* blocks_information,
         }
 
         search_failed_count++;
-
+        //todo: semaforizar
         if (search_failed_count > dynamic_partition_message_allocator->max_search_tries){
             dynamic_partition_message_allocator->memory_compaction_algorithm(blocks_information);
             search_failed_count=0;
@@ -33,14 +33,12 @@ t_block_information*  find_block_to_allocate_message(t_list* blocks_information,
 }
 
 uint32_t block_size_for(t_memory_block *  memory_block_to_save){
-    uint32_t block_size = dynamic_partition_message_allocator->min_partition_size;
-    if(memory_block_to_save->message_size > dynamic_partition_message_allocator->min_partition_size){
-        block_size = memory_block_to_save->message_size;
-    }
-    return block_size;
+    bool block_to_save_bigger_than_min_partition_size = memory_block_to_save->message_size > dynamic_partition_message_allocator->min_partition_size;
+
+    return block_to_save_bigger_than_min_partition_size ? memory_block_to_save->message_size : dynamic_partition_message_allocator->min_partition_size;
 }
 
-t_block_information* split_block_information_for_memory_block(t_block_information* block_information_found,t_memory_block* memory_block_to_save){
+t_block_information* save_memory_block_in_block_information(t_block_information* block_information_found,t_memory_block* memory_block_to_save){
     uint32_t memory_size_to_partition = block_information_found->block_size;
     uint32_t block_size_to_allocate = block_size_for(memory_block_to_save);
 
@@ -62,14 +60,14 @@ t_block_information* split_block_information_for_memory_block(t_block_informatio
     return new_block_information;
 }
 
+t_request* message_request_from_identified_message(t_identified_message* message){
+    uint32_t operation = internal_operation_in(message);
+    return operation == IDENTIFIED_MESSAGE ? message->request : (t_request *) internal_request_in_correlative(message);
+}
+
 t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     //Obtengo el mensaje
-    t_request *message_request = message->request;
-
-    uint32_t operation = internal_operation_in(message);
-    if (operation == IDENTIFIED_MESSAGE) {
-        message_request = (t_request *) internal_request_in_correlative(message);
-    }
+    t_request* message_request = message_request_from_identified_message;
 
     t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 
@@ -93,7 +91,7 @@ void partition_allocate_message(t_identified_message* message,t_list* blocks_inf
     t_block_information* block_information_found = find_block_to_allocate_message(blocks_information, memory_block_to_save);
 
     //encontre un block manager disponible, lo spliteo y creo uno nuevo que tenga la memoria restante, que este libre
-    t_block_information* new_block_information = split_block_information_for_memory_block(block_information_found,memory_block_to_save);
+    t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found,memory_block_to_save);
     // es posible que no haya que crear uno nuevo, si la particion tenia el tamaño exacto necesario
     if (new_block_information != NULL){
         list_add(blocks_information,(void*) new_block_information);

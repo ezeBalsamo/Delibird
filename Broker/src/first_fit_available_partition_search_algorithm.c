@@ -12,7 +12,3 @@ t_block_information* first_fit_available_partition_search_algorithm(uint32_t mes
     t_block_information* block_information_found = (t_block_information*) list_find(blocks_information,_message_size_fits_partition);
     return block_information_found;
 }
-
-void* get_first_fit_available_partition_search_algorithm(){
-    return first_fit_available_partition_search_algorithm;
-}

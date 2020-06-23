@@ -6,10 +6,7 @@
 #include <stdlib.h>
 
 char* pointer_address_as_string(void* block_position_pointer){
-
-    char* address_position = string_from_format("%p",block_position_pointer);
-
-    return address_position;
+    return string_from_format("%p",block_position_pointer);
 }
 
 char* memory_block_as_string(t_memory_block* memory_block){
