@@ -7,6 +7,7 @@
 #include <commons/string.h>
 #include <team_logs_manager.h>
 #include <dispatcher.h>
+#include <team_query_performers.h>
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
@@ -15,6 +16,7 @@ t_list* global_goal;
 
 pthread_mutex_t localized_trainers_mutex;
 pthread_mutex_t global_goal_mutex;
+extern sem_t localized_trainers_created;
 
 bool global_goal_accomplished;
 
@@ -25,7 +27,11 @@ void* initialize_team_manager(){
     safe_mutex_initialize(&global_goal_mutex);
 
     localized_trainers = parsed_trainers();
+    sem_post(&localized_trainers_created);
+
     global_goal = team_global_goal_according_to(localized_trainers);
+
+    initialize_team_query_performers();
     initialize_pokemon_occurrences();
     initialize_trainer_threads();
 
@@ -146,6 +152,10 @@ void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
     pthread_mutex_unlock(&global_goal_mutex);
 }
 
+int trainers_amount(){
+    return list_size(localized_trainers);
+}
+
 void free_localizable_trainer(t_localizable_object* localizable_trainer){
     t_trainer* trainer = localizable_trainer -> object;
     list_destroy_and_destroy_elements(trainer -> required_pokemons, free);
@@ -155,8 +165,13 @@ void free_localizable_trainer(t_localizable_object* localizable_trainer){
 }
 
 void free_team_manager(){
+    free_pokemon_occurrences();
+    free_trainer_threads();
+    free_team_query_performers();
+
     list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
     list_destroy_and_destroy_elements(localized_trainers, (void (*)(void *)) free_localizable_trainer);
+
     pthread_mutex_destroy(&localized_trainers_mutex);
     pthread_mutex_destroy(&global_goal_mutex);
 }

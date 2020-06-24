@@ -4,9 +4,9 @@
 #include <distance_calculator.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include "trainer_thread_context_state_chained_evaluation.h"
-#include "../../Utils/include/chained_evaluation.h"
 
-t_identified_chained_evaluation* first_evaluation;
+t_identified_chained_evaluation* caught_success_chained_evaluation;
+t_identified_chained_evaluation* caught_failed_chained_evaluation;
 
 bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_context){
     (void) trainer_thread_context;
@@ -69,8 +69,7 @@ t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_fi
     return chained_on_succesful_evaluation;
 }
 
-void initialize_trainer_thread_context_state_chained_evaluation(){
-
+void initialize_caught_success_chained_evaluation(){
     t_identified_chained_evaluation* next_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
     next_evaluation -> chained_evaluation_type = CHAINED_ON_SUCCESFUL;
     next_evaluation -> evaluation = next_state_chained_evaluation_when_has_not_finished();
@@ -80,29 +79,35 @@ void initialize_trainer_thread_context_state_chained_evaluation(){
     chained_on_failure_evaluation -> success_function = (void (*)(void *)) trainer_thread_context_has_finished;
     chained_on_failure_evaluation -> next_evaluation = next_evaluation;
 
-    first_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
-    first_evaluation -> chained_evaluation_type = CHAINED_ON_FAILURE;
-    first_evaluation -> evaluation = chained_on_failure_evaluation;
+    caught_success_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    caught_success_chained_evaluation -> chained_evaluation_type = CHAINED_ON_FAILURE;
+    caught_success_chained_evaluation -> evaluation = chained_on_failure_evaluation;
 }
 
-void trainer_thread_context_state_chained_evaluation_value_when_caught_for(t_trainer_thread_context* trainer_thread_context){
+void initialize_caught_failed_chained_evaluation(){
+    t_basic_evaluation* basic_evaluation = ready_or_schedulable_blocked_state_chained_evaluation();
 
-    execute_evaluation_for(first_evaluation, trainer_thread_context);
+    caught_failed_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    caught_failed_chained_evaluation -> chained_evaluation_type = BASIC;
+    caught_failed_chained_evaluation -> evaluation = basic_evaluation;
 }
 
-void free_trainer_thread_context_state_chained_evaluation(){
-    free_chained_evaluation(first_evaluation);
+void initialize_trainer_thread_context_state_chained_evaluation(){
+    initialize_caught_success_chained_evaluation();
+    initialize_caught_failed_chained_evaluation();
+}
+
+void trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(t_trainer_thread_context* trainer_thread_context){
+
+    execute_evaluation_for(caught_success_chained_evaluation, trainer_thread_context);
 }
 
 void trainer_thread_context_state_chained_evaluation_value_when_caught_failed_for(t_trainer_thread_context* trainer_thread_context){
 
-    t_basic_evaluation* basic_evaluation = ready_or_schedulable_blocked_state_chained_evaluation();
+    execute_evaluation_for(caught_failed_chained_evaluation, trainer_thread_context);
+}
 
-    t_identified_chained_evaluation* identified_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
-    identified_chained_evaluation -> chained_evaluation_type = BASIC;
-    identified_chained_evaluation -> evaluation = basic_evaluation;
-
-    execute_evaluation_for(identified_chained_evaluation, trainer_thread_context);
-
-    free_chained_evaluation(identified_chained_evaluation);
+void free_trainer_thread_context_state_chained_evaluation(){
+    free_chained_evaluation(caught_success_chained_evaluation);
+    free_chained_evaluation(caught_failed_chained_evaluation);
 }
