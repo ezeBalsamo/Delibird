@@ -9,8 +9,8 @@ void initialize_scheduling_algorithm(){
     scheduling_algorithm = chosen_scheduling_algorithm();
 }
 
-void update_ready_queue_when_adding(t_queue* ready_queue, t_trainer_thread_context* trainer_thread_context){
-    scheduling_algorithm -> update_ready_queue_when_adding_function (ready_queue, trainer_thread_context);
+void update_ready_queue_when_adding(t_list* ready_trainer_thread_contexts, t_trainer_thread_context* trainer_thread_context){
+    scheduling_algorithm -> update_ready_queue_when_adding_function (ready_trainer_thread_contexts, trainer_thread_context);
 }
 
 bool basic_should_execute(){
@@ -19,13 +19,6 @@ bool basic_should_execute(){
 
 bool should_execute(t_trainer_thread_context* trainer_thread_context){
     return scheduling_algorithm -> should_execute_now_function (trainer_thread_context);
-}
-
-void trainer_thread_context_ready(t_trainer_thread_context* trainer_thread_context){
-
-    if(should_execute(trainer_thread_context)){
-        execute_trainer_thread_context();
-    }
 }
 
 void execution_cycle_consumed(){

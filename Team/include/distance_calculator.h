@@ -5,6 +5,6 @@
 #include "trainer_threads.h"
 
 t_trainer_thread_context* trainer_thread_context_closest_to(t_list* trainer_thread_contexts, t_localizable_object* localizable_pokemon);
-t_localizable_object* closest_pokemon_to(t_list* localizable_pokemons, t_localizable_object* localizable_trainer);
+t_targetable_object* closest_targetable_pokemon(t_list* targetable_pokemons, t_localizable_object* localizable_trainer);
 
 #endif //DELIBIRD_DISTANCE_CALCULATOR_H

@@ -79,3 +79,11 @@ void list_add_as_set(t_list* self, void* element){
         list_add(self, element);
     }
 }
+
+void list_add_as_first(t_list* self, void* element){
+    list_add_in_index(self, 0, element);
+}
+
+void* list_remove_first(t_list* self){
+    return list_remove(self, 0);
+}

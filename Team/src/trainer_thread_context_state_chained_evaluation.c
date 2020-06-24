@@ -21,13 +21,14 @@ bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_con
 void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thread_context){
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
 
-    t_localizable_object* localizable_pokemon =
-            closest_pokemon_to(pokemons_waiting_for_be_caught,
-                               trainer_thread_context -> localizable_trainer);
+    t_targetable_object* targetable_pokemon =
+            closest_targetable_pokemon(pokemons_waiting_for_be_caught,
+                                       trainer_thread_context -> localizable_trainer);
 
     list_destroy(pokemons_waiting_for_be_caught);
 
-    prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
+    targetable_pokemon -> is_being_targeted = true;
+    prepare_for_movement_action(trainer_thread_context, targetable_pokemon -> localizable_pokemon);
 }
 
 bool can_be_scheduled_function(t_trainer_thread_context* trainer_thread_context){
@@ -91,4 +92,17 @@ void trainer_thread_context_state_chained_evaluation_value_when_caught_for(t_tra
 
 void free_trainer_thread_context_state_chained_evaluation(){
     free_chained_evaluation(first_evaluation);
+}
+
+void trainer_thread_context_state_chained_evaluation_value_when_caught_failed_for(t_trainer_thread_context* trainer_thread_context){
+
+    t_basic_evaluation* basic_evaluation = ready_or_schedulable_blocked_state_chained_evaluation();
+
+    t_identified_chained_evaluation* identified_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    identified_chained_evaluation -> chained_evaluation_type = BASIC;
+    identified_chained_evaluation -> evaluation = basic_evaluation;
+
+    execute_evaluation_for(identified_chained_evaluation, trainer_thread_context);
+
+    free_chained_evaluation(identified_chained_evaluation);
 }

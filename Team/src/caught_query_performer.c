@@ -1,4 +1,4 @@
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include <trainer_threads.h>
 #include <waiting_actions.h>
 #include <dispatcher.h>
@@ -17,10 +17,10 @@ bool is_waiting_catch_response(t_trainer_thread_context* trainer_thread_context)
 }
 
 t_trainer_thread_context* blocked_trainer_thread_context_waiting_for(int message_id){
-    t_list* non_blocked_trainer_thread_contexts = non_schedulable_blocked_trainer_thread_contexts();
+    t_list* trainer_thread_contexts = non_schedulable_blocked_trainer_thread_contexts();
 
     t_list* waiting_catch_response_trainer_thread_contexts =
-            list_filter(non_blocked_trainer_thread_contexts, (bool (*)(void *)) is_waiting_catch_response);
+            list_filter(trainer_thread_contexts, (bool (*)(void *)) is_waiting_catch_response);
 
     bool _is_waiting_this_message_id(void* trainer_thread_context){
         t_trainer_thread_context* cast_trainer_thread_context =
@@ -35,7 +35,7 @@ t_trainer_thread_context* blocked_trainer_thread_context_waiting_for(int message
     t_trainer_thread_context* trainer_thread_context_found =
             list_find(waiting_catch_response_trainer_thread_contexts, _is_waiting_this_message_id);
 
-    list_destroy(non_blocked_trainer_thread_contexts);
+    list_destroy(trainer_thread_contexts);
     list_destroy(waiting_catch_response_trainer_thread_contexts);
 
     return trainer_thread_context_found;

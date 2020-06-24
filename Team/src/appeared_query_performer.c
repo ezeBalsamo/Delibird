@@ -1,5 +1,6 @@
-#include <query_performers.h>
+#include <team_query_performers.h>
 #include <pokemon_occurrences.h>
+#include <team_logs_manager.h>
 #include "appeared_query_performer.h"
 #include "../../Utils/include/pthread_wrapper.h"
 
@@ -24,11 +25,11 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
     localizable_pokemon -> object = appeared_pokemon -> pokemon_name;
 
     pthread_mutex_lock(&targetable_status_mutex);
-    bool should_be_targeted = should_be_targeted_pokemon_named(appeared_pokemon -> pokemon_name);;
-    pthread_mutex_unlock(&targetable_status_mutex);
+    bool should_be_targeted = should_be_targeted_pokemon_named(appeared_pokemon -> pokemon_name);
 
     t_targetable_object* targetable_pokemon = safe_malloc(sizeof(t_targetable_object));
-    targetable_pokemon -> is_being_targeted = should_be_targeted;
+    targetable_pokemon -> should_be_targeted = should_be_targeted;
+    targetable_pokemon -> is_being_targeted = false;
     targetable_pokemon -> localizable_pokemon = localizable_pokemon;
 
     return targetable_pokemon;
@@ -37,11 +38,14 @@ t_targetable_object* targetable_pokemon_according_to(t_appeared_pokemon* appeare
 void appeared_query_performer_function(t_identified_message* correlative_identified_message){
 
     t_appeared_pokemon* appeared_pokemon = internal_object_in_correlative(correlative_identified_message);
+    char* pokemon_name = appeared_pokemon -> pokemon_name;
 
-    if(global_goal_contains(appeared_pokemon -> pokemon_name)){
+    if(global_goal_contains(pokemon_name)){
 
         t_targetable_object* targetable_pokemon = targetable_pokemon_according_to(appeared_pokemon);
         new_occurrence_of(targetable_pokemon);
+    }else{
+        log_appeared_pokemon_not_necessary_for_global_goal(pokemon_name);
     }
 }
 

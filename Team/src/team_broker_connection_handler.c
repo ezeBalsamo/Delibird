@@ -1,7 +1,7 @@
 #include "../include/team_broker_connection_handler.h"
 #include "../include/team_manager.h"
 #include "../include/team_logs_manager.h"
-#include "../include/query_performers.h"
+#include "../include/team_query_performers.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
@@ -119,7 +119,6 @@ void* subscriber_thread(void* queue_operation_identifier){
         consume_messages_from(socket_fd);
     }
 
-
     return NULL;
 }
 
@@ -176,7 +175,7 @@ void initialize_team_process_description(){
     list_destroy_and_destroy_elements(config_values, free);
 }
 
-void* initialize_broker_connection_handler(){
+void* initialize_team_broker_connection_handler(){
 
     sem_initialize(&subscriber_threads_request_sent);
     initialize_team_process_description();
@@ -194,7 +193,8 @@ void cancel_all_broker_connection_handler_threads(){
     safe_thread_cancel(caught_queue_tid);
 }
 
-void free_broker_connection_handler(){
+void free_team_broker_connection_handler(){
     free(team_process_description);
+    sem_destroy(&subscriber_threads_request_sent);
     cancel_all_broker_connection_handler_threads();
 }
