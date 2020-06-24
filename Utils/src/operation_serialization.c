@@ -1,46 +1,7 @@
 #include "../include/operation_serialization.h"
 #include "../include/serializable_objects.h"
+#include "../include/pokemon_request_bytes_calculator.h"
 #include <string.h>
-
-uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon){
-    return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(new_pokemon -> pokemon_name)                //Pokemon name
-           + sizeof(uint32_t)                                   //Pos x
-           + sizeof(uint32_t)                                   //Pos y
-           + sizeof(uint32_t);                                  //Cantidad
-}
-
-uint32_t amount_of_bytes_of_appeared(t_appeared_pokemon* appeared_pokemon){
-    return sizeof(uint32_t)                                     //Pokemon name length
-            + strlen(appeared_pokemon -> pokemon_name)          //Pokemon name
-            + sizeof(uint32_t)                                  //Pos x
-            + sizeof(uint32_t);                                 //Pos y
-}
-
-uint32_t amount_of_bytes_of_get(t_get_pokemon* get_pokemon){
-    return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(get_pokemon -> pokemon_name);       	    //Pokemon name
-}
-
-uint32_t amount_of_bytes_of_localized(t_localized_pokemon * localized_pokemon){
-    return sizeof(uint32_t)                                                     //Pokemon name length
-           + strlen(localized_pokemon -> pokemon_name)                          //Pokemon name
-           + sizeof(uint32_t)                                                   //quantity
-           + (list_size(localized_pokemon -> positions) * sizeof(uint32_t));    //positions
-}
-
-uint32_t amount_of_bytes_of_catch(t_catch_pokemon* catch_pokemon){
-    return sizeof(uint32_t)                                     //Pokemon name length
-           + strlen(catch_pokemon -> pokemon_name)              //Pokemon name
-           + sizeof(uint32_t)                                   //Pos x
-           + sizeof(uint32_t);                                  //Pos y
-}
-
-uint32_t amount_of_bytes_of_subscribe_me(t_subscribe_me* subscribe_me){
-    return sizeof(uint32_t)                                     //Operation queue
-            + sizeof(uint32_t)                                  //Process description name length
-            + strlen(subscribe_me -> process_description);      //Process description name
-}
 
 t_serialization_information* serialize(t_request* request){
 
@@ -319,3 +280,4 @@ t_serialization_information* serialize_identified_message(void* structure){
 
     return serialization_information;
 }
+
