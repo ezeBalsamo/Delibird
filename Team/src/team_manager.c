@@ -60,15 +60,14 @@ uint32_t amount_required_of(char* pokemon_name){
 
 bool global_goal_contains(char* pokemon_name){
 
-    bool _are_equals(void* pokemon_goal){
-        t_pokemon_goal* cast_pokemon_goal = (t_pokemon_goal*) pokemon_goal;
-        return string_equals_ignore_case(cast_pokemon_goal -> pokemon_name, pokemon_name);
+    bool _are_equals(t_pokemon_goal* pokemon_goal){
+        return string_equals_ignore_case(pokemon_goal -> pokemon_name, pokemon_name);
     }
 
-    return list_any_satisfy(global_goal, _are_equals);
+    return list_any_satisfy(global_goal, (bool (*)(void*)) _are_equals);
 }
 
-void update_global_goal_after_caught_of(char* pokemon_name){
+void decrement_global_goal_quantity_after_caught_of(char* pokemon_name){
     pthread_mutex_lock(&global_goal_mutex);
     t_pokemon_goal* pokemon_goal = global_goal_of(pokemon_name);
     pokemon_goal -> quantity--;
@@ -82,7 +81,7 @@ void update_current_pokemons_after_caught(t_localizable_object* localizable_trai
     list_add(trainer -> current_pokemons, string_duplicate(pokemon_name));
     pthread_mutex_unlock(&localized_trainers_mutex);
 
-    update_global_goal_after_caught_of(pokemon_name);
+    decrement_global_goal_quantity_after_caught_of(pokemon_name);
 }
 
 void assert_equals_size_between_trainers_and_finished_trainer_thread_contexts(){
@@ -95,12 +94,12 @@ void assert_equals_size_between_trainers_and_finished_trainer_thread_contexts(){
 
 void assert_there_are_no_more_global_goal_requirements(){
 
-    bool _amount_required_is_zero(void* pokemon_goal){
-        t_pokemon_goal* cast_pokemon_goal = (t_pokemon_goal*) pokemon_goal;
-        return cast_pokemon_goal -> quantity == 0;
+    bool _has_no_requirements_left(t_pokemon_goal* pokemon_goal){
+        return pokemon_goal -> quantity == 0;
     }
 
-    bool global_goal_is_accomplished = list_all_satisfy(global_goal, _amount_required_is_zero);
+    bool global_goal_is_accomplished =
+            list_all_satisfy(global_goal, (bool (*)(void*)) _has_no_requirements_left);
 
     if(!global_goal_is_accomplished){
         log_global_goal_not_consistent_with_trainers_requirements_error();

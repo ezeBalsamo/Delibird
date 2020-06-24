@@ -12,7 +12,7 @@ t_list* non_schedulable_blocked_trainer_thread_contexts();
 
 void trainer_thread_context_ready_to_be_sheduled(t_trainer_thread_context* trainer_thread_context);
 void schedule(t_trainer_thread_context* trainer_thread_context, char* reason);
-void free_current_execution_doing(void (*state_function) ());
+void stop_current_execution_doing(void (*state_function) ());
 
 void consider_continue_executing();
 bool is_anybody_executing();

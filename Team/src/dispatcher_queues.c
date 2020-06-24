@@ -41,6 +41,7 @@ t_dispatcher_queue* dispatcher_queue_of(uint32_t state){
 
     if(!dispatcher_queue_found){
         log_invalid_state_error();
+        free_system();
     }
 
     return dispatcher_queue_found;

@@ -75,7 +75,7 @@ void consider_continue_executing(){
     }
 }
 
-void free_current_execution_doing(void (*state_function) ()){
+void stop_current_execution_doing(void (*state_function) ()){
     reset_quantum_consumed();
     state_function();
     remove_from_execute();
@@ -194,7 +194,7 @@ void assert_all_trainer_thread_contexts_have_finished(){
 
     assert_no_trainer_thread_contexts_in(NEW);
     assert_no_trainer_thread_contexts_in(READY);
-    assert_no_trainer_thread_contexts_in(NEW);
+    assert_no_trainer_thread_contexts_in(EXECUTE);
     assert_no_trainer_thread_contexts_in(BLOCKED);
     assert_there_are_trainer_thread_contexts_in(FINISHED);
 }

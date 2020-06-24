@@ -2,6 +2,7 @@
 #include <trainer_threads.h>
 #include <team_logs_manager.h>
 #include "team_pretty_prints.h"
+#include "../../Utils/include/garbage_collector.h"
 
 char* localizable_pokemon_as_string(t_localizable_object* localizable_pokemon){
     char* pokemon_name = localizable_pokemon -> object;
@@ -46,6 +47,8 @@ char* state_as_string(uint32_t state){
             break;
         default:
             log_invalid_state_error();
+            free_system();
+            break;
     }
 
     return state_as_string;

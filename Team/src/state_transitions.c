@@ -33,7 +33,7 @@ void execute_to_ready_transition_due_to_default_catch_for(t_trainer_thread_conte
         schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
     }
 
-    free_current_execution_doing(_to_ready_function);
+    stop_current_execution_doing(_to_ready_function);
 }
 
 void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context* trainer_thread_context){
@@ -41,7 +41,7 @@ void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context*
         schedule(trainer_thread_context, preemption_reason());
     }
 
-    free_current_execution_doing(_to_ready_function);
+    stop_current_execution_doing(_to_ready_function);
     sem_wait(&trainer_thread_context -> semaphore);
 }
 
@@ -60,7 +60,7 @@ void execute_to_finished_transition_function(t_trainer_thread_context* trainer_t
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
     }
 
-    free_current_execution_doing(_to_finished_function);
+    stop_current_execution_doing(_to_finished_function);
     consider_global_goal_accomplished();
 }
 
@@ -77,7 +77,7 @@ void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_th
         log_trainer_blocked(trainer_thread_context);
     }
 
-    free_current_execution_doing(_to_blocked_function);
+    stop_current_execution_doing(_to_blocked_function);
 }
 
 void blocked_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
