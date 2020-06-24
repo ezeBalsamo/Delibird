@@ -9,8 +9,8 @@ t_list* dispatcher_queues;
 
 t_dispatcher_queue* new_dispatcher_queue_for(uint32_t state){
 
-    pthread_mutex_t* mutex = safe_malloc(sizeof(pthread_mutex_t));
-    safe_mutex_initialize(mutex);
+    pthread_mutex_t mutex;
+    safe_mutex_initialize(&mutex);
 
     t_dispatcher_queue* dispatcher_queue = safe_malloc(sizeof(t_dispatcher_queue));
     dispatcher_queue -> state = state;
@@ -72,27 +72,38 @@ void remove_from_execute(){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(EXECUTE);
     t_trainer_thread_context* trainer_thread_context = list_get(dispatcher_queue -> trainer_thread_contexts, 0);
-    pthread_mutex_lock(dispatcher_queue -> mutex);
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
     remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(dispatcher_queue -> mutex);
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+}
+
+void move_to_execute(){
+
+    t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
+
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
+    t_trainer_thread_context* trainer_thread_context_executing = list_remove_first(dispatcher_queue -> trainer_thread_contexts);
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+
+    add_to_dispatcher_queue(trainer_thread_context_executing, EXECUTE);
 }
 
 void remove_from_dispatcher_queue(t_trainer_thread_context* trainer_thread_context){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(trainer_thread_context -> state);
 
-    pthread_mutex_lock(dispatcher_queue -> mutex);
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
     remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(dispatcher_queue -> mutex);
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
 }
 
 void add_to_dispatcher_queue(t_trainer_thread_context* trainer_thread_context, uint32_t to_state){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(to_state);
 
-    pthread_mutex_lock(dispatcher_queue -> mutex);
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
     list_add(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(dispatcher_queue -> mutex);
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
 
     trainer_thread_context -> state = to_state;
 }
@@ -104,8 +115,7 @@ void move_to(t_trainer_thread_context* trainer_thread_context, uint32_t to_state
 }
 
 void free_dispatcher_queue(t_dispatcher_queue* dispatcher_queue){
-    pthread_mutex_destroy(dispatcher_queue -> mutex);
-    free(dispatcher_queue -> mutex);
+    pthread_mutex_destroy(&dispatcher_queue -> mutex);
     list_destroy(dispatcher_queue -> trainer_thread_contexts);
     free(dispatcher_queue);
 }

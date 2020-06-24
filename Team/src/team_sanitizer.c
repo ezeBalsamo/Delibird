@@ -5,19 +5,18 @@
 #include <dispatcher.h>
 #include <team_gameboy_connection_handler.h>
 #include <team_broker_connection_handler.h>
-#include <team_query_performers.h>
+#include <main_threads_executor.h>
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
 #include "../../Utils/include/garbage_collector.h"
 
 void free_system(){
+
+    free_main_threads_executor();
     free_pretty_printer();
     free_team_serializable_objects();
-    free_team_query_performers();
     free_dispatcher();
-    free_trainer_threads();
-    free_pokemon_occurrences();
     free_team_manager();
     free_team_gameboy_connection_handler();
     free_team_broker_connection_handler();

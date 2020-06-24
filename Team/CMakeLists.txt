@@ -33,7 +33,8 @@ set(SOURCES
         src/waiting_actions.c
         src/team_pretty_prints.c
         src/state_transitions.c
-        src/dispatcher_queues.c)
+        src/dispatcher_queues.c
+        src/main_threads_executor.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

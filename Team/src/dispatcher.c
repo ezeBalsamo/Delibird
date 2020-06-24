@@ -7,7 +7,6 @@
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/t_list_extension.h"
 
 bool must_preempt;
 pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
@@ -87,9 +86,9 @@ void move_to_ready_according_scheduling_algorithm(t_trainer_thread_context* trai
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
 
-    pthread_mutex_lock(dispatcher_queue -> mutex);
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
     update_ready_queue_when_adding(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(dispatcher_queue -> mutex);
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
 
     trainer_thread_context -> state = READY;
 }
@@ -131,19 +130,13 @@ void execute_trainer_thread_context(){
 
     pthread_mutex_lock(&execute_mutex);
 
-    t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
+    move_to_execute();
+    t_trainer_thread_context* trainer_thread_context = trainer_thread_context_executing();
 
-    pthread_mutex_lock(dispatcher_queue -> mutex);
-    t_trainer_thread_context* trainer_thread_context_executing =
-            list_remove_first(dispatcher_queue -> trainer_thread_contexts);
-    pthread_mutex_unlock(dispatcher_queue -> mutex);
+    log_trainer_execution(trainer_thread_context -> localizable_trainer,
+            thread_action_reason_for(trainer_thread_context));
 
-    add_to_dispatcher_queue(trainer_thread_context_executing, EXECUTE);
-
-    log_trainer_execution(trainer_thread_context_executing -> localizable_trainer,
-                          thread_action_reason_for(trainer_thread_context_executing));
-
-    sem_post(&trainer_thread_context_executing -> semaphore);
+    sem_post(&trainer_thread_context -> semaphore);
 }
 
 bool preemption_must_take_place(){
