@@ -7,11 +7,12 @@
 #include <pthread.h>
 #include <scheduling_algorithm.h>
 #include <round_robin_scheduling_algorithm.h>
+#include <dispatcher_queues.h>
 
 t_list* state_transitions;
 
 void new_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
-    remove_from_new(trainer_thread_context);
+    remove_from_dispatcher_queue(trainer_thread_context);
     schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
 }
 
@@ -23,7 +24,7 @@ void ready_to_execute_transition_function(t_trainer_thread_context* trainer_thre
 }
 
 void blocked_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
-    remove_from_blocked(trainer_thread_context);
+    remove_from_dispatcher_queue(trainer_thread_context);
     schedule(trainer_thread_context, thread_action_reason_for(trainer_thread_context));
 }
 
@@ -36,16 +37,12 @@ void execute_to_ready_transition_due_to_default_catch_for(t_trainer_thread_conte
 }
 
 void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context* trainer_thread_context){
-
-    t_trainer_thread_context* trainer_thread_context_to_schedule;
-
     void _to_ready_function(){
-        trainer_thread_context_to_schedule = trainer_thread_context;
-        schedule(trainer_thread_context_to_schedule, preemption_reason());
+        schedule(trainer_thread_context, preemption_reason());
     }
 
     free_current_execution_doing(_to_ready_function);
-    sem_wait(&trainer_thread_context_to_schedule -> semaphore);
+    sem_wait(&trainer_thread_context -> semaphore);
 }
 
 void execute_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){
@@ -59,7 +56,7 @@ void execute_to_ready_transition_function(t_trainer_thread_context* trainer_thre
 
 void execute_to_finished_transition_function(t_trainer_thread_context* trainer_thread_context){
     void _to_finished_function(){
-        add_to_finished(trainer_thread_context);
+        add_to_dispatcher_queue(trainer_thread_context, FINISHED);
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
     }
 
@@ -69,16 +66,14 @@ void execute_to_finished_transition_function(t_trainer_thread_context* trainer_t
 
 void blocked_to_finished_transition_function(t_trainer_thread_context* trainer_thread_context){
 
-    remove_from_blocked(trainer_thread_context);
-    add_to_finished(trainer_thread_context);
+    move_to(trainer_thread_context, FINISHED);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-
     consider_global_goal_accomplished();
 }
 
 void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
     void _to_blocked_function(){
-        add_to_blocked(trainer_thread_context);
+        add_to_dispatcher_queue(trainer_thread_context, BLOCKED);
         log_trainer_blocked(trainer_thread_context);
     }
 

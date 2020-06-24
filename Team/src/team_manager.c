@@ -93,7 +93,7 @@ void assert_equals_size_between_trainers_and_finished_trainer_thread_contexts(){
     }
 }
 
-void assert_global_goal_requirements_are_zero(){
+void assert_there_are_no_more_global_goal_requirements(){
 
     bool _amount_required_is_zero(void* pokemon_goal){
         t_pokemon_goal* cast_pokemon_goal = (t_pokemon_goal*) pokemon_goal;
@@ -126,7 +126,7 @@ void consider_global_goal_accomplished(){
     if(global_goal_accomplished){
         assert_all_trainer_thread_contexts_have_finished();
         assert_equals_size_between_trainers_and_finished_trainer_thread_contexts();
-        assert_global_goal_requirements_are_zero();
+        assert_there_are_no_more_global_goal_requirements();
         log_global_goal_accomplished();
     }
 }

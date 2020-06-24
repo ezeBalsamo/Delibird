@@ -11,8 +11,8 @@ bool round_robin_can_handle(char* scheduling_algorithm_name){
     return string_equals_ignore_case(scheduling_algorithm_name, "RR");
 }
 
-void round_robin_update_ready_queue_when_adding_function(t_queue* ready_queue, t_trainer_thread_context* trainer_thread_context){
-    queue_push(ready_queue, trainer_thread_context);
+void round_robin_update_ready_queue_when_adding_function(t_list* ready_trainer_thread_contexts, t_trainer_thread_context* trainer_thread_context){
+    list_add(ready_trainer_thread_contexts, trainer_thread_context);
 }
 
 bool round_robin_should_execute_now_function(t_trainer_thread_context* trainer_thread_context){

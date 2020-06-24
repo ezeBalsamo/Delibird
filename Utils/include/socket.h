@@ -3,7 +3,7 @@
 
 #include "serialization_interface.h"
 
-#define THREAD_POOL_SIZE 4
+#define THREAD_POOL_SIZE 25
 #define FAILED_ACK 0
 
 typedef struct Connection_Information{

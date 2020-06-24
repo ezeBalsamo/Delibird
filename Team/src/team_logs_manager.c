@@ -113,24 +113,23 @@ void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name){
 
 void log_targetable_pokemon_not_found_error_for(t_localizable_object* localizable_pokemon){
 
+    char* printable_localizable_pokemon = localizable_pokemon_as_string(localizable_pokemon);
     char* message = string_from_format(
-            "No se ha encontrado cargado en las ocurrencias al pokemon %s, ubicado en (%d, %d).",
-            localizable_pokemon -> object,
-            localizable_pokemon -> pos_x,
-            localizable_pokemon -> pos_y);
+            "No se ha encontrado cargado en las ocurrencias al pokemon %s.",
+            printable_localizable_pokemon);
 
     log_errorful_message(process_execution_logger(), message);
+    free(printable_localizable_pokemon);
     free(message);
 }
 
 void log_trainer_dispatch_action_with_reason(t_localizable_object* localizable_trainer, char* action_name, char* state_structure_name, char* reason){
-    t_trainer* trainer = localizable_trainer -> object;
+
+    char* printable_localizable_trainer = localizable_trainer_as_string(localizable_trainer);
     char* final_message;
     char* message =
-            string_from_format("El entrenador %d, ubicado en (%d, %d) fue %s a la %s.",
-                    trainer -> sequential_number,
-                    localizable_trainer -> pos_x,
-                    localizable_trainer -> pos_y,
+            string_from_format("El %s fue %s a la %s.",
+                    printable_localizable_trainer,
                     action_name,
                     state_structure_name);
 
@@ -141,6 +140,7 @@ void log_trainer_dispatch_action_with_reason(t_localizable_object* localizable_t
         final_message = string_duplicate(message);
     }
 
+    free(printable_localizable_trainer);
     free(message);
 
     log_succesful_message(main_logger(), final_message);
@@ -153,11 +153,11 @@ void log_trainer_dispatch_action(t_localizable_object* localizable_trainer, char
 }
 
 void log_trainer_added_to_new(t_localizable_object* localizable_trainer){
-    log_trainer_dispatch_action(localizable_trainer, "agregado", "lista de nuevos");
+    log_trainer_dispatch_action(localizable_trainer, "agregado", state_as_string(NEW));
 }
 
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason){
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "cola de listos", reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(READY), reason);
 }
 
 void log_trainer_movement(t_localizable_object* localizable_trainer){
@@ -174,21 +174,21 @@ void log_trainer_movement(t_localizable_object* localizable_trainer){
 }
 
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason){
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "ejecución", reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(EXECUTE), reason);
 }
 
 void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context){
     t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
     char* reason = thread_action_reason_for(trainer_thread_context);
 
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "cola de bloqueados", reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(BLOCKED), reason);
 }
 
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer){
     char* reason = string_new();
     string_append(&reason, "Atrapó todos los pokemones que requería.");
 
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", "lista de finalizados", reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(FINISHED), reason);
 }
 
 void log_unknown_thread_action_type_error(){
@@ -244,25 +244,17 @@ void log_succesfully_caught_due_to_failed_communication_with_broker(t_localizabl
     free(default_action);
 }
 
-void log_expected_to_be_empty_error_for(char* state_structure_name){
-    char* message = string_from_format("Se esperaba que la %s estuviera vacía.", state_structure_name);
+void log_expected_to_be_empty_error_for(uint32_t state){
+    char* printable_state = state_as_string(state);
+    char* message = string_from_format("Se esperaba que la %s estuviera vacía.", printable_state);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_expected_to_be_not_empty_error_for(char* state_structure_name){
-    char* message = string_from_format("Se esperaba que la %s no estuviera vacía.", state_structure_name);
+void log_expected_to_be_not_empty_error_for(uint32_t state){
+    char* printable_state = state_as_string(state);
+    char* message = string_from_format("Se esperaba que la %s no estuviera vacía.", printable_state);
     log_errorful_message(process_execution_logger(), message);
-    free(message);
-}
-
-void log_expected_no_trainer_thread_executing_error_for(t_trainer_thread_context* trainer_thread_context){
-    char* action_to_perform = thread_action_reason_for(trainer_thread_context);
-    char* message = string_from_format("Se esperaba que ningún hilo estuviese ejecutando.\n"
-                                       "Información del hilo actualmente ejecutando: %s", action_to_perform);
-
-    log_errorful_message(process_execution_logger(), message);
-    free(action_to_perform);
     free(message);
 }
 
@@ -292,6 +284,32 @@ void log_global_goal_not_consistent_with_trainers_requirements_error(){
 
 void log_invalid_transition_error(){
     log_errorful_message(process_execution_logger(), "Se intentó hacer una transición de estados inválida.");
+}
+
+void log_invalid_state_error(){
+    log_errorful_message(process_execution_logger(), "La cola es inválida.");
+}
+
+void log_more_than_one_trainer_thread_context_executing_error_for(t_list* trainer_thread_contexts){
+
+    char* message = string_from_format("%s", "Se esperaba encontrar un único hilo de entrenador ejecutado. Se encontraron:\n");
+
+    void _add_printable_trainers(t_trainer_thread_context* trainer_thread_context){
+        char* printable_localizable_trainer = localizable_trainer_as_string(trainer_thread_context -> localizable_trainer);
+        char* action_to_perform = thread_action_reason_for(trainer_thread_context);
+
+        string_append(&message, printable_localizable_trainer);
+        string_append(&message, "- Acción: ");
+        string_append(&message, action_to_perform);
+        string_append(&message, "\n");
+
+        free(printable_localizable_trainer);
+        free(action_to_perform);
+    }
+
+    list_iterate(trainer_thread_contexts, (void (*)(void *)) _add_printable_trainers);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_global_goal_accomplished(){
