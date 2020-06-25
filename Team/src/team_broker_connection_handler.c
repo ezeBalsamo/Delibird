@@ -12,6 +12,7 @@
 #include <string.h>
 #include <team_configuration_manager.h>
 #include <commons/string.h>
+#include <localized_query_performer.h>
 
 sem_t subscriber_threads_request_sent;
 
@@ -147,6 +148,15 @@ void join_to_queues(){
     safe_thread_join(caught_queue_tid);
 }
 
+void prepare_get_response(int response_id, char* pokemon_name){
+
+    t_get_response* get_response = safe_malloc(sizeof(t_get_response));
+    get_response -> response_id = response_id;
+    get_response -> pokemon_name = pokemon_name;
+
+    get_pokemon_sent_successfully(get_response);
+}
+
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
     t_get_pokemon* get_pokemon = safe_malloc(sizeof(t_get_pokemon));
@@ -160,7 +170,12 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-        serialize_and_send_structure(request, connection_information -> socket_fd);
+        int ack =
+                serialize_and_send_structure_and_wait_for_ack(request,
+                        connection_information -> socket_fd, ack_timeout());
+
+        prepare_get_response(ack, get_pokemon -> pokemon_name);
+
     } else{
         log_no_locations_found_for(pokemon_goal -> pokemon_name);
     }

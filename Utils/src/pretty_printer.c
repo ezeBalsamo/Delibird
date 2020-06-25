@@ -48,20 +48,25 @@ char* localized_pokemon_as_string(t_localized_pokemon* localized_pokemon){
     for(int i = 0; i < (localized_pokemon -> quantity) * 2; i+=2){
         void* x_position = list_get(localized_pokemon -> positions, i);
         uint32_t cast_x_position = *((uint32_t*) x_position);
+        char* printable_x_position = string_itoa(cast_x_position);
 
         void* y_position = list_get(localized_pokemon -> positions, i + 1);
         uint32_t cast_y_position = *((uint32_t*) y_position);
+        char* printable_y_position = string_itoa(cast_y_position);
 
         string_append(&message_with_positions, "(");
-        string_append(&message_with_positions, string_itoa(cast_x_position));
+        string_append(&message_with_positions, printable_x_position);
         string_append(&message_with_positions, ", ");
-        string_append(&message_with_positions, string_itoa(cast_y_position));
+        string_append(&message_with_positions, printable_y_position);
         string_append(&message_with_positions, ")");
 
         int index_to_know_remaining_positions = i + 2;
         if(index_to_know_remaining_positions < ((localized_pokemon -> quantity) * 2)){
             string_append(&message_with_positions, ", ");
         }
+
+        free(printable_x_position);
+        free(printable_y_position);
     }
 
     free(message_without_positions);
