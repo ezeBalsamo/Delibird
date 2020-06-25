@@ -116,7 +116,7 @@ t_serialization_information* serialize_localized_pokemon(void* structure) {
     uint32_t amount_of_bytes_of_request =
             sizeof(uint32_t)                        // operation
             + sizeof(uint32_t)                      // structure size
-            + amount_of_bytes_of_localized_pokemon;  // structure
+            + amount_of_bytes_of_localized_pokemon; // structure
 
     void* serialized_request = safe_malloc(amount_of_bytes_of_request);
 

@@ -1,6 +1,8 @@
 #include "../include/team_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/queue_code_name_associations.h"
+#include "../../Utils/include/pretty_printer.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>
@@ -258,8 +260,11 @@ void log_expected_to_be_not_empty_error_for(uint32_t state){
     free(message);
 }
 
-void log_message_id_not_required(uint32_t message_id){
-    char* message = string_from_format("Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje %d", message_id);
+void log_message_id_not_required(uint32_t queue_code, uint32_t message_id){
+    char* message =
+            string_from_format("Ningún entrenador está esperando la respuesta de un %s con id de mensaje %d",
+                    queue_name_of(queue_code), message_id);
+
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -309,6 +314,26 @@ void log_more_than_one_trainer_thread_context_executing_error_for(t_list* traine
 
     list_iterate(trainer_thread_contexts, (void (*)(void *)) _add_printable_trainers);
     log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_not_matching_pokemon_name_between_get_and_localized_error(char* get_response_pokemon_name, char* localized_pokemon_name){
+    char* message =
+            string_from_format("No coinciden los pokemones para las operaciones correlativas get y localized. GET -> %s, LOCALIZED -> %s\n",
+                                get_response_pokemon_name,
+                                localized_pokemon_name);
+
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_pokemon* localized_pokemon){
+    char* printable_localized_pokemon = pretty_print_of(LOCALIZED_POKEMON, localized_pokemon);
+    char* message = string_from_format("Se procederá a ignorar %s debido a ocurrencias previas del pokemon\n", printable_localized_pokemon);
+
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(printable_localized_pokemon);
     free(message);
 }
 
