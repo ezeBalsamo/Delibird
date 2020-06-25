@@ -49,7 +49,7 @@ t_identified_message* identified_message_from(t_request* request, char** argumen
 }
 
 void* appeared_pokemon_parse_function(char** arguments){
-    t_appeared_pokemon* appeared_pokemon = safe_malloc(sizeof(t_new_pokemon));
+    t_appeared_pokemon* appeared_pokemon = safe_malloc(sizeof(t_appeared_pokemon));
     appeared_pokemon -> pokemon_name = arguments[0];
     appeared_pokemon -> pos_x = atoi(arguments[1]);
     appeared_pokemon -> pos_y = atoi(arguments[2]);
