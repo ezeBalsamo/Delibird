@@ -69,7 +69,7 @@ t_operation_information* subscribe_operation_information(){
 
 t_list* team_operations_information(){
     t_list* operations = list_create();
-    list_add(operations, appeared_pokemon_operation_information(8, true));
+    list_add(operations, appeared_pokemon_operation_information(6, true));
     return operations;
 }
 
