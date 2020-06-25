@@ -12,6 +12,7 @@ t_log* process_execution_logger();
 void log_errorful_message(t_log* logger, char* message);
 void log_succesful_message(t_log* logger, char* message);
 void log_warning_message(t_log* logger, char* message);
+bool exists_directory_at(char* path);
 
 void free_loggers();
 

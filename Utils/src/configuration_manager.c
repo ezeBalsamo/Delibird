@@ -1,6 +1,6 @@
 #include "../include/configuration_manager.h"
 #include "commons/config.h"
-#include <roots.h>
+#include <paths.h>
 #include <stdlib.h>
 #include <general_logs.h>
 #include <commons/string.h>

@@ -68,11 +68,42 @@ t_request* subscribe_me_request_for(uint32_t operation_queue){
     return request;
 }
 
+void* performer_thread(void* deserialized_request){
+
+    t_request* cast_deserialized_request = (t_request*) deserialized_request;
+
+    t_identified_message* response_message = gamecard_query_perform(deserialized_request);
+
+    t_request* request = safe_malloc(sizeof(t_request));
+    request -> operation = IDENTIFIED_MESSAGE;
+    request -> structure = response_message;
+    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
+
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
+
+    if(connection_information -> connection_was_succesful){
+
+        serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
+
+    } else {
+        printf("No se pudo enviar la respuesta al Broker\n");
+        //TODO: log por default
+    }
+
+    free_and_close_connection_information(connection_information);
+    free_request(deserialized_request);
+    free_request(request);
+
+    return NULL;
+}
+
 void consume_messages_from(int socket_fd){
 
     //Obtener request desde el socket_fd correspondiente al broker
     t_serialization_information* serialization_information = receive_structure(socket_fd);
     t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+
+    free_serialization_information(serialization_information);
 
     //Aviso al Broker la recepcion del mensaje
     t_identified_message* identified_message = deserialized_request -> structure;
@@ -81,13 +112,9 @@ void consume_messages_from(int socket_fd){
     //Loguear y mostrar por consola mensaje recibido
     log_request_received_with(main_logger(), deserialized_request);
 
-    //Realizar lógica
-    //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp
-    gamecard_query_perform(deserialized_request);
+    default_safe_thread_create(performer_thread, deserialized_request);
 
-    //Liberar memoria
-    free_serialization_information(serialization_information);
-    free_request(deserialized_request);
+
 }
 
 void* subscriber_thread(void* queue_operation_identifier){

@@ -10,7 +10,7 @@ set(SOURCES
         src/pthread_wrapper.c
         src/socket.c
         src/t_list_extension.c
-        src/roots.c
+        src/paths.c
         src/pretty_printer.c
         src/queue_code_name_associations.c
         src/general_logs.c

@@ -11,6 +11,10 @@
 #include "gamecard_configuration_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/logger.h"
+
+t_list* all_files_information;
 
 char* mount_point;
 uint32_t block_size;
@@ -27,9 +31,9 @@ int split(char string[], int index, char* separator, char found_string[])
 {
 
     int i = 1;
-    int init_size = strlen(string);
+    int initial_size = strlen(string);
 
-    char str1[init_size];
+    char str1[initial_size];
     strcpy(str1,string);
     char delim[5];
     strcpy(delim,separator);
@@ -49,20 +53,20 @@ int split(char string[], int index, char* separator, char found_string[])
     return i-1;
 }
 
-int read_line(char *buff, int size, FILE *fp)
+int read_line(char* buffer, int size, FILE* file_pointer)
 {
-    buff[0] = '\0';
-    buff[size - 1] = '\0';             /* mark end of buffer */
-    char *tmp;
+    buffer[0] = '\0';
+    buffer[size - 1] = '\0';             /* mark end of buffer */
+    char* temp;
 
-    if (fgets(buff, size, fp) == NULL) {
-        buff = '\0';                   /* EOF */
+    if (fgets(buffer, size, file_pointer) == NULL) {
+        buffer = '\0';                   /* EOF */
         return false;
     }
     else {
         /* remove newline */
-        if ((tmp = strrchr(buff, '\n')) != NULL) {
-            *tmp = '\0';
+        if ((temp = strrchr(buffer, '\n')) != NULL) {
+            *temp = '\0';
         }
     }
     return true;
@@ -70,168 +74,207 @@ int read_line(char *buff, int size, FILE *fp)
 
 pokemon_block_line* create_line(int x, int y, int quantity){
 
-    pokemon_block_line* new = malloc(sizeof(pokemon_block_line));
+    pokemon_block_line* new_line = malloc(sizeof(pokemon_block_line));
 
-    new -> positionX = x;
-    new -> positionY = y;
-    new -> pokemonQuantity = quantity;
+    new_line -> positionX = x;
+    new_line -> positionY = y;
+    new_line -> pokemonQuantity = quantity;
 
-    return new;
+    return new_line;
 }
 
-bool exists_file(char* filename) {
-    struct stat buffer;
-    if (stat(filename, &buffer) == 0){
-        return true;
-    }
-    else{
-        return false;
-    }
-}
+void change_file_open_flag(FILE* file_pointer, char* new_flag){
 
-void change_file_open_flag(FILE* fp, char* new_flag){
-
-    fseek(fp, 0, SEEK_END);
-    int pos = ftell(fp);
-    fseek(fp, pos-2, SEEK_SET); // 1 para la y, otro por el \n
+    fseek(file_pointer, -2, SEEK_END); // 1 para la y, otro por el \n
 
     char var[1];
-    fscanf(fp, "%c", var);
+    fscanf(file_pointer, "%c", var);
 
     if(var[0] == '='){
-        fseek(fp, pos-1, SEEK_SET);
+        fseek(file_pointer, -1, SEEK_END);
     }
     if(var[0] == 'N' || var[0] == 'Y'){
-        fseek(fp, pos-2, SEEK_SET);
+        fseek(file_pointer, -2, SEEK_END);
     }
 
-    fprintf(fp, "%s\n", new_flag);
+    fprintf(file_pointer, "%s", new_flag);
+}
+
+void set_open(FILE* file_pointer){
+    change_file_open_flag(file_pointer, "Y");
+}
+
+void set_closed(FILE* file_pointer){
+    change_file_open_flag(file_pointer, "N");
+}
+
+void close_metadata(char* metadata_path) {
+
+    FILE *file_pointer = fopen(metadata_path, "r+");
+    int fd = fileno(file_pointer); //el file descriptor para los flocks :D
+    flock(fd, LOCK_SH);
+
+    set_closed(file_pointer);
+
+    fclose(file_pointer);
+    flock(fd, LOCK_UN);
+}
+
+t_list* create_positions_list(t_list* data_list){
+
+    t_list* positions_list = list_create();
+
+    void _create_position_element(pokemon_block_line* position) {
+        uint32_t* positionX = safe_malloc(sizeof(uint32_t));
+        uint32_t* positionY = safe_malloc(sizeof(uint32_t));
+
+        *positionX = position -> positionX;
+        *positionY = position -> positionY;
+
+        list_add(positions_list, positionX);
+        list_add(positions_list, positionY);
+    }
+
+    list_iterate(data_list, (void*) _create_position_element);
+
+    return positions_list;
+}
+
+uint32_t amount_of_positions(t_list* positions_list){
+    return list_size(positions_list) / 2;
+}
+
+void* read_fs_metadata(char* file_path){
+
+    FILE* file_pointer = fopen(file_path, "r+");
+
+    fs_metadata* pointer_fs_metadata = (fs_metadata*) malloc(sizeof(fs_metadata));
+
+    //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
+    t_config* metadata_config = config_create(file_path);
+
+    //Obtener valores blocks_size, blocks, magic_number
+    pointer_fs_metadata -> Block_size = config_get_int_at("BLOCK_SIZE");
+    pointer_fs_metadata -> Blocks = config_get_int_at("BLOCKS");
+    pointer_fs_metadata -> Magic_Number = config_get_string_at("MAGIC_NUMBER");
+
+    consider_as_garbage(metadata_config, (void (*)) config_destroy);
+
+    log_filesystem_metadata_info(pointer_fs_metadata);
+
+    fclose(file_pointer);
+    return (void*) pointer_fs_metadata;
+}
+
+void* read_file_metadata(char* file_path){
+
+    FILE* file_pointer = fopen(file_path, "r+");
+
+    int fd = fileno(file_pointer); //el file descriptor para los flocks :D
+    flock(fd, LOCK_SH);
+
+    file_metadata* pointer_file_metadata = (file_metadata*) safe_malloc(sizeof(file_metadata));
+    int first_time_reading = 0;
+    t_config* metadata_config;
+
+    do{
+        if(first_time_reading){
+            //Destruir t_config creado
+            config_destroy(metadata_config);
+            flock(fd,LOCK_UN);
+            sleep(op_retry_time());
+            flock(fd,LOCK_SH);
+        }
+
+    //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
+    metadata_config = config_create(file_path);
+
+    //Obtener valores del pokemon_metadata
+    pointer_file_metadata -> directory = config_get_string_value(metadata_config, "DIRECTORY");
+    pointer_file_metadata -> size = config_get_int_value(metadata_config, "SIZE");
+    pointer_file_metadata -> blocks = config_get_string_value(metadata_config, "BLOCKS");
+    pointer_file_metadata -> open = config_get_string_value(metadata_config, "OPEN");
+
+    fseek(file_pointer, 0, 0);
+
+    log_file_metadata_info(pointer_file_metadata);
+
+    first_time_reading = 1;
+
+    } while(string_equals_ignore_case(pointer_file_metadata -> open, "Y"));
+
+    //una vez que sali del loop tengo que escribir la Y en el open
+    //set_open(file_pointer);
+    fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
+
+    //Si yo ya lockee el metadata, el que ya tenia abierto el file no deberia poder actualizar el metadata porque lo tengo lockeado yo
+    flock(fd,LOCK_UN);
+
+    return (void*) pointer_file_metadata;
+}
+
+void* read_block(char* file_path){
+
+    FILE* file_pointer;
+
+    char pointer[MAXLINE];
+    char line[MAXLINE];
+    char block_pointer[8];
+    int blocks_quantity;
+    char* final_path;
+    t_list* blocks_data = list_create();
+
+    int i = 1;
+    do{
+        blocks_quantity = split(file_path, i, "[,]", block_pointer);
+
+        //crear_path_bloque(tallgrass_mount_point(), block_pointer, final_path);
+        final_path = create_block_path(block_pointer);
+
+        file_pointer = fopen(final_path,"r");
+
+        while(read_line(line, MAXLINE, file_pointer)){
+
+            split(line,1,"-=",pointer);
+            int x = atoi(pointer);
+
+            split(line,2,"-=",pointer);
+            int y = atoi(pointer);
+
+            split(line,3,"-=",pointer);
+            int quantity = atoi(pointer);
+
+            //Guardarlo en la lista, lo vi asi en las commons el agregado a la lista
+            list_add(blocks_data, create_line(x, y, quantity));
+
+            log_block_metadata_info(x, y, quantity);
+        }
+        fclose(file_pointer);
+        i++;
+    }
+    while(i <= blocks_quantity);
+
+    return (void*) blocks_data;
 }
 
 void* read_file_of_type(int file_type, char* file_name){
 
-
-    FILE *fp;
-    int fd;
-
-    if(file_type != BLOCK){
-
-        //TODO: verificar si existe el archivo, y en caso que no, retornar un valor especifico
-
-        fp = fopen(file_name, "r+");
-
-        if(file_type == FILE_METADATA){
-            fd = fileno(fp); //el file descriptor para los flocks :D
-            flock(fd, LOCK_SH);
-        }
-    }
-
-    char pointer[MAXLINE];
-    char line[MAXLINE];
-
     switch(file_type){
-        case FS_METADATA:{
-            fs_metadata* pointer_fs_metadata = (fs_metadata *) malloc(sizeof(fs_metadata));
+        case FILESYSTEM_METADATA:{
+            //TODO: verificar si existe el archivo, y en caso que no, retornar un valor especifico
+            return (fs_metadata*) read_fs_metadata(file_name);
 
-            read_line(line, MAXLINE, fp);
-            split(line,2,"-=",pointer);
-            pointer_fs_metadata -> Block_size = atoi(pointer);
-
-            read_line(line, MAXLINE, fp);
-            split(line,2,"-=",pointer);
-            pointer_fs_metadata -> Blocks = atoi(pointer);
-
-            read_line(line, MAXLINE, fp);
-            split(line,2,"-=",pointer);
-            strcpy(pointer_fs_metadata -> Magic_Number, pointer);
-
-            log_filesystem_metadata_info(pointer_fs_metadata);
-
-            fclose(fp);
-            return pointer_fs_metadata;
         }
-        case FILE_METADATA:{
-            file_metadata* pointer_file_metadata = (file_metadata *) malloc(sizeof(file_metadata));
-            int first_time_reading = 0;
-            do{
-                if(first_time_reading){
-                    flock(fd,LOCK_UN);
-                    sleep(op_retry_time());
-                    flock(fd,LOCK_SH);
-                }
+        case ARCHIVO_METADATA:{
 
-                read_line(line, MAXLINE, fp);
-                split(line,2,"-=",pointer);
-                strcpy(pointer_file_metadata->directory,pointer);
+            //TODO: verificar si existe el archivo, y en caso que no, retornar un valor especifico
+            return (file_metadata*) read_file_metadata(file_name);
 
-                read_line(line, MAXLINE, fp);
-                split(line,2,"-=",pointer);
-                pointer_file_metadata->size = atoi(pointer);
-
-                read_line(line, MAXLINE, fp);
-                split(line,2,"-=",pointer);
-                strcpy(pointer_file_metadata->blocks,pointer);
-                //pointer_file_metadata.blocks = pointer;
-
-                read_line(line, MAXLINE, fp);
-                split(line,2,"-=",pointer);
-                strcpy(pointer_file_metadata->open,pointer);
-
-                fseek(fp, 0, 0);
-
-                log_file_metadata_info(pointer_file_metadata);
-
-                first_time_reading = 1;
-
-            }while(pointer_file_metadata -> open[0] == 'Y');
-
-            //una vez que sali del loop tengo que escribir la Y en el open
-            change_file_open_flag(fp, "Y");
-
-            fclose(fp);
-            //Si yo ya lockee el metadata, el que ya tenia abierto el file no deberia poder actualizar el metadata porque lo tengo lockeado yo
-            flock(fd,LOCK_UN);
-
-            return pointer_file_metadata;
         }
-        case BLOCK:{
+        case BLOQUE:{
 
-            char block_pointer[8];
-            int blocks_quantity;
-            char* final_path;
-            t_list* blocks_data = list_create();
+            return (t_list*) read_block(file_name);
 
-            int i=1;
-            do{
-                blocks_quantity = split(file_name, i, "[,]", block_pointer);
-
-                //crear_path_bloque(tallgrass_mount_point(), block_pointer, final_path);
-                final_path = create_block_path(block_pointer);
-
-                fp = fopen(final_path,"r");
-
-                while(read_line(line, MAXLINE, fp)){
-
-                    split(line,1,"-=",pointer);
-                    int x = atoi(pointer);
-
-                    split(line,2,"-=",pointer);
-                    int y = atoi(pointer);
-
-                    split(line,3,"-=",pointer);
-                    int quantity = atoi(pointer);
-
-                    //Guardarlo en la lista, lo vi asi en las commons el agregado a la lista
-                    list_add(blocks_data, create_line(x, y, quantity));
-
-                    log_block_metadata_info(x, y, quantity);
-                }
-                fclose(fp);
-                i++;
-            }
-            while(i <= blocks_quantity);
-
-            return blocks_data;
         }
         default:{
             return 0;
@@ -239,8 +282,46 @@ void* read_file_of_type(int file_type, char* file_name){
     }
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*void initialize_and_load_fs_metadata_information(){
+    t_file_information* file_information = safe_malloc(sizeof(t_file_information));
+    file_information -> file_type = FS_METADATA;
+    file_information -> reader_function = read_fs_metadata;
+
+    list_add(all_files_information, (void*) file_information);
+}*/
+
+/*void initialize_and_load_file_metadata_information(){
+    t_file_information* file_information = safe_malloc(sizeof(t_file_information));
+    file_information -> file_type = FILE_METADATA;
+    file_information -> reader_function = read_file_metadata;
+
+    list_add(all_files_information, (void*) file_information);
+}*/
+
+/*void initialize_and_load_block_information(){
+    t_file_information* file_information = safe_malloc(sizeof(t_file_information));
+    file_information -> file_type = BLOCK;
+    file_information -> reader_function = read_block;
+
+    list_add(all_files_information, (void*) file_information);
+}*/
 
 
+/*void initialize_files_information(){
+
+    all_files_information = list_create();
+
+    //inicializo estructuras de informacion de archivos
+    initialize_and_load_fs_metadata_information();
+    initialize_and_load_file_metadata_information();
+    initialize_and_load_block_information();
+}*/
+
+/*void free_files_information(){
+    //TODO: liberar array all_file_information y elementos dentro
+}*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 void initialize_bitmap(){
@@ -272,8 +353,10 @@ void initialize_bitmap(){
     fclose(bitmap_file);
 }
 
+
 void initialize_metadata(){
 
+    //esta podria ser la funcion reader del fs_metadata
     char* metadata_path = string_from_format("%s/Metadata/Metadata.bin", tallgrass_mount_point());
 
     //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
@@ -295,4 +378,5 @@ void initialize_filesystem(){
     //Inicializar metadata y bitmap (estos archivos existen siempre ya que son la base del fs)
     initialize_metadata();
     initialize_bitmap();
+ //   initialize_files_information();
 }

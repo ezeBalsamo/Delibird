@@ -2,8 +2,8 @@
 #include <commons/string.h>
 #include <commons/collections/dictionary.h>
 #include <stdlib.h>
+#include <paths.h>
 #include <sys/stat.h>
-#include <roots.h>
 
 t_dictionary* loggers_by_name;
 char* process_execution_log_name = "process-execution.log";
@@ -14,15 +14,10 @@ char* get_program_name(){
     return program_name;
 }
 
-bool exists_directory_at(char* path){
-    struct stat stat_buffer;
-    return stat(path, &stat_buffer) != -1;
-}
-
 void create_directory_if_necessary(){
     char* path = logs_path();
 
-    if(!exists_directory_at(path)){
+    if(!exists_file_at(path)){
         mkdir(path, 0700);
     }
 
