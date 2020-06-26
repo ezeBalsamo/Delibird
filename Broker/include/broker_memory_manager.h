@@ -28,7 +28,7 @@ typedef struct Block_information{
 typedef struct Message_allocator{
     void (*allocate_message_function) (t_identified_message* message, t_list* blocks_information);
 
-    t_block_information* (*available_partition_search_algorithm) (uint32_t message_size,t_list* blocks_information); //first fit, best fit
+    t_block_information* (*available_partition_search_algorithm) (uint32_t message_size,t_list* blocks_information, uint32_t min_partition_size); //first fit, best fit
     void (*partition_free_algorithm) (t_list* blocks_information); //FIFO/LRU
     void (*memory_compaction_algorithm) (t_list* blocks_information);
     uint32_t min_partition_size;

@@ -17,14 +17,6 @@ void initialize_broker_memory_algorithms(){
     dictionary_put(algorithms,"PD", (void*)initialize_dynamic_partition_message_allocator);
 }
 
-bool is_dynamic_memory_algorithm(char* memory_algorithm){
-    return string_equals_ignore_case("PD",memory_algorithm);
-}
-
-bool is_buddy_system_memory_algorithm(char* memory_algorithm){
-    return string_equals_ignore_case("BD",memory_algorithm);
-}
-
 t_message_allocator* initialize_message_allocator() {
 
     char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
