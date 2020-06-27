@@ -86,8 +86,9 @@ void* performer_thread(void* deserialized_request){
         serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
 
     } else {
-        printf("No se pudo enviar la respuesta al Broker\n");
-        //TODO: log por default
+
+        log_failed_attempt_to_communicate_with_broker_from_gamecard("se procederá con la ejecución");
+
     }
 
     free_and_close_connection_information(connection_information);

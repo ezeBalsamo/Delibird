@@ -16,6 +16,7 @@ void log_query_performer_not_found_error_from_gamecard_for(uint32_t operation);
 void log_filesystem_metadata_info(fs_metadata* pointer_fs_metadata);
 void log_file_metadata_info(file_metadata* pointer_file_metadata);
 void log_block_metadata_info(int x, int y, int quantity);
+void log_unknown_file_type_error();
 void free_gamecard_logs_manager();
 
 #endif //DELIBIRD_GAMECARD_LOGS_MANAGER_H

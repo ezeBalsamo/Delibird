@@ -92,6 +92,12 @@ void log_block_metadata_info(int x, int y, int quantity){
     free(message);
 }
 
+void log_unknown_file_type_error(){
+    char* message = string_from_format("Lectura de archivo de tipo no identificado\n");
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_gamecard_logs_manager(){
     free_loggers();
 }
