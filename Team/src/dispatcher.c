@@ -4,6 +4,7 @@
 #include <dispatching_reasons.h>
 #include <state_transitions.h>
 #include <dispatcher_queues.h>
+#include <deadlock_detection_and_recovery_algorithm.h>
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
@@ -30,8 +31,7 @@ void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
 
 bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){
 
-    t_thread_action* thread_action = trainer_thread_context -> thread_action;
-    return thread_action -> request -> operation == WAITING_FOR_MORE_POKEMONS;
+    return internal_thread_action_type_in(trainer_thread_context) == WAITING_FOR_MORE_POKEMONS;
 }
 
 bool cant_be_schedule(t_trainer_thread_context* trainer_thread_context){
@@ -161,6 +161,10 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, BLOCKED);
     state_transition -> state_transition_function (trainer_thread_context);
+
+    if(internal_thread_action_type_in(trainer_thread_context) == WAITING_FOR_EXCHANGE){
+        detect_and_recover_from_deadlock();
+    }
 }
 
 void assert_no_trainer_thread_contexts_in(uint32_t state){

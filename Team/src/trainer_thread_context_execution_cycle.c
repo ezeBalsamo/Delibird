@@ -37,7 +37,7 @@ void movement_action_completed_by(t_trainer_thread_context* trainer_thread_conte
     execute_trainer_thread_context_action(trainer_thread_context);
 }
 
-void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context){
+void catch_action_completed_successfully_by(t_trainer_thread_context* trainer_thread_context){
 
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
     t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
@@ -71,6 +71,10 @@ void prepare_for_waiting_for_more_pokemons_action(t_trainer_thread_context* trai
     trainer_thread_context_has_become_blocked(trainer_thread_context);
 }
 
-void trainer_thread_context_has_entered_deadlock_zone(t_trainer_thread_context* trainer_thread_context){
-    //TODO implementar lógica de bloqueo por deadlock
+void prepare_for_waiting_for_deadlock_resolution(t_trainer_thread_context* trainer_thread_context){
+    
+    free_thread_action(trainer_thread_context -> thread_action);
+    t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
+    trainer_thread_context -> thread_action = waiting_for_exchange_thread_action_for(trainer);
+    trainer_thread_context_has_become_blocked(trainer_thread_context);
 }

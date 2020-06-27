@@ -5,10 +5,10 @@
 
 void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* localizable_pokemon);
 void movement_action_completed_by(t_trainer_thread_context* trainer_thread_context);
-void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context);
+void catch_action_completed_successfully_by(t_trainer_thread_context* trainer_thread_context);
 void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_thread_context, int message_id);
 void catch_action_failed_by(t_trainer_thread_context* trainer_thread_context);
 void prepare_for_waiting_for_more_pokemons_action(t_trainer_thread_context* trainer_thread_context);
-void trainer_thread_context_has_entered_deadlock_zone(t_trainer_thread_context* trainer_thread_context);
+void prepare_for_waiting_for_deadlock_resolution(t_trainer_thread_context* trainer_thread_context);
 
 #endif //DELIBIRD_TRAINER_THREAD_CONTEXT_EXECUTION_CYCLE_H

@@ -48,7 +48,28 @@ char* waiting_catch_response_reason_for(t_trainer_thread_context* trainer_thread
 
 char* waiting_for_more_pokemons_reason(){
     //Las demás razones son más complejas y requieren limpieza
-    return string_from_format("%s","Esperar a que aparezcan más pokemones.");
+    return string_from_format("%s", "Esperar a que aparezcan más pokemones.");
+}
+
+char* waiting_for_exchange_reason_for(t_trainer_thread_context* trainer_thread_context){
+
+    t_waiting_for_exchange_action* waiting_for_deadlock_resolution_action =
+            internal_thread_action_in(trainer_thread_context);
+
+    char* required_pokemons_not_caught_as_string =
+            pokemon_names_as_string(waiting_for_deadlock_resolution_action->required_pokemons_not_caught);
+
+    char* pokemons_in_excess_as_string =
+            pokemon_names_as_string(waiting_for_deadlock_resolution_action->pokemons_in_excess);
+
+    char* reason =
+            string_from_format("Esperar la resolución de un intercambio.\n"
+                               "Pokemones requeridos y no capturados: %s.\nPokemones en exceso: %s.",
+                               required_pokemons_not_caught_as_string, pokemons_in_excess_as_string);
+
+    free(required_pokemons_not_caught_as_string);
+    free(pokemons_in_excess_as_string);
+    return reason;
 }
 
 char* quantum_consumed_reason(){
@@ -80,6 +101,9 @@ char* thread_action_reason_for(t_trainer_thread_context* trainer_thread_context)
             break;
         case WAITING_FOR_MORE_POKEMONS:
             reason = waiting_for_more_pokemons_reason();
+            break;
+        case WAITING_FOR_EXCHANGE:
+            reason = waiting_for_exchange_reason_for(trainer_thread_context);
             break;
         default:
             log_unknown_thread_action_type_error();

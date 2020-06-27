@@ -9,6 +9,11 @@ t_list* requirements_of(t_trainer* trainer){
                            (bool (*)(void *, void *)) string_equals_ignore_case);
 }
 
+t_list* pokemons_in_excess_of(t_trainer* trainer){
+    return list_difference(trainer -> current_pokemons, trainer -> required_pokemons,
+                    (bool (*)(void *, void *)) string_equals_ignore_case);
+}
+
 bool can_catch_pokemons(t_trainer* trainer){
     return list_size(trainer -> current_pokemons) < list_size(trainer -> required_pokemons);
 }

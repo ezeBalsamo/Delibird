@@ -10,8 +10,11 @@ enum Thread_states{
 };
 
 enum thread_action_types{
-    MOVEMENT, CATCH, WAITING_CATCH_RESPONSE,
-    WAITING_FOR_MORE_POKEMONS
+    MOVEMENT,
+    CATCH,
+    WAITING_CATCH_RESPONSE,
+    WAITING_FOR_MORE_POKEMONS,
+    WAITING_FOR_EXCHANGE
 };
 
 typedef struct Thread_action{
@@ -31,6 +34,7 @@ void initialize_trainer_threads();
 void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
 t_thread_action* new_thread_action();
 void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context);
+int internal_thread_action_type_in(t_trainer_thread_context* trainer_thread_context);
 
 void free_thread_action(t_thread_action* thread_action);
 void free_trainer_threads();

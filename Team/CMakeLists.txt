@@ -34,7 +34,10 @@ set(SOURCES
         src/team_pretty_prints.c
         src/state_transitions.c
         src/dispatcher_queues.c
-        src/main_threads_executor.c)
+        src/main_threads_executor.c
+        src/deadlock_detection_and_recovery_algorithm.c
+        src/deadlock_detecter.c
+        src/deadlock_solver.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

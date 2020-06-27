@@ -38,7 +38,7 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
         t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
         log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
 
-        catch_action_completed_by(trainer_thread_context);
+        catch_action_completed_successfully_by(trainer_thread_context);
     }
 
     free_and_close_connection_information(connection_information);

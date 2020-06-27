@@ -3,6 +3,7 @@
 #include <team_logs_manager.h>
 #include "team_pretty_prints.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/t_list_extension.h"
 
 char* localizable_pokemon_as_string(t_localizable_object* localizable_pokemon){
     char* pokemon_name = localizable_pokemon -> object;
@@ -52,4 +53,20 @@ char* state_as_string(uint32_t state){
     }
 
     return state_as_string;
+}
+
+char* pokemon_names_as_string(t_list* pokemon_names){
+
+    char* pokemon_names_as_string = string_new();
+
+    for(int i = 0; i < list_size(pokemon_names); i++){
+        char* pokemon_name = list_get(pokemon_names, i);
+        string_append(&pokemon_names_as_string, pokemon_name);
+
+        if (i + 1 != list_size(pokemon_names)){
+            string_append(&pokemon_names_as_string, ", ");
+        }
+    }
+
+    return pokemon_names_as_string;
 }

@@ -64,7 +64,7 @@ t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_fi
     t_chained_on_succesful_evaluation* chained_on_succesful_evaluation = safe_malloc(sizeof(t_chained_on_succesful_evaluation));
     chained_on_succesful_evaluation -> satisfy_function = (bool (*)(void *)) can_be_scheduled_function;
     chained_on_succesful_evaluation -> next_evaluation = next_evaluation;
-    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) trainer_thread_context_has_entered_deadlock_zone;
+    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) prepare_for_waiting_for_deadlock_resolution;
 
     return chained_on_succesful_evaluation;
 }

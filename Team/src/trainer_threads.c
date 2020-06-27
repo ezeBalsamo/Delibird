@@ -89,6 +89,11 @@ void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context
     return thread_action -> request -> structure;
 }
 
+int internal_thread_action_type_in(t_trainer_thread_context* trainer_thread_context){
+    t_thread_action* thread_action = trainer_thread_context -> thread_action;
+    return thread_action -> request -> operation;
+}
+
 void free_thread_action(t_thread_action* thread_action){
     free_request(thread_action -> request);
     free(thread_action);
