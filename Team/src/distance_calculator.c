@@ -29,23 +29,26 @@ t_trainer_thread_context* trainer_thread_context_closest_to(t_list* trainer_thre
     return list_fold(trainer_thread_contexts, seed_trainer_thread_context, _closest_trainer_thread_context);
 }
 
-void* closest_localizable_pokemon_to(t_localizable_object* localizable_pokemon,
-                                        t_localizable_object* another_localizable_pokemon,
-                                        t_localizable_object* localizable_trainer){
+void* closest_targetable_pokemon_to_trainer(t_targetable_object* targetable_pokemon,
+                                    t_targetable_object* another_targetable_pokemon,
+                                    t_localizable_object* localizable_trainer){
+
+    t_localizable_object* localizable_pokemon = targetable_pokemon -> localizable_pokemon;
+    t_localizable_object* another_localizable_pokemon = another_targetable_pokemon -> localizable_pokemon;
 
     uint32_t localizable_pokemon_distance = distance_between(localizable_pokemon, localizable_trainer);
     uint32_t another_localizable_pokemon_distance = distance_between(another_localizable_pokemon, localizable_trainer);
 
-    return localizable_pokemon_distance < another_localizable_pokemon_distance ? localizable_pokemon : another_localizable_pokemon;
+    return localizable_pokemon_distance < another_localizable_pokemon_distance ? targetable_pokemon : another_targetable_pokemon;
 }
 
-t_localizable_object* closest_pokemon_to(t_list* localizable_pokemons, t_localizable_object* localizable_trainer){
+t_targetable_object* closest_targetable_pokemon(t_list* targetable_pokemons, t_localizable_object* localizable_trainer){
 
-    t_localizable_object* seed_localizable_pokemon = list_get(localizable_pokemons, 0);
+    t_targetable_object* seed_targetable_pokemon = list_get(targetable_pokemons, 0);
 
-    void* _closest_localizable_pokemon_to(void* localizable_pokemon, void* another_localizable_pokemon){
-        return closest_localizable_pokemon_to(localizable_pokemon, another_localizable_pokemon, localizable_trainer);
+    void* _closest_targetable_pokemon_to(void* targetable_pokemon, void* another_targetable_pokemon){
+        return closest_targetable_pokemon_to_trainer(targetable_pokemon, another_targetable_pokemon, localizable_trainer);
     }
 
-    return list_fold(localizable_pokemons, seed_localizable_pokemon, _closest_localizable_pokemon_to);
+    return list_fold(targetable_pokemons, seed_targetable_pokemon, _closest_targetable_pokemon_to);
 }

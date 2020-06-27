@@ -1,3 +1,7 @@
+#include <logger.h>
+#include <commons/string.h>
+#include <garbage_collector.h>
+#include <general_logs.h>
 #include "../include/t_list_extension.h"
 
 t_list* list_flat(t_list* self){
@@ -53,6 +57,18 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
 }
 
+t_list* list_swap(t_list* self, int index ,int another_index){
+
+    if (list_size(self)< index || list_size(self)<another_index){
+        log_list_invalid_index_access( index,  another_index, self);
+        free_system();
+    }
+    void* element_to_swap = list_get(self,index);
+    void* second_element_to_swap = list_get(self,another_index);
+
+    list_replace(self,index,second_element_to_swap);
+    list_replace(self,another_index,element_to_swap);
+}  
 void list_add_as_set(t_list* self, void* element){
 
     bool _equality(void* element_to_find, void* element_to_compare){
@@ -62,4 +78,12 @@ void list_add_as_set(t_list* self, void* element){
     if(!list_contains(self, element, _equality)){
         list_add(self, element);
     }
+}
+
+void list_add_as_first(t_list* self, void* element){
+    list_add_in_index(self, 0, element);
+}
+
+void* list_remove_first(t_list* self){
+    return list_remove(self, 0);
 }

@@ -42,11 +42,14 @@ void catch_action_completed_by(t_trainer_thread_context* trainer_thread_context)
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
     t_localizable_object* localizable_pokemon = catch_action -> localizable_pokemon;
 
-    free_thread_action(trainer_thread_context -> thread_action);
     update_current_pokemons_after_caught(trainer_thread_context -> localizable_trainer, localizable_pokemon -> object);
-    remove_occurrence_of(localizable_pokemon);
 
-    trainer_thread_context_state_chained_evaluation_value_when_caught_for(trainer_thread_context);
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(trainer_thread_context);
+    remove_occurrence_of(localizable_pokemon);
+}
+
+void catch_action_failed_by(t_trainer_thread_context* trainer_thread_context){
+    trainer_thread_context_state_chained_evaluation_value_when_caught_failed_for(trainer_thread_context);
 }
 
 void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_thread_context, int message_id){
@@ -63,6 +66,7 @@ void catch_action_blocked_in_wait_of_response(t_trainer_thread_context* trainer_
 
 void prepare_for_waiting_for_more_pokemons_action(t_trainer_thread_context* trainer_thread_context){
 
+    free_thread_action(trainer_thread_context -> thread_action);
     trainer_thread_context -> thread_action = waiting_for_more_pokemons_thread_action();
     trainer_thread_context_has_become_blocked(trainer_thread_context);
 }

@@ -16,6 +16,8 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
 
 void log_succesful_initialize_queue_context_provider();
 
+void log_successful_initialize_broker_memory_manager();
+
 void log_server_initial_status();
 
 void log_structure_received(void* serialized_request);
@@ -37,6 +39,8 @@ void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context);
 void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message);
 
 void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code);
+
+void log_cache_dump_information(char* cache_information);
 
 void free_broker_logs_manager();
 

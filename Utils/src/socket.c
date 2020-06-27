@@ -204,7 +204,7 @@ void send_all(int socket_fd, void* serialized_request, int amount_of_bytes){
     int partially_sent_bytes;
 
     while(sent_bytes < amount_of_bytes){
-        partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, 0);
+        partially_sent_bytes = send(socket_fd, serialized_request + sent_bytes, left_bytes, MSG_NOSIGNAL);
 
         if(partially_sent_bytes == -1){
             log_send_all_error(sent_bytes, amount_of_bytes);

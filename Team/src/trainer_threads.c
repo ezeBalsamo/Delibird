@@ -8,6 +8,8 @@
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
 
+extern sem_t trainer_thread_created;
+
 void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context){
     trainer_thread_context -> thread_action -> execution_function (trainer_thread_context);
 }
@@ -24,6 +26,8 @@ void* trainer_thread(void* trainer_thread_context){
 
     t_trainer* trainer = cast_trainer_thread_context -> localizable_trainer -> object;
     log_succesful_creation_of_thread_of_trainer(trainer -> sequential_number);
+
+    sem_post(&trainer_thread_created);
 
     while(cast_trainer_thread_context -> state != FINISHED){
         sem_wait(&cast_trainer_thread_context -> semaphore);
@@ -90,9 +94,13 @@ void free_thread_action(t_thread_action* thread_action){
     free(thread_action);
 }
 
+void free_trainer_thread_context(t_trainer_thread_context* trainer_thread_context){
+    free_thread_action(trainer_thread_context -> thread_action);
+    free(trainer_thread_context);
+}
 
 void free_trainer_threads(){
     list_destroy_and_destroy_elements(trainers_tids, free);
-    list_destroy_and_destroy_elements(trainer_thread_contexts, (void (*)(void *)) free);
+    list_destroy_and_destroy_elements(trainer_thread_contexts, (void (*)(void *)) free_trainer_thread_context);
     free_trainer_thread_context_state_chained_evaluation();
 }

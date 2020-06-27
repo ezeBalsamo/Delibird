@@ -13,6 +13,7 @@ typedef struct Localizable_object{
 
 typedef struct Targetable_object{
     bool is_being_targeted;
+    bool should_be_targeted;
     t_localizable_object* localizable_pokemon;
 }t_targetable_object;
 
@@ -31,6 +32,7 @@ void* initialize_team_manager();
 
 void with_trainers_do(void (*closure) (t_localizable_object*));
 void with_global_goal_do(void (*closure) (t_pokemon_goal*));
+int trainers_amount();
 
 bool are_equal_trainers(t_trainer* trainer, t_trainer* another_trainer);
 
@@ -43,4 +45,5 @@ void consider_global_goal_accomplished();
 bool is_global_goal_accomplished();
 
 void free_team_manager();
+
 #endif //DELIBIRD_TEAM_MANAGER_H
