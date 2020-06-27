@@ -1,9 +1,11 @@
 #include <broker_memory_manager.h>
 #include <string.h>
 #include <broker_memory_algorithms.h>
+#include <broker_logs_manager.h>
 #include "../../Utils/include/operation_serialization.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pokemon_request_bytes_calculator.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_message_allocator* dynamic_partition_message_allocator;
 
@@ -75,7 +77,10 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
     memory_block_to_save->message = ((t_request *) request_serialized->serialized_request)->structure;
     memory_block_to_save->lru_value = 0; //TODO: operacion para standarizar tiempo
-
+    if(memory_block_to_save->message_size > dynamic_partition_message_allocator->max_partition_size){
+        log_invalid_operation_to_save_message_error();
+        free_system();
+    }
     return memory_block_to_save;
 }
 
@@ -115,6 +120,7 @@ t_message_allocator* initialize_dynamic_partition_message_allocator(){
 
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
     dynamic_partition_message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
+    dynamic_partition_message_allocator->max_partition_size = config_get_int_at("TAMANO_MEMORIA");
 
     dynamic_partition_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
     dynamic_partition_message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU

@@ -33,6 +33,7 @@ typedef struct Message_allocator{
     void (*memory_compaction_algorithm) (t_list* blocks_information);
     uint32_t min_partition_size;
     uint32_t max_search_tries;
+    uint32_t max_partition_size;
 
 }t_message_allocator;
 

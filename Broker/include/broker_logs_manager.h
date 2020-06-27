@@ -44,4 +44,6 @@ void log_cache_dump_information(char* cache_information);
 
 void free_broker_logs_manager();
 
+void log_invalid_operation_to_save_message_error();
+
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H
