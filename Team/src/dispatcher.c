@@ -8,6 +8,7 @@
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/t_list_extension.h"
 
 bool must_preempt;
 pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
@@ -118,7 +119,7 @@ void assert_only_one_executing(){
 
 t_trainer_thread_context* trainer_thread_context_executing(){
     assert_only_one_executing();
-    return list_get(trainer_thread_contexts_in(EXECUTE), 0);
+    return list_first(trainer_thread_contexts_in(EXECUTE));
 }
 
 bool is_anybody_executing(){
@@ -148,6 +149,9 @@ void preempt(){
     t_trainer_thread_context* trainer_thread_context = trainer_thread_context_executing();
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, READY);
     state_transition -> state_transition_function (trainer_thread_context);
+}
+
+void preemption_completed(){
     must_preempt = false;
 }
 

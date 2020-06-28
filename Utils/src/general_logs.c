@@ -152,6 +152,10 @@ void log_succesful_suscription_to(uint32_t operation_queue){
 
 void log_errorful_not_existing_log(char* log_name){
     char* message = string_from_format("El log solicitado: '%s' no existe.",log_name);
-    log_errorful_message(process_execution_logger(),message);
+    log_errorful_message(process_execution_logger(), message);
     free(message);
+}
+
+void log_expected_to_have_only_one_element_error(){
+    log_errorful_message(process_execution_logger(), "Se esperaba que la lista tuviera un único elemento.");
 }

@@ -337,6 +337,20 @@ void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_po
     free(message);
 }
 
+void log_no_suitable_exchange_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+    char* printable_trainer = localizable_trainer_as_string(trainer_thread_context -> localizable_trainer);
+    char* printable_another_trainer = localizable_trainer_as_string(another_trainer_thread_context -> localizable_trainer);
+
+    char* message =
+            string_from_format("No se ha encontrado un inferidor de intercambio válido entre %s y %s",
+                    printable_trainer, printable_another_trainer);
+
+    log_errorful_message(process_execution_logger(), message);
+    free(printable_trainer);
+    free(printable_another_trainer);
+    free(message);
+}
+
 void log_global_goal_accomplished(){
     char* message = "Team ha cumplido su objetivo global.";
     log_succesful_message(main_logger(), message);

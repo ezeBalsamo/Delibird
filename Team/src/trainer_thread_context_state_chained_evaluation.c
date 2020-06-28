@@ -22,8 +22,8 @@ void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thre
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
 
     t_targetable_object* targetable_pokemon =
-            closest_targetable_pokemon(pokemons_waiting_for_be_caught,
-                                       trainer_thread_context -> localizable_trainer);
+            targetable_pokemon_closest_to_localizable_trainer(pokemons_waiting_for_be_caught,
+                                                              trainer_thread_context -> localizable_trainer);
 
     list_destroy(pokemons_waiting_for_be_caught);
 

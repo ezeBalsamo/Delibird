@@ -60,8 +60,7 @@ void handling_concurrency_do(t_dispatcher_queue* dispatcher_queue, void (*functi
 void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_thread_context_to_find){
 
     bool _are_equals(t_trainer_thread_context* trainer_thread_context_to_compare){
-        return are_equal_trainers(trainer_thread_context_to_find -> localizable_trainer -> object,
-                                  trainer_thread_context_to_compare -> localizable_trainer -> object);
+        return are_equal_trainer_thread_contexts(trainer_thread_context_to_find, trainer_thread_context_to_compare);
     }
 
     t_trainer_thread_context* trainer_thread_context_found =
@@ -77,7 +76,7 @@ void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_threa
 void remove_from_execute(){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(EXECUTE);
-    t_trainer_thread_context* trainer_thread_context = list_get(dispatcher_queue -> trainer_thread_contexts, 0);
+    t_trainer_thread_context* trainer_thread_context = list_first(dispatcher_queue -> trainer_thread_contexts);
 
     void _remove(){
         remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);

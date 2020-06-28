@@ -31,6 +31,8 @@ typedef struct Trainer_thread_context{
 
 void initialize_trainer_threads();
 
+bool are_equal_trainer_thread_contexts(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context);
+
 void execute_trainer_thread_context_action(t_trainer_thread_context* trainer_thread_context);
 t_thread_action* new_thread_action();
 void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context);

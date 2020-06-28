@@ -37,7 +37,13 @@ set(SOURCES
         src/main_threads_executor.c
         src/deadlock_detection_and_recovery_algorithm.c
         src/deadlock_detecter.c
-        src/deadlock_solver.c)
+        src/deadlock_solver.c
+        src/exchanges_inferrer.c
+        src/benefitial_exchanges_for_both_parties.c
+        src/benefitial_exchanges_only_for_first_party.c
+        src/benefitial_exchanges_only_for_second_party.c
+        src/non_benefitial_exchange.c
+        src/exchange_provider.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

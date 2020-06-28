@@ -28,6 +28,7 @@ void log_garbage_to_stop_considering_that_not_found_error();
 void log_failed_ack_error();
 void log_succesful_suscription_to(uint32_t operation_queue);
 void log_errorful_not_existing_log(char* log_name);
+void log_expected_to_have_only_one_element_error();
 
 void log_list_invalid_index_access(int index, int another_index,t_list* self);
 #endif //DELIBIRD_GENERAL_LOGS_H

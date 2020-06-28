@@ -43,6 +43,7 @@ void log_invalid_state_error();
 void log_more_than_one_trainer_thread_context_executing_error_for(t_list* trainer_thread_contexts);
 void log_not_matching_pokemon_name_between_get_and_localized_error(char* get_response_pokemon_name, char* localized_pokemon_name);
 void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_pokemon* localized_pokemon);
+void log_no_suitable_exchange_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context);
 void log_global_goal_accomplished();
 
 void free_team_logs_manager();

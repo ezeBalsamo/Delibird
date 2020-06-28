@@ -75,6 +75,12 @@ void initialize_trainer_threads(){
     join_trainers_threads();
 }
 
+bool are_equal_trainer_thread_contexts(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+    return
+        are_equal_trainers(trainer_thread_context -> localizable_trainer -> object,
+                            another_trainer_thread_context -> localizable_trainer -> object);
+}
+
 t_thread_action* new_thread_action(){
 
     t_request* request = safe_malloc(sizeof(t_request));

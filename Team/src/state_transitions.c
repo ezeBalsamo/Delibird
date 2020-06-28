@@ -39,6 +39,7 @@ void execute_to_ready_transition_due_to_default_catch_for(t_trainer_thread_conte
 void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context* trainer_thread_context){
     void _to_ready_function(){
         schedule(trainer_thread_context, preemption_reason());
+        preemption_completed();
     }
 
     stop_current_execution_doing(_to_ready_function);
