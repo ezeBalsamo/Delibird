@@ -1,11 +1,12 @@
 #include "gamecard_configuration_manager.h"
 #include "../../Utils/include/configuration_manager.h"
+#include <stdint.h>
 
 char* ip_broker;
 char* port_broker;
-int timeout_in_seconds;
-int operation_delay_time;
-int operation_retry_time;
+uint32_t timeout_in_seconds;
+uint32_t operation_delay_time;
+uint32_t operation_retry_time;
 char* mount_point;
 
 void initialize_gamecard_configuration_manager(){
@@ -27,15 +28,15 @@ char* broker_port(){
     return port_broker;
 }
 
-int ack_timeout(){
+uint32_t ack_timeout(){
     return timeout_in_seconds;
 }
 
-int op_delay_time(){
+uint32_t operation_delay_time_getter(){
     return operation_delay_time;
 }
 
-int op_retry_time(){
+uint32_t operation_retry_time_getter(){
     return operation_retry_time;
 }
 

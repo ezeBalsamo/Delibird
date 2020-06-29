@@ -28,9 +28,9 @@ void sleep_for(int reconnection_time_in_seconds){
     }
 }
 
-void* retry_connection_thread(void* connection_information){
+void retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker_from_gamecard();
-    int reconnection_time_in_seconds = config_get_int_at("TIEMPO_DE_REINTENTO_CONEXION");
+    int reconnection_time_in_seconds = operation_retry_time_getter();
 
     if(reconnect((t_connection_information*) connection_information) == -1){
         log_failed_retry_of_communication_with_broker_from_gamecard();
@@ -41,7 +41,6 @@ void* retry_connection_thread(void* connection_information){
         log_succesful_retry_of_communication_with_broker_from_gamecard();
     }
 
-    return NULL;
 }
 
 void execute_retry_connection_strategy(t_connection_information* connection_information){
@@ -50,7 +49,7 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
     pthread_t* reconnection_thread = safe_malloc(sizeof(pthread_t));
     consider_as_garbage(reconnection_thread, (void (*)(void *)) safe_thread_pointer_cancel);
 
-    *reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
+    *reconnection_thread = default_safe_thread_create((void*) retry_connection_thread, (void *) connection_information);
     safe_thread_join(*reconnection_thread);
 }
 
@@ -68,11 +67,11 @@ t_request* subscribe_me_request_for(uint32_t operation_queue){
     return request;
 }
 
-void* performer_thread(void* deserialized_request){
+void performer_thread(void* deserialized_request){
 
     t_request* cast_deserialized_request = (t_request*) deserialized_request;
 
-    t_identified_message* response_message = gamecard_query_perform(deserialized_request);
+    t_identified_message* response_message = gamecard_query_perform(cast_deserialized_request);
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = IDENTIFIED_MESSAGE;
@@ -95,7 +94,6 @@ void* performer_thread(void* deserialized_request){
     free_request(deserialized_request);
     free_request(request);
 
-    return NULL;
 }
 
 void consume_messages_from(int socket_fd){
@@ -113,7 +111,7 @@ void consume_messages_from(int socket_fd){
     //Loguear y mostrar por consola mensaje recibido
     log_request_received_with(main_logger(), deserialized_request);
 
-    default_safe_thread_create(performer_thread, deserialized_request);
+    default_safe_thread_create((void*) performer_thread, deserialized_request);
 
 
 }

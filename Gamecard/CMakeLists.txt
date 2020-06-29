@@ -6,9 +6,9 @@ set(SOURCES
         src/gamecard_serializable_objects.c
         src/gamecard_query_performers.c
         src/gamecard_configuration_manager.c
-        src/filesystem.c
-        src/filesystem_files_information.c
-        src/filesystem_utils.c
+        src/file_system.c
+        src/file_system_files_information.c
+        src/file_system_utils.c
         src/gameboy_connection_handler.c
         src/broker_connection_handler.c
         src/new_query_performer.c

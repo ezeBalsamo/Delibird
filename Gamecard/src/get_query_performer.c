@@ -1,8 +1,8 @@
 #include "get_query_performer.h"
 #include "gamecard_query_performers.h"
 #include "gamecard_configuration_manager.h"
-#include "filesystem.h"
-#include "filesystem_utils.h"
+#include "file_system.h"
+#include "file_system_utils.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/paths.h"
 #include <stdlib.h>
@@ -43,7 +43,7 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
     if(exists_file_at(pokemon_metadata_path)) {
 
         //Leo el archivo de metadata
-        file_metadata* metadata_file_information = safe_malloc(sizeof(file_metadata));
+        t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
         metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
         //Leo bloques del archivo
@@ -56,7 +56,7 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
         uint32_t positions_amount = amount_of_positions(positions_list);
 
         //Esperar cantidad de segundos definidos por archivo de configuracion
-        sleep(op_delay_time());
+        sleep(operation_delay_time_getter());
 
         //Cerrar archivo metadata
         close_metadata(pokemon_metadata_path);
