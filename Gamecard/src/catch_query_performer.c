@@ -10,7 +10,7 @@ t_gamecard_query_performer* catch_query_performer(){
     return catch_pokemon_query_performer;
 }
 
-void catch_query_performer_function(t_identified_message* identified_message){
+t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
     printf("Se recibio el mensaje CATCH_POKEMON con id = %d\n", identified_message -> message_id);
     //TODO: Implementar lógica
 

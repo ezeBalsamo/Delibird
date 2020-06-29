@@ -23,7 +23,7 @@ int main(void) {
     initialize_gamecard_serializable_objects();
     initialize_gamecard_configuration_manager();
     initialize_gamecard_query_performers();
-    //TODO: Inicializar FS con funcion: initialize_filesystem();
+    initialize_file_system();
 
     log_succesful_start_up();
 
