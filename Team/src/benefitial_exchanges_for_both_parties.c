@@ -1,4 +1,4 @@
-#include <exchange_provider.h>
+#include <identified_exchanges_provider.h>
 #include "benefitial_exchanges_for_both_parties.h"
 #include "../../Utils/include/t_list_extension.h"
 
@@ -24,14 +24,14 @@ t_list* benefitial_for_both_parties_infer_function(t_trainer_thread_context* tra
                                           benefitial_exchanges_for_second_quantity);
 
     for(int i = 0; i < minimum; i++){
-        char* first_party_pokemon = list_remove_first(duplicated_benefitial_exchanges_for_first);
-        char* second_party_pokemon = list_remove_first(duplicated_benefitial_exchanges_for_second);
+        char* first_party_pokemon_name = list_remove_first(duplicated_benefitial_exchanges_for_second);
+        char* second_party_pokemon_name = list_remove_first(duplicated_benefitial_exchanges_for_first);
 
         t_identified_exchange* identified_exchange =
                 identified_exchange_for(BENEFITIAL_FOR_BOTH_PARTIES,
-                                        first_party_pokemon,
+                                        first_party_pokemon_name,
                                         trainer_thread_context,
-                                        second_party_pokemon,
+                                        second_party_pokemon_name,
                                         another_trainer_thread_context);
 
         list_add(exchanges, identified_exchange);

@@ -9,14 +9,14 @@ uint32_t distance_between(t_localizable_object* localizable_object, t_localizabl
     return x_distance + y_distance;
 }
 
-t_trainer_thread_context* trainer_thread_context_closest_to_localizable_pokemon(t_list* trainer_thread_contexts, t_localizable_object* localizable_pokemon){
+t_trainer_thread_context* trainer_thread_context_closest_to_localizable_object(t_list* trainer_thread_contexts, t_localizable_object* localizable_object){
 
     t_trainer_thread_context* seed_trainer_thread_context = list_first(trainer_thread_contexts);
 
     void* _closest_trainer_thread_context(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
 
-        uint32_t trainer_distance = distance_between(trainer_thread_context -> localizable_trainer, localizable_pokemon);
-        uint32_t another_trainer_distance = distance_between(another_trainer_thread_context -> localizable_trainer, localizable_pokemon);
+        uint32_t trainer_distance = distance_between(trainer_thread_context -> localizable_trainer, localizable_object);
+        uint32_t another_trainer_distance = distance_between(another_trainer_thread_context -> localizable_trainer, localizable_object);
 
         return trainer_distance < another_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
     }
@@ -89,7 +89,7 @@ t_distance_between_two* closest_pair_of_trainer_thread_contexts_according_to(t_l
     t_list* duplicated_trainer_thread_contexts = list_duplicate(trainer_thread_contexts);
     t_list* distances_of_pair_of_trainer_thread_contexts = list_create();
 
-    for(int i = 0; i < list_size(trainer_thread_contexts) - 1; i++){
+    for(int i = 0; i < (list_size(trainer_thread_contexts) - 1); i++){
 
         t_trainer_thread_context* trainer_thread_context = list_remove_first(duplicated_trainer_thread_contexts);
         t_distance_between_two* distance_between_two =
@@ -124,4 +124,42 @@ t_list* closest_pair_of_trainer_thread_contexts_in(t_list* trainer_thread_contex
 
     free(distance_of_pair_of_trainer_thread_contexts);
     return closest_pair_of_trainer_thread_contexts;
+}
+
+t_localizable_object* average_trainer_thread_context_position_for(t_list* trainer_thread_contexts){
+
+    uint32_t summarized_x_position = 0;
+    uint32_t summarized_y_position = 0;
+    uint32_t trainer_thread_contexts_quantity = list_size(trainer_thread_contexts);
+
+    void _sum_each_position(t_trainer_thread_context* trainer_thread_context){
+        t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+        summarized_x_position += localizable_trainer -> pos_x;
+        summarized_y_position += localizable_trainer -> pos_y;
+    }
+
+    list_iterate(trainer_thread_contexts, (void (*)(void *)) _sum_each_position);
+
+    uint32_t average_x_position = summarized_x_position / trainer_thread_contexts_quantity;
+    uint32_t average_y_position = summarized_y_position / trainer_thread_contexts_quantity;
+
+    t_localizable_object* average_position = safe_malloc(sizeof(t_localizable_object));
+    average_position -> object = trainer_thread_contexts;
+    average_position -> pos_x = average_x_position;
+    average_position -> pos_y = average_y_position;
+
+    return average_position;
+}
+
+t_trainer_thread_context* closest_trainer_thread_context_to_trainer_thread_contexts(t_list* trainer_thread_contexts_to_search, t_list* trainer_thread_contexts_to_compare){
+
+    t_localizable_object* average_trainer_thread_context_position =
+            average_trainer_thread_context_position_for(trainer_thread_contexts_to_compare);
+
+    t_trainer_thread_context* closest_trainer_thread_context =
+            trainer_thread_context_closest_to_localizable_object(trainer_thread_contexts_to_search, average_trainer_thread_context_position);
+
+    free(average_trainer_thread_context_position);
+
+    return closest_trainer_thread_context;
 }

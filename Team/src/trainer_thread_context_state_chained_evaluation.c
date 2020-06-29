@@ -3,10 +3,13 @@
 #include <pokemon_occurrences.h>
 #include <distance_calculator.h>
 #include <trainer_thread_context_execution_cycle.h>
+#include <identified_exchanges_provider.h>
 #include "trainer_thread_context_state_chained_evaluation.h"
+#include "../../Utils/include/t_list_extension.h"
 
 t_identified_chained_evaluation* caught_success_chained_evaluation;
 t_identified_chained_evaluation* caught_failed_chained_evaluation;
+t_identified_chained_evaluation* identified_exchanges_completed_chained_evaluation;
 
 bool can_be_moved_to_ready_function(t_trainer_thread_context* trainer_thread_context){
     (void) trainer_thread_context;
@@ -92,9 +95,110 @@ void initialize_caught_failed_chained_evaluation(){
     caught_failed_chained_evaluation -> evaluation = basic_evaluation;
 }
 
+bool is_benefitial_for_both_parties_function(t_list* identified_exchanges){
+
+    bool _are_all_benefitial_for_both_parties(t_identified_exchange* identified_exchange){
+        return identified_exchange -> exchange_type == BENEFITIAL_FOR_BOTH_PARTIES;
+    }
+    return list_all_satisfy(identified_exchanges, (bool (*)(void *)) _are_all_benefitial_for_both_parties);
+}
+
+void consider_graceful_finished_of(t_trainer_thread_context* trainer_thread_context){
+
+    if(trainer_thread_context -> state == FINISHED){
+        free_thread_action(trainer_thread_context -> thread_action);
+        t_thread_action* null_thread_action = new_null_thread_action();
+        trainer_thread_context -> thread_action = null_thread_action;
+        sem_post(&trainer_thread_context -> semaphore);
+    }
+}
+
+void benefitial_for_both_parties_exchanges_realized_function(t_list* identified_exchanges){
+
+    t_identified_exchange* identified_exchange = list_first(identified_exchanges);
+    t_trainer_thread_context* first_party_trainer_thread_context =
+            identified_exchange -> exchange -> trainer_thread_context;
+    t_trainer_thread_context* second_party_trainer_thread_context =
+            identified_exchange -> exchange -> another_trainer_thread_context;
+
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(second_party_trainer_thread_context);
+    consider_graceful_finished_of(second_party_trainer_thread_context);
+}
+
+bool is_benefitial_only_for_first_party_function(t_list* identified_exchanges){
+
+    bool _is_benefitial_only_for_first_party(t_identified_exchange* identified_exchange){
+        return identified_exchange -> exchange_type == BENEFITIAL_ONLY_FOR_FIRST_PARTY;
+    }
+    return list_any_satisfy(identified_exchanges, (bool (*)(void *)) _is_benefitial_only_for_first_party);
+}
+
+void benefitial_only_for_first_party_exchanges_realized_function(t_list* identified_exchanges){
+
+    t_identified_exchange* identified_exchange = list_first(identified_exchanges);
+    t_trainer_thread_context* first_party_trainer_thread_context =
+            identified_exchange -> exchange -> trainer_thread_context;
+
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
+}
+
+bool is_benefitial_only_for_second_party_function(t_list* identified_exchanges){
+
+    bool _is_benefitial_only_for_second_party(t_identified_exchange* identified_exchange){
+        return identified_exchange -> exchange_type == BENEFITIAL_ONLY_FOR_SECOND_PARTY;
+    }
+    return list_any_satisfy(identified_exchanges, (bool (*)(void *)) _is_benefitial_only_for_second_party);
+}
+
+void benefitial_only_for_second_party_exchanges_realized_function(t_list* identified_exchanges){
+
+    // Dado a que el primero se muevo al lugar del segundo, no solo me interesa recalcular el
+    // estado del segundo, sino que también me interesa que el primero pase de ejecución a bloqueado.
+    benefitial_for_both_parties_exchanges_realized_function(identified_exchanges);
+}
+
+t_basic_evaluation* is_benefitial_only_for_second_party_chained_evaluation(){
+    t_basic_evaluation* basic_evaluation = safe_malloc(sizeof(t_basic_evaluation));
+    basic_evaluation -> satisfy_function = (bool (*)(void *)) is_benefitial_only_for_second_party_function;
+    basic_evaluation -> success_function = (void (*)(void *)) benefitial_only_for_second_party_exchanges_realized_function;
+    basic_evaluation -> failure_function = NULL;
+
+    return basic_evaluation;
+}
+
+t_chained_on_failure_evaluation* next_state_chained_evaluation_when_not_benefitial_for_both_parties(){
+
+    t_identified_chained_evaluation* next_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    next_evaluation -> chained_evaluation_type = BASIC;
+    next_evaluation -> evaluation = is_benefitial_only_for_second_party_chained_evaluation();
+
+    t_chained_on_failure_evaluation* chained_on_failure_evaluation = safe_malloc(sizeof(t_chained_on_failure_evaluation));
+    chained_on_failure_evaluation -> satisfy_function = (bool (*)(void *)) is_benefitial_only_for_first_party_function;
+    chained_on_failure_evaluation -> success_function = (void (*)(void *)) benefitial_only_for_first_party_exchanges_realized_function;
+    chained_on_failure_evaluation -> next_evaluation = next_evaluation;
+}
+
+void initialize_identified_exchanges_completed_chained_evaluation(){
+    t_identified_chained_evaluation* next_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    next_evaluation -> chained_evaluation_type = CHAINED_ON_FAILURE;
+    next_evaluation -> evaluation = next_state_chained_evaluation_when_not_benefitial_for_both_parties();
+
+    t_chained_on_failure_evaluation* chained_on_failure_evaluation = safe_malloc(sizeof(t_chained_on_failure_evaluation));
+    chained_on_failure_evaluation -> satisfy_function = (bool (*)(void *)) is_benefitial_for_both_parties_function;
+    chained_on_failure_evaluation -> success_function = (void (*)(void *)) benefitial_for_both_parties_exchanges_realized_function;
+    chained_on_failure_evaluation -> next_evaluation = next_evaluation;
+
+    identified_exchanges_completed_chained_evaluation = safe_malloc(sizeof(t_identified_chained_evaluation));
+    identified_exchanges_completed_chained_evaluation -> chained_evaluation_type = CHAINED_ON_FAILURE;
+    identified_exchanges_completed_chained_evaluation -> evaluation = chained_on_failure_evaluation;
+
+}
+
 void initialize_trainer_thread_context_state_chained_evaluation(){
     initialize_caught_success_chained_evaluation();
     initialize_caught_failed_chained_evaluation();
+    initialize_identified_exchanges_completed_chained_evaluation();
 }
 
 void trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(t_trainer_thread_context* trainer_thread_context){
@@ -107,7 +211,13 @@ void trainer_thread_context_state_chained_evaluation_value_when_caught_failed_fo
     execute_evaluation_for(caught_failed_chained_evaluation, trainer_thread_context);
 }
 
+void trainer_thread_context_state_chained_evaluation_value_when_exchanges_completed_for(t_list* identified_exchanges){
+
+    execute_evaluation_for(identified_exchanges_completed_chained_evaluation, identified_exchanges);
+}
+
 void free_trainer_thread_context_state_chained_evaluation(){
     free_chained_evaluation(caught_success_chained_evaluation);
     free_chained_evaluation(caught_failed_chained_evaluation);
+    free_chained_evaluation(identified_exchanges_completed_chained_evaluation);
 }

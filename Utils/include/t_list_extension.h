@@ -13,5 +13,6 @@ void list_add_as_first(t_list* self, void* element);
 void* list_remove_first(t_list* self);
 void* list_first(t_list* self);
 t_list* list_intersection(t_list* self, t_list* another, bool (*comparer) (void*, void*));
+void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*));
 
 #endif //DELIBIRD_T_LIST_EXTENSION_H

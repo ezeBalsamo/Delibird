@@ -11,6 +11,11 @@ t_list* non_benefitial_infer_function(t_trainer_thread_context* trainer_thread_c
                                       t_trainer_thread_context* another_trainer_thread_context,
                                       t_list* benefitial_exchanges_for_second){
 
+    (void) trainer_thread_context;
+    (void) benefitial_exchanges_for_first;
+    (void) another_trainer_thread_context;
+    (void) benefitial_exchanges_for_second;
+
     return list_create();
 }
 

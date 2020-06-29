@@ -114,6 +114,7 @@ bool should_be_targeted_pokemon_named(char* pokemon_name){
 t_targetable_object* targetable_pokemon_according_to(char* pokemon_name, uint32_t pos_x, uint32_t pos_y){
 
     t_localizable_object* localizable_pokemon = safe_malloc(sizeof(t_localizable_object));
+    localizable_pokemon -> type = POKEMON;
     localizable_pokemon -> pos_x = pos_x;
     localizable_pokemon -> pos_y = pos_y;
     localizable_pokemon -> object = pokemon_name;

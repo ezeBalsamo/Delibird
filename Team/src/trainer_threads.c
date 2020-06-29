@@ -54,7 +54,7 @@ void initialize_and_load_trainer_thread_context_for(t_localizable_object* locali
     trainer_thread_context -> localizable_trainer = localizable_trainer;
     trainer_thread_context -> semaphore = trainer_semaphore;
     trainer_thread_context -> state = NEW;
-    trainer_thread_context -> thread_action = NULL;
+    trainer_thread_context -> thread_action = new_null_thread_action();
 
     list_add(trainer_thread_contexts, (void*) trainer_thread_context);
 }
@@ -86,6 +86,19 @@ t_thread_action* new_thread_action(){
     t_request* request = safe_malloc(sizeof(t_request));
     t_thread_action* thread_action = safe_malloc(sizeof(t_thread_action));
     thread_action -> request = request;
+
+    return thread_action;
+}
+
+void do_nothing(){}
+
+t_thread_action* new_null_thread_action(){
+
+    t_thread_action* thread_action = new_thread_action();
+    thread_action -> request -> operation = NULL_THREAD_ACTION;
+    thread_action -> request -> structure = NULL;
+    thread_action -> request -> sanitizer_function = free;
+    thread_action -> execution_function = do_nothing;
 
     return thread_action;
 }

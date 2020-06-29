@@ -14,7 +14,7 @@ void parsed_localized_object_positions(t_localizable_object* localizable_trainer
     free_char_array(splitted_positions);
 }
 
-t_trainer* parsed_trainer_from(uint32_t sequential_number, char* current_pokemons, char* desired_pokemons){
+t_trainer* parsed_trainer_from(uint32_t sequential_number, char* current_pokemons, char* required_pokemons){
 
     t_trainer* trainer = safe_malloc(sizeof(t_trainer));
     trainer -> sequential_number = sequential_number;
@@ -26,13 +26,13 @@ t_trainer* parsed_trainer_from(uint32_t sequential_number, char* current_pokemon
     }
 
     trainer -> required_pokemons = list_create();
-    char** splitted_desired_pokemons = string_split(desired_pokemons, "|");
-    for(int i = 0; splitted_desired_pokemons[i]; i++){
-        list_add(trainer -> required_pokemons, (void*) splitted_desired_pokemons[i]);
+    char** splitted_required_pokemons = string_split(required_pokemons, "|");
+    for(int i = 0; splitted_required_pokemons[i]; i++){
+        list_add(trainer -> required_pokemons, (void*) splitted_required_pokemons[i]);
     }
 
     free(splitted_current_pokemons);
-    free(splitted_desired_pokemons);
+    free(splitted_required_pokemons);
 
     return trainer;
 }
@@ -53,6 +53,7 @@ t_list* parsed_trainers(){
         t_localizable_object* localizable_trainer = safe_malloc(sizeof(t_localizable_object));
         parsed_localized_object_positions(localizable_trainer, positions[sequential_number]);
 
+        localizable_trainer -> type = TRAINER;
         localizable_trainer -> object = trainer;
 
         list_add(trainers, (void*) localizable_trainer);

@@ -102,3 +102,20 @@ t_list* list_intersection(t_list* self, t_list* another, bool (*comparer) (void*
     list_iterate(self, _load_if_belongs_to_both);
     return list_intersection;
 }
+
+void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*)){
+
+    t_list* elements_to_remove = list_filter(self, comparer);
+
+    void _remove_it(void* element_to_remove){
+
+        bool _are_equals(void* element_to_compare){
+            return element_to_compare == element_to_remove;
+        }
+
+        list_remove_by_condition(self, _are_equals);
+    }
+
+    list_iterate(elements_to_remove, _remove_it);
+    list_destroy(elements_to_remove);
+}

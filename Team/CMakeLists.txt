@@ -43,7 +43,8 @@ set(SOURCES
         src/benefitial_exchanges_only_for_first_party.c
         src/benefitial_exchanges_only_for_second_party.c
         src/non_benefitial_exchange.c
-        src/exchange_provider.c)
+        src/identified_exchanges_provider.c
+        src/exchange_action.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

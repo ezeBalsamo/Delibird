@@ -62,14 +62,14 @@ void execute_to_finished_transition_function(t_trainer_thread_context* trainer_t
     }
 
     stop_current_execution_doing(_to_finished_function);
-    consider_global_goal_accomplished();
+    consider_ending();
 }
 
 void blocked_to_finished_transition_function(t_trainer_thread_context* trainer_thread_context){
 
     move_to(trainer_thread_context, FINISHED);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-    consider_global_goal_accomplished();
+    consider_ending();
 }
 
 void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){

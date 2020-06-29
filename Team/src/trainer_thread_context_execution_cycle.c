@@ -6,20 +6,15 @@
 #include <trainer_thread_context_state_chained_evaluation.h>
 #include <team_logs_manager.h>
 #include <waiting_actions.h>
+#include <exchange_action.h>
 #include "trainer_thread_context_execution_cycle.h"
 
-void free_if_necessary_previous(t_thread_action* thread_action){
-    if(thread_action != NULL){
-        free_thread_action(thread_action);
-    }
-}
+void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* destiny_object){
 
-void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* localizable_pokemon){
-
-    free_if_necessary_previous(trainer_thread_context -> thread_action);
+    free_thread_action(trainer_thread_context -> thread_action);
 
     trainer_thread_context -> thread_action =
-            movement_thread_action_for(trainer_thread_context -> localizable_trainer, localizable_pokemon);
+            movement_thread_action_for(trainer_thread_context -> localizable_trainer, destiny_object);
 
     trainer_thread_context_ready_to_be_sheduled(trainer_thread_context);
 }
@@ -27,14 +22,20 @@ void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_contex
 void movement_action_completed_by(t_trainer_thread_context* trainer_thread_context){
 
     t_movement_action* movement_action = internal_thread_action_in(trainer_thread_context);
-    t_localizable_object* localizable_pokemon = movement_action -> destiny_object;
+    t_localizable_object* destiny_object = movement_action -> destiny_object;
 
     free_thread_action(trainer_thread_context -> thread_action);
+    t_thread_action* thread_action;
 
-    trainer_thread_context -> thread_action = catch_thread_action_for(localizable_pokemon);
-
-    log_thread_action_to_perform_by(trainer_thread_context);
-    execute_trainer_thread_context_action(trainer_thread_context);
+    if(is_deadlock_resolution_in_process()){
+        trainer_thread_context -> thread_action = exchange_thread_action();
+        log_thread_action_to_perform_by(trainer_thread_context);
+        sem_post(&trainer_thread_context -> semaphore);
+    }else{
+        trainer_thread_context -> thread_action = catch_thread_action_for(destiny_object);
+        log_thread_action_to_perform_by(trainer_thread_context);
+        execute_trainer_thread_context_action(trainer_thread_context);
+    }
 }
 
 void catch_action_completed_successfully_by(t_trainer_thread_context* trainer_thread_context){

@@ -39,7 +39,10 @@ bool deadlock_has_occurred(){
     list_add(queues_expected_to_be_empty, dispatcher_queue_of(READY));
     list_add(queues_expected_to_be_empty, dispatcher_queue_of(EXECUTE));
 
-    return
+    bool deadlock_has_occurred =
             list_all_satisfy(queues_expected_to_be_empty, (bool (*)(void *)) is_dispatcher_queue_empty) &&
             are_all_blocked_trainer_thread_contexts_waiting_for_exchange();
+
+    list_destroy(queues_expected_to_be_empty);
+    return deadlock_has_occurred;
 }

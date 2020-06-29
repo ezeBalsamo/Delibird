@@ -246,16 +246,8 @@ void log_succesfully_caught_due_to_failed_communication_with_broker(t_localizabl
     free(default_action);
 }
 
-void log_expected_to_be_empty_error_for(uint32_t state){
-    char* printable_state = state_as_string(state);
-    char* message = string_from_format("Se esperaba que la %s estuviera vacía.", printable_state);
-    log_errorful_message(process_execution_logger(), message);
-    free(message);
-}
-
-void log_expected_to_be_not_empty_error_for(uint32_t state){
-    char* printable_state = state_as_string(state);
-    char* message = string_from_format("Se esperaba que la %s no estuviera vacía.", printable_state);
+void log_expected_global_goal_to_be_accomplished_error(){
+    char* message = string_from_format("Se esperaba que el objetivo global se haya cumplido.");
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
@@ -268,13 +260,6 @@ void log_message_id_not_required(uint32_t queue_code, uint32_t message_id){
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
-}
-
-void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error(){
-    char* message = "Se determinó que se cumplió el objetivo global "
-                    "pero la cantidad de entrenadores y de hilos finalizados no coinciden.";
-
-    log_errorful_message(process_execution_logger(), message);
 }
 
 void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name){
@@ -349,6 +334,89 @@ void log_no_suitable_exchange_inferrer_found_error_for(t_trainer_thread_context*
     free(printable_trainer);
     free(printable_another_trainer);
     free(message);
+}
+
+void log_invalid_localizable_object_type_error(){
+    log_errorful_message(process_execution_logger(), "Se intentó imprimir un objeto localizable inválido.");
+}
+
+void log_deadlock_detection_algorithm_has_begun(){
+    char* message = "El algoritmo de detección de Deadlock ha comenzado.";
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+}
+
+void log_deadlock_detection_algorithm_has_finished_explaning_that(char* explanation){
+    char* message = string_from_format("El algoritmo de detección de Deadlock ha finalizado. Resultado: %s", explanation);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_deadlock_detection_algorithm_has_finished_with_deadlock_detected(){
+    log_deadlock_detection_algorithm_has_finished_explaning_that("El sistema se encuentra en una situación de interbloqueo. Se procederá a resolverlo.");
+}
+
+void log_deadlock_detection_algorithm_has_finished_with_no_deadlock_detected(){
+    log_deadlock_detection_algorithm_has_finished_explaning_that("El sistema puede continuar operando.");
+}
+
+void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts){
+    char* message = string_from_format("%s", "El algoritmo de recuperación de Deadlock ha comenzado.\nEntrenadores involucrados:\n");
+
+    for(int i = 0; i < list_size(trainer_thread_contexts); i++) {
+        t_trainer_thread_context* trainer_thread_context = list_get(trainer_thread_contexts, i);
+        t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+        char* printable_localizable_trainer = localizable_trainer_as_string(localizable_trainer);
+
+        string_append(&message, "* ");
+        string_append(&message, printable_localizable_trainer);
+
+        if(i + 1 != list_size(trainer_thread_contexts)){
+            string_append(&message, "\n");
+        }
+
+        free(printable_localizable_trainer);
+    }
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_exchange_action_with(t_identified_exchange* identified_exchange, char* summary, char* concrete_action){
+
+    t_trainer* first_party_trainer = first_party_localizable_trainer_in(identified_exchange) -> object;
+    char* printable_first_party_trainer = trainer_as_string(first_party_trainer);
+    char* first_party_pokemon_name = first_party_pokemon_name_in(identified_exchange);
+
+    t_trainer* second_party_trainer = second_party_localizable_trainer_in(identified_exchange) -> object;
+    char* printable_second_party_trainer = trainer_as_string(second_party_trainer);
+    char* second_party_pokemon_name = second_party_pokemon_name_in(identified_exchange);
+
+    char* message =
+            string_from_format(
+                    "%s: %s %s su %s con el %s de %s.",
+                    summary,
+                    printable_first_party_trainer,
+                    concrete_action,
+                    first_party_pokemon_name,
+                    second_party_pokemon_name,
+                    printable_second_party_trainer);
+
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+
+    free(printable_first_party_trainer);
+    free(printable_second_party_trainer);
+    free(message);
+}
+
+void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange){
+    log_exchange_action_with(identified_exchange, "A punto de realizar un intercambio", "intercambiará");
+}
+
+void log_exchange_realized_according_to(t_identified_exchange* identified_exchange){
+    log_exchange_action_with(identified_exchange, "Intercambio realizado exitosamente", "intercambió");
 }
 
 void log_global_goal_accomplished(){
