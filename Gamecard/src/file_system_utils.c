@@ -8,6 +8,10 @@
 #include <sys/file.h>
 #include <unistd.h>
 
+char* block_line_to_string(t_pokemon_block_line *line){
+    return string_from_format("%d-%d=%d",line -> pos_x, line -> pos_y, line -> quantity);
+}
+
 char* create_block_path(char block_pointer[]){
     return string_from_format("%s/Blocks/%s.bin", tallgrass_mount_point(), block_pointer);
 }

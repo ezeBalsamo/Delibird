@@ -170,6 +170,142 @@ t_list* read_block(char* file_path){
     return blocks_data;
 }
 
+void modify_specific_position(int add_susbtract_amount, line_block_information* element_to_modify, int* index, t_list *list_blocks_information){
+	if((element_to_modify->PokemonQuantity + add_susbtract_amount) == 0){
+		element_to_modify->PokemonQuantity += add_susbtract_amount;
+		list_remove(list_blocks_information,*index);
+	}
+	else{
+		element_to_modify->PokemonQuantity += add_susbtract_amount;
+	}
+}
+
+line_block_information *find_same_position(int posX, int posY, t_list *lista, int* index){
+	int i = 0;
+	void _is_the_one(line_block_information *position_in_list) {
+		if(position_in_list->positionX == posX && position_in_list->positionY == posY){
+			*index = i;
+			return;
+		}
+		i++;
+		return;
+	}
+
+	list_iterate(lista,(void*) _is_the_one);
+	if(index == NULL){
+		return NULL;
+	}
+	else{
+		return list_get(lista, *index);
+	}
+}
+
+void substract_or_remove_from(t_list* blocks_information, t_catch_pokemon pokemon_to_susbtract){
+
+	int *index = (int *)safe_malloc(sizeof(int));
+	t_pokemon_block_line *coord = safe_malloc(sizeof(t_pokemon_block_line));
+
+	coord = find_same_position(pokemon_to_susbtract -> pos_x, pokemon_to_susbtract -> pos_y, blocks_information, index);
+
+	//si no lo encuentro coord == NULL
+	if (coord == NULL){
+		//deberia tirar un error
+	}
+	else{
+		modify_specific_position(-1, coord, indice, blocks_information);
+	}
+
+	free(coord);
+	free(indice);
+}
+
+void add_or_modify_to(t_list* blocks_information, t_new_pokemon pokemon_to_add){
+
+	t_pokemon_block_line *coord = safe_malloc(sizeof(t_pokemon_block_line));
+
+	coord = find_same_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
+
+	//si no existe ninguna linea con esa posicion, lo agrego a la lista de lineas
+	if (coord == NULL){
+		list_add(blocks_information,pokemon_to_add);
+	}
+	else{//si ya existia agrego en esa linea la cantidad que se esta sumando
+		modify_specific_position(pokemon_to_add -> quantity, coord, NULL, blocks_information);
+	}
+
+	free(coord);
+}
+
+void remove_from_blocks(char* string_to_modify, char* block_to_add){
+	//TODO
+}
+
+void add_to_blocks(char* string_to_modify, char* block_to_add){
+	//TODO
+}
+
+bool write_until_full(char* path_archivo, t_list* lista_contenido_bloques){
+
+	FILE *fp = fopen(path_archivo,"w");
+
+	int size_already_written = 0;
+	char* line_with_string_format;
+	int number_of_lines = lista_contenido_bloques->elements_count;
+
+	for(int i = 0; i < number_of_lines; i++){
+		t_pokemon_block_line *line = malloc(sizeof(fila_archivo_tipo_pokemon));
+
+		line = list_remove(lista_contenido_bloques,0);
+		line_with_string_format = block_line_to_string(line);
+
+		int line_length = strlen(line_with_string_format) + 1;
+
+		if(size_already_written + line_length > tamanio_max_bloque){ //si la linea no me entra en el bloque, la mando de nuevo a la lista
+			list_add(lista_contenido_bloques,line);
+			return false; //se acabo el espacio del bloque, no termine de escribir
+		}
+
+		fprintf(fp,"%s", string);
+		free(line);
+		size_already_written += line_length;
+	}
+
+	fclose(fp);
+	return true; //termine de escribir, entraron todos en este bloque :D
+}
+
+void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
+	int i=1;
+	char block_name[12];
+	char* block_path;
+	int finish_writing;
+	int blocks_quantity = split(blocks,1,"[,]",block_name);;//es para que no entre al if a la primera
+
+	do{
+		if(i > blocks_quantity){
+			char* new_block_number = get_new_block(); //NECESITO UN BLOQUE NUEVO
+			add_to_blocks(blocks, new_block_number); // block_name tiene forma [n1,n2,n3,n] yo quiero borrar ], agregar ",new_block_number]\0"
+			block_name = new_block_number;
+		}
+		else{
+			split(blocks,i,"[,]",block_name);
+		}
+		block_path = create_block_path(block_name);
+		finish_writing = write_until_full(block_path,pokemon_data_list);
+		i++;
+
+	}while(!finish_writing);
+
+	while(i <= cantidad_bloques){//si NO estoy escribiendo en el ultimo bloque
+		split(blocks,i,"[,]",block_name);
+		remove_from_blocks(blocks, block_name);
+		free_block_number(atoi(block_name));
+		i++;
+	}//borro los bloques que sobraron, deberia ser 1 solo podrian ser mas dependiendo de como se inicie el sistema
+
+	return;
+}
+
 void* read_file_of_type(uint32_t file_type, char* file_name){
 
     t_file_information* file_information = file_information_with_code(file_type);
