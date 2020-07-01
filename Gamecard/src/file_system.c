@@ -180,23 +180,24 @@ void modify_specific_position(int add_susbtract_amount, line_block_information* 
 	}
 }
 
-line_block_information *find_same_position(int posX, int posY, t_list *lista, int* index){
+line_block_information *find_line_with_position(int posX, int posY, t_list *lista, int* index){
 	int i = 0;
-	void _is_the_one(line_block_information *position_in_list) {
+	int* auxiliar_index;
+	void _positions_match(line_block_information *position_in_list) {
 		if(position_in_list->positionX == posX && position_in_list->positionY == posY){
-			*index = i;
+			*auxiliar_index = i;
 			return;
 		}
 		i++;
-		return;
 	}
 
-	list_iterate(lista,(void*) _is_the_one);
-	if(index == NULL){
+	list_iterate(lista,(void*) _positions_match);
+	index = auxiliar_index;
+	if(auxiliar_index == NULL){
 		return NULL;
 	}
 	else{
-		return list_get(lista, *index);
+		return list_get(lista, *auxiliar_index);
 	}
 }
 
@@ -205,14 +206,19 @@ void substract_or_remove_from(t_list* blocks_information, t_catch_pokemon pokemo
 	int *index = (int *)safe_malloc(sizeof(int));
 	t_pokemon_block_line *coord = safe_malloc(sizeof(t_pokemon_block_line));
 
-	coord = find_same_position(pokemon_to_susbtract -> pos_x, pokemon_to_susbtract -> pos_y, blocks_information, index);
+	coord = find_line_with_position(pokemon_to_susbtract -> pos_x, pokemon_to_susbtract -> pos_y, blocks_information, index);
 
 	//si no lo encuentro coord == NULL
 	if (coord == NULL){
 		//deberia tirar un error
 	}
 	else{
-		modify_specific_position(-1, coord, indice, blocks_information);
+		if((coord -> PokemonQuantity -1) == 0){
+			list_remove(blocks_information,*index);
+		}
+		else{
+			coord -> PokemonQuantity -= 1;
+		}
 	}
 
 	free(coord);
@@ -221,16 +227,15 @@ void substract_or_remove_from(t_list* blocks_information, t_catch_pokemon pokemo
 
 void add_or_modify_to(t_list* blocks_information, t_new_pokemon pokemon_to_add){
 
-	t_pokemon_block_line *coord = safe_malloc(sizeof(t_pokemon_block_line));
-
-	coord = find_same_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
+	t_pokemon_block_line *requested_line = find_line_with_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
 
 	//si no existe ninguna linea con esa posicion, lo agrego a la lista de lineas
 	if (coord == NULL){
 		list_add(blocks_information,pokemon_to_add);
 	}
 	else{//si ya existia agrego en esa linea la cantidad que se esta sumando
-		modify_specific_position(pokemon_to_add -> quantity, coord, NULL, blocks_information);
+		coord -> quantity += pokemon_to_add -> quantity;
+		//modify_specific_position(pokemon_to_add -> quantity, coord, NULL, blocks_information);
 	}
 
 	free(coord);
@@ -246,28 +251,29 @@ void add_to_blocks(char* string_to_modify, char* block_to_add){
 	//tengo que remover el ] y reemplazarlo por ,block_to_add]\0
 }
 
-bool write_until_full(char* path_archivo, t_list* lista_contenido_bloques){
+bool write_until_full(char* block_path, t_list* pokemon_data_list){
 
-	FILE *fp = fopen(path_archivo,"w");
+	FILE *fp = fopen(block_path,"w");
 
 	int size_already_written = 0;
 	char* line_with_string_format;
-	int number_of_lines = lista_contenido_bloques->elements_count;
+	int number_of_lines_to_write = pokemon_data_list->elements_count;
 
-	for(int i = 0; i < number_of_lines; i++){
-		t_pokemon_block_line *line = malloc(sizeof(fila_archivo_tipo_pokemon));
+	for(int i = 0; i < number_of_lines_to_write; i++){
+		t_pokemon_block_line *line = safe_malloc(sizeof(t_pokemon_block_line));
 
-		line = list_remove(lista_contenido_bloques,0);
+		line = list_remove(pokemon_data_list,0);
 		line_with_string_format = block_line_to_string(line);
 
 		int line_length = strlen(line_with_string_format) + 1;
 
-		if(size_already_written + line_length > tamanio_max_bloque){ //si la linea no me entra en el bloque, la mando de nuevo a la lista
-			list_add(lista_contenido_bloques,line);
+		if(size_already_written + line_length > file_system_metadata -> blocks_size){ //si la linea no me entra en el bloque, la mando de nuevo a la lista
+			list_add(pokemon_data_list,line);
+			fclose(fp);
 			return false; //se acabo el espacio del bloque, no termine de escribir
 		}
 
-		fprintf(fp,"%s", string);
+		fprintf(fp,"%s", line_with_string_format);
 		free(line);
 		size_already_written += line_length;
 	}
@@ -280,8 +286,8 @@ void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
 	int i=1;
 	char block_name[12];
 	char* block_path;
-	int finish_writing;
-	int blocks_quantity = split(blocks,1,"[,]",block_name);;//es para que no entre al if a la primera
+	bool all_data_writed; //[40,5]
+	int blocks_quantity = split(blocks,1,"[,]",block_name);//calculo la cantidad de bloques que hay
 
 	do{
 		if(i > blocks_quantity){
@@ -293,20 +299,19 @@ void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
 			split(blocks,i,"[,]",block_name);
 		}
 		block_path = create_block_path(block_name);
-		finish_writing = write_until_full(block_path,pokemon_data_list);
+		all_data_writed = write_until_full(block_path, pokemon_data_list);
 		i++;
 
-	}while(!finish_writing);
+	}while(!all_data_writed);
 
 	//si i quedo = a cant_bloques o menor, => le sobraron bloques
-	while(i <= cantidad_bloques){//si NO estoy escribiendo en el ultimo bloque
+	while(i <= blocks_quantity){//si NO estoy escribiendo en el ultimo bloque
 		split(blocks,i,"[,]",block_name);
 		remove_from_blocks(blocks, block_name);
-		free_block_number(atoi(block_name));
-		i++;
+		blocks_quantity--;
+		free_block_number(block_name);
 	}//borro los bloques que sobraron, deberia ser 1 solo podrian ser mas dependiendo de como se inicie el sistema
 
-	return;
 }
 
 void* read_file_of_type(uint32_t file_type, char* file_name){
