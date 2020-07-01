@@ -35,6 +35,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 
 	}
 	else{
+		//tengo que crear el metadata
 		//tengo que que pedir un bloque, escribir en ese bloque
 		//crear el metadata de ese pokemon, en bloques tendra el bloque creado arriba
 	}

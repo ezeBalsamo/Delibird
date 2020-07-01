@@ -238,10 +238,12 @@ void add_or_modify_to(t_list* blocks_information, t_new_pokemon pokemon_to_add){
 
 void remove_from_blocks(char* string_to_modify, char* block_to_add){
 	//TODO
+	//tengo que remover del string el bloque
 }
 
 void add_to_blocks(char* string_to_modify, char* block_to_add){
 	//TODO
+	//tengo que remover el ] y reemplazarlo por ,block_to_add]\0
 }
 
 bool write_until_full(char* path_archivo, t_list* lista_contenido_bloques){
@@ -296,6 +298,7 @@ void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
 
 	}while(!finish_writing);
 
+	//si i quedo = a cant_bloques o menor, => le sobraron bloques
 	while(i <= cantidad_bloques){//si NO estoy escribiendo en el ultimo bloque
 		split(blocks,i,"[,]",block_name);
 		remove_from_blocks(blocks, block_name);

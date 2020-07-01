@@ -10,6 +10,7 @@
 
 char* block_line_to_string(t_pokemon_block_line *line){
     return string_from_format("%d-%d=%d",line -> pos_x, line -> pos_y, line -> quantity);
+    //hay que probar si funca
 }
 
 char* create_block_path(char block_pointer[]){
