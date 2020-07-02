@@ -95,3 +95,9 @@ void log_unknown_file_type_error(){
 void free_gamecard_logs_manager(){
     free_loggers();
 }
+
+void log_metadata_destroy(char* pokemon_name){
+	char* message = string_from_format("voy a eliminar el metadata del pokemon %s\n", pokemon_name);
+	log_succesful_message(process_execution_logger(), message);
+	free(message);
+}

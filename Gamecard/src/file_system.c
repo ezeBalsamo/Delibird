@@ -241,14 +241,16 @@ void add_or_modify_to(t_list* blocks_information, t_new_pokemon pokemon_to_add){
 	free(coord);
 }
 
-void remove_from_blocks(char* string_to_modify, char* block_to_add){
-	//TODO
-	//tengo que remover del string el bloque
+void remove_from_blocks(char* string_to_modify, char* block_to_remove){
+	int aux = strlen(block_to_remove);
+	aux += 2; //uno por el ']' y otro por la ','
+	string_to_modify = string_substring(string_to_modify,0,strlen(string_to_modify)-aux);
+	string_append(&string_to_modify, "]");
 }
 
 void add_to_blocks(char* string_to_modify, char* block_to_add){
-	//TODO
-	//tengo que remover el ] y reemplazarlo por ,block_to_add]\0
+	string_to_modify = string_substring(string_to_modify,0,strlen(string_to_modify)-1); //recorto el ']'
+	string_append_with_format(&string_to_modify, ",%s]",block_to_add); //agrego el bloque nuevo y ]
 }
 
 bool write_until_full(char* block_path, t_list* pokemon_data_list){
@@ -286,8 +288,14 @@ void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
 	int i=1;
 	char block_name[12];
 	char* block_path;
-	bool all_data_writed; //[40,5]
+	bool all_data_writed;
 	int blocks_quantity = split(blocks,1,"[,]",block_name);//calculo la cantidad de bloques que hay
+
+	if(is_empty(pokemon_data_list)){
+		blocks = "[]"
+		log
+		return;
+	}
 
 	do{
 		if(i > blocks_quantity){
@@ -306,7 +314,7 @@ void write_pokemon_data(t_list* pokemon_data_list, char* blocks){
 
 	//si i quedo = a cant_bloques o menor, => le sobraron bloques
 	while(i <= blocks_quantity){//si NO estoy escribiendo en el ultimo bloque
-		split(blocks,i,"[,]",block_name);
+		split(blocks,blocks_quantity,"[,]",block_name);
 		remove_from_blocks(blocks, block_name);
 		blocks_quantity--;
 		free_block_number(block_name);

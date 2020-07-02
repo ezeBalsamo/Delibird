@@ -28,10 +28,12 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		//Leo bloques del archivo
 		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-		t_list* new_blocks_information = add_or_modify_to(blocks_information, new_pokemon);
+		t_list* modified_blocks_information = add_or_modify_to(blocks_information, new_pokemon);
 
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-		write_pokemon_data(new_blocks_information, metadata_file_information -> blocks);
+		write_pokemon_data(modified_blocks_information, metadata_file_information -> blocks);
+
+		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
 	}
 	else{

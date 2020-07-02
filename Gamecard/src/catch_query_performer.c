@@ -12,8 +12,32 @@ t_gamecard_query_performer* catch_query_performer(){
 
 t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
     printf("Se recibio el mensaje CATCH_POKEMON con id = %d\n", identified_message -> message_id);
-    //TODO: Implementar lógica
 
+    //Armo el path del metadata para el Pokemon recibido
+    	t_new_pokemon* catch_pokemon = identified_message->request->structure;
+    	char* pokemon_name = catch_pokemon -> pokemon_name;
+    	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), pokemon_name);
+
+    	t_request* localized_request;
+
+    	if(exists_file_at(pokemon_metadata_path)) {
+    		//Leo el archivo de metadata
+    		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
+    		metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
+
+    		//Leo bloques del archivo
+    		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
+
+    		t_list* modified_blocks_information = substract_or_remove_from(blocks_information, catch_pokemon);
+
+    		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
+    		write_pokemon_data(modified_blocks_information, metadata_file_information -> blocks);
+
+    		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+    	}
+    	else{
+    		//fallo, no existe el que queres catchear
+    	}
 }
 
 bool catch_query_performer_can_handle(uint32_t operation){
