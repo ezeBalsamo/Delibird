@@ -11,22 +11,26 @@ t_message_allocator* dynamic_partition_message_allocator;
 
 
 t_block_information*  find_block_to_allocate_message(t_list* blocks_information, t_memory_block* memory_block_to_save){
-    uint32_t partition_search_failed_count = 0;
-    while(partition_search_failed_count <= dynamic_partition_message_allocator->max_search_tries){
+    uint32_t partition_freed_count = 0;
+    while(partition_freed_count <= dynamic_partition_message_allocator->max_search_tries){
 
         t_block_information* block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
         if (block_information_found != NULL){
             return block_information_found;
         }
-        partition_search_failed_count++;
 
         //todo: semaforizar
-        if (partition_search_failed_count >= dynamic_partition_message_allocator->max_search_tries){
+        if (partition_freed_count >= dynamic_partition_message_allocator->max_search_tries){
             dynamic_partition_message_allocator->memory_compaction_algorithm(blocks_information);
-            partition_search_failed_count=0;
-        }else{
-            dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
+            partition_freed_count=0;
+            block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
+            if (block_information_found != NULL){
+                return block_information_found;
+            }
         }
+        dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
+
+        partition_freed_count++;
     }
 }
 
