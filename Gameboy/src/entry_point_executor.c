@@ -14,8 +14,12 @@ timer_t timer;
 
 void consume_messages_from(int socket_fd){
     while(true){
-        t_serialization_information* serialization_information = receive_structure(socket_fd);
-        t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+        t_receive_information* receive_information = receive_structure(socket_fd);
+        if(!receive_information -> receive_was_successful){
+            log_broker_disconnection(main_logger());
+            free_system();
+        }
+        t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
         t_identified_message* identified_message = deserialized_request -> structure;
         send_ack_message(identified_message -> message_id, socket_fd);
@@ -23,7 +27,7 @@ void consume_messages_from(int socket_fd){
         log_request_received_with(main_logger(), deserialized_request);
         log_request_received_with(process_execution_logger(), deserialized_request);
 
-        free_serialization_information(serialization_information);
+        free_receive_information(receive_information);
         free_request(deserialized_request);
     }
 }

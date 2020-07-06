@@ -68,15 +68,22 @@ t_request* subscribe_me_request_for(uint32_t operation_queue){
     return request;
 }
 
-void consume_messages_from(int socket_fd){
+void consume_messages_from(t_connection_information* connection_information) {
 
     //Obtener request desde el socket_fd correspondiente al broker
-    t_serialization_information* serialization_information = receive_structure(socket_fd);
-    t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+    t_receive_information *receive_information = receive_structure(connection_information->socket_fd);
+
+    if (!receive_information->receive_was_successful) {
+        pthread_t broker_connection_handler_thread = default_safe_thread_create(
+                initialize_gamecard_broker_connection_handler, NULL);
+
+        safe_thread_join(broker_connection_handler_thread);
+    }
+    t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
     //Aviso al Broker la recepcion del mensaje
     t_identified_message* identified_message = deserialized_request -> structure;
-    send_ack_message(identified_message -> message_id, socket_fd);
+    send_ack_message(identified_message -> message_id,connection_information -> socket_fd);
 
     //Loguear y mostrar por consola mensaje recibido
     log_request_received_with(main_logger(), deserialized_request);
@@ -86,7 +93,7 @@ void consume_messages_from(int socket_fd){
     gamecard_query_perform(deserialized_request);
 
     //Liberar memoria
-    free_serialization_information(serialization_information);
+    free_receive_information(receive_information);
     free_request(deserialized_request);
 }
 
@@ -108,16 +115,15 @@ void* subscriber_thread(void* queue_operation_identifier){
     serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
     log_succesful_suscription_to(operation_queue);
 
-    int socket_fd = connection_information -> socket_fd;
-
-    free_connection_information(connection_information);
-    stop_considering_garbage(connection_information);
+    //TODO ESTE FREE ROMPE TODO
+    //free_connection_information(connection_information);
+    //stop_considering_garbage(connection_information);
 
     free_request(request);
     stop_considering_garbage(request);
 
     while (true) {
-        consume_messages_from(socket_fd);
+        consume_messages_from(connection_information);
     }
 
     return NULL;

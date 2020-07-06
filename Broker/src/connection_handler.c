@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <messages_roles.h>
 #include <semaphore.h>
 #include <pthread.h>
@@ -24,12 +23,12 @@ uint32_t update_and_get_message_id(){
 
 void* main_thread_handler(void* connection_fd){
     int cast_connection_fd = *((int*) connection_fd);
-    t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
+    t_receive_information* receive_information = receive_structure(cast_connection_fd);
     log_succesful_connection_of_a_process();
 
-    consider_as_garbage(serialization_information, (void (*)(void *)) free_serialization_information);
+    consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
 
-    t_request* request = deserialize(serialization_information -> serialized_request);
+    t_request* request = deserialize(receive_information -> serialization_information -> serialized_request);
     log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
 
     t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);

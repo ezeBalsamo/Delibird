@@ -291,30 +291,50 @@ void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds)
     return (void*) ack;
 }
 
-t_serialization_information* receive_structure(int socket_fd){
+void receive_failed(t_receive_information* receive_information){
+    receive_information -> receive_was_successful = false;
+    receive_information -> serialization_information = NULL;
+}
 
-    void* serialized_request;
-    uint32_t amount_of_bytes_of_request;
-
-    if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) == -1){
-        log_syscall_error("Error al recibir estructura");
-        close(socket_fd);
-        free_system();
-    }
-
-    serialized_request = safe_malloc(amount_of_bytes_of_request);
-
-    if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) == -1){
-        log_syscall_error("Error al recibir serialized_request");
-        close(socket_fd);
-        free_system();
-    }
-
-    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
+t_serialization_information* create_serialization_information(uint32_t amount_of_bytes_of_request, void* serialized_request, t_serialization_information* serialization_information){
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
 
     return serialization_information;
+}
+
+t_receive_information* receive_structure(int socket_fd){
+
+    void* serialized_request = NULL;
+    uint32_t amount_of_bytes_of_request;
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
+    t_receive_information* receive_information = safe_malloc(sizeof(t_receive_information));
+    receive_information -> receive_was_successful = true;
+    receive_information -> serialization_information = serialization_information;
+
+    if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) <= 0){
+            log_syscall_error("Error al recibir estructura");
+            close(socket_fd);
+            receive_failed(receive_information);
+        }
+
+    if(receive_information -> receive_was_successful){
+        serialized_request = safe_malloc(amount_of_bytes_of_request);
+
+        if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) <= 0){
+            log_syscall_error("Error al recibir serialized_request");
+            close(socket_fd);
+            receive_failed(receive_information);
+        }
+    }
+
+    if(receive_information -> receive_was_successful){
+        serialization_information = create_serialization_information(amount_of_bytes_of_request, serialized_request, serialization_information);
+        receive_information -> serialization_information = serialization_information;
+    }
+
+    return receive_information;
+
 }
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
@@ -373,4 +393,12 @@ void free_multithreaded_server(){
         pthread_t thread = thread_pool[i];
         safe_thread_cancel(thread);
     }
+}
+
+void free_receive_information(t_receive_information* receive_information){
+
+    if(receive_information ->receive_was_successful){
+        free_serialization_information(receive_information -> serialization_information);
+    }
+    free(receive_information);
 }

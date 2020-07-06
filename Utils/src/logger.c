@@ -82,6 +82,10 @@ void log_errorful_message(t_log* logger, char* message){
     log_error(logger, message);
 }
 
+void log_broker_disconnection(t_log* logger){
+    log_warning(logger, "Se cayó la conexión con el broker!\n");
+}
+
 void log_warning_message(t_log* logger, char* message){
     log_warning(logger, message);
 }
