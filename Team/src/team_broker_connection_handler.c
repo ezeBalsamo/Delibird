@@ -77,9 +77,7 @@ void consume_messages_from(t_connection_information* connection_information, uin
     t_receive_information* receive_information = receive_structure(connection_information -> socket_fd);
 
     if(!receive_information -> receive_was_successful){
-        //todo aca hay que suscribirse denuevo.
-        //todo que va a hacer con los demas? con los 3 creados al principio?
-        thread_create(subscriber_thread, (void*) &operation_queue, log_queue_thread_create_error);
+        subscriber_thread((void*) &operation_queue);
     }
 
     t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
@@ -92,16 +90,17 @@ void consume_messages_from(t_connection_information* connection_information, uin
     query_perform(deserialized_request);
 
     free_receive_information(receive_information);
-//    free_request(deserialized_request);
+    free_connection_information(connection_information);
+    free_request(deserialized_request);
 }
 
 void* subscriber_thread(void* queue_operation_identifier){
 
     uint32_t operation_queue = *((uint32_t*) queue_operation_identifier);
-    //todo este free rompe todo!
-    //free(queue_operation_identifier);
 
     t_request* request = subscribe_me_request_for(operation_queue);
+    sleep_for(1); //Sleep que se hace porque cuando se quiere hacer la reconexion
+                  // piensa que todavia el broker esta levantado!
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     consider_as_garbage(request, (void (*)(void *)) free_request);
@@ -114,10 +113,9 @@ void* subscriber_thread(void* queue_operation_identifier){
     serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
     log_succesful_suscription_to(operation_queue);
 
-    free_connection_information(connection_information);
     stop_considering_garbage(connection_information);
 
-//    free_request(request);
+    free_request(request);
     stop_considering_garbage(request);
 
     sem_post(&subscriber_threads_request_sent);
@@ -125,6 +123,8 @@ void* subscriber_thread(void* queue_operation_identifier){
     while (!is_global_goal_accomplished()){
         consume_messages_from(connection_information, operation_queue);
     }
+
+    free(queue_operation_identifier);
 
     return NULL;
 }
@@ -139,19 +139,19 @@ pthread_t subscribe_to_queue(uint32_t queue_code){
 void subscribe_to_queues(){
 
     appeared_queue_tid = subscribe_to_queue(APPEARED_POKEMON);
-//    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
-//    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
+    localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
+    caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
 
     sem_wait(&subscriber_threads_request_sent);
-//    sem_wait(&subscriber_threads_request_sent);
-//    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
+    sem_wait(&subscriber_threads_request_sent);
 }
 
 void join_to_queues(){
 
     safe_thread_join(appeared_queue_tid);
-//    safe_thread_join(localized_queue_tid);
-//    safe_thread_join(caught_queue_tid);
+    safe_thread_join(localized_queue_tid);
+    safe_thread_join(caught_queue_tid);
 }
 
 void prepare_get_response(int response_id, char* pokemon_name){
@@ -202,7 +202,7 @@ void* initialize_team_broker_connection_handler(){
     initialize_team_process_description();
 
     subscribe_to_queues();
-//    with_global_goal_do(send_get_pokemon_request_of);
+    with_global_goal_do(send_get_pokemon_request_of);
     join_to_queues();
 
     return NULL;

@@ -68,17 +68,16 @@ t_request* subscribe_me_request_for(uint32_t operation_queue){
     return request;
 }
 
-void consume_messages_from(t_connection_information* connection_information) {
+void consume_messages_from(t_connection_information* connection_information, uint32_t operation_queue){
 
     //Obtener request desde el socket_fd correspondiente al broker
-    t_receive_information *receive_information = receive_structure(connection_information->socket_fd);
+    t_receive_information* receive_information = receive_structure(connection_information -> socket_fd);
 
-    if (!receive_information->receive_was_successful) {
-        pthread_t broker_connection_handler_thread = default_safe_thread_create(
-                initialize_gamecard_broker_connection_handler, NULL);
-
-        safe_thread_join(broker_connection_handler_thread);
+    if(!receive_information -> receive_was_successful){
+        //todo que va a hacer con los demas? con los 3 creados al principio? Ojo con los leaks.
+        subscriber_thread((void*) &operation_queue);
     }
+
     t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
     //Aviso al Broker la recepcion del mensaje
@@ -94,15 +93,17 @@ void consume_messages_from(t_connection_information* connection_information) {
 
     //Liberar memoria
     free_receive_information(receive_information);
+    free_connection_information(connection_information);
     free_request(deserialized_request);
 }
 
 void* subscriber_thread(void* queue_operation_identifier){
 
     uint32_t operation_queue = *((uint32_t*) queue_operation_identifier);
-    free(queue_operation_identifier);
 
     t_request* request = subscribe_me_request_for(operation_queue);
+    sleep_for(1); //Sleep que se hace porque cuando se quiere hacer la reconexion
+                  // piensa que todavia el broker esta levantado!
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     consider_as_garbage(request, (void (*)(void *)) free_request);
@@ -115,16 +116,16 @@ void* subscriber_thread(void* queue_operation_identifier){
     serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
     log_succesful_suscription_to(operation_queue);
 
-    //TODO ESTE FREE ROMPE TODO
-    //free_connection_information(connection_information);
-    //stop_considering_garbage(connection_information);
+    stop_considering_garbage(connection_information);
 
     free_request(request);
     stop_considering_garbage(request);
 
-    while (true) {
-        consume_messages_from(connection_information);
+    while (true){
+        consume_messages_from(connection_information, operation_queue);
     }
+
+    free(queue_operation_identifier);
 
     return NULL;
 }
