@@ -10,6 +10,23 @@
 
 t_dictionary* algorithms;
 
+void reposition_free_block_to_end(t_block_information *block_to_reposition, t_list *blocks_information,int block_index){
+    void* initial_position_to_occupy_for_next_block = block_to_reposition->initial_position;
+    //ajustar las posiciones de todos los bloques (como si se hubiera borrado el que quiero reposicionar)
+    for(int i = block_index+1; i<list_size(blocks_information)-1;i++){
+        t_block_information* block_to_adjust = list_get(blocks_information,i);
+        block_to_adjust ->initial_position = initial_position_to_occupy_for_next_block;
+
+        initial_position_to_occupy_for_next_block = block_to_adjust->initial_position+block_to_adjust->block_size;
+    }
+    //moverlo al final de la memoria y de la lista administrativa
+    list_remove(blocks_information,block_index);
+    t_block_information* last_block = list_get(blocks_information,list_size(blocks_information)-1);
+    list_add(blocks_information,block_to_reposition);
+
+    block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
+}
+
 void initialize_broker_memory_algorithms(){
     algorithms = dictionary_create();
     dictionary_put(algorithms,"FIFO", (void*)fifo_partition_free_algorithm);
@@ -75,16 +92,7 @@ void memory_compaction_algorithm(t_list* blocks_information){
         t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
 
         if (block_information->is_free){
-
-            int furthest_occupied_block_index = find_index_of_furthest_occupied_block_information(blocks_information);
-            //solo swapear si el bloque vacio necesita ser reordenado
-            if (all_blocks_are_free_according_to(furthest_occupied_block_index)){
-                break;
-            }
-            if(i < furthest_occupied_block_index){
-                list_swap(blocks_information,i,furthest_occupied_block_index);
-            }
-
+            reposition_free_block_to_end(block_information,blocks_information,i);
         }
     }
     //Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
