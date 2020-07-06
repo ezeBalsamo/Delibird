@@ -62,14 +62,32 @@ void log_queue_thread_create_error_from_gamecard(){
     exit(EXIT_FAILURE);
 }
 
-void log_invalid_operation_to_query_performer_from_gamecard(uint32_t operation){
-    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u", operation);
+void log_query_performer_not_found_error_from_gamecard_for(uint32_t operation){
+    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u\n", operation);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_query_performer_not_found_error_from_gamecard_for(uint32_t operation){
-    char* message = string_from_format("No se ha encontrado un query performer que maneje operaciones de código %u", operation);
+void log_file_system_metadata_info(t_file_system_metadata* pointer_file_system_metadata){
+    char* message = string_from_format("Tamanio: %d, Cantidad de Bloques: %d, Magic Number: %s\n", pointer_file_system_metadata -> block_size, pointer_file_system_metadata -> blocks, pointer_file_system_metadata -> magic_number);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_file_metadata_info(t_file_metadata* pointer_file_metadata){
+    char* message = string_from_format("Directorio: %s, Tamanio: %d, Bloques: %s, Abierto: %s\n", pointer_file_metadata -> directory, pointer_file_metadata -> size,  pointer_file_metadata -> blocks, pointer_file_metadata -> open);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_block_metadata_info(int32_t x, int32_t y, int32_t quantity){
+    char* message = string_from_format("Pos X: %d, Pos Y: %d, Cantidad: %d\n", x, y, quantity);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_unknown_file_type_error(){
+    char* message = string_from_format("Lectura de archivo de tipo no identificado\n");
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }

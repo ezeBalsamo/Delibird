@@ -4,6 +4,7 @@
 #include <broker_connection_handler.h>
 #include <stdlib.h>
 #include <gamecard_query_performers.h>
+#include <file_system_files_information.h>
 #include "../../Utils/include/general_logs.h"
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -16,6 +17,7 @@ void free_system(){
     free_gameboy_connection_handler();
     free_gamecard_broker_connection_handler();
     free_gamecard_query_performers();
+    free_files_information();
 
     free_garbage_collector();
     free_configuration_manager();
