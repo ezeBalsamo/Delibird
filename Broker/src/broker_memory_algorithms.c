@@ -21,9 +21,9 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
     }
     //moverlo al final de la memoria y de la lista administrativa
     list_remove(blocks_information,block_index);
-    t_block_information* last_block = list_get(blocks_information,list_size(blocks_information)-1);
     list_add(blocks_information,block_to_reposition);
 
+    t_block_information* last_block = list_get_last_element(blocks_information);
     block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
 }
 
@@ -83,8 +83,8 @@ void combine_all_free_partitions(t_list* blocks_information){
 }
 bool all_blocks_are_free_according_to(int furthest_occupied_block_index){
     return furthest_occupied_block_index == -1;
-
 }
+
 void memory_compaction_algorithm(t_list* blocks_information){
 
     for (int i = 0; i < list_size(blocks_information);i++){

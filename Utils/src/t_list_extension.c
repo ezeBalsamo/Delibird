@@ -91,3 +91,7 @@ void* list_remove_first(t_list* self){
 bool is_valid_index(t_list* blocks_information, int any_index){
     return (list_size(blocks_information) > any_index) && (any_index >= 0);
 }
+
+void* list_get_last_element(t_list* self){
+    return list_get(self,list_size(self)-1);
+}
