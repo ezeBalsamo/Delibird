@@ -1,34 +1,36 @@
 #include <broker_memory_manager.h>
 #include <string.h>
 #include <broker_memory_algorithms.h>
+#include <broker_logs_manager.h>
 #include "../../Utils/include/operation_serialization.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pokemon_request_bytes_calculator.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_message_allocator* dynamic_partition_message_allocator;
 
 
 t_block_information*  find_block_to_allocate_message(t_list* blocks_information, t_memory_block* memory_block_to_save){
-    uint32_t search_failed_count = 0;
-    while(search_failed_count <= dynamic_partition_message_allocator->max_search_tries){
+    uint32_t number_of_partitions_freed = 0;
+    while(number_of_partitions_freed <= dynamic_partition_message_allocator->max_search_tries){
 
-        t_block_information* block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information);
+        t_block_information* block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
         if (block_information_found != NULL){
             return block_information_found;
+        }
+
+        //todo: semaforizar
+        if (number_of_partitions_freed >= dynamic_partition_message_allocator->max_search_tries){
+            dynamic_partition_message_allocator->memory_compaction_algorithm(blocks_information);
+            number_of_partitions_freed=0;
+            block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
+            if (block_information_found != NULL){
+                return block_information_found;
+            }
         }
         dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
 
-        block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information);
-        if (block_information_found != NULL){
-            return block_information_found;
-        }
-
-        search_failed_count++;
-        //todo: semaforizar
-        if (search_failed_count > dynamic_partition_message_allocator->max_search_tries){
-            dynamic_partition_message_allocator->memory_compaction_algorithm(blocks_information);
-            search_failed_count=0;
-        }
+        number_of_partitions_freed++;
     }
 }
 
@@ -79,9 +81,25 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
     memory_block_to_save->message = ((t_request *) request_serialized->serialized_request)->structure;
     memory_block_to_save->lru_value = 0; //TODO: operacion para standarizar tiempo
-
+    if(memory_block_to_save->message_size > dynamic_partition_message_allocator->max_partition_size){
+        log_invalid_operation_to_save_message_error();
+        free_system();
+    }
     return memory_block_to_save;
 }
+
+int block_index_position(t_block_information* block_to_find,t_list* blocks_information){
+    int block_index = 0;
+    for(int i= 0; i < list_size(blocks_information); i++){
+        t_block_information* block_found = (t_block_information*) list_get(blocks_information,i);
+        if(block_found->initial_position == block_to_find->initial_position){
+            return i;
+        }
+    }
+    free_system();
+    return -1;
+}
+
 //ACA ARRANCA LA PAPA
 void partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
@@ -94,7 +112,8 @@ void partition_allocate_message(t_identified_message* message,t_list* blocks_inf
     t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found,memory_block_to_save);
     // es posible que no haya que crear uno nuevo, si la particion tenia el tamaño exacto necesario
     if (new_block_information != NULL){
-        list_add(blocks_information,(void*) new_block_information);
+        int position = block_index_position(block_information_found,blocks_information);
+        list_add_in_index(blocks_information,position+1,(void*) new_block_information);
     }
 
 }
@@ -106,6 +125,7 @@ t_message_allocator* initialize_dynamic_partition_message_allocator(){
 
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
     dynamic_partition_message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
+    dynamic_partition_message_allocator->max_partition_size = config_get_int_at("TAMANO_MEMORIA");
 
     dynamic_partition_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
     dynamic_partition_message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
