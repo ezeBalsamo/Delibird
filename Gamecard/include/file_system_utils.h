@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "file_system.h"
 
+char* block_line_to_string(t_pokemon_block_line* line);
 char* create_block_path(char block_pointer[]);
 uint32_t split(char* string, uint32_t index, char* separator, char found_string[]);
 bool is_open(t_file_metadata* file_metadata);

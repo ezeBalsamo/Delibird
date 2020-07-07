@@ -9,8 +9,7 @@
 #include <unistd.h>
 
 char* block_line_to_string(t_pokemon_block_line *line){
-    return string_from_format("%d-%d=%d",line -> pos_x, line -> pos_y, line -> quantity);
-    //hay que probar si funca
+    return string_from_format("%d-%d=%d\n",line -> position_x, line -> position_y, line -> quantity);
 }
 
 char* create_block_path(char block_pointer[]){
@@ -89,9 +88,9 @@ t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata
 
     t_file_system_metadata* file_system_metadata = safe_malloc(sizeof(t_file_system_metadata));
 
-    file_system_metadata -> block_size = config_get_int_at("BLOCK_SIZE");
-    file_system_metadata -> blocks = config_get_int_at("BLOCKS");
-    file_system_metadata -> magic_number = config_get_string_at("MAGIC_NUMBER");
+    file_system_metadata -> block_size = config_get_int_value(metadata_config, "BLOCK_SIZE");
+    file_system_metadata -> blocks = config_get_int_value(metadata_config, "BLOCKS");
+    file_system_metadata -> magic_number = config_get_string_value(metadata_config, "MAGIC_NUMBER");
 
     return file_system_metadata;
 }

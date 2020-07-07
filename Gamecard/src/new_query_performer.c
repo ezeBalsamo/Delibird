@@ -1,8 +1,13 @@
 #include "new_query_performer.h"
+#include "file_system.h"
+#include "file_system_utils.h"
 #include "gamecard_query_performers.h"
+#include "gamecard_configuration_manager.h"
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/paths.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <commons/string.h>
 
 t_gamecard_query_performer *new_pokemon_query_performer;
 
@@ -28,13 +33,12 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		//Leo bloques del archivo
 		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-		t_list* modified_blocks_information = add_or_modify_to(blocks_information, new_pokemon);
+		add_or_modify_to(blocks_information, new_pokemon);
 
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-		write_pokemon_data(modified_blocks_information, metadata_file_information -> blocks);
-
-		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
-
+		write_pokemon_data(blocks_information, metadata_file_information -> blocks);
+//TODO:		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+        close_metadata(pokemon_metadata_path);
 	}
 	else{
 		//tengo que crear el metadata
