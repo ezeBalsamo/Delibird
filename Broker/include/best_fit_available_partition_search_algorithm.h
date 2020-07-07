@@ -1,0 +1,7 @@
+#ifndef DELIBIRD_BEST_FIT_AVAILABLE_PARTITION_SEARCH_ALGORITHM_H
+#define DELIBIRD_BEST_FIT_AVAILABLE_PARTITION_SEARCH_ALGORITHM_H
+
+
+t_block_information* best_fit_available_partition_search_algorithm(uint32_t message_size,t_list* blocks_information, uint32_t min_partition_size);
+
+#endif //DELIBIRD_BEST_FIT_AVAILABLE_PARTITION_SEARCH_ALGORITHM_H

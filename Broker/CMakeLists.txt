@@ -17,6 +17,7 @@ set(SOURCES
         src/dynamic_partition_message_allocator.c
         src/broker_memory_algorithms.c
         src/first_fit_available_partition_search_algorithm.c
+        src/best_fit_available_partition_search_algorithm.c
         src/fifo_partition_free_algorithm.c
         src/cache_information_builder.c
         src/subscriber_context_provider.c

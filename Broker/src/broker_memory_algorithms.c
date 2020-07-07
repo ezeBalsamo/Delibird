@@ -2,6 +2,7 @@
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
 #include <commons/collections/dictionary.h>
+#include <best_fit_available_partition_search_algorithm.h>
 #include "../include/first_fit_available_partition_search_algorithm.h"
 #include "../include/fifo_partition_free_algorithm.h"
 #include "../include/dynamic_partition_message_allocator.h"
@@ -31,6 +32,7 @@ void initialize_broker_memory_algorithms(){
     algorithms = dictionary_create();
     dictionary_put(algorithms,"FIFO", (void*)fifo_partition_free_algorithm);
     dictionary_put(algorithms,"FF", (void*)first_fit_available_partition_search_algorithm);
+    dictionary_put(algorithms, "BF", (void*)best_fit_available_partition_search_algorithm);
     dictionary_put(algorithms,"PD", (void*)initialize_dynamic_partition_message_allocator);
 }
 
@@ -97,4 +99,11 @@ void memory_compaction_algorithm(t_list* blocks_information){
     }
     //Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
     combine_all_free_partitions(blocks_information);
+}
+
+bool can_save_message(t_block_information* block_information, uint32_t message_size, uint32_t min_partition_size){
+    bool enough_size_for_message = ((t_block_information*) block_information)->block_size >= message_size;
+    bool block_is_free = ((t_block_information*) block_information)->is_free;
+    bool block_is_usable = ((t_block_information*) block_information)->block_size >= min_partition_size;
+    return enough_size_for_message && block_is_free && block_is_usable;
 }
