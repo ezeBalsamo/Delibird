@@ -19,6 +19,7 @@ set(SOURCES
         src/first_fit_available_partition_search_algorithm.c
         src/best_fit_available_partition_search_algorithm.c
         src/fifo_partition_free_algorithm.c
+        src/lru_partition_free_algorithm.c
         src/cache_information_builder.c
         src/subscriber_context_provider.c
         src/broker_signal_handler.c)
