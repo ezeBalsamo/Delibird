@@ -204,9 +204,8 @@ t_pokemon_block_line* find_line_with_position(int32_t position_x, int32_t positi
 void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract){
 
 	uint32_t* index = safe_malloc(sizeof(uint32_t));
-	t_pokemon_block_line* requested_line = safe_malloc(sizeof(t_pokemon_block_line));
 
-	requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, index);
+	t_pokemon_block_line*  requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, index);
 
 	//si no lo encuentro coord == NULL
 	if (requested_line == NULL){
@@ -221,13 +220,12 @@ void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemo
 		}
 	}
 
-	free(requested_line);
 	free(index);
 }
 
 void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add){
 
-	t_pokemon_block_line *requested_line = find_line_with_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
+	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
 
 	//si no existe ninguna linea con esa posicion, lo agrego a la lista de lineas
 	if (requested_line == NULL){
@@ -238,7 +236,6 @@ void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add)
         requested_line -> quantity += pokemon_to_add -> quantity;
 	}
 
-	free(requested_line);
 }
 
 void remove_from_blocks(char* string_to_modify, char* block_to_remove){
@@ -251,6 +248,24 @@ void remove_from_blocks(char* string_to_modify, char* block_to_remove){
 void add_to_blocks(char* string_to_modify, char* block_to_add){
 	string_to_modify = string_substring(string_to_modify,0,strlen(string_to_modify)-1); //recorto el ']'
 	string_append_with_format(&string_to_modify, ",%s]",block_to_add); //agrego el bloque nuevo y ]
+}
+
+char* get_new_block(){
+	char number_string_format[12];
+	int index = 0;
+
+	while(test_bit_array(bitarray,i)){
+		index++;
+	}//itero mientras los bits esten en 1, hasta encontrar un 0
+
+	bitarray_set_bit(bitarray, index);
+	itoa(index,number_string_format,10);//el 10 es por la base decimal
+	return number_string_format;
+}
+
+void free_block_number(block_name){
+	int index = atoi(block_name);
+	bitarray_clean_bit(bitarray,index);
 }
 
 bool write_until_full(char* block_path, t_list* pokemon_data_list){
