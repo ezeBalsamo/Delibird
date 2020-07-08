@@ -70,7 +70,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-        void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
+        void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
         ack = *((uint32_t *) ack_result);
         free(ack_result);
         free(request);
