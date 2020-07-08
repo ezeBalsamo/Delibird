@@ -87,7 +87,6 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     }
     return memory_block_to_save;
 }
-
 int block_index_position(t_block_information* block_to_find,t_list* blocks_information){
     int block_index = 0;
     for(int i= 0; i < list_size(blocks_information); i++){

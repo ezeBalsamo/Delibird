@@ -18,8 +18,10 @@ void fifo_partition_free_algorithm(t_list* blocks_information){
         }
     }
 
-    empty_block_information(block_found);
-    //consolido el bloque
+    if (block_found != NULL){
+        empty_block_information(block_found);
+        //consolido el bloque
 
-    consolidate_block(blocks_information,nearest_occupied_block_found_index);
+        consolidate_block(blocks_information,nearest_occupied_block_found_index);
+    }
 }

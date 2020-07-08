@@ -129,7 +129,7 @@ void consolidate_block_with(t_block_information* master_block,t_block_informatio
 }
 
 bool is_free_block_in_index(t_list* blocks_information, int index){
-    return ((t_block_information*) list_get(blocks_information,index+1))->is_free;
+    return ((t_block_information*) list_get(blocks_information,index))->is_free;
 }
 
 void consolidate_block(t_list* blocks_information,int index_of_block_to_consolidate){
