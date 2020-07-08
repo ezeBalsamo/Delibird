@@ -80,7 +80,7 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
 
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
     memory_block_to_save->message = ((t_request *) request_serialized->serialized_request)->structure;
-    memory_block_to_save->lru_value = 0; //TODO: operacion para standarizar tiempo
+    memory_block_to_save->lru_value = current_time_in_milliseconds();
     if(memory_block_to_save->message_size > dynamic_partition_message_allocator->max_partition_size){
         log_invalid_operation_to_save_message_error();
         free_system();
