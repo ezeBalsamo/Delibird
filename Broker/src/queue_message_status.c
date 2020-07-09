@@ -38,6 +38,13 @@ void delete_message(uint32_t operation_message, uint32_t message_id){
     }
 
     t_message_status* message_status = list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
+
+    if(message_status == NULL){
+        log_message_status_not_found_in_queue_error();
+        free_system();
+    }
+
+    log_succesful_eliminating_message_of_a_queue(message_status);
     free_message_status(message_status);
 }
 
@@ -70,6 +77,7 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
 
     if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
         log_failed_to_receive_ack_error(subscriber_context);
+        log_subscriber_disconnection(subscriber_context);
         set_inactive_connection_for(subscriber_context);
 
     } else {
