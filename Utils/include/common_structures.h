@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include <semaphore.h>
 
+#define ever (;;)
+
 typedef struct Request{
     uint32_t operation;
     void* structure;

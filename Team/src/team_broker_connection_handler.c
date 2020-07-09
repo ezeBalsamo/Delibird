@@ -7,7 +7,6 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/general_logs.h"
-#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <team_configuration_manager.h>
@@ -34,14 +33,16 @@ void sleep_for(int reconnection_time_in_seconds){
 
 void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker();
+    t_connection_information* cast_connection_information = (t_connection_information*) connection_information;
     int reconnection_time_in_seconds = config_get_int_at("TIEMPO_RECONEXION");
 
-    if(reconnect((t_connection_information*) connection_information) == -1){
+    if(reconnect(cast_connection_information) == -1){
         log_failed_retry_of_communication_with_broker();
         sleep_for(reconnection_time_in_seconds);
         retry_connection_thread(connection_information);
     }
     else{
+        cast_connection_information -> connection_was_succesful = true;
         log_succesful_retry_of_communication_with_broker();
     }
 
@@ -72,28 +73,16 @@ t_request* subscribe_me_request_for(uint32_t operation_queue){
     return request;
 }
 
-void consume_messages_from(int socket_fd){
-
-    t_serialization_information* serialization_information = receive_structure(socket_fd);
-    t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
-
-    t_identified_message* correlative_identified_message = deserialized_request -> structure;
-    send_ack_message(correlative_identified_message -> message_id, socket_fd);
-
-    log_request_received_with(main_logger(), deserialized_request);
-
-    query_perform(deserialized_request);
-
-    free_serialization_information(serialization_information);
-    free_request(deserialized_request);
-}
-
-void* subscriber_thread(void* queue_operation_identifier){
+t_connection_information* subscribe_to_broker_queue(void* queue_operation_identifier){
 
     uint32_t operation_queue = *((uint32_t*) queue_operation_identifier);
-    free(queue_operation_identifier);
 
     t_request* request = subscribe_me_request_for(operation_queue);
+
+    //Se hace porque cuando se quiere hacer la reconexión piensa que todavía el broker esta levantado!
+    //Agradecimientos y reconocimientos: Ing. Barbeito
+    sleep_for(1);
+
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     consider_as_garbage(request, (void (*)(void *)) free_request);
@@ -103,22 +92,67 @@ void* subscriber_thread(void* queue_operation_identifier){
         execute_retry_connection_strategy(connection_information);
     }
 
-    serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
-    log_succesful_suscription_to(operation_queue);
+    int ack = serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
 
-    int socket_fd = connection_information -> socket_fd;
-
-    free_connection_information(connection_information);
-    stop_considering_garbage(connection_information);
+    if(ack == FAILED_ACK){
+        stop_considering_garbage(connection_information);
+        free_connection_information(connection_information);
+        connection_information = subscribe_to_broker_queue(queue_operation_identifier);
+    }else{
+        log_succesful_suscription_to(operation_queue);
+        stop_considering_garbage(connection_information);
+    }
 
     free_request(request);
     stop_considering_garbage(request);
 
+    return connection_information;
+}
+
+void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_information* connection_information){
+
+    log_broker_disconnection();
+    consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
+
+    t_connection_information* current_active_connection_information = subscribe_to_broker_queue(queue_operation_identifier);
+
+    stop_considering_garbage(connection_information);
+    synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
+}
+
+void consume_messages_considering_reconnections_with(t_connection_information* connection_information,
+                                                     void* queue_operation_identifier){
+
+    int current_active_socket_fd = connection_information -> socket_fd;
+    t_receive_information* receive_information = receive_structure(current_active_socket_fd);
+
+    if(!receive_information -> receive_was_successful){
+        resubscribe_to_broker_queue(queue_operation_identifier, connection_information);
+    }else{
+        t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
+
+        t_identified_message* correlative_identified_message = deserialized_request -> structure;
+        send_ack_message(correlative_identified_message -> message_id, current_active_socket_fd);
+
+        log_request_received(deserialized_request);
+        query_perform(deserialized_request);
+
+        free_request(deserialized_request);
+    }
+
+    free_receive_information(receive_information);
+}
+
+void* subscriber_thread(void* queue_operation_identifier){
+
+    t_connection_information* connection_information = subscribe_to_broker_queue(queue_operation_identifier);
     sem_post(&subscriber_threads_request_sent);
 
     while (!is_global_goal_accomplished()){
-        consume_messages_from(socket_fd);
+        consume_messages_considering_reconnections_with(connection_information, queue_operation_identifier);
     }
+
+    free(queue_operation_identifier);
 
     return NULL;
 }
@@ -157,10 +191,27 @@ void prepare_get_response(int response_id, char* pokemon_name){
     get_pokemon_sent_successfully(get_response);
 }
 
+void apply_default_get_action_for(char* pokemon_name){
+    log_no_locations_found_for(pokemon_name);
+}
+
+void apply_get_action_when_connection_success(t_request* request, t_connection_information* connection_information, char* pokemon_name){
+    int ack =
+            serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
+
+    if(ack == FAILED_ACK){
+        apply_default_get_action_for(pokemon_name);
+    }
+    else{
+        prepare_get_response(ack, pokemon_name);
+    }
+}
+
 void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
 
     t_get_pokemon* get_pokemon = safe_malloc(sizeof(t_get_pokemon));
-    get_pokemon -> pokemon_name = pokemon_goal -> pokemon_name;
+    char* pokemon_name = pokemon_goal -> pokemon_name;
+    get_pokemon -> pokemon_name = pokemon_name;
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = GET_POKEMON;
@@ -170,14 +221,9 @@ void send_get_pokemon_request_of(t_pokemon_goal* pokemon_goal){
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-        int ack =
-                serialize_and_send_structure_and_wait_for_ack(request,
-                        connection_information -> socket_fd, ack_timeout());
-
-        prepare_get_response(ack, get_pokemon -> pokemon_name);
-
+        apply_get_action_when_connection_success(request, connection_information, pokemon_name);
     } else{
-        log_no_locations_found_for(pokemon_goal -> pokemon_name);
+        apply_default_get_action_for(pokemon_name);
     }
 
     free_request(request);

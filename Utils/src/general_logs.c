@@ -119,16 +119,18 @@ void log_request_with_event(t_log* logger, t_request* request, char* event){
     free(message);
 }
 
-void log_request_received_with(t_log* logger, t_request* request){
-    log_request_with_event(logger, request, "Pedido recibido");
-}
-
 void log_about_to_send_request(t_request* request){
     log_request_with_event(process_execution_logger(), request, "Pedido de enviar");
 }
 
 void log_request_sent(t_request* request){
     log_request_with_event(process_execution_logger(), request, "Pedido enviado");
+}
+
+void log_request_received(t_request* request){
+    char* event = "Pedido recibido";
+    log_request_with_event(main_logger(), request, event);
+    log_request_with_event(process_execution_logger(), request, event);
 }
 
 void log_unknown_chained_evaluation_type_error(){
@@ -158,4 +160,10 @@ void log_errorful_not_existing_log(char* log_name){
 
 void log_expected_to_have_only_one_element_error(){
     log_errorful_message(process_execution_logger(), "Se esperaba que la lista tuviera un único elemento.");
+}
+
+void log_broker_disconnection(){
+    char* message = "Se cayó la conexión con el broker!";
+    log_warning_message(process_execution_logger(), message);
+    log_warning_message(main_logger(), message);
 }

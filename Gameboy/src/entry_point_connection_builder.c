@@ -42,6 +42,10 @@ char* process_port(){
     return port;
 }
 
+int ack_timeout(){
+    return config_get_int_at("ACK_TIMEOUT");
+}
+
 void free_entry_point_connection_builder(){
     free_configuration_manager();
 }
