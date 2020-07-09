@@ -5,6 +5,7 @@
 #include <best_fit_available_partition_search_algorithm.h>
 #include <stdlib.h>
 #include <lru_partition_free_algorithm.h>
+#include <queue_message_status.h>
 #include "../include/first_fit_available_partition_search_algorithm.h"
 #include "../include/fifo_partition_free_algorithm.h"
 #include "../include/dynamic_partition_message_allocator.h"
@@ -113,6 +114,7 @@ bool can_save_message(t_block_information* block_information, uint32_t message_s
 }
 
 void empty_block_information(t_block_information* block_found){
+    delete_message(block_found->memory_block->message_operation,block_found->memory_block->message_id);
     block_found->is_free = true;
     free(block_found->memory_block);
     block_found->memory_block = NULL;
