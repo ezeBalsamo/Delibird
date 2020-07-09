@@ -71,7 +71,7 @@ char* waiting_for_exchange_reason_for(t_trainer_thread_context* trainer_thread_c
             pokemon_names_as_string(waiting_for_deadlock_resolution_action -> pokemons_in_excess);
 
     char* reason =
-            string_from_format("Esperar la resolución de un intercambio.\n"
+            string_from_format("Esperar la resolución de uno o más intercambios.\n"
                                "Pokemones requeridos y no capturados: %s.\nPokemones en exceso: %s.",
                                required_pokemons_not_caught_as_string, pokemons_in_excess_as_string);
 

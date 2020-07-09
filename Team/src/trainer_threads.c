@@ -4,6 +4,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
 #include <trainer_thread_context_state_chained_evaluation.h>
+#include <deadlock_detection_and_recovery_algorithm.h>
 
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
@@ -73,6 +74,9 @@ void initialize_trainer_threads(){
     list_iterate(trainer_thread_contexts, initialize_and_load_trainer_thread_for);
 
     join_trainers_threads();
+    if(is_deadlock_resolution_in_process()){
+        join_deadlock_solver_thread();
+    }
 }
 
 bool are_equal_trainer_thread_contexts(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){

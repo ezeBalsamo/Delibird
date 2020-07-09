@@ -7,6 +7,9 @@
 #include <scheduling_algorithm.h>
 #include <team_logs_manager.h>
 #include <trainer_thread_context_state_chained_evaluation.h>
+#include <team_configuration_manager.h>
+#include <unistd.h>
+#include <trainer_thread_context_execution_cycle.h>
 
 extern sem_t exchange_resolution_semaphore;
 int deadlock_consume_cycle_quantity = 5;
@@ -14,6 +17,7 @@ int deadlock_consume_cycle_quantity = 5;
 void times_repeat(int times, void (*function) ()){
     for(int i = 0; i < times; i++){
         function();
+        sleep(time_delay());
     }
 }
 
@@ -44,7 +48,7 @@ void exchange_action_execution_function(t_trainer_thread_context* trainer_thread
     }
 
     list_iterate(identified_exchanges, (void (*)(void *)) _exchange);
-    trainer_thread_context_state_chained_evaluation_value_when_exchanges_completed_for(identified_exchanges);
+    exchange_action_completed_using(identified_exchanges);
     sem_post(&exchange_resolution_semaphore);
 }
 

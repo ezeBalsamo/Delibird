@@ -8,6 +8,7 @@
 #include <waiting_actions.h>
 #include <exchange_action.h>
 #include "trainer_thread_context_execution_cycle.h"
+#include "../../Utils/include/t_list_extension.h"
 
 void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* destiny_object){
 
@@ -77,4 +78,34 @@ void prepare_for_waiting_for_deadlock_resolution(t_trainer_thread_context* train
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
     trainer_thread_context -> thread_action = waiting_for_exchange_thread_action_for(trainer);
     trainer_thread_context_has_become_blocked(trainer_thread_context);
+}
+
+
+void consider_graceful_finished_of(t_trainer_thread_context* trainer_thread_context){
+
+    if(trainer_thread_context -> state == FINISHED){
+        free_thread_action(trainer_thread_context -> thread_action);
+        t_thread_action* null_thread_action = new_null_thread_action();
+        trainer_thread_context -> thread_action = null_thread_action;
+        sem_post(&trainer_thread_context -> semaphore);
+    }
+}
+
+void exchange_action_completed_using(t_list* identified_exchanges){
+
+    /* Sin importar el intercambio, me interesa recalcular el estado de ambos contextos,
+     * ya sea para transicionar de ejecución a bloqueado, en el caso de un intercambio beneficioso
+     * para la segunda parte, así como recalcular los pokemones requeridos y no capturados y
+     * los pokemones en exceso, en el caso de un intercambio beneficioso para la primera parte.
+     */
+
+    t_identified_exchange* identified_exchange = list_first(identified_exchanges);
+    t_trainer_thread_context* first_party_trainer_thread_context =
+            identified_exchange -> exchange -> first_party_trainer_thread_context;
+    t_trainer_thread_context* second_party_trainer_thread_context =
+            identified_exchange -> exchange -> second_party_trainer_thread_context;
+
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
+    trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(second_party_trainer_thread_context);
+    consider_graceful_finished_of(second_party_trainer_thread_context);
 }

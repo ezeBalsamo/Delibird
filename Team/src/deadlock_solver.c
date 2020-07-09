@@ -11,8 +11,9 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
 
-t_queue* remaining_identified_exchanges;
 sem_t exchange_resolution_semaphore;
+
+t_queue* remaining_identified_exchanges;
 t_list* current_exchanges_in_process;
 
 void initialize_deadlock_solver(){
@@ -138,6 +139,8 @@ void recover_from_deadlock(){
     resolve_deadlock_with(closest_pair_of_trainer_thread_contexts, remaining_trainer_thread_contexts);
     list_destroy(closest_pair_of_trainer_thread_contexts);
     list_destroy(remaining_trainer_thread_contexts);
+
+    log_deadlock_solver_has_finished();
 }
 
 void free_deadlock_solver(){

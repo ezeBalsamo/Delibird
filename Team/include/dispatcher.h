@@ -27,6 +27,7 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
 
 bool is_deadlock_resolution_in_process();
 void deadlock_solver_has_begun();
+void deadlock_solver_has_ended();
 
 void consider_ending();
 int finished_trainer_thread_contexts_amount();

@@ -130,7 +130,7 @@ void log_trainer_dispatch_action_with_reason(t_localizable_object* localizable_t
     char* printable_localizable_trainer = localizable_trainer_as_string(localizable_trainer);
     char* final_message;
     char* message =
-            string_from_format("El %s fue %s a la %s.",
+            string_from_format("El %s %s %s.",
                     printable_localizable_trainer,
                     action_name,
                     state_structure_name);
@@ -155,11 +155,11 @@ void log_trainer_dispatch_action(t_localizable_object* localizable_trainer, char
 }
 
 void log_trainer_added_to_new(t_localizable_object* localizable_trainer){
-    log_trainer_dispatch_action(localizable_trainer, "agregado", state_as_string(NEW));
+    log_trainer_dispatch_action(localizable_trainer, "fue agregado a la", state_as_string(NEW));
 }
 
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason){
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(READY), reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "fue movido a la", state_as_string(READY), reason);
 }
 
 void log_trainer_movement(t_localizable_object* localizable_trainer){
@@ -176,21 +176,28 @@ void log_trainer_movement(t_localizable_object* localizable_trainer){
 }
 
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason){
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(EXECUTE), reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "fue puesto en", state_as_string(EXECUTE), reason);
 }
 
 void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context){
     t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
     char* reason = thread_action_reason_for(trainer_thread_context);
 
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(BLOCKED), reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "fue movido a la", state_as_string(BLOCKED), reason);
+}
+
+void log_trainer_remains_blocked(t_trainer_thread_context* trainer_thread_context){
+    t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+    char* reason = thread_action_reason_for(trainer_thread_context);
+
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "permanece en la", state_as_string(BLOCKED), reason);
 }
 
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer){
     char* reason = string_new();
     string_append(&reason, "Atrapó todos los pokemones que requería.");
 
-    log_trainer_dispatch_action_with_reason(localizable_trainer, "movido", state_as_string(FINISHED), reason);
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "fue movido a la", state_as_string(FINISHED), reason);
 }
 
 void log_unknown_thread_action_type_error(){
@@ -380,6 +387,12 @@ void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
+}
+
+void log_deadlock_solver_has_finished(){
+    char* message = "El algoritmo de recuperación de Deadlock ha finalizado satisfactoriamente: todos los intercambios se han resuelto.";
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
 }
 
 void log_exchange_action_with(t_identified_exchange* identified_exchange, char* summary, char* concrete_action){

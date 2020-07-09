@@ -188,8 +188,13 @@ void deadlock_solver_has_begun(){
     deadlock_resolution_in_process = true;
 }
 
+void deadlock_solver_has_ended(){
+    deadlock_resolution_in_process = false;
+    consider_ending();
+}
+
 void consider_ending(){
-    if(trainers_amount() == finished_trainer_thread_contexts_amount()){
+    if(trainers_amount() == finished_trainer_thread_contexts_amount() && !is_deadlock_resolution_in_process()){
         all_trainer_threads_context_have_finished();
     }
 }
