@@ -33,7 +33,7 @@ void delete_message(uint32_t operation_message, uint32_t message_id){
 
     t_queue_context* queue_context = queue_context_of_queue_named(queue_name_of(operation_message));
 
-    t_message_status* _message_status_with_message_id(t_message_status* message_status){
+    bool _message_status_with_message_id(t_message_status* message_status){
         return message_status -> identified_message -> message_id  == message_id;
     }
 
