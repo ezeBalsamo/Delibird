@@ -46,4 +46,10 @@ void free_broker_logs_manager();
 
 void log_invalid_operation_to_save_message_error();
 
+void log_succesful_save_message_to_cache(t_request* request, void* message_position);
+
+void log_succesful_memory_compaction(int amount_of_partitions_compacted);
+
+void log_succesful_free_partition_to_cache(void* message_position);
+
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H

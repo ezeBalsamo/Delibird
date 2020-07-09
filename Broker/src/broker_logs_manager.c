@@ -49,6 +49,29 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
     free(message);
 }
 
+void log_succesful_save_message_to_cache(t_request* request, void* message_position){
+    char* printed_object = request_pretty_print(request);
+    char* message = string_from_format("Se guardó correctamente el mensaje:\n%s\nen la posicion de memoria: %p", printed_object, message_position);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(printed_object);
+    free(message);
+}
+
+void log_succesful_free_partition_to_cache(void* message_position){
+    char* message = string_from_format("Se liberó correctamente el mensaje:\n%s\nen la posicion de memoria: %p", printed_object, message_position);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_succesful_memory_compaction(int amount_of_partitions_compacted){
+    char* message = string_from_format("Se compactó correctamente la memoria, compactando %d bloques.", amount_of_partitions_compacted);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
 //TODO Faltan implementar logs del main: DEL 5 al 8.
 
 //---------------------------------------------------------------------

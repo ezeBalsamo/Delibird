@@ -4,7 +4,7 @@
 #include "../include/fifo_partition_free_algorithm.h"
 #include "../include/broker_memory_algorithms.h"
 
-void fifo_partition_free_algorithm(t_list* blocks_information){
+void* fifo_partition_free_algorithm(t_list* blocks_information){
     //busco el primero no ocupado junto con el indice para consolidarlo
     int nearest_occupied_block_found_index = 0;
     t_block_information* block_found = NULL;
@@ -24,4 +24,5 @@ void fifo_partition_free_algorithm(t_list* blocks_information){
 
         consolidate_block(blocks_information,nearest_occupied_block_found_index);
     }
+    return block_found;
 }
