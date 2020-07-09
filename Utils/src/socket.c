@@ -162,6 +162,18 @@ void free_and_close_connection_information(t_connection_information* connection_
     free_connection_information(connection_information);
 }
 
+void synchronize_connection_information_closing_old(t_connection_information* connection_information,
+                                                    t_connection_information* updated_connection_information){
+
+    freeaddrinfo(connection_information -> address_interface);
+
+    connection_information -> socket_fd = updated_connection_information -> socket_fd;
+    connection_information -> address_interface = updated_connection_information -> address_interface;
+    connection_information -> connection_was_succesful = updated_connection_information -> connection_was_succesful;
+
+    free(updated_connection_information);
+}
+
 int reconnect(t_connection_information* connection_information){
     return connect(connection_information -> socket_fd,
                    connection_information -> address_interface -> ai_addr,
@@ -259,7 +271,6 @@ int serialize_and_send_structure_and_wait_for_ack(t_request* request, int socket
 
     if(cast_ack == FAILED_ACK){
         log_failed_ack_error();
-        free_system();
     }
 
     return cast_ack;
@@ -291,12 +302,13 @@ void* receive_ack_with_timeout_in_seconds(int socket_fd, int timeout_in_seconds)
     return (void*) ack;
 }
 
-void receive_failed(t_receive_information* receive_information){
+void set_as_failed_reception(t_receive_information* receive_information){
     receive_information -> receive_was_successful = false;
     receive_information -> serialization_information = NULL;
 }
 
-t_serialization_information* create_serialization_information(uint32_t amount_of_bytes_of_request, void* serialized_request, t_serialization_information* serialization_information){
+t_serialization_information* create_serialization_information(uint32_t amount_of_bytes_of_request, void* serialized_request){
+    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
     serialization_information -> amount_of_bytes = amount_of_bytes_of_request;
     serialization_information -> serialized_request = serialized_request;
 
@@ -305,36 +317,34 @@ t_serialization_information* create_serialization_information(uint32_t amount_of
 
 t_receive_information* receive_structure(int socket_fd){
 
-    void* serialized_request = NULL;
+    void* serialized_request;
     uint32_t amount_of_bytes_of_request;
-    t_serialization_information* serialization_information = safe_malloc(sizeof(t_serialization_information));
+
     t_receive_information* receive_information = safe_malloc(sizeof(t_receive_information));
     receive_information -> receive_was_successful = true;
-    receive_information -> serialization_information = serialization_information;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) <= 0){
             log_syscall_error("Error al recibir estructura");
             close(socket_fd);
-            receive_failed(receive_information);
-        }
+        set_as_failed_reception(receive_information);
+    }
 
     if(receive_information -> receive_was_successful){
         serialized_request = safe_malloc(amount_of_bytes_of_request);
 
         if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) <= 0){
             log_syscall_error("Error al recibir serialized_request");
+            free(serialized_request);
             close(socket_fd);
-            receive_failed(receive_information);
+            set_as_failed_reception(receive_information);
+        }
+        else{
+            t_serialization_information* serialization_information = create_serialization_information(amount_of_bytes_of_request, serialized_request);
+            receive_information -> serialization_information = serialization_information;
         }
     }
 
-    if(receive_information -> receive_was_successful){
-        serialization_information = create_serialization_information(amount_of_bytes_of_request, serialized_request, serialization_information);
-        receive_information -> serialization_information = serialization_information;
-    }
-
     return receive_information;
-
 }
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
@@ -342,7 +352,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
     sem_initialize(&client_sockets_amount_in_queue);
 
     void* _thread_function(){
-        while(true){
+        for ever{
             sem_wait(&client_sockets_amount_in_queue);
             pthread_mutex_lock(&queue_mutex);
             void* client_socket_fd = queue_pop(queue);
@@ -363,7 +373,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     int server_socket_fd = listen_at(port);
 
-    while(true){
+    for ever{
         int* client_socket_fd = safe_malloc(sizeof(int));
         consider_as_garbage(client_socket_fd, free);
 
@@ -397,8 +407,9 @@ void free_multithreaded_server(){
 
 void free_receive_information(t_receive_information* receive_information){
 
-    if(receive_information ->receive_was_successful){
+    if(receive_information -> receive_was_successful){
         free_serialization_information(receive_information -> serialization_information);
     }
+
     free(receive_information);
 }

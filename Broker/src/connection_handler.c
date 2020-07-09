@@ -26,14 +26,18 @@ void* main_thread_handler(void* connection_fd){
     t_receive_information* receive_information = receive_structure(cast_connection_fd);
     log_succesful_connection_of_a_process();
 
-    consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
+    if(receive_information -> receive_was_successful){
+        consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
 
-    t_request* request = deserialize(receive_information -> serialization_information -> serialized_request);
-    log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
+        t_request* request = deserialize(receive_information -> serialization_information -> serialized_request);
+        log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
 
-    t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
+        t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
 
-    attend_with_message_role(connection_request);
+        attend_with_message_role(connection_request);
+    }else{
+        free_receive_information(receive_information);
+    }
 
     return NULL;
 }
