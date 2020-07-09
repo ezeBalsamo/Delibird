@@ -50,12 +50,7 @@ t_basic_evaluation* ready_or_schedulable_blocked_state_chained_evaluation(){
 
 bool has_finished_function(t_trainer_thread_context* trainer_thread_context){
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
-    t_list* trainer_requirements = requirements_of(trainer);
-
-    bool has_finished = list_is_empty(trainer_requirements);
-
-    list_destroy(trainer_requirements);
-    return has_finished;
+    return has_accomplished_own_goal(trainer);
 }
 
 t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_finished(){
@@ -117,9 +112,9 @@ void benefitial_for_both_parties_exchanges_realized_function(t_list* identified_
 
     t_identified_exchange* identified_exchange = list_first(identified_exchanges);
     t_trainer_thread_context* first_party_trainer_thread_context =
-            identified_exchange -> exchange -> trainer_thread_context;
+            identified_exchange -> exchange -> first_party_trainer_thread_context;
     t_trainer_thread_context* second_party_trainer_thread_context =
-            identified_exchange -> exchange -> another_trainer_thread_context;
+            identified_exchange -> exchange -> second_party_trainer_thread_context;
 
     trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
     trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(second_party_trainer_thread_context);
@@ -138,7 +133,7 @@ void benefitial_only_for_first_party_exchanges_realized_function(t_list* identif
 
     t_identified_exchange* identified_exchange = list_first(identified_exchanges);
     t_trainer_thread_context* first_party_trainer_thread_context =
-            identified_exchange -> exchange -> trainer_thread_context;
+            identified_exchange -> exchange -> first_party_trainer_thread_context;
 
     trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
 }

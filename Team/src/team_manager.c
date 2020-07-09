@@ -98,7 +98,7 @@ void update_current_pokemons_after_caught(t_localizable_object* localizable_trai
     t_trainer* trainer = localizable_trainer -> object;
 
     void _add(){
-        list_add(trainer -> current_pokemons, pokemon_name);
+        list_add(trainer -> current_pokemons, string_duplicate(pokemon_name));
     }
 
     handling_localized_trainers_concurrency_do(_add);
@@ -123,7 +123,7 @@ void exchange_trainers_pokemons(char* first_party_pokemon_name,
 
     void _exchange(){
         list_remove_by_condition(first_party_trainer -> current_pokemons, (bool (*)(void *)) _is_equals_to_first);
-        list_add(first_party_trainer -> current_pokemons, string_duplicate(second_party_pokemon_name));
+        list_add(first_party_trainer -> current_pokemons, second_party_pokemon_name);
         list_remove_by_condition(second_party_trainer -> current_pokemons,(bool (*)(void *)) _is_equals_to_second);
         list_add(second_party_trainer -> current_pokemons, string_duplicate(first_party_pokemon_name));
     }
@@ -151,11 +151,7 @@ void all_trainer_threads_context_have_finished(){
     bool _has_no_requirements_left(void* localized_trainer){
         t_localizable_object* cast_localized_trainer = (t_localizable_object*) localized_trainer;
         t_trainer* trainer = cast_localized_trainer -> object;
-        t_list* trainer_requirements = requirements_of(trainer);
-        bool has_no_requeriments_left = list_is_empty(trainer_requirements);
-
-        list_destroy(trainer_requirements);
-        return has_no_requeriments_left;
+        return has_accomplished_own_goal(trainer);
     }
 
     global_goal_is_accomplished =

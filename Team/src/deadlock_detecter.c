@@ -32,7 +32,7 @@ bool are_all_blocked_trainer_thread_contexts_waiting_for_exchange(){
     return are_all_waiting_for_exchange;
 }
 
-bool deadlock_has_occurred(){
+bool deadlock_exists(){
 
     t_list* queues_expected_to_be_empty = list_create();
     list_add(queues_expected_to_be_empty, dispatcher_queue_of(NEW));

@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-bool deadlock_has_occurred();
+bool deadlock_exists();
 
 #endif //DELIBIRD_DEADLOCK_DETECTER_H

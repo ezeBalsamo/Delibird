@@ -10,7 +10,7 @@ void initialize_deadlock_detection_and_recovery_algorithm(){
 
 void detect_and_recover_from_deadlock(){
     log_deadlock_detection_algorithm_has_begun();
-    if(deadlock_has_occurred()){
+    if(deadlock_exists()){
         log_deadlock_detection_algorithm_has_finished_with_deadlock_detected();
         deadlock_solver_has_begun();
         recover_from_deadlock();

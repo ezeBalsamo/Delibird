@@ -47,8 +47,8 @@ uint32_t amount_required_of(char* pokemon_name);
 void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name);
 void exchange_trainers_pokemons(char* first_party_pokemon_name,
                                 t_localizable_object* first_party_localizable_trainer,
-                                char* second_party_pokemon_name, t_localizable_object*
-                                second_party_localizable_trainer);
+                                char* second_party_pokemon_name,
+                                t_localizable_object* second_party_localizable_trainer);
 
 void all_trainer_threads_context_have_finished();
 

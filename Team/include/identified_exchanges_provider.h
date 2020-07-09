@@ -12,9 +12,9 @@ enum Exchange_types{
 
 typedef struct Exchange{
     char* first_party_pokemon_name;
-    t_trainer_thread_context* trainer_thread_context;
+    t_trainer_thread_context* first_party_trainer_thread_context;
     char* second_party_pokemon_name;
-    t_trainer_thread_context* another_trainer_thread_context;
+    t_trainer_thread_context* second_party_trainer_thread_context;
 }t_exchange;
 
 typedef struct Identified_exchange{
@@ -30,9 +30,9 @@ char* second_party_pokemon_name_in(t_identified_exchange* identified_exchange);
 
 t_identified_exchange* identified_exchange_for(uint32_t exchange_type,
                                                char* first_party_pokemon_name,
-                                               t_trainer_thread_context* trainer_thread_context,
+                                               t_trainer_thread_context* first_party_trainer_thread_context,
                                                char* second_party_pokemon_name,
-                                               t_trainer_thread_context* another_trainer_thread_context);
+                                               t_trainer_thread_context* second_party_trainer_thread_context);
 
 void free_identified_exchange(t_identified_exchange* identified_exchange);
 

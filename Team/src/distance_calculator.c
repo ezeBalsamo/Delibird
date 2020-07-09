@@ -9,19 +9,28 @@ uint32_t distance_between(t_localizable_object* localizable_object, t_localizabl
     return x_distance + y_distance;
 }
 
+t_trainer_thread_context* closest_trainer_thread_context_to_localizable_object(t_trainer_thread_context* trainer_thread_context,
+                                                                               t_trainer_thread_context* another_trainer_thread_context,
+                                                                               t_localizable_object* localizable_object){
+
+    t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+    t_localizable_object* another_localizable_trainer = another_trainer_thread_context -> localizable_trainer;
+
+    uint32_t localizable_trainer_distance = distance_between(localizable_trainer, localizable_object);
+    uint32_t another_localizable_trainer_distance = distance_between(another_localizable_trainer, localizable_object);
+
+    return localizable_trainer_distance < another_localizable_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
+}
+
 t_trainer_thread_context* trainer_thread_context_closest_to_localizable_object(t_list* trainer_thread_contexts, t_localizable_object* localizable_object){
 
     t_trainer_thread_context* seed_trainer_thread_context = list_first(trainer_thread_contexts);
 
-    void* _closest_trainer_thread_context(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
-
-        uint32_t trainer_distance = distance_between(trainer_thread_context -> localizable_trainer, localizable_object);
-        uint32_t another_trainer_distance = distance_between(another_trainer_thread_context -> localizable_trainer, localizable_object);
-
-        return trainer_distance < another_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
+    void* _closest(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+        return closest_trainer_thread_context_to_localizable_object(trainer_thread_context, another_trainer_thread_context, localizable_object);
     }
 
-    return list_fold(trainer_thread_contexts, seed_trainer_thread_context, (void * (*)(void *, void *)) _closest_trainer_thread_context);
+    return list_fold(trainer_thread_contexts, seed_trainer_thread_context, (void * (*)(void *, void *)) _closest);
 }
 
 t_targetable_object* targetable_pokemon_closest_to_localizable_trainer(t_list* targetable_pokemons, t_localizable_object* localizable_trainer){
@@ -48,14 +57,9 @@ t_distance_between_two* closest_trainer_thread_context_to_trainer_thread_context
     t_trainer_thread_context* seed_trainer_thread_context = list_first(trainer_thread_contexts);
 
     void* _closest(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
-
-        t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
-        t_localizable_object* another_localizable_trainer = another_trainer_thread_context -> localizable_trainer;
-
-        uint32_t localizable_trainer_distance = distance_between(localizable_trainer, localizable_trainer_to_compare);
-        uint32_t another_localizable_trainer_distance = distance_between(another_localizable_trainer, localizable_trainer_to_compare);
-
-        return localizable_trainer_distance < another_localizable_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
+        return closest_trainer_thread_context_to_localizable_object(trainer_thread_context,
+                                                                    another_trainer_thread_context,
+                                                                    localizable_trainer_to_compare);
     }
 
     t_trainer_thread_context* closest_trainer_thread_context =

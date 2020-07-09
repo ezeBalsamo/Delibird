@@ -8,9 +8,9 @@ bool benefitial_for_both_parties_can_handle_function(t_list* benefitial_exchange
     return !list_is_empty(benefitial_exchanges_for_first) && !list_is_empty(benefitial_exchanges_for_second);
 }
 
-t_list* benefitial_for_both_parties_infer_function(t_trainer_thread_context* trainer_thread_context,
+t_list* benefitial_for_both_parties_infer_function(t_trainer_thread_context* first_party_trainer_thread_context,
                                                     t_list* benefitial_exchanges_for_first,
-                                                    t_trainer_thread_context* another_trainer_thread_context,
+                                                    t_trainer_thread_context* second_party_trainer_thread_context,
                                                     t_list* benefitial_exchanges_for_second){
 
     t_list* exchanges = list_create();
@@ -30,17 +30,17 @@ t_list* benefitial_for_both_parties_infer_function(t_trainer_thread_context* tra
         t_identified_exchange* identified_exchange =
                 identified_exchange_for(BENEFITIAL_FOR_BOTH_PARTIES,
                                         first_party_pokemon_name,
-                                        trainer_thread_context,
+                                        first_party_trainer_thread_context,
                                         second_party_pokemon_name,
-                                        another_trainer_thread_context);
+                                        second_party_trainer_thread_context);
 
         list_add(exchanges, identified_exchange);
     }
 
     t_list* one_sided_benefitial_exchanges =
-            infer_exchanges(trainer_thread_context,
+            infer_exchanges(first_party_trainer_thread_context,
                             duplicated_benefitial_exchanges_for_first,
-                            another_trainer_thread_context,
+                            second_party_trainer_thread_context,
                             duplicated_benefitial_exchanges_for_second);
 
     list_add_all(exchanges, one_sided_benefitial_exchanges);

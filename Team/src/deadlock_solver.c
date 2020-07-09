@@ -27,8 +27,8 @@ void execute_all_remaining_exchanges(){
         current_exchanges_in_process = queue_pop(remaining_identified_exchanges);
 
         t_identified_exchange* first_identified_exchange = list_first(current_exchanges_in_process);
-        t_trainer_thread_context* trainer_thread_context = first_identified_exchange -> exchange -> trainer_thread_context;
-        t_localizable_object* localizable_trainer = first_identified_exchange -> exchange -> another_trainer_thread_context -> localizable_trainer;
+        t_trainer_thread_context* trainer_thread_context = first_identified_exchange -> exchange -> first_party_trainer_thread_context;
+        t_localizable_object* localizable_trainer = first_identified_exchange -> exchange -> second_party_trainer_thread_context -> localizable_trainer;
 
         prepare_for_movement_action(trainer_thread_context, localizable_trainer);
         sem_wait(&exchange_resolution_semaphore);

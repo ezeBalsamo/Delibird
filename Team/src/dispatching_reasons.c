@@ -65,10 +65,10 @@ char* waiting_for_exchange_reason_for(t_trainer_thread_context* trainer_thread_c
             internal_thread_action_in(trainer_thread_context);
 
     char* required_pokemons_not_caught_as_string =
-            pokemon_names_as_string(waiting_for_deadlock_resolution_action->required_pokemons_not_caught);
+            pokemon_names_as_string(waiting_for_deadlock_resolution_action -> required_pokemons_not_caught);
 
     char* pokemons_in_excess_as_string =
-            pokemon_names_as_string(waiting_for_deadlock_resolution_action->pokemons_in_excess);
+            pokemon_names_as_string(waiting_for_deadlock_resolution_action -> pokemons_in_excess);
 
     char* reason =
             string_from_format("Esperar la resolución de un intercambio.\n"

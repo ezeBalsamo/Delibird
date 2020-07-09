@@ -9,6 +9,7 @@
 #include <trainer_thread_context_state_chained_evaluation.h>
 
 extern sem_t exchange_resolution_semaphore;
+int deadlock_consume_cycle_quantity = 5;
 
 void times_repeat(int times, void (*function) ()){
     for(int i = 0; i < times; i++){
@@ -18,18 +19,18 @@ void times_repeat(int times, void (*function) ()){
 
 void exchange_with(t_identified_exchange* identified_exchange){
 
-    t_localizable_object* first_localizable_trainer =
+    t_localizable_object* first_party_localizable_trainer =
             first_party_localizable_trainer_in(identified_exchange);
     char* first_party_pokemon_name = first_party_pokemon_name_in(identified_exchange);
 
-    t_localizable_object* second_localizable_trainer =
+    t_localizable_object* second_party_localizable_trainer =
             second_party_localizable_trainer_in(identified_exchange);
     char* second_party_pokemon_name = second_party_pokemon_name_in(identified_exchange);
 
     exchange_trainers_pokemons(first_party_pokemon_name,
-                               first_localizable_trainer,
+                               first_party_localizable_trainer,
                                second_party_pokemon_name,
-                               second_localizable_trainer);
+                               second_party_localizable_trainer);
 }
 
 void exchange_action_execution_function(t_trainer_thread_context* trainer_thread_context){
@@ -37,7 +38,7 @@ void exchange_action_execution_function(t_trainer_thread_context* trainer_thread
     t_list* identified_exchanges = current_identified_exchanges_in_process();
     void _exchange(t_identified_exchange* identified_exchange){
         log_exchange_to_realize_according_to(identified_exchange);
-        times_repeat(5, execution_cycle_consumed);
+        times_repeat(deadlock_consume_cycle_quantity, execution_cycle_consumed);
         exchange_with(identified_exchange);
         log_exchange_realized_according_to(identified_exchange);
     }
