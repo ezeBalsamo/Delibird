@@ -12,7 +12,7 @@ t_message_allocator* dynamic_partition_message_allocator;
 
 t_block_information*  find_block_to_allocate_message(t_list* blocks_information, t_memory_block* memory_block_to_save){
     uint32_t number_of_partitions_freed = 0;
-    while(number_of_partitions_freed <= dynamic_partition_message_allocator->max_search_tries){
+    while(true){
 
         t_block_information* block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
         if (block_information_found != NULL){

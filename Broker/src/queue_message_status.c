@@ -8,6 +8,7 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/t_list_extension.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 
 t_message_status* create_message_status_for(t_identified_message* identified_message){
     t_message_status* message_status = safe_malloc(sizeof(t_message_status));
@@ -28,13 +29,15 @@ t_request* create_request_from(t_message_status* message_status){
     return request;
 }
 
-void delete_message(t_message_status* message_status, t_queue_context* queue_context){
+void delete_message(uint32_t operation_message, uint32_t message_id){
 
-    bool _are_equal_messages(t_message_status* another_message_status){
-        return message_status -> identified_message == another_message_status -> identified_message;
+    t_queue_context* queue_context = queue_context_of_queue_named(queue_name_of(operation_message));
+
+    t_message_status* _message_status_with_message_id(t_message_status* message_status){
+        return message_status -> identified_message -> message_id  == message_id;
     }
 
-    list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _are_equal_messages);
+    t_message_status* message_status = list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
     free_message_status(message_status);
 }
 
@@ -43,8 +46,8 @@ void delete_message_if_necessary(t_message_status* message_status,t_queue_contex
     t_list* subscribers_queue = queue_context -> subscribers;
     bool are_equals_subscribers = true;
 
-    if(list_size(subscribers_message_who_received) == list_size(subscribers_queue) && are_equals_subscribers){
-        for(int i = 0; i < list_size(subscribers_message_who_received); i++){
+    if(list_size(subscribers_message_who_received) == list_size(subscribers_queue)){
+        for(int i = 0; i < list_size(subscribers_message_who_received) && are_equals_subscribers; i++){
         bool have_the_same_subscriber =  list_contains(subscribers_queue, list_get(subscribers_message_who_received,i),
                           (bool (*)(void *, void *)) are_equivalent_subscribers);
         are_equals_subscribers = are_equals_subscribers && have_the_same_subscriber;
@@ -52,9 +55,8 @@ void delete_message_if_necessary(t_message_status* message_status,t_queue_contex
     }
 
     if(are_equals_subscribers)
-    delete_message(message_status, queue_context);
+    delete_message(message_status ->identified_message -> request -> operation, message_status -> identified_message -> message_id);
 }
-
 
 void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
         t_message_status* message_status, t_queue_context* queue_context){

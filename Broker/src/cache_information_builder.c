@@ -86,7 +86,7 @@ char* cache_information_builder(t_list* blocks_information){
 
     char* cache_blocks_info = build_using(blocks_information);
 
-    char* cache_info = string_from_format("------------------\nDump: %s\n%s\n------------------",actual_time,cache_blocks_info);
+    char* cache_info = string_from_format("\n------------------\nDump: %s\n%s\n------------------",actual_time,cache_blocks_info);
     free(actual_time);
     free(cache_blocks_info);
     return cache_info;

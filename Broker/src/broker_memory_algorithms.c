@@ -23,11 +23,12 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
         initial_position_to_occupy_for_next_block = block_to_adjust->initial_position+block_to_adjust->block_size;
     }
     //moverlo al final de la memoria y de la lista administrativa
-    list_remove(blocks_information,block_index);
-    list_add(blocks_information,block_to_reposition);
-
     t_block_information* last_block = list_get_last_element(blocks_information);
-    block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
+    if(last_block != block_to_reposition){
+        block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
+        list_remove(blocks_information,block_index);
+        list_add(blocks_information,block_to_reposition);
+    }
 }
 
 void initialize_broker_memory_algorithms(){
