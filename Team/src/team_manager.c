@@ -105,27 +105,39 @@ void update_current_pokemons_after_caught(t_localizable_object* localizable_trai
     decrement_global_goal_quantity_after_caught_of(pokemon_name);
 }
 
+char* safe_pokemon_remove(t_list* pokemons, char* pokemon_name_to_find){
+
+    bool _is_equals(char* pokemon_name_to_compare){
+        return string_equals_ignore_case(pokemon_name_to_compare, pokemon_name_to_find);
+    }
+
+    char* pokemon_removed = list_remove_by_condition(pokemons, (bool (*)(void*)) _is_equals);
+
+    if(!pokemon_removed){
+        log_pokemon_not_found_error_for(pokemon_name_to_find);
+        free_system();
+    }
+
+    return pokemon_removed;
+}
+
 void exchange_trainers_pokemons(char* first_party_pokemon_name,
                                 t_localizable_object* first_party_localizable_trainer,
-                                char* second_party_pokemon_name, t_localizable_object*
-                                second_party_localizable_trainer){
+                                char* second_party_pokemon_name,
+                                t_localizable_object* second_party_localizable_trainer){
 
     t_trainer* first_party_trainer = first_party_localizable_trainer -> object;
     t_trainer* second_party_trainer = second_party_localizable_trainer -> object;
 
-    bool _is_equals_to_first(char* pokemon_name){
-        return string_equals_ignore_case(pokemon_name, first_party_pokemon_name);
-    }
-
-    bool _is_equals_to_second(char* pokemon_name){
-        return string_equals_ignore_case(pokemon_name, second_party_pokemon_name);
-    }
-
     void _exchange(){
-        list_remove_by_condition(first_party_trainer -> current_pokemons, (bool (*)(void *)) _is_equals_to_first);
-        list_add(first_party_trainer -> current_pokemons, second_party_pokemon_name);
-        list_remove_by_condition(second_party_trainer -> current_pokemons,(bool (*)(void *)) _is_equals_to_second);
-        list_add(second_party_trainer -> current_pokemons, string_duplicate(first_party_pokemon_name));
+        char* pokemon_for_second_party_trainer =
+                safe_pokemon_remove(first_party_trainer -> current_pokemons, first_party_pokemon_name);
+
+        char* pokemon_for_first_party_trainer =
+                safe_pokemon_remove(second_party_trainer -> current_pokemons, second_party_pokemon_name);
+
+        list_add(first_party_trainer -> current_pokemons, pokemon_for_first_party_trainer);
+        list_add(second_party_trainer -> current_pokemons, pokemon_for_second_party_trainer);
     }
 
     handling_localized_trainers_concurrency_do(_exchange);

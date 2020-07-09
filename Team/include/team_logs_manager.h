@@ -48,7 +48,7 @@ void log_deadlock_detection_algorithm_has_begun();
 void log_deadlock_detection_algorithm_has_finished_with_deadlock_detected();
 void log_deadlock_detection_algorithm_has_finished_with_no_deadlock_detected();
 void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts);
-void log_deadlock_detection_algorithm_has_finished();
+void log_pokemon_not_found_error_for(char* pokemon_name);
 void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange);
 void log_exchange_realized_according_to(t_identified_exchange* identified_exchange);
 void log_global_goal_accomplished();

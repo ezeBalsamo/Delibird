@@ -209,7 +209,6 @@ void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_co
     log_succesful_message(process_execution_logger(), message);
     free(action_to_perform);
     free(message);
-
 }
 
 void log_failed_caught_of(t_localizable_object* localizable_pokemon){
@@ -417,6 +416,12 @@ void log_exchange_to_realize_according_to(t_identified_exchange* identified_exch
 
 void log_exchange_realized_according_to(t_identified_exchange* identified_exchange){
     log_exchange_action_with(identified_exchange, "Intercambio realizado exitosamente", "intercambió");
+}
+
+void log_pokemon_not_found_error_for(char* pokemon_name){
+    char* message = string_from_format("Se esperaba encontrar al pokemon %s.", pokemon_name);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_global_goal_accomplished(){

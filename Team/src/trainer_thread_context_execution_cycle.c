@@ -25,7 +25,6 @@ void movement_action_completed_by(t_trainer_thread_context* trainer_thread_conte
     t_localizable_object* destiny_object = movement_action -> destiny_object;
 
     free_thread_action(trainer_thread_context -> thread_action);
-    t_thread_action* thread_action;
 
     if(is_deadlock_resolution_in_process()){
         trainer_thread_context -> thread_action = exchange_thread_action();

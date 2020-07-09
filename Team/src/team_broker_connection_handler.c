@@ -57,6 +57,9 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
 
     *reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
     safe_thread_join(*reconnection_thread);
+
+    stop_considering_garbage(reconnection_thread);
+    safe_thread_pointer_cancel(reconnection_thread);
 }
 
 t_request* subscribe_me_request_for(uint32_t operation_queue){
@@ -152,8 +155,6 @@ void* subscriber_thread(void* queue_operation_identifier){
         consume_messages_considering_reconnections_with(connection_information, queue_operation_identifier);
     }
 
-    free(queue_operation_identifier);
-
     return NULL;
 }
 
@@ -161,6 +162,7 @@ pthread_t subscribe_to_queue(uint32_t queue_code){
     uint32_t* pokemon_operation_queue_code = safe_malloc(sizeof(uint32_t));
     *pokemon_operation_queue_code = queue_code;
 
+    consider_as_garbage(pokemon_operation_queue_code, free);
     return thread_create(subscriber_thread, (void*) pokemon_operation_queue_code, log_queue_thread_create_error);
 }
 
