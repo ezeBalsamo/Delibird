@@ -50,6 +50,14 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
     free(message);
 }
 
+void log_succesful_message_received_by(t_subscriber_context* subscriber_context, t_message_status* message_status){
+    char* printed_object = request_pretty_print(message_status -> identified_message -> request);
+    char* message = string_from_format("El suscriptor: %s recibió el mensaje: \n%s\n con id: %d\n",subscriber_context -> process_description,printed_object, message_status -> identified_message -> message_id);
+    log_succesful_message(process_execution_logger(), message);
+    free(printed_object);
+    free(message);
+}
+
 void log_succesful_save_message_to_cache(t_request* request, void* message_position){
     char* printed_object = request_pretty_print(request);
     char* message = string_from_format("Se guardó correctamente el mensaje:\n%s\nen la posicion de memoria: %p", printed_object, message_position);
@@ -66,24 +74,25 @@ void log_succesful_free_partition_to_cache(void* message_position){
     free(message);
 }
 
-void log_succesful_memory_compaction(int amount_of_partitions_compacted){
-    char* message = string_from_format("Se compactó correctamente la memoria, compactando %d bloque/s.", amount_of_partitions_compacted);
+void log_succesful_memory_compaction(int amount_of_partitions_compacted) {
+    char *message = string_from_format("Se compactó correctamente la memoria, compactando %d bloque/s.",
+                                       amount_of_partitions_compacted);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
-
-//TODO Faltan implementar logs del main: DEL 5 al 8.
-
-//---------------------------------------------------------------------
-                //LOGS PARA NOSOTROS, PARA CONTROL
-//---------------------------------------------------------------------
 
 void log_cache_dump_information(char* cache_info){
     t_log* cache_dump_logger_found = logger_named(cache_dump_log_name);
     log_info(cache_dump_logger_found, cache_info);
     log_succesful_message(process_execution_logger(), "Se recibio el pedido de dump a la cache y fue realizado correctamente!");
 }
+
+
+//---------------------------------------------------------------------
+                //LOGS PARA NOSOTROS, PARA CONTROL
+//---------------------------------------------------------------------
+
 void log_succesful_initialize_queue_context_provider(){
     log_succesful_message(process_execution_logger(), "El queue_context_provider se ha inicializado correctamente!\n");
 }
@@ -126,21 +135,15 @@ void log_no_subscribers_for_request(t_request* request){
     free(message);
 }
 
-void log_succesful_all_messages_of_a_queue_sent_to(t_subscriber_context* subscriber_context){
-    char* message = string_from_format("Se le enviaron correctamente todos los mensajes de la cola: %s al siguiente suscriptor: %s con socket: %d", queue_name_of(subscriber_context ->operation_queue), subscriber_context -> process_description, subscriber_context -> socket_fd);
-    log_succesful_message(process_execution_logger(), message);
-    free(message);
-}
-
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context){
     char* message = string_from_format("Se le actualizo al suscriptor: %s su ultimo mensaje id recibido con el id: %zu", subscriber_context -> process_description ,  subscriber_context -> last_message_id_received);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
-void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status){
+void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status, char* reason){
     char* printed_object = request_pretty_print(message_status ->identified_message -> request);
-    char* message = string_from_format("Se borro el mensaje:\n %s con id: %d correctamente!", printed_object, message_status -> identified_message -> message_id);
+    char* message = string_from_format("Se borro el mensaje:\n %s\n con id: %d correctamente! Motivo de borrado: %s", printed_object, message_status -> identified_message -> message_id, reason);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

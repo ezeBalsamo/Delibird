@@ -15,6 +15,8 @@ void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identifie
 
 void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_context* subscriber_context);
 
+void log_succesful_message_received_by(t_subscriber_context* subscriber_context, t_message_status* message_status);
+
 void log_succesful_initialize_queue_context_provider();
 
 void log_successful_initialize_broker_memory_manager();
@@ -29,11 +31,9 @@ void log_succesful_get_and_update_subscribers_to_send(t_identified_message* iden
 
 void log_no_subscribers_for_request(t_request* request);
 
-void log_succesful_all_messages_of_a_queue_sent_to(t_subscriber_context* subscriber_context);
-
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context);
 
-void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status);
+void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status, char* reason);
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation);
 
