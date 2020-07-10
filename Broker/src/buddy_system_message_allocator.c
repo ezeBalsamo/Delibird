@@ -123,6 +123,16 @@ int get_valid_minimum_partition_size(){
     return min_partition_size;
 }
 
+int get_valid_total_memory_size(){
+    int memory_size = config_get_int_at("TAMANO_MEMORIA");
+
+    if (!is_valid_partition_size_for_buddy_system(memory_size)){
+        log_invalid_memory_size_for_buddy_system_error();
+        free_system();
+    }
+    return memory_size;
+}
+
 t_message_allocator* initialize_buddy_system_message_allocator(){
 
     message_allocator = safe_malloc(sizeof(t_message_allocator));
@@ -130,7 +140,7 @@ t_message_allocator* initialize_buddy_system_message_allocator(){
 
     message_allocator->min_partition_size = get_valid_minimum_partition_size();
     message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
-    message_allocator->max_partition_size = config_get_int_at("TAMANO_MEMORIA");
+    message_allocator->max_partition_size = get_valid_total_memory_size();
     message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
     message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
     message_allocator->memory_compaction_algorithm = memory_compaction_algorithm;

@@ -178,6 +178,12 @@ void log_invalid_minimum_partition_size_for_buddy_system_error(){
     free(message);
 }
 
+void log_invalid_memory_size_for_buddy_system_error(){
+    char* message = "El tamaño de la memoria total especificado es invalido para buddy system.";
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context){
     char* message = string_from_format("Se esperaba recibir un ack del suscriptor %s en el socket %d.", subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_errorful_message(process_execution_logger(), message);

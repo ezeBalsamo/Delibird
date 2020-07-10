@@ -14,7 +14,7 @@ t_message_allocator* message_allocator;
 void initialize_allocation_algorithms(){
     allocation_algorithms = dictionary_create();
     dictionary_put(allocation_algorithms,"PD", (void*) initialize_dynamic_partition_message_allocator);
-    dictionary_put(allocation_algorithms, "BD", (void*) initialize_buddy_system_message_allocator);
+    dictionary_put(allocation_algorithms, "BS", (void*) initialize_buddy_system_message_allocator);
 }
 
 uint32_t block_size_for(t_memory_block *  memory_block_to_save){

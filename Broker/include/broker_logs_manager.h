@@ -63,4 +63,6 @@ void log_invalid_minimum_partition_size_for_buddy_system_error();
 
 void log_invalid_free_partition_error();
 
+void log_invalid_memory_size_for_buddy_system_error();
+
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H
