@@ -17,12 +17,12 @@ void* fifo_partition_free_algorithm(t_list* blocks_information){
             break;
         }
     }
-
+    void* freed_block_position = block_found->initial_position;
     if (block_found != NULL){
         empty_block_information(block_found);
         //consolido el bloque
 
         consolidate_block(blocks_information,nearest_occupied_block_found_index);
     }
-    return block_found;
+    return freed_block_position;
 }
