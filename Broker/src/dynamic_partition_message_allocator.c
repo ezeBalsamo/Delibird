@@ -2,17 +2,32 @@
 #include <string.h>
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
-#include "../../Utils/include/operation_serialization.h"
+#include <broker_message_allocator.h>
 #include "../../Utils/include/configuration_manager.h"
-#include "../../Utils/include/pokemon_request_bytes_calculator.h"
 #include "../../Utils/include/garbage_collector.h"
 
 t_message_allocator* dynamic_partition_message_allocator;
 
+void free_partition_by_algorithm(t_list* blocks_information){
+    t_block_information* block_to_free = dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
+    if (block_to_free != NULL){
+        void* position_of_partition_freed = block_to_free->initial_position;
+        empty_block_information(block_to_free);
+
+        //consolido el bloque
+        int block_freed_index = block_index_position(block_to_free,blocks_information);
+        consolidate_block(blocks_information,block_freed_index);
+
+        log_succesful_free_partition_to_cache(position_of_partition_freed);
+    }else{
+        log_invalid_free_partition_error();
+        free_system();
+    }
+}
 
 t_block_information*  find_block_to_allocate_message(t_list* blocks_information, t_memory_block* memory_block_to_save){
     uint32_t number_of_partitions_freed = 0;
-    while(true){
+    for ever{
 
         t_block_information* block_information_found = dynamic_partition_message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, dynamic_partition_message_allocator->min_partition_size);
         if (block_information_found != NULL){
@@ -35,17 +50,10 @@ t_block_information*  find_block_to_allocate_message(t_list* blocks_information,
                 return block_information_found;
             }
         }
-        void* partition_freed_position = dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
-        log_succesful_free_partition_to_cache(partition_freed_position);
 
+        free_partition_by_algorithm(blocks_information);
         number_of_partitions_freed++;
     }
-}
-
-uint32_t block_size_for(t_memory_block *  memory_block_to_save){
-    bool block_to_save_bigger_than_min_partition_size = memory_block_to_save->message_size > dynamic_partition_message_allocator->min_partition_size;
-
-    return block_to_save_bigger_than_min_partition_size ? memory_block_to_save->message_size : dynamic_partition_message_allocator->min_partition_size;
 }
 
 t_block_information* save_memory_block_in_block_information(t_block_information* block_information_found,t_memory_block* memory_block_to_save){
@@ -70,45 +78,8 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
     return new_block_information;
 }
 
-t_request* message_request_from_identified_message(t_identified_message* message){
-    uint32_t operation = internal_operation_in(message);
-    return operation == IDENTIFIED_MESSAGE ?  (t_request *) internal_request_in_correlative(message) : message->request;
-}
-
-t_memory_block* build_memory_block_from_message(t_identified_message* message) {
-    //Obtengo el mensaje
-    t_request* message_request = message_request_from_identified_message(message);
-
-    t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
-
-    memory_block_to_save->message_id =  message->message_id;
-    memory_block_to_save->message_operation = message_request->operation;
-
-    t_serialization_information *request_serialized = serialize(message_request);
-
-    memory_block_to_save->message_size = size_to_allocate_for(message_request);
-    memory_block_to_save->message = ((t_request *) request_serialized->serialized_request)->structure;
-    memory_block_to_save->lru_value = current_time_in_milliseconds();
-    if(memory_block_to_save->message_size > dynamic_partition_message_allocator->max_partition_size){
-        log_invalid_operation_to_save_message_error();
-        free_system();
-    }
-    return memory_block_to_save;
-}
-int block_index_position(t_block_information* block_to_find,t_list* blocks_information){
-    int block_index = 0;
-    for(int i= 0; i < list_size(blocks_information); i++){
-        t_block_information* block_found = (t_block_information*) list_get(blocks_information,i);
-        if(block_found->initial_position == block_to_find->initial_position){
-            return i;
-        }
-    }
-    free_system();
-    return -1;
-}
-
 //ACA ARRANCA LA PAPA
-void partition_allocate_message(t_identified_message* message,t_list* blocks_information){
+void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
     t_memory_block* memory_block_to_save = build_memory_block_from_message(message);
@@ -117,6 +88,7 @@ void partition_allocate_message(t_identified_message* message,t_list* blocks_inf
 
     //encontre un block manager disponible, lo spliteo y creo uno nuevo que tenga la memoria restante, que este libre
     t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found,memory_block_to_save);
+
     // es posible que no haya que crear uno nuevo, si la particion tenia el tamaño exacto necesario
     if (new_block_information != NULL){
         int position = block_index_position(block_information_found,blocks_information);
@@ -128,7 +100,7 @@ void partition_allocate_message(t_identified_message* message,t_list* blocks_inf
 t_message_allocator* initialize_dynamic_partition_message_allocator(){
 
     dynamic_partition_message_allocator = safe_malloc(sizeof(t_message_allocator));
-    dynamic_partition_message_allocator->allocate_message_function = partition_allocate_message;
+    dynamic_partition_message_allocator->allocate_message_function = dynamic_partition_allocate_message;
 
     dynamic_partition_message_allocator->min_partition_size = config_get_int_at("TAMANO_MINIMO_PARTICION");
     dynamic_partition_message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");

@@ -22,7 +22,9 @@ set(SOURCES
         src/lru_partition_free_algorithm.c
         src/cache_information_builder.c
         src/subscriber_context_provider.c
-        src/broker_signal_handler.c)
+        src/broker_signal_handler.c
+        src/buddy_system_message_allocator.c
+        src/broker_message_allocator.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(broker ${SOURCES})

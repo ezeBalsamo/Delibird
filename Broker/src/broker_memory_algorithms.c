@@ -6,16 +6,19 @@
 #include <stdlib.h>
 #include <lru_partition_free_algorithm.h>
 #include <queue_message_status.h>
+#include <broker_message_allocator.h>
 #include "../include/first_fit_available_partition_search_algorithm.h"
 #include "../include/fifo_partition_free_algorithm.h"
-#include "../include/dynamic_partition_message_allocator.h"
 #include "../include/broker_memory_algorithms.h"
 #include "../../Utils/include/t_list_extension.h"
 
 t_dictionary* algorithms;
 
+//esta funcion reposiciona un bloque dado, al final de la memoria y de la lista administrativa.
+//Mover un bloque en memoria implica ajustar la posicion de todos los siguientes al dado "1 bloque para atras" y attacheando el dado a la posicion del ultimo (luego de reajustarlo)
 void reposition_free_block_to_end(t_block_information *block_to_reposition, t_list *blocks_information,int block_index){
     void* initial_position_to_occupy_for_next_block = block_to_reposition->initial_position;
+
     //ajustar las posiciones de todos los bloques (como si se hubiera borrado el que quiero reposicionar)
     for(int i = block_index+1; i<list_size(blocks_information)-1;i++){
         t_block_information* block_to_adjust = list_get(blocks_information,i);
@@ -33,21 +36,13 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
 }
 
 void initialize_broker_memory_algorithms(){
+    initialize_allocation_algorithms();
+
     algorithms = dictionary_create();
-    dictionary_put(algorithms,"FIFO", (void*)fifo_partition_free_algorithm);
-    dictionary_put(algorithms,"LRU", (void*)lru_partition_free_algorithm);
-    dictionary_put(algorithms,"FF", (void*)first_fit_available_partition_search_algorithm);
-    dictionary_put(algorithms, "BF", (void*)best_fit_available_partition_search_algorithm);
-    dictionary_put(algorithms,"PD", (void*)initialize_dynamic_partition_message_allocator);
-}
-
-t_message_allocator* initialize_message_allocator() {
-
-    char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
-    void* initialize_message_allocator_from_dictionary = dictionary_get(algorithms, memory_algorithm);
-    t_message_allocator *(*initialize_message_allocator_function)() = (t_message_allocator *(*)()) initialize_message_allocator_from_dictionary;
-
-    return initialize_message_allocator_function();
+    dictionary_put(algorithms,"FIFO", (void*) fifo_partition_free_algorithm);
+    dictionary_put(algorithms,"LRU", (void*) lru_partition_free_algorithm);
+    dictionary_put(algorithms,"FF", (void*) first_fit_available_partition_search_algorithm);
+    dictionary_put(algorithms, "BF", (void*) best_fit_available_partition_search_algorithm);
 }
 
 void* get_available_partition_search_algorithm() {
@@ -62,16 +57,6 @@ void* get_partition_free_algorithm() {
     return dictionary_get(algorithms,partition_free_algorithm);
 }
 
-int find_index_of_furthest_occupied_block_information(t_list* blocks_information){
-    //itero desde el final, devuelvo el primero, seria como un find inverso
-    for(int i = list_size(blocks_information);i > 0;i--){
-        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i-1);
-        if (!block_information->is_free ){
-            return i-1;
-        }
-    }
-    return -1;
-}
 
 void combine_all_free_partitions(t_list* blocks_information){
     for (int i = 0; i < list_size(blocks_information)-1;i++){
@@ -87,9 +72,6 @@ void combine_all_free_partitions(t_list* blocks_information){
             i--;
         }
     }
-}
-bool all_blocks_are_free_according_to(int furthest_occupied_block_index){
-    return furthest_occupied_block_index == -1;
 }
 
 void memory_compaction_algorithm(t_list* blocks_information){
@@ -133,6 +115,10 @@ void consolidate_block_with(t_block_information* master_block,t_block_informatio
 
 bool is_free_block_in_index(t_list* blocks_information, int index){
     return ((t_block_information*) list_get(blocks_information,index))->is_free;
+}
+
+bool is_not_free_block(t_block_information* block){
+    return !block->is_free;
 }
 
 void consolidate_block(t_list* blocks_information,int index_of_block_to_consolidate){

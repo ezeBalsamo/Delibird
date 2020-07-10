@@ -5,6 +5,7 @@
 #include <broker_logs_manager.h>
 #include <cache_information_builder.h>
 #include <stdlib.h>
+#include <broker_message_allocator.h>
 
 t_message_allocator* message_allocator;
 t_list* blocks_information;
