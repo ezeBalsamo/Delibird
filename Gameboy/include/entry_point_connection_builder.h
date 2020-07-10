@@ -8,6 +8,7 @@ void initialize_entry_point_connection_builder();
 t_request* safe_request();
 char* process_ip();
 char* process_port();
+int ack_timeout();
 
 void free_entry_point_connection_builder();
 

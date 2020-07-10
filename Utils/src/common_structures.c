@@ -162,3 +162,14 @@ uint64_t current_time_in_milliseconds(){
 
    return hours_in_milliseconds + minutes_in_milliseconds + seconds_in_milliseconds + milliseconds;
 }
+
+void assert_only_one_in(t_list* self){
+    if(list_size(self) != 1){
+        log_expected_to_have_only_one_element_error();
+        free_system();
+    }
+}
+
+int minimum_integer_between(int number, int another_number){
+    return number < another_number ? number : another_number;
+}

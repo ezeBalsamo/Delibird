@@ -1,0 +1,9 @@
+#ifndef DELIBIRD_BENEFITIAL_EXCHANGES_ONLY_FOR_SECOND_PARTY_H
+#define DELIBIRD_BENEFITIAL_EXCHANGES_ONLY_FOR_SECOND_PARTY_H
+
+#include "exchanges_inferrer.h"
+
+void initialize_benefitial_exchanges_only_for_second_party();
+t_exchange_inferrer* benefitial_exchanges_only_for_second_party();
+
+#endif //DELIBIRD_BENEFITIAL_EXCHANGES_ONLY_FOR_SECOND_PARTY_H

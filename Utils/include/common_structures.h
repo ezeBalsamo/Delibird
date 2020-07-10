@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include <semaphore.h>
 
+#define ever (;;)
+
 typedef struct Request{
     uint32_t operation;
     void* structure;
@@ -95,6 +97,9 @@ t_connection_request* create_connection_request(int connection_fd, t_request* re
 
 char* process_description_for(char* process_name, t_list* strings_to_hash);
 uint64_t current_time_in_milliseconds();
+void assert_only_one_in(t_list* self);
+
+int minimum_integer_between(int number, int another_number);
 
 void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);

@@ -4,11 +4,14 @@
 #include <dispatching_reasons.h>
 #include <state_transitions.h>
 #include <dispatcher_queues.h>
+#include <deadlock_detection_and_recovery_algorithm.h>
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/t_list_extension.h"
 
 bool must_preempt;
+bool deadlock_resolution_in_process;
 pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
 pthread_mutex_t execute_mutex;
 
@@ -17,8 +20,10 @@ void initialize_dispatcher(){
     initialize_dispatcher_queues();
     initialize_state_transitions();
     initialize_scheduling_algorithm();
+    initialize_deadlock_detection_and_recovery_algorithm();
 
     must_preempt = false;
+    deadlock_resolution_in_process = false;
     safe_mutex_initialize(&schedulable_trainer_thread_contexts_mutex);
     safe_mutex_initialize(&execute_mutex);
 }
@@ -30,8 +35,7 @@ void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
 
 bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){
 
-    t_thread_action* thread_action = trainer_thread_context -> thread_action;
-    return thread_action -> request -> operation == WAITING_FOR_MORE_POKEMONS;
+    return internal_thread_action_type_in(trainer_thread_context) == WAITING_FOR_MORE_POKEMONS;
 }
 
 bool cant_be_schedule(t_trainer_thread_context* trainer_thread_context){
@@ -118,7 +122,7 @@ void assert_only_one_executing(){
 
 t_trainer_thread_context* trainer_thread_context_executing(){
     assert_only_one_executing();
-    return list_get(trainer_thread_contexts_in(EXECUTE), 0);
+    return list_first(trainer_thread_contexts_in(EXECUTE));
 }
 
 bool is_anybody_executing(){
@@ -148,6 +152,9 @@ void preempt(){
     t_trainer_thread_context* trainer_thread_context = trainer_thread_context_executing();
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, READY);
     state_transition -> state_transition_function (trainer_thread_context);
+}
+
+void preemption_completed(){
     must_preempt = false;
 }
 
@@ -157,39 +164,39 @@ void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_threa
     state_transition -> state_transition_function (trainer_thread_context);
 }
 
+void consider_deadlock_occurred_according_to(t_trainer_thread_context* trainer_thread_context){
+
+    uint32_t thread_action_type = internal_thread_action_type_in(trainer_thread_context);
+    if(thread_action_type == WAITING_FOR_EXCHANGE && !is_deadlock_resolution_in_process()){
+        detect_and_recover_from_deadlock();
+    }
+}
+
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context){
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, BLOCKED);
     state_transition -> state_transition_function (trainer_thread_context);
+
+    consider_deadlock_occurred_according_to(trainer_thread_context);
 }
 
-void assert_no_trainer_thread_contexts_in(uint32_t state){
+bool is_deadlock_resolution_in_process(){
+    return deadlock_resolution_in_process;
+}
 
-    t_list* trainer_thread_contexts = trainer_thread_contexts_in(state);
+void deadlock_solver_has_begun(){
+    deadlock_resolution_in_process = true;
+}
 
-    if(!list_is_empty(trainer_thread_contexts)){
-        log_expected_to_be_empty_error_for(state);
-        free_system();
+void deadlock_solver_has_ended(){
+    deadlock_resolution_in_process = false;
+    consider_ending();
+}
+
+void consider_ending(){
+    if(trainers_amount() == finished_trainer_thread_contexts_amount() && !is_deadlock_resolution_in_process()){
+        all_trainer_threads_context_have_finished();
     }
-}
-
-void assert_there_are_trainer_thread_contexts_in(uint32_t state){
-
-    t_list* trainer_thread_contexts = trainer_thread_contexts_in(state);
-
-    if(list_is_empty(trainer_thread_contexts)){
-        log_expected_to_be_not_empty_error_for(state);
-        free_system();
-    }
-}
-
-void assert_all_trainer_thread_contexts_have_finished(){
-
-    assert_no_trainer_thread_contexts_in(NEW);
-    assert_no_trainer_thread_contexts_in(READY);
-    assert_no_trainer_thread_contexts_in(EXECUTE);
-    assert_no_trainer_thread_contexts_in(BLOCKED);
-    assert_there_are_trainer_thread_contexts_in(FINISHED);
 }
 
 int finished_trainer_thread_contexts_amount(){
@@ -205,4 +212,5 @@ void free_dispatcher(){
     free_dispatcher_queues();
     free_scheduling_algorithm();
     free_state_transitions();
+    free_deadlock_detection_and_recovery_algorithm();
 }

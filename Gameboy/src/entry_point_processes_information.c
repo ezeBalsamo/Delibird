@@ -6,7 +6,6 @@
 #include <commons/string.h>
 #include <stdlib.h>
 
-
 t_list* processes_information;
 
 t_operation_information* new_pokemon_operation_information(uint32_t arguments_amount, bool has_identified_message){

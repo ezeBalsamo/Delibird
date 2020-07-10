@@ -41,7 +41,8 @@ void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* mess
 
         t_list* subscribers_to_send = message_status -> subscribers_to_send;
 
-        if(!list_contains(subscribers_to_send, subscriber_context, (bool (*) (void*, void*)) are_equivalent_subscribers)){
+        if(!list_includes(subscribers_to_send, subscriber_context,
+                          (bool (*)(void *, void *)) are_equivalent_subscribers)){
             list_add(subscribers_to_send, (void*) subscriber_context);
         }
     }

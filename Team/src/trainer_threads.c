@@ -4,6 +4,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include <stdlib.h>
 #include <trainer_thread_context_state_chained_evaluation.h>
+#include <deadlock_detection_and_recovery_algorithm.h>
 
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
@@ -54,7 +55,7 @@ void initialize_and_load_trainer_thread_context_for(t_localizable_object* locali
     trainer_thread_context -> localizable_trainer = localizable_trainer;
     trainer_thread_context -> semaphore = trainer_semaphore;
     trainer_thread_context -> state = NEW;
-    trainer_thread_context -> thread_action = NULL;
+    trainer_thread_context -> thread_action = new_null_thread_action();
 
     list_add(trainer_thread_contexts, (void*) trainer_thread_context);
 }
@@ -73,6 +74,15 @@ void initialize_trainer_threads(){
     list_iterate(trainer_thread_contexts, initialize_and_load_trainer_thread_for);
 
     join_trainers_threads();
+    if(is_deadlock_resolution_in_process()){
+        join_deadlock_solver_thread();
+    }
+}
+
+bool are_equal_trainer_thread_contexts(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+    return
+        are_equal_trainers(trainer_thread_context -> localizable_trainer -> object,
+                            another_trainer_thread_context -> localizable_trainer -> object);
 }
 
 t_thread_action* new_thread_action(){
@@ -84,9 +94,27 @@ t_thread_action* new_thread_action(){
     return thread_action;
 }
 
+void do_nothing(){}
+
+t_thread_action* new_null_thread_action(){
+
+    t_thread_action* thread_action = new_thread_action();
+    thread_action -> request -> operation = NULL_THREAD_ACTION;
+    thread_action -> request -> structure = NULL;
+    thread_action -> request -> sanitizer_function = free;
+    thread_action -> execution_function = do_nothing;
+
+    return thread_action;
+}
+
 void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context){
     t_thread_action* thread_action = trainer_thread_context -> thread_action;
     return thread_action -> request -> structure;
+}
+
+int internal_thread_action_type_in(t_trainer_thread_context* trainer_thread_context){
+    t_thread_action* thread_action = trainer_thread_context -> thread_action;
+    return thread_action -> request -> operation;
 }
 
 void free_thread_action(t_thread_action* thread_action){

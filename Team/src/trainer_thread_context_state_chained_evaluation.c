@@ -4,6 +4,7 @@
 #include <distance_calculator.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include "trainer_thread_context_state_chained_evaluation.h"
+#include "../../Utils/include/t_list_extension.h"
 
 t_identified_chained_evaluation* caught_success_chained_evaluation;
 t_identified_chained_evaluation* caught_failed_chained_evaluation;
@@ -22,8 +23,8 @@ void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thre
     t_list* pokemons_waiting_for_be_caught = not_yet_targeted_pokemons();
 
     t_targetable_object* targetable_pokemon =
-            closest_targetable_pokemon(pokemons_waiting_for_be_caught,
-                                       trainer_thread_context -> localizable_trainer);
+            targetable_pokemon_closest_to_localizable_trainer(pokemons_waiting_for_be_caught,
+                                                              trainer_thread_context -> localizable_trainer);
 
     list_destroy(pokemons_waiting_for_be_caught);
 
@@ -47,12 +48,7 @@ t_basic_evaluation* ready_or_schedulable_blocked_state_chained_evaluation(){
 
 bool has_finished_function(t_trainer_thread_context* trainer_thread_context){
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
-    t_list* trainer_requirements = requirements_of(trainer);
-
-    bool has_finished = list_is_empty(trainer_requirements);
-
-    list_destroy(trainer_requirements);
-    return has_finished;
+    return has_accomplished_own_goal(trainer);
 }
 
 t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_finished(){
@@ -64,7 +60,7 @@ t_chained_on_succesful_evaluation* next_state_chained_evaluation_when_has_not_fi
     t_chained_on_succesful_evaluation* chained_on_succesful_evaluation = safe_malloc(sizeof(t_chained_on_succesful_evaluation));
     chained_on_succesful_evaluation -> satisfy_function = (bool (*)(void *)) can_be_scheduled_function;
     chained_on_succesful_evaluation -> next_evaluation = next_evaluation;
-    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) trainer_thread_context_has_entered_deadlock_zone;
+    chained_on_succesful_evaluation -> failure_function = (void (*)(void *)) prepare_for_waiting_for_deadlock_resolution;
 
     return chained_on_succesful_evaluation;
 }
