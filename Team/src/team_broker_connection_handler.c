@@ -12,6 +12,7 @@
 #include <team_configuration_manager.h>
 #include <commons/string.h>
 #include <localized_query_performer.h>
+#include <event_notifier.h>
 
 sem_t subscriber_threads_request_sent;
 
@@ -200,6 +201,8 @@ void apply_default_get_action_for(char* pokemon_name){
 void apply_get_action_when_connection_success(t_request* request, t_connection_information* connection_information, char* pokemon_name){
     int ack =
             serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
+
+    notify(EXECUTION_CYCLE_CONSUMED);
 
     if(ack == FAILED_ACK){
         apply_default_get_action_for(pokemon_name);

@@ -28,6 +28,10 @@ char** config_get_char_array_at(char* key){
     return config_get_array_value(config, key);
 }
 
+double config_get_double_at(char* key){
+    return config_get_double_value(config, key);
+}
+
 t_list* all_config_values(){
     t_list* config_values = list_create();
 

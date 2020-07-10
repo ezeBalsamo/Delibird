@@ -98,3 +98,36 @@ char* pokemon_names_as_string(t_list* pokemon_names){
 
     return pokemon_names_as_string;
 }
+
+char* exchange_with_concrete_action_as_string(t_identified_exchange* identified_exchange, char* concrete_action){
+
+    t_trainer* first_party_trainer = first_party_localizable_trainer_in(identified_exchange) -> object;
+    char* printable_first_party_trainer = trainer_as_string(first_party_trainer);
+    char* first_party_pokemon_name = first_party_pokemon_name_in(identified_exchange);
+
+    t_trainer* second_party_trainer = second_party_localizable_trainer_in(identified_exchange) -> object;
+    char* printable_second_party_trainer = trainer_as_string(second_party_trainer);
+    char* second_party_pokemon_name = second_party_pokemon_name_in(identified_exchange);
+
+    char* message =
+            string_from_format(
+                    "%s %s su %s con el %s de %s.",
+                    printable_first_party_trainer,
+                    concrete_action,
+                    first_party_pokemon_name,
+                    second_party_pokemon_name,
+                    printable_second_party_trainer);
+
+    free(printable_first_party_trainer);
+    free(printable_second_party_trainer);
+
+    return message;
+}
+
+char* exchange_to_realize_as_string(t_identified_exchange* identified_exchange){
+    return exchange_with_concrete_action_as_string(identified_exchange, "intercambiará");
+}
+
+char* exchange_completed_as_string(t_identified_exchange* identified_exchange){
+    return exchange_with_concrete_action_as_string(identified_exchange, "intercambió");
+}

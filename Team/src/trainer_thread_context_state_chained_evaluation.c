@@ -33,7 +33,7 @@ void prepare_for_movement_action_function(t_trainer_thread_context* trainer_thre
 }
 
 bool can_be_scheduled_function(t_trainer_thread_context* trainer_thread_context){
-    t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
+    t_trainer* trainer = trainer_from_thread_context(trainer_thread_context);
     return can_catch_pokemons(trainer);
 }
 

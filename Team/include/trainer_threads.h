@@ -40,6 +40,7 @@ t_thread_action* new_thread_action();
 t_thread_action* new_null_thread_action();
 void* internal_thread_action_in(t_trainer_thread_context* trainer_thread_context);
 int internal_thread_action_type_in(t_trainer_thread_context* trainer_thread_context);
+t_trainer* trainer_from_thread_context(t_trainer_thread_context* trainer_thread_context);
 
 void free_thread_action(t_thread_action* thread_action);
 void free_trainer_threads();

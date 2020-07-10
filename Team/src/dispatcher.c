@@ -5,6 +5,7 @@
 #include <state_transitions.h>
 #include <dispatcher_queues.h>
 #include <deadlock_detection_and_recovery_algorithm.h>
+#include <event_notifier.h>
 #include "dispatcher.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
@@ -79,7 +80,7 @@ void consider_continue_executing(){
 }
 
 void stop_current_execution_doing(void (*state_function) ()){
-    reset_quantum_consumed();
+    notify(CURRENT_EXECUTION_STOPPED);
     state_function();
     remove_from_execute();
     pthread_mutex_unlock(&execute_mutex);

@@ -395,40 +395,21 @@ void log_deadlock_solver_has_finished(){
     log_succesful_message(process_execution_logger(), message);
 }
 
-void log_exchange_action_with(t_identified_exchange* identified_exchange, char* summary, char* concrete_action){
+void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange){
+    char* printable_exchange_to_realize = exchange_to_realize_as_string(identified_exchange);
+    char* message = string_from_format("A punto de realizar un intercambio: %s", printable_exchange_to_realize);
 
-    t_trainer* first_party_trainer = first_party_localizable_trainer_in(identified_exchange) -> object;
-    char* printable_first_party_trainer = trainer_as_string(first_party_trainer);
-    char* first_party_pokemon_name = first_party_pokemon_name_in(identified_exchange);
-
-    t_trainer* second_party_trainer = second_party_localizable_trainer_in(identified_exchange) -> object;
-    char* printable_second_party_trainer = trainer_as_string(second_party_trainer);
-    char* second_party_pokemon_name = second_party_pokemon_name_in(identified_exchange);
-
-    char* message =
-            string_from_format(
-                    "%s: %s %s su %s con el %s de %s.",
-                    summary,
-                    printable_first_party_trainer,
-                    concrete_action,
-                    first_party_pokemon_name,
-                    second_party_pokemon_name,
-                    printable_second_party_trainer);
-
-    log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
-
-    free(printable_first_party_trainer);
-    free(printable_second_party_trainer);
+    free(printable_exchange_to_realize);
     free(message);
 }
 
-void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange){
-    log_exchange_action_with(identified_exchange, "A punto de realizar un intercambio", "intercambiará");
-}
+void log_exchange_completed(char* printable_exchange_completed){
+    char* message = string_from_format("Intercambio realizado exitosamente: %s", printable_exchange_completed);
 
-void log_exchange_realized_according_to(t_identified_exchange* identified_exchange){
-    log_exchange_action_with(identified_exchange, "Intercambio realizado exitosamente", "intercambió");
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_pokemon_not_found_error_for(char* pokemon_name){
@@ -437,10 +418,27 @@ void log_pokemon_not_found_error_for(char* pokemon_name){
     free(message);
 }
 
+void log_no_trainer_found_to_increment_its_execution_cycles_quantity_error_for(t_trainer* trainer){
+    char* printable_trainer = trainer_as_string(trainer);
+    char* message =
+            string_from_format("Se esperaba encontrar a %s para incrementarle su cantidad de ciclos de CPU realizados.",
+                                printable_trainer);
+
+    log_errorful_message(process_execution_logger(), message);
+    free(printable_trainer);
+    free(message);
+}
+
 void log_global_goal_accomplished(){
     char* message = "Team ha cumplido su objetivo global.";
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
+}
+
+void log_metrics_report(char* metrics_report){
+    log_succesful_message(main_logger(), metrics_report);
+    log_succesful_message(process_execution_logger(), metrics_report);
+    free(metrics_report);
 }
 
 void free_team_logs_manager(){

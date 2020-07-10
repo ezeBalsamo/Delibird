@@ -52,8 +52,10 @@ void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts
 void log_deadlock_solver_has_finished();
 void log_pokemon_not_found_error_for(char* pokemon_name);
 void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange);
-void log_exchange_realized_according_to(t_identified_exchange* identified_exchange);
+void log_exchange_completed(char* printable_exchange_completed);
+void log_no_trainer_found_to_increment_its_execution_cycles_quantity_error_for(t_trainer* trainer);
 void log_global_goal_accomplished();
+void log_metrics_report(char* metrics_report);
 
 void free_team_logs_manager();
 
