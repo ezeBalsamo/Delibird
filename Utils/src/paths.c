@@ -1,7 +1,8 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "roots.h"
+#include "paths.h"
+#include <sys/stat.h>
 
 char* module_absolute_path(){
     char* executable_path = getcwd(NULL, 0);
@@ -41,4 +42,9 @@ char* absolute_path_for_log_named(char* log_name){
 
     free(path);
     return log_absolute_path;
+}
+
+bool exists_file_at(char* path){
+    struct stat stat_buffer;
+    return stat(path, &stat_buffer) != -1;
 }

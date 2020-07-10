@@ -119,3 +119,11 @@ void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*)){
     list_iterate(elements_to_remove, _remove_it);
     list_destroy(elements_to_remove);
 }
+
+bool is_valid_index(t_list* self, int index){
+    return (list_size(self) > index) && (index >= 0);
+}
+
+void* list_get_last_element(t_list* self){
+    return list_get(self, list_size(self) - 1);
+}

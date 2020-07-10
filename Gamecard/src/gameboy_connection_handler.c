@@ -12,7 +12,7 @@ char* port(){
 }
 
 void* main_thread_handler(void* connection_fd){
-    int cast_connection_fd = *((int*) connection_fd);
+    uint32_t cast_connection_fd = *((uint32_t*) connection_fd);
 
     t_receive_information* receive_information  = receive_structure(cast_connection_fd);
 

@@ -1,6 +1,6 @@
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/garbage_collector.h"
-#include "filesystem.h"
+#include "file_system.h"
 #include <gamecard_logs_manager.h>
 #include <gamecard_query_performers.h>
 #include <new_query_performer.h>
@@ -52,7 +52,7 @@ t_gamecard_query_performer* query_performer_handle(uint32_t operation){
     return query_performer_found;
 }
 
-void gamecard_query_perform(t_request* request) {
+t_identified_message* gamecard_query_perform(t_request* request) {
     //Parseo de la request deserializada (indentified message x2) al mensaje en si
     t_request* parse_request = internal_request_in(request);
 
@@ -60,6 +60,6 @@ void gamecard_query_perform(t_request* request) {
     t_gamecard_query_performer* query_performer = query_performer_handle(parse_request->operation);
 
     //Ejecuto la función que tiene la lógica implementada para el mensaje que me llegó
-    query_performer->perform_function (request->structure);
+    return query_performer->perform_function (request->structure);
 
 }

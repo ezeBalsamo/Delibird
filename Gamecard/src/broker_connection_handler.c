@@ -30,7 +30,7 @@ void sleep_for(int reconnection_time_in_seconds){
 
 void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker_from_gamecard();
-    int reconnection_time_in_seconds = config_get_int_at("TIEMPO_DE_REINTENTO_CONEXION");
+    int reconnection_time_in_seconds = operation_retry_time_getter();
 
     if(reconnect((t_connection_information*) connection_information) == -1){
         log_failed_retry_of_communication_with_broker_from_gamecard();
@@ -114,6 +114,36 @@ void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_
     synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
 }
 
+void* performer_thread(void* deserialized_request){
+
+    t_request* cast_deserialized_request = (t_request*) deserialized_request;
+
+    t_identified_message* response_message = gamecard_query_perform(cast_deserialized_request);
+
+    t_request* request = safe_malloc(sizeof(t_request));
+    request -> operation = IDENTIFIED_MESSAGE;
+    request -> structure = response_message;
+    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
+
+    t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
+
+    if(connection_information -> connection_was_succesful){
+
+        serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
+
+    } else {
+
+        log_failed_attempt_to_communicate_with_broker_from_gamecard("se procederá con la ejecución");
+
+    }
+
+    free_and_close_connection_information(connection_information);
+    free_request(deserialized_request);
+    free_request(request);
+
+    return NULL;
+}
+
 void consume_messages_considering_reconnections_with(t_connection_information* connection_information,
                                                      void* queue_operation_identifier){
 
@@ -129,9 +159,7 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
         send_ack_message(identified_message -> message_id, current_active_socket_fd);
 
         log_request_received(deserialized_request);
-        gamecard_query_perform(deserialized_request);
-
-        free_request(deserialized_request);
+        default_safe_thread_create(performer_thread, deserialized_request);
     }
 
     free_receive_information(receive_information);

@@ -14,5 +14,7 @@ void* list_remove_first(t_list* self);
 void* list_first(t_list* self);
 t_list* list_intersection(t_list* self, t_list* another, bool (*comparer) (void*, void*));
 void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*));
+void* list_get_last_element(t_list* self);
+bool is_valid_index(t_list* self, int index);
 
 #endif //DELIBIRD_T_LIST_EXTENSION_H

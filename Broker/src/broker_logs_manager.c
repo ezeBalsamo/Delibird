@@ -130,6 +130,12 @@ void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
     free(message);
 }
 
+void log_invalid_operation_to_save_message_error(){
+    char* message = "No se pudo guardar el mensaje. Posiblemente sea mas grande que la memoria.";
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context){
     char* message = string_from_format("Se esperaba recibir un ack del suscriptor %s en el socket %d.", subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_errorful_message(process_execution_logger(), message);
