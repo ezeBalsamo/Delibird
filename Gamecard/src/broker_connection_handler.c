@@ -3,11 +3,9 @@
 #include "../include/gamecard_configuration_manager.h"
 #include "../include/broker_connection_handler.h"
 #include "../../Utils/include/general_logs.h"
-#include "../../Utils/include/logger.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
-#include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
 #include <commons/string.h>
@@ -114,6 +112,21 @@ void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_
     synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
 }
 
+void apply_default_action(){
+    log_failed_attempt_to_communicate_with_broker_from_gamecard("se procederá con la ejecución");
+}
+
+void send_structure_considering_ack(t_request* request, t_connection_information* connection_information){
+    int ack =
+            serialize_and_send_structure_and_wait_for_ack(request,
+                                                          connection_information -> socket_fd,
+                                                          ack_timeout());
+
+    if(ack == FAILED_ACK){
+        apply_default_action();
+    }
+}
+
 void* performer_thread(void* deserialized_request){
 
     t_request* cast_deserialized_request = (t_request*) deserialized_request;
@@ -128,13 +141,9 @@ void* performer_thread(void* deserialized_request){
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful){
-
-        serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
-
+        send_structure_considering_ack(request, connection_information);
     } else {
-
-        log_failed_attempt_to_communicate_with_broker_from_gamecard("se procederá con la ejecución");
-
+        apply_default_action();
     }
 
     free_and_close_connection_information(connection_information);
