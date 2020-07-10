@@ -18,13 +18,18 @@ void consider_continue_executing();
 bool is_anybody_executing();
 void execute_trainer_thread_context();
 
-void preempt();
 bool preemption_must_take_place();
+void preempt();
+void preemption_completed();
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);
 
-void assert_all_trainer_thread_contexts_have_finished();
+bool is_deadlock_resolution_in_process();
+void deadlock_solver_has_begun();
+void deadlock_solver_has_ended();
+
+void consider_ending();
 int finished_trainer_thread_contexts_amount();
 
 void free_dispatcher();

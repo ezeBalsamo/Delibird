@@ -19,7 +19,7 @@ void chase(t_targetable_object* targetable_pokemon){
         pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
     }else{
         t_trainer_thread_context* trainer_thread_context =
-                trainer_thread_context_closest_to(trainer_thread_contexts, localizable_pokemon);
+                trainer_thread_context_closest_to_localizable_object(trainer_thread_contexts, localizable_pokemon);
         targetable_pokemon -> is_being_targeted = true;
         prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
         pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);

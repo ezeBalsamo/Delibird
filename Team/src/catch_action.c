@@ -18,6 +18,30 @@ t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_cont
     return catch_pokemon;
 }
 
+void apply_default_catch_action_for(t_trainer_thread_context* trainer_thread_context){
+    t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
+    log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
+
+    catch_action_completed_successfully_by(trainer_thread_context);
+}
+
+void apply_catch_action_when_connection_success(t_request* request,
+                                                t_connection_information* connection_information,
+                                                t_trainer_thread_context* trainer_thread_context){
+
+    int ack =
+            serialize_and_send_structure_and_wait_for_ack(
+                    request,
+                    connection_information -> socket_fd,
+                    ack_timeout());
+
+    if (ack == FAILED_ACK){
+        apply_default_catch_action_for(trainer_thread_context);
+    }else{
+        catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
+    }
+}
+
 void catch_action_execution_function(t_trainer_thread_context* trainer_thread_context){
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = CATCH_POKEMON;
@@ -27,18 +51,9 @@ void catch_action_execution_function(t_trainer_thread_context* trainer_thread_co
     t_connection_information* connection_information = connect_to(broker_ip(), broker_port());
 
     if(connection_information -> connection_was_succesful) {
-        int ack =
-                serialize_and_send_structure_and_wait_for_ack(
-                        request,
-                        connection_information -> socket_fd,
-                        ack_timeout());
-
-        catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
+        apply_catch_action_when_connection_success(request, connection_information, trainer_thread_context);
     } else {
-        t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
-        log_succesfully_caught_due_to_failed_communication_with_broker(catch_action -> localizable_pokemon);
-
-        catch_action_completed_by(trainer_thread_context);
+        apply_default_catch_action_for(trainer_thread_context);
     }
 
     free_and_close_connection_information(connection_information);

@@ -29,5 +29,7 @@ t_role_mode* role_mode_for(uint32_t process_code){
 }
 
 void free_role_mode_strategy(){
-    list_destroy_and_destroy_elements(role_modes_strategy, free);
+    if(role_modes_strategy != NULL){
+        list_destroy_and_destroy_elements(role_modes_strategy, free);
+    }
 }

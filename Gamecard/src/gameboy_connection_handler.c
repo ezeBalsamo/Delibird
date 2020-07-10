@@ -14,19 +14,24 @@ char* port(){
 void* main_thread_handler(void* connection_fd){
     uint32_t cast_connection_fd = *((uint32_t*) connection_fd);
 
-    t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
-    t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+    t_receive_information* receive_information  = receive_structure(cast_connection_fd);
 
-    //Loguear y mostrar por consola mensaje recibido
-    log_request_received_with(main_logger(), deserialized_request);
+    if(receive_information -> receive_was_successful){
 
-    //Realizar lógica
-    //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp
-    gamecard_query_perform(deserialized_request);
+        t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
+
+        //Loguear y mostrar por consola mensaje recibido
+        log_request_received(deserialized_request);
+
+        //Realizar lógica
+        //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp
+        gamecard_query_perform(deserialized_request);
+
+        free(deserialized_request);
+    }
 
     free_and_close_connection(connection_fd);
-    free_serialization_information(serialization_information);
-    free(deserialized_request);
+    free_receive_information(receive_information);
 
     return NULL;
 }

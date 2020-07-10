@@ -9,8 +9,22 @@ t_list* requirements_of(t_trainer* trainer){
                            (bool (*)(void *, void *)) string_equals_ignore_case);
 }
 
+t_list* pokemons_in_excess_of(t_trainer* trainer){
+    return list_difference(trainer -> current_pokemons, trainer -> required_pokemons,
+                    (bool (*)(void *, void *)) string_equals_ignore_case);
+}
+
 bool can_catch_pokemons(t_trainer* trainer){
     return list_size(trainer -> current_pokemons) < list_size(trainer -> required_pokemons);
+}
+
+bool has_accomplished_own_goal(t_trainer* trainer){
+
+    t_list* trainer_requirements = requirements_of(trainer);
+    bool has_finished = list_is_empty(trainer_requirements);
+
+    list_destroy(trainer_requirements);
+    return has_finished;
 }
 
 t_list* goal_of(t_trainer* trainer){

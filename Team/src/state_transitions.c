@@ -39,6 +39,7 @@ void execute_to_ready_transition_due_to_default_catch_for(t_trainer_thread_conte
 void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context* trainer_thread_context){
     void _to_ready_function(){
         schedule(trainer_thread_context, preemption_reason());
+        preemption_completed();
     }
 
     stop_current_execution_doing(_to_ready_function);
@@ -61,14 +62,14 @@ void execute_to_finished_transition_function(t_trainer_thread_context* trainer_t
     }
 
     stop_current_execution_doing(_to_finished_function);
-    consider_global_goal_accomplished();
+    consider_ending();
 }
 
 void blocked_to_finished_transition_function(t_trainer_thread_context* trainer_thread_context){
 
     move_to(trainer_thread_context, FINISHED);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-    consider_global_goal_accomplished();
+    consider_ending();
 }
 
 void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
@@ -82,7 +83,7 @@ void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_th
 
 void blocked_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
 
-    log_trainer_blocked(trainer_thread_context);
+    log_trainer_remains_blocked(trainer_thread_context);
 }
 
 void load_new_state_transition(uint32_t from_state, uint32_t to_state, void (*state_function) (t_trainer_thread_context*)){

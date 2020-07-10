@@ -145,3 +145,14 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
 void sem_initialize(sem_t* semaphore){
     sem_init(semaphore, false, 0);
 }
+
+void assert_only_one_in(t_list* self){
+    if(list_size(self) != 1){
+        log_expected_to_have_only_one_element_error();
+        free_system();
+    }
+}
+
+int minimum_integer_between(int number, int another_number){
+    return number < another_number ? number : another_number;
+}

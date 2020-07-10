@@ -2,8 +2,8 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
-#include "../../Utils/include/logger.h"
 #include <appeared_query_performer.h>
+#include <stdlib.h>
 
 t_query_performer* query_performer;
 
@@ -14,19 +14,26 @@ char* own_port(){
 void* main_thread_handler(void* connection_fd){
     int cast_connection_fd = *((int*) connection_fd);
 
-    t_serialization_information* serialization_information = receive_structure(cast_connection_fd);
-    t_request* deserialized_request = deserialize(serialization_information -> serialized_request);
+    t_receive_information* receive_information  = receive_structure(cast_connection_fd);
 
-    t_identified_message* correlative_identified_message = deserialized_request -> structure;
-    send_ack_message(correlative_identified_message -> message_id, cast_connection_fd);
+    if(receive_information -> receive_was_successful){
 
-    log_request_received_with(main_logger(), deserialized_request);
+        t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
+        t_identified_message* correlative_identified_message = deserialized_request -> structure;
+        send_ack_message(correlative_identified_message -> message_id, cast_connection_fd);
 
-    query_performer -> perform_function (deserialized_request -> structure);
+        log_request_received(deserialized_request);
 
-    free_and_close_connection(connection_fd);
-    free_serialization_information(serialization_information);
-    free_request(deserialized_request);
+        query_performer -> perform_function (deserialized_request -> structure);
+
+        free_request(deserialized_request);
+        free_and_close_connection(connection_fd);
+    }
+    else{
+        free(connection_fd);
+    }
+
+    free_receive_information(receive_information);
 
     return NULL;
 }

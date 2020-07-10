@@ -51,11 +51,16 @@ t_list* trainer_thread_contexts_in(uint32_t state){
     return dispatcher_queue_of(state) -> trainer_thread_contexts;
 }
 
+void handling_concurrency_do(t_dispatcher_queue* dispatcher_queue, void (*function) ()){
+    pthread_mutex_lock(&dispatcher_queue -> mutex);
+    function();
+    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+}
+
 void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_thread_context_to_find){
 
     bool _are_equals(t_trainer_thread_context* trainer_thread_context_to_compare){
-        return are_equal_trainers(trainer_thread_context_to_find -> localizable_trainer -> object,
-                                  trainer_thread_context_to_compare -> localizable_trainer -> object);
+        return are_equal_trainer_thread_contexts(trainer_thread_context_to_find, trainer_thread_context_to_compare);
     }
 
     t_trainer_thread_context* trainer_thread_context_found =
@@ -71,20 +76,25 @@ void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_threa
 void remove_from_execute(){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(EXECUTE);
-    t_trainer_thread_context* trainer_thread_context = list_get(dispatcher_queue -> trainer_thread_contexts, 0);
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
-    remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    t_trainer_thread_context* trainer_thread_context = list_first(dispatcher_queue -> trainer_thread_contexts);
+
+    void _remove(){
+        remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
+    }
+
+    handling_concurrency_do(dispatcher_queue, _remove);
 }
 
 void move_to_execute(){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
+    t_trainer_thread_context* trainer_thread_context_executing;
 
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
-    t_trainer_thread_context* trainer_thread_context_executing = list_remove_first(dispatcher_queue -> trainer_thread_contexts);
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    void _remove(){
+        trainer_thread_context_executing = list_remove_first(dispatcher_queue -> trainer_thread_contexts);
+    }
 
+    handling_concurrency_do(dispatcher_queue, _remove);
     add_to_dispatcher_queue(trainer_thread_context_executing, EXECUTE);
 }
 
@@ -92,19 +102,22 @@ void remove_from_dispatcher_queue(t_trainer_thread_context* trainer_thread_conte
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(trainer_thread_context -> state);
 
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
-    remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    void _remove(){
+        remove_from(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
+    }
+
+    handling_concurrency_do(dispatcher_queue, _remove);
 }
 
 void add_to_dispatcher_queue(t_trainer_thread_context* trainer_thread_context, uint32_t to_state){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(to_state);
 
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
-    list_add(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    void _add(){
+        list_add(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
+    }
 
+    handling_concurrency_do(dispatcher_queue, _add);
     trainer_thread_context -> state = to_state;
 }
 
