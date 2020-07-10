@@ -9,7 +9,7 @@ void initialize_event_notifier(){
     subscriptions = list_create();
 }
 
-void subscribe_to_event_doing(int event_type, void (*callback_function) (void* event_argument)){
+void subscribe_to_event_doing(int event_type, void (*callback_function) (void*)){
     t_subscription* subscription = safe_malloc(sizeof(t_subscription));
     subscription -> event_type = event_type;
     subscription -> callback_function = callback_function;

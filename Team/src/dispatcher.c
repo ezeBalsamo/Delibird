@@ -80,7 +80,7 @@ void consider_continue_executing(){
 }
 
 void stop_current_execution_doing(void (*state_function) ()){
-    notify(CURRENT_EXECUTION_STOPPED);
+    notify(CONTEXT_SWITCH_REALIZED);
     state_function();
     remove_from_execute();
     pthread_mutex_unlock(&execute_mutex);

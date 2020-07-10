@@ -74,4 +74,6 @@ t_thread_action* exchange_thread_action(){
     thread_action -> request -> structure = NULL;
     thread_action -> request -> sanitizer_function = free;
     thread_action -> execution_function = (void (*)(void *)) exchange_action_execution_function;
+
+    return thread_action;
 }

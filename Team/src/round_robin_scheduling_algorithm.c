@@ -41,7 +41,7 @@ void quantum_consumed(){
 static void subscribe_to_events(){
     subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED, quantum_consumed);
     subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED_BY_TRAINER, quantum_consumed);
-    subscribe_to_event_doing(CURRENT_EXECUTION_STOPPED, reset_quantum_consumed);
+    subscribe_to_event_doing(CONTEXT_SWITCH_REALIZED, reset_quantum_consumed);
 }
 
 void initialize_round_robin_scheduling_algorithm(){
