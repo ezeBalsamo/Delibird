@@ -6,6 +6,7 @@
 #include <commons/string.h>
 #include <unistd.h>
 #include "../../Broker/include/broker_memory_manager.h"
+#include <commons/temporal.h>
 
 void handler(){
     char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
@@ -144,6 +145,22 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
 
 void sem_initialize(sem_t* semaphore){
     sem_init(semaphore, false, 0);
+}
+
+uint64_t current_time_in_milliseconds(){
+
+   char* time = temporal_get_string_time();
+   char** time_splitted = string_split(time, ":");
+   char* hours = time_splitted[0];
+   char* minutes = time_splitted[1];
+   char* seconds = time_splitted[2];
+   int milliseconds = atoi(time_splitted[3]);
+
+   int hours_in_milliseconds = atoi(hours) * 3600000;
+   int minutes_in_milliseconds = atoi(minutes) * 60000;
+   int seconds_in_milliseconds = atoi(seconds) * 1000;
+
+   return hours_in_milliseconds + minutes_in_milliseconds + seconds_in_milliseconds + milliseconds;
 }
 
 void assert_only_one_in(t_list* self){

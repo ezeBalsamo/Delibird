@@ -1,6 +1,7 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <subscriber_context_provider.h>
+#include <queue_message_status.h>
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -33,7 +34,7 @@ void log_succesful_subscription_process(t_subscriber_context* subscriber_context
 
 void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identified_message, uint32_t queue_code){
     char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se pusheo el mensaje:\n%s\na la cola de mensajes: %s correctamente!", printed_object, queue_name_of(queue_code));
+    char* message = string_from_format("Se pusheo el mensaje:\n%s con id:%d \na la cola de mensajes: %s correctamente!", printed_object, identified_message -> message_id, queue_name_of(queue_code));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
@@ -46,6 +47,29 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
+    free(message);
+}
+
+void log_succesful_save_message_to_cache(t_request* request, void* message_position){
+    char* printed_object = request_pretty_print(request);
+    char* message = string_from_format("Se guardó correctamente el mensaje:\n%s\nen la posicion de memoria: %p", printed_object, message_position);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(printed_object);
+    free(message);
+}
+
+void log_succesful_free_partition_to_cache(void* message_position){
+    char* message = string_from_format("Se liberó correctamente un mensaje en la posicion de memoria: %p", message_position);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_succesful_memory_compaction(int amount_of_partitions_compacted){
+    char* message = string_from_format("Se compactó correctamente la memoria, compactando %d bloque/s.", amount_of_partitions_compacted);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
@@ -88,7 +112,7 @@ void log_succesful_message_sent_to_suscribers(t_request* request){
 
 void log_succesful_get_and_update_subscribers_to_send(t_identified_message* identified_message){
     char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje:\n%s\n",printed_object);
+    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje:\n%s con id: %d\n",printed_object, identified_message -> message_id);
     log_succesful_message(process_execution_logger(), message);
     free(printed_object);
     free(message);
@@ -114,14 +138,17 @@ void log_update_of_message_id_received_for(t_subscriber_context* subscriber_cont
     free(message);
 }
 
+void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status){
+    char* printed_object = request_pretty_print(message_status ->identified_message -> request);
+    char* message = string_from_format("Se borro el mensaje:\n %s con id: %d correctamente!", printed_object, message_status -> identified_message -> message_id);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_subscriber_disconnection(t_subscriber_context* subscriber_context){
     char* message = string_from_format("Se desconecto al suscriptor: %s con socket: %d de la cola: %s", subscriber_context -> process_description, subscriber_context -> socket_fd, queue_name_of(subscriber_context -> operation_queue));
     log_errorful_message(process_execution_logger(), message);
     free(message);
-}
-
-void log_received_unknown_operation_error(){
-    log_errorful_message(process_execution_logger(), "No se recibió una operación válida para poder poner en una cola de mensajes.\n");
 }
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation){
@@ -151,14 +178,20 @@ void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_c
     free(message);
 }
 
-void log_subscriber_not_found_in_queue_subscribers_warning(t_subscriber_context* subscriber_context, uint32_t queue_code){
+void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscriber_context, uint32_t queue_code){
 
     char* process_description = subscriber_context -> process_description;
     char* queue_name = queue_name_of(queue_code);
     char* message =
-            string_from_format("No se encontro suscriptor: %s para removerlo de la lista de la siguiente cola de mensajes: %s\n Es un nuevo suscriptor.",
+            string_from_format("Se suscribio un suscriptor nuevo: %s a la cola de mensajes %s\n correctamente.",
                     process_description, queue_name);
-    log_warning_message(process_execution_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_message_status_not_found_in_queue_error(){
+    char* message = "No se pudo borrar un mensaje de la cola de mensajes, algo funcionó mal!";
+    log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 

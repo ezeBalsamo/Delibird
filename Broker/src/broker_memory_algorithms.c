@@ -2,6 +2,10 @@
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
 #include <commons/collections/dictionary.h>
+#include <best_fit_available_partition_search_algorithm.h>
+#include <stdlib.h>
+#include <lru_partition_free_algorithm.h>
+#include <queue_message_status.h>
 #include "../include/first_fit_available_partition_search_algorithm.h"
 #include "../include/fifo_partition_free_algorithm.h"
 #include "../include/dynamic_partition_message_allocator.h"
@@ -20,17 +24,20 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
         initial_position_to_occupy_for_next_block = block_to_adjust->initial_position+block_to_adjust->block_size;
     }
     //moverlo al final de la memoria y de la lista administrativa
-    list_remove(blocks_information,block_index);
-    list_add(blocks_information,block_to_reposition);
-
     t_block_information* last_block = list_get_last_element(blocks_information);
-    block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
+    if(last_block != block_to_reposition){
+        block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
+        list_remove(blocks_information,block_index);
+        list_add(blocks_information,block_to_reposition);
+    }
 }
 
 void initialize_broker_memory_algorithms(){
     algorithms = dictionary_create();
     dictionary_put(algorithms,"FIFO", (void*)fifo_partition_free_algorithm);
+    dictionary_put(algorithms,"LRU", (void*)lru_partition_free_algorithm);
     dictionary_put(algorithms,"FF", (void*)first_fit_available_partition_search_algorithm);
+    dictionary_put(algorithms, "BF", (void*)best_fit_available_partition_search_algorithm);
     dictionary_put(algorithms,"PD", (void*)initialize_dynamic_partition_message_allocator);
 }
 
@@ -97,4 +104,54 @@ void memory_compaction_algorithm(t_list* blocks_information){
     }
     //Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
     combine_all_free_partitions(blocks_information);
+}
+
+bool can_save_message(t_block_information* block_information, uint32_t message_size, uint32_t min_partition_size){
+    bool enough_size_for_message = ((t_block_information*) block_information)->block_size >= message_size;
+    bool block_is_free = ((t_block_information*) block_information)->is_free;
+    bool block_is_usable = ((t_block_information*) block_information)->block_size >= min_partition_size;
+    return enough_size_for_message && block_is_free && block_is_usable;
+}
+
+void empty_block_information(t_block_information* block_found){
+    delete_message(block_found->memory_block->message_operation,block_found->memory_block->message_id);
+    block_found->is_free = true;
+    free(block_found->memory_block);
+    block_found->memory_block = NULL;
+}
+
+void consolidate_block_with(t_block_information* master_block,t_block_information* block_to_be_consolidated){
+    master_block->block_size += block_to_be_consolidated ->block_size;
+
+    if(master_block->initial_position > block_to_be_consolidated ->initial_position){
+
+        master_block->initial_position = block_to_be_consolidated ->initial_position;
+    }
+
+    free(block_to_be_consolidated);
+}
+
+bool is_free_block_in_index(t_list* blocks_information, int index){
+    return ((t_block_information*) list_get(blocks_information,index))->is_free;
+}
+
+void consolidate_block(t_list* blocks_information,int index_of_block_to_consolidate){
+    t_block_information* master_block = (t_block_information*) list_get(blocks_information,index_of_block_to_consolidate);
+
+    if (is_valid_index(blocks_information,index_of_block_to_consolidate+1)){
+        if(is_free_block_in_index(blocks_information,index_of_block_to_consolidate+1)){ //en caso de que no sea lazy evaluation
+
+            t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate+1);
+
+            consolidate_block_with(master_block,block_to_be_consolidated);
+        }
+    }
+
+    if (is_valid_index(blocks_information,index_of_block_to_consolidate-1)){
+        if(is_free_block_in_index(blocks_information, index_of_block_to_consolidate-1)){
+            t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate-1);
+
+            consolidate_block_with(master_block,block_to_be_consolidated);
+        }
+    }
 }
