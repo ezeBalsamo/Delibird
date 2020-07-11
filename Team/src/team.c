@@ -1,6 +1,7 @@
 #include <dispatcher.h>
 #include <team_configuration_manager.h>
 #include <main_threads_executor.h>
+#include <event_notifier.h>
 #include "../include/team_logs_manager.h"
 #include "../include/team_serializable_objects.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -17,6 +18,7 @@ int main(void) {
     initialize_pretty_printer();
     initialize_team_serializable_objects();
     initialize_team_configuration_manager();
+    initialize_event_notifier();
     initialize_dispatcher();
 
     log_succesful_start_up();

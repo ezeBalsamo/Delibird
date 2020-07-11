@@ -10,6 +10,8 @@
 #include <team_configuration_manager.h>
 #include <unistd.h>
 #include <trainer_thread_context_execution_cycle.h>
+#include <event_notifier.h>
+#include <team_pretty_prints.h>
 
 extern sem_t exchange_resolution_semaphore;
 int deadlock_consume_cycle_quantity = 5;
@@ -17,7 +19,6 @@ int deadlock_consume_cycle_quantity = 5;
 void times_repeat(int times, void (*function) ()){
     for(int i = 0; i < times; i++){
         function();
-        sleep(time_delay());
     }
 }
 
@@ -37,14 +38,28 @@ void exchange_with(t_identified_exchange* identified_exchange){
                                second_party_localizable_trainer);
 }
 
+void notify_and_log_exchange_realized_according_to(t_identified_exchange* identified_exchange){
+    char* printable_exchange_completed = exchange_completed_as_string(identified_exchange);
+    log_exchange_completed(printable_exchange_completed);
+    notify_with_argument(PRODUCED_AND_SOLVED_DEADLOCK, printable_exchange_completed);
+}
+
 void exchange_action_execution_function(t_trainer_thread_context* trainer_thread_context){
 
     t_list* identified_exchanges = current_identified_exchanges_in_process();
+
     void _exchange(t_identified_exchange* identified_exchange){
-        log_exchange_to_realize_according_to(identified_exchange);
-        times_repeat(deadlock_consume_cycle_quantity, execution_cycle_consumed);
+        log_exchange_to_do_according_to(identified_exchange);
+
+        void _notify(){
+            notify_with_argument(EXECUTION_CYCLE_CONSUMED_BY_TRAINER,
+                                 trainer_from_thread_context(trainer_thread_context));
+        }
+
+        times_repeat(deadlock_consume_cycle_quantity, _notify);
+
         exchange_with(identified_exchange);
-        log_exchange_realized_according_to(identified_exchange);
+        notify_and_log_exchange_realized_according_to(identified_exchange);
     }
 
     list_iterate(identified_exchanges, (void (*)(void *)) _exchange);
@@ -59,4 +74,6 @@ t_thread_action* exchange_thread_action(){
     thread_action -> request -> structure = NULL;
     thread_action -> request -> sanitizer_function = free;
     thread_action -> execution_function = (void (*)(void *)) exchange_action_execution_function;
+
+    return thread_action;
 }

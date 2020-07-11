@@ -42,5 +42,6 @@ void initialize_broker_memory_manager();
 void free_broker_memory_manager();
 void allocate_message(t_identified_message* message);
 char* dump_cache();
+void free_block_information(t_block_information* block_information);
 
 #endif //DELIBIRD_BROKER_MEMORY_MANAGER_H

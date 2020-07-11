@@ -3,7 +3,7 @@
 
 #endif //DELIBIRD_ROOTS_H
 
-char* absolute_path_for_config_named(char* config_name);
+char* absolute_path_for_config();
 
 char* logs_path();
 

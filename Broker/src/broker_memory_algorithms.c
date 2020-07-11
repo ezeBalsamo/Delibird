@@ -56,3 +56,7 @@ bool is_not_free_block(t_block_information* block){
 bool is_free_block_in_index(t_list* blocks_information, int index){
     return ((t_block_information*) list_get(blocks_information,index))->is_free;
 }
+
+void free_broker_memory_algorithms(){
+    dictionary_destroy(algorithms);
+}

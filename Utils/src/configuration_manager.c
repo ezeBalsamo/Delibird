@@ -7,9 +7,9 @@
 
 t_config* config;
 
-void initialize_configuration_manager_named(char* config_name){
+void initialize_configuration_manager(){
 
-    char* config_absolute_path = absolute_path_for_config_named(config_name);
+    char* config_absolute_path = absolute_path_for_config();
     config = config_create(config_absolute_path);
     free(config_absolute_path);
 
@@ -26,6 +26,10 @@ char* config_get_string_at(char* key){
 
 char** config_get_char_array_at(char* key){
     return config_get_array_value(config, key);
+}
+
+double config_get_double_at(char* key){
+    return config_get_double_value(config, key);
 }
 
 t_list* all_config_values(){

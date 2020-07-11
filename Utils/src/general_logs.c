@@ -162,8 +162,20 @@ void log_expected_to_have_only_one_element_error(){
     log_errorful_message(process_execution_logger(), "Se esperaba que la lista tuviera un único elemento.");
 }
 
+void log_directory_could_not_open_in_path_error(char* path){
+    char* message = string_from_format("No se pudo abrir un directorio en la ruta: %s", path);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_broker_disconnection(){
     char* message = "Se cayó la conexión con el broker!";
     log_warning_message(process_execution_logger(), message);
     log_warning_message(main_logger(), message);
+}
+
+void log_file_not_found_error(char* extension){
+    char* message = string_from_format("No se encontró un archivo con extensión: %s", extension);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
 }
