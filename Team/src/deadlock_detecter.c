@@ -1,11 +1,6 @@
 #include <commons/collections/list.h>
 #include <dispatcher_queues.h>
-#include <waiting_actions.h>
-#include <commons/string.h>
-#include <team_logs_manager.h>
-#include <trades_calculator.h>
 #include "deadlock_detecter.h"
-#include "../../Utils/include/t_list_extension.h"
 
 bool is_dispatcher_queue_empty(t_dispatcher_queue* dispatcher_queue){
     bool is_empty;

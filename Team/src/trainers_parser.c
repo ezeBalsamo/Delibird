@@ -18,8 +18,6 @@ void parsed_localized_object_positions(t_localizable_object* localizable_trainer
 
 void parse_current_pokemons_for(t_trainer* trainer, char* current_pokemons){
 
-    trainer -> current_pokemons = list_create();
-
     if(can_continue_parsing_current_pokemons){
         if(current_pokemons == NULL){
 
@@ -39,7 +37,6 @@ void parse_current_pokemons_for(t_trainer* trainer, char* current_pokemons){
 
 void parse_required_pokemons_for(t_trainer* trainer, char* required_pokemons){
 
-    trainer -> required_pokemons = list_create();
     char** splitted_required_pokemons = string_split(required_pokemons, "|");
 
     for(int i = 0; splitted_required_pokemons[i]; i++){
@@ -49,12 +46,12 @@ void parse_required_pokemons_for(t_trainer* trainer, char* required_pokemons){
     free(splitted_required_pokemons);
 }
 
-t_trainer* parsed_trainer_with_pokemons(char* current_pokemons, char* required_pokemons){
+t_trainer* new_trainer_with_sequential_number(int sequential_number){
 
     t_trainer* trainer = safe_malloc(sizeof(t_trainer));
-
-    parse_current_pokemons_for(trainer, current_pokemons);
-    parse_required_pokemons_for(trainer, required_pokemons);
+    trainer -> sequential_number = sequential_number;
+    trainer -> current_pokemons = list_create();
+    trainer -> required_pokemons = list_create();
 
     return trainer;
 }
@@ -69,8 +66,13 @@ t_list* parsed_trainers(){
 
     for(int i = 0; positions[i]; i++){
 
-        t_trainer* trainer = parsed_trainer_with_pokemons(current_pokemons[i], required_pokemons[i]);
-        trainer -> sequential_number = i + 1;
+        t_trainer* trainer = new_trainer_with_sequential_number(i + 1);
+
+        if(*current_pokemons != NULL){
+            parse_current_pokemons_for(trainer, current_pokemons[i]);
+        }
+
+        parse_required_pokemons_for(trainer, required_pokemons[i]);
 
         t_localizable_object* localizable_trainer = safe_malloc(sizeof(t_localizable_object));
         parsed_localized_object_positions(localizable_trainer, positions[i]);
