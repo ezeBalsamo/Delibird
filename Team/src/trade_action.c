@@ -42,6 +42,10 @@ void notify_and_log_trade_realized_according_to(t_identified_trade* identified_t
     char* printable_trade_completed = trade_completed_as_string(identified_trade);
     log_trade_completed(printable_trade_completed);
     notify_with_argument(TRADE_COMPLETED, printable_trade_completed);
+
+    if(identified_trade -> trade_type == BENEFITIAL_FOR_BOTH_PARTIES){
+        notify(PRODUCED_AND_SOLVED_DEADLOCK);
+    }
 }
 
 void trade_action_execution_function(t_trainer_thread_context* trainer_thread_context){

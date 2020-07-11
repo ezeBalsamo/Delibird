@@ -49,8 +49,8 @@ void increment_context_switches_quantity(){
     context_switches_quantity++;
 }
 
-void increment_produced_and_solved_deadlocks_quantity(int produced_deadlocks_quantity){
-    produced_and_resolved_deadlocks_quantity = produced_deadlocks_quantity;
+void increment_produced_and_solved_deadlocks_quantity(){
+    produced_and_resolved_deadlocks_quantity++;
 }
 
 void save_printable_trade_completed(char* printable_trade_completed){

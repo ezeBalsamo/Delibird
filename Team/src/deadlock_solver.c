@@ -50,24 +50,28 @@ bool has_not_finished(t_trainer_thread_context* trainer_thread_context){
     return !has_finished(trainer_thread_context);
 }
 
+void calculate_and_execute_trades_between(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+    t_list* identified_trades = trades_between(trainer_thread_context, another_trainer_thread_context);
+
+    if(!list_is_empty(identified_trades)){
+        queue_push(remaining_identified_trades, identified_trades);
+        execute_all_remaining_trades();
+    }else{
+        list_destroy(identified_trades);
+    }
+}
+
 void calculate_and_execute_trades_between_trainer_thread_context_and_all(t_trainer_thread_context* trainer_thread_context_to_compare, t_list* closest_trainer_thread_contexts){
 
-    void _calculate_and_load_trades_for(t_trainer_thread_context* trainer_thread_context){
-        t_list* identified_trades = trades_between(trainer_thread_context_to_compare, trainer_thread_context);
+    void _calculate_and_execute_trades_for(t_trainer_thread_context* trainer_thread_context){
 
-        if(!list_is_empty(identified_trades)){
-            queue_push(remaining_identified_trades, identified_trades);
-            execute_all_remaining_trades();
-        }else{
-            list_destroy(identified_trades);
+        if(has_not_finished(trainer_thread_context_to_compare)){
+            calculate_and_execute_trades_between(trainer_thread_context_to_compare, trainer_thread_context);
         }
     }
 
-    t_list* not_finished_trainer_thread_contexts = list_filter(closest_trainer_thread_contexts,
-                                                               (bool (*)(void *)) has_not_finished);
-
-    list_iterate(not_finished_trainer_thread_contexts, (void (*)(void *)) _calculate_and_load_trades_for);
-
+    t_list* not_finished_trainer_thread_contexts = list_filter(closest_trainer_thread_contexts, (bool (*)(void *)) has_not_finished);
+    list_iterate(not_finished_trainer_thread_contexts, (void (*)(void *)) _calculate_and_execute_trades_for);
     list_destroy(not_finished_trainer_thread_contexts);
 }
 

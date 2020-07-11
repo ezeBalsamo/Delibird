@@ -23,7 +23,6 @@ void* deadlock_solver_thread(){
 void detect_and_recover_from_deadlock(){
     log_deadlock_detection_algorithm_has_begun();
     if(deadlock_exists()){
-//        calculate_and_notify_deadlocks_quantity();
         deadlock_thread = default_safe_thread_create(deadlock_solver_thread, NULL);
     }else{
         log_deadlock_detection_algorithm_has_finished_with_no_deadlock_detected();
