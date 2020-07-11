@@ -64,10 +64,19 @@ t_list* exchanges_between(t_trainer_thread_context* trainer_thread_context, t_tr
     return exchanges_inferred;
 }
 
+bool has_finished(t_trainer_thread_context* trainer_thread_context){
+    return trainer_thread_context -> state == FINISHED;
+}
+
+bool has_not_finished(t_trainer_thread_context* trainer_thread_context){
+    return !has_finished(trainer_thread_context);
+}
+
 void calculate_and_execute_exchanges_between_trainer_thread_context_and_all(t_trainer_thread_context* trainer_thread_context_to_compare, t_list* closest_trainer_thread_contexts){
 
     void _calculate_and_load_exchanges_for(t_trainer_thread_context* trainer_thread_context){
         t_list* identified_exchanges = exchanges_between(trainer_thread_context_to_compare, trainer_thread_context);
+
         if(!list_is_empty(identified_exchanges)){
             queue_push(remaining_identified_exchanges, identified_exchanges);
             execute_all_remaining_exchanges();
@@ -76,16 +85,17 @@ void calculate_and_execute_exchanges_between_trainer_thread_context_and_all(t_tr
         }
     }
 
-    list_iterate(closest_trainer_thread_contexts, (void (*)(void *)) _calculate_and_load_exchanges_for);
+    t_list* not_finished_trainer_thread_contexts = list_filter(closest_trainer_thread_contexts,
+                                                               (bool (*)(void *)) has_not_finished);
+
+    list_iterate(not_finished_trainer_thread_contexts, (void (*)(void *)) _calculate_and_load_exchanges_for);
+
+    list_destroy(not_finished_trainer_thread_contexts);
 }
 
 void remove_finished_trainer_thread_contexts_from(t_list* trainer_thread_contexts){
 
-    bool _has_finished(t_trainer_thread_context* trainer_thread_context){
-        return trainer_thread_context -> state == FINISHED;
-    }
-
-    list_remove_all_by_condition(trainer_thread_contexts, (bool (*)(void *)) _has_finished);
+    list_remove_all_by_condition(trainer_thread_contexts, (bool (*)(void *)) has_finished);
 }
 
 void increase_range_of_view(t_list* closest_trainer_thread_contexts, t_list* remaining_trainer_thread_contexts){
@@ -99,7 +109,7 @@ void increase_range_of_view(t_list* closest_trainer_thread_contexts, t_list* rem
         }
 
         list_remove_by_condition(remaining_trainer_thread_contexts, (bool (*)(void *)) _are_equals);
-        list_add(closest_trainer_thread_contexts, closest_trainer_thread_context);
+        list_add_as_first(closest_trainer_thread_contexts, closest_trainer_thread_context);
     }
 }
 
