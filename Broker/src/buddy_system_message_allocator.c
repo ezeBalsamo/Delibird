@@ -83,6 +83,7 @@ void disassociate_buddy_if_possible(t_list* blocks_information, t_block_informat
         block_information_found->block_size = new_block_size;
 
         t_block_information* new_buddy_block_information = safe_malloc(sizeof(t_block_information));
+        new_buddy_block_information->is_free = true;
         new_buddy_block_information->block_size = new_block_size;
         new_buddy_block_information->initial_position = block_information_found->initial_position + new_block_size;
 
