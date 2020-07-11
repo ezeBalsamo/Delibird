@@ -28,7 +28,7 @@ char* get_file_name_with_extension(char* path, char* extension) {
         DIR* directory_stream_found;
         struct dirent* file;
         directory_stream_found = opendir(path);
-        t_list* directory_files = list_create();
+        t_list* names_of_directory_files = list_create();
 
         if (!directory_stream_found) {
             log_directory_could_not_open_in_path_error();
@@ -37,29 +37,35 @@ char* get_file_name_with_extension(char* path, char* extension) {
 
         while ((file = readdir(directory_stream_found)) != NULL) {
             char* name = file -> d_name;
-            unsigned char type = file -> d_type;  //Los archivos son de tipo 8. Las carpetas de tipo 4.
+            unsigned char type = file -> d_type;  //Los archivos son de tipo DT_REG.
 
-            if(type == 8){
-                list_add(directory_files, file);
+            if(type == DT_REG){
+                list_add(names_of_directory_files, name);
             }
         }
 
-        bool _is_a_file_with_extension(struct dirent* file){
-            return string_contains(file -> d_name, extension);
+        bool _is_a_file_with_extension(char* file_name){
+            return string_contains(file_name, extension);
         }
 
-        struct dirent* file_found = list_find(directory_files, (bool (*) (void*))_is_a_file_with_extension);
-        list_destroy(directory_files);
+        char* file_name_found = list_find(names_of_directory_files, (bool (*) (void*))_is_a_file_with_extension);
+
+        if(file_name_found == NULL){
+            log_file_not_found_error(extension);
+            free_system();
+        }
+
+        list_destroy(names_of_directory_files);
 
         closedir(directory_stream_found);
 
-        return file_found -> d_name;
+        return file_name_found;
 }
 
 char* absolute_path_for_config(){
 
     char* project_path = module_absolute_path();
-    char* config_name = get_file_name_with_extension(project_path, "config");
+    char* config_name = get_file_name_with_extension(project_path, ".config");
     char* config_absolute_path = string_from_format("%s/%s", project_path, config_name);
 
     free(project_path);
