@@ -49,7 +49,7 @@ void exchange_action_execution_function(t_trainer_thread_context* trainer_thread
     t_list* identified_exchanges = current_identified_exchanges_in_process();
 
     void _exchange(t_identified_exchange* identified_exchange){
-        log_exchange_to_realize_according_to(identified_exchange);
+        log_exchange_to_do_according_to(identified_exchange);
 
         void _notify(){
             notify_with_argument(EXECUTION_CYCLE_CONSUMED_BY_TRAINER,

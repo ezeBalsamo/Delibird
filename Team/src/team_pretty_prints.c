@@ -124,7 +124,7 @@ char* exchange_with_concrete_action_as_string(t_identified_exchange* identified_
     return message;
 }
 
-char* exchange_to_realize_as_string(t_identified_exchange* identified_exchange){
+char* exchange_to_do_as_string(t_identified_exchange* identified_exchange){
     return exchange_with_concrete_action_as_string(identified_exchange, "intercambiará");
 }
 

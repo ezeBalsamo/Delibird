@@ -395,8 +395,8 @@ void log_deadlock_solver_has_finished(){
     log_succesful_message(process_execution_logger(), message);
 }
 
-void log_exchange_to_realize_according_to(t_identified_exchange* identified_exchange){
-    char* printable_exchange_to_realize = exchange_to_realize_as_string(identified_exchange);
+void log_exchange_to_do_according_to(t_identified_exchange* identified_exchange){
+    char* printable_exchange_to_realize = exchange_to_do_as_string(identified_exchange);
     char* message = string_from_format("A punto de realizar un intercambio: %s", printable_exchange_to_realize);
 
     log_succesful_message(process_execution_logger(), message);

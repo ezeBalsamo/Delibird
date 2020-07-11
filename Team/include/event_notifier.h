@@ -8,7 +8,7 @@ enum Event_types{
     PRODUCED_AND_SOLVED_DEADLOCK
 };
 
-typedef struct subscription{
+typedef struct Subscription{
     int event_type;
     void (*callback_function) (void* event_argument);
 }t_subscription;
