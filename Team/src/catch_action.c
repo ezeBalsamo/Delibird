@@ -4,6 +4,7 @@
 #include "../../Utils/include/socket.h"
 #include <stdlib.h>
 #include <team_logs_manager.h>
+#include <event_notifier.h>
 
 t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_context){
 
@@ -34,6 +35,9 @@ void apply_catch_action_when_connection_success(t_request* request,
                     request,
                     connection_information -> socket_fd,
                     ack_timeout());
+
+    notify_with_argument(EXECUTION_CYCLE_CONSUMED_BY_TRAINER,
+                         trainer_from_thread_context(trainer_thread_context));
 
     if (ack == FAILED_ACK){
         apply_default_catch_action_for(trainer_thread_context);

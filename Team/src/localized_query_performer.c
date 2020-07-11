@@ -51,8 +51,9 @@ void assert_matching_pokemon_name_for(t_identified_message* identified_message){
 void add_new_occurrences_according_to(t_localized_pokemon* localized_pokemon){
 
     char* pokemon_name = localized_pokemon -> pokemon_name;
+    int positions_quantity = (int) localized_pokemon -> quantity * 2;
 
-    for(int i = 0; i < localized_pokemon -> quantity * 2; i+=2){
+    for(int i = 0; i < positions_quantity; i += 2){
 
         uint32_t pos_x = *((uint32_t*) list_get(localized_pokemon -> positions, i));
         uint32_t pos_y = *((uint32_t*) list_get(localized_pokemon -> positions, i + 1));

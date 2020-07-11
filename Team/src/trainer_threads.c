@@ -117,6 +117,10 @@ int internal_thread_action_type_in(t_trainer_thread_context* trainer_thread_cont
     return thread_action -> request -> operation;
 }
 
+t_trainer* trainer_from_thread_context(t_trainer_thread_context* trainer_thread_context){
+    return trainer_thread_context -> localizable_trainer -> object;
+}
+
 void free_thread_action(t_thread_action* thread_action){
     free_request(thread_action -> request);
     free(thread_action);

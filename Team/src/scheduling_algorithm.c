@@ -21,14 +21,6 @@ bool should_execute(t_trainer_thread_context* trainer_thread_context){
     return scheduling_algorithm -> should_execute_now_function (trainer_thread_context);
 }
 
-void execution_cycle_consumed(){
-    scheduling_algorithm -> execution_cycle_consumed_function();
-}
-
-void reset_quantum_consumed(){
-    scheduling_algorithm -> reset_quantum_consumed_function();
-}
-
 void free_scheduling_algorithm(){
     free(scheduling_algorithm);
 }

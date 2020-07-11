@@ -64,12 +64,13 @@ t_list* exchanges_between(t_trainer_thread_context* trainer_thread_context, t_tr
     return exchanges_inferred;
 }
 
-void calculate_and_load_exchanges_between_trainer_thread_context_and_all(t_trainer_thread_context* trainer_thread_context_to_compare, t_list* closest_trainer_thread_contexts){
+void calculate_and_execute_exchanges_between_trainer_thread_context_and_all(t_trainer_thread_context* trainer_thread_context_to_compare, t_list* closest_trainer_thread_contexts){
 
     void _calculate_and_load_exchanges_for(t_trainer_thread_context* trainer_thread_context){
         t_list* identified_exchanges = exchanges_between(trainer_thread_context_to_compare, trainer_thread_context);
         if(!list_is_empty(identified_exchanges)){
             queue_push(remaining_identified_exchanges, identified_exchanges);
+            execute_all_remaining_exchanges();
         }else{
             list_destroy(identified_exchanges);
         }
@@ -109,8 +110,7 @@ void resolve_deadlock_with(t_list* closest_trainer_thread_contexts, t_list* rema
     for(int i = 0; i < (list_size(closest_trainer_thread_contexts) - 1); i++){
 
         t_trainer_thread_context* trainer_thread_context = list_remove_first(duplicated_closest_trainer_thread_contexts);
-        calculate_and_load_exchanges_between_trainer_thread_context_and_all(trainer_thread_context, duplicated_closest_trainer_thread_contexts);
-        execute_all_remaining_exchanges();
+        calculate_and_execute_exchanges_between_trainer_thread_context_and_all(trainer_thread_context, duplicated_closest_trainer_thread_contexts);
     }
 
     remove_finished_trainer_thread_contexts_from(closest_trainer_thread_contexts);

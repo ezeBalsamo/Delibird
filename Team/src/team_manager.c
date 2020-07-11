@@ -8,8 +8,12 @@
 #include <team_logs_manager.h>
 #include <dispatcher.h>
 #include <team_query_performers.h>
+#include <metrics.h>
+#include <event_notifier.h>
+#include <team_configuration_manager.h>
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include <unistd.h>
 
 t_list* localized_trainers;
 t_list* global_goal;
@@ -19,6 +23,15 @@ pthread_mutex_t global_goal_mutex;
 extern sem_t localized_trainers_created;
 
 bool global_goal_is_accomplished;
+
+void wait_the_time_delay(){
+    sleep(time_delay());
+}
+
+static void subscribe_to_events(){
+    subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED, wait_the_time_delay);
+    subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED_BY_TRAINER, wait_the_time_delay);
+}
 
 void* initialize_team_manager(){
 
@@ -30,7 +43,9 @@ void* initialize_team_manager(){
     sem_post(&localized_trainers_created);
 
     global_goal = team_global_goal_according_to(localized_trainers);
+    subscribe_to_events();
 
+    initialize_metrics();
     initialize_team_query_performers();
     initialize_pokemon_occurrences();
     initialize_trainer_threads();
@@ -172,6 +187,7 @@ void all_trainer_threads_context_have_finished(){
     if(global_goal_is_accomplished){
         assert_there_are_no_more_global_goal_requirements();
         log_global_goal_accomplished();
+        dump_metrics();
     }
     else{
         log_expected_global_goal_to_be_accomplished_error();
@@ -211,6 +227,7 @@ void free_localizable_trainer(t_localizable_object* localizable_trainer){
 }
 
 void free_team_manager(){
+    free_metrics();
     free_pokemon_occurrences();
     free_trainer_threads();
     free_team_query_performers();
