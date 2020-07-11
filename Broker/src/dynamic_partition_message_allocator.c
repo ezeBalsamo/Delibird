@@ -3,10 +3,32 @@
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
 #include <broker_message_allocator.h>
+#include <memory_compaction_algorithm.h>
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/t_list_extension.h"
 
 t_message_allocator* dynamic_partition_message_allocator;
+
+void consolidate_block_for_dynamic_partition(t_list* blocks_information,int index_of_block_to_consolidate){
+    t_block_information* master_block = (t_block_information*) list_get(blocks_information,index_of_block_to_consolidate);
+
+    if (is_valid_index(blocks_information,index_of_block_to_consolidate+1)
+        && is_free_block_in_index(blocks_information,index_of_block_to_consolidate+1)){ //evalua lazy
+
+        t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate+1);
+
+        consolidate_block_with(master_block,block_to_be_consolidated);
+    }
+
+    if (is_valid_index(blocks_information,index_of_block_to_consolidate-1)
+        && is_free_block_in_index(blocks_information, index_of_block_to_consolidate-1)){
+
+        t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate-1);
+
+        consolidate_block_with(master_block,block_to_be_consolidated);
+    }
+}
 
 void free_partition_by_algorithm(t_list* blocks_information){
     t_block_information* block_to_free = dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
@@ -16,7 +38,7 @@ void free_partition_by_algorithm(t_list* blocks_information){
 
         //consolido el bloque
         int block_freed_index = block_index_position(block_to_free,blocks_information);
-        consolidate_block(blocks_information,block_freed_index);
+        consolidate_block_for_dynamic_partition(blocks_information,block_freed_index);
 
         log_succesful_free_partition_to_cache(position_of_partition_freed);
     }else{

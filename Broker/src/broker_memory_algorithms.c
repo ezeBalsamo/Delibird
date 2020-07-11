@@ -10,30 +10,8 @@
 #include "../include/first_fit_available_partition_search_algorithm.h"
 #include "../include/fifo_partition_free_algorithm.h"
 #include "../include/broker_memory_algorithms.h"
-#include "../../Utils/include/t_list_extension.h"
 
 t_dictionary* algorithms;
-
-//esta funcion reposiciona un bloque dado, al final de la memoria y de la lista administrativa.
-//Mover un bloque en memoria implica ajustar la posicion de todos los siguientes al dado "1 bloque para atras" y attacheando el dado a la posicion del ultimo (luego de reajustarlo)
-void reposition_free_block_to_end(t_block_information *block_to_reposition, t_list *blocks_information,int block_index){
-    void* initial_position_to_occupy_for_next_block = block_to_reposition->initial_position;
-
-    //ajustar las posiciones de todos los bloques (como si se hubiera borrado el que quiero reposicionar)
-    for(int i = block_index+1; i<list_size(blocks_information)-1;i++){
-        t_block_information* block_to_adjust = list_get(blocks_information,i);
-        block_to_adjust ->initial_position = initial_position_to_occupy_for_next_block;
-
-        initial_position_to_occupy_for_next_block = block_to_adjust->initial_position+block_to_adjust->block_size;
-    }
-    //moverlo al final de la memoria y de la lista administrativa
-    t_block_information* last_block = list_get_last_element(blocks_information);
-    if(last_block != block_to_reposition){
-        block_to_reposition->initial_position = last_block->initial_position + last_block->block_size;
-        list_remove(blocks_information,block_index);
-        list_add(blocks_information,block_to_reposition);
-    }
-}
 
 void initialize_broker_memory_algorithms(){
     initialize_allocation_algorithms();
@@ -57,37 +35,6 @@ void* get_partition_free_algorithm() {
     return dictionary_get(algorithms,partition_free_algorithm);
 }
 
-
-void combine_all_free_partitions(t_list* blocks_information){
-    for (int i = 0; i < list_size(blocks_information)-1;i++){
-        t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
-        if (master_block->is_free){
-
-            t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
-
-            master_block->block_size += block_to_compact->block_size;
-            if ((i+1) == list_size(blocks_information)){
-                break;
-            }
-            i--;
-        }
-    }
-}
-
-void memory_compaction_algorithm(t_list* blocks_information){
-
-    for (int i = 0; i < list_size(blocks_information);i++){
-
-        t_block_information* block_information = (t_block_information*) list_get(blocks_information,i);
-
-        if (block_information->is_free){
-            reposition_free_block_to_end(block_information,blocks_information,i);
-        }
-    }
-    //Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
-    combine_all_free_partitions(blocks_information);
-}
-
 bool can_save_message(t_block_information* block_information, uint32_t message_size, uint32_t min_partition_size){
     bool enough_size_for_message = ((t_block_information*) block_information)->block_size >= message_size;
     bool block_is_free = ((t_block_information*) block_information)->is_free;
@@ -102,42 +49,10 @@ void empty_block_information(t_block_information* block_found){
     block_found->memory_block = NULL;
 }
 
-void consolidate_block_with(t_block_information* master_block,t_block_information* block_to_be_consolidated){
-    master_block->block_size += block_to_be_consolidated ->block_size;
-
-    if(master_block->initial_position > block_to_be_consolidated ->initial_position){
-
-        master_block->initial_position = block_to_be_consolidated ->initial_position;
-    }
-
-    free(block_to_be_consolidated);
-}
-
-bool is_free_block_in_index(t_list* blocks_information, int index){
-    return ((t_block_information*) list_get(blocks_information,index))->is_free;
-}
-
 bool is_not_free_block(t_block_information* block){
     return !block->is_free;
 }
 
-void consolidate_block(t_list* blocks_information,int index_of_block_to_consolidate){
-    t_block_information* master_block = (t_block_information*) list_get(blocks_information,index_of_block_to_consolidate);
-
-    if (is_valid_index(blocks_information,index_of_block_to_consolidate+1)){
-        if(is_free_block_in_index(blocks_information,index_of_block_to_consolidate+1)){ //en caso de que no sea lazy evaluation
-
-            t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate+1);
-
-            consolidate_block_with(master_block,block_to_be_consolidated);
-        }
-    }
-
-    if (is_valid_index(blocks_information,index_of_block_to_consolidate-1)){
-        if(is_free_block_in_index(blocks_information, index_of_block_to_consolidate-1)){
-            t_block_information* block_to_be_consolidated = (t_block_information*) list_remove(blocks_information,index_of_block_to_consolidate-1);
-
-            consolidate_block_with(master_block,block_to_be_consolidated);
-        }
-    }
+bool is_free_block_in_index(t_list* blocks_information, int index){
+    return ((t_block_information*) list_get(blocks_information,index))->is_free;
 }

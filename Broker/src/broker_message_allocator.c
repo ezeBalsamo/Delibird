@@ -2,6 +2,7 @@
 #include <commons/collections/dictionary.h>
 #include <dynamic_partition_message_allocator.h>
 #include <buddy_system_message_allocator.h>
+#include <stdlib.h>
 #include "broker_message_allocator.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/serialization_interface.h"
@@ -15,6 +16,18 @@ void initialize_allocation_algorithms(){
     allocation_algorithms = dictionary_create();
     dictionary_put(allocation_algorithms,"PD", (void*) initialize_dynamic_partition_message_allocator);
     dictionary_put(allocation_algorithms, "BS", (void*) initialize_buddy_system_message_allocator);
+}
+
+//consolida los bloques en memoria, no en la lista administrativa (asume que conseguiste el bloque con un list_removes)
+void consolidate_block_with(t_block_information* master_block,t_block_information* block_to_be_consolidated){
+    master_block->block_size += block_to_be_consolidated ->block_size;
+
+    if(master_block->initial_position > block_to_be_consolidated ->initial_position){
+
+        master_block->initial_position = block_to_be_consolidated ->initial_position;
+    }
+
+    free(block_to_be_consolidated);
 }
 
 uint32_t block_size_for(t_memory_block *  memory_block_to_save){

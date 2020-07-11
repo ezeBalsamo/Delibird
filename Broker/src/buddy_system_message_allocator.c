@@ -2,11 +2,77 @@
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
 #include <broker_message_allocator.h>
+#include <memory_compaction_algorithm.h>
 #include "buddy_system_message_allocator.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/t_list_extension.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <commons/string.h>
 
 t_message_allocator *message_allocator;
+
+unsigned long get_pointer_position_as_decimal(void* pointer){
+    char* pointer_as_string = string_from_format("%p",pointer);
+    char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,3); //Ignore 0x from hexadecimal position
+
+    return strtoul(pointer_as_hexadecimal, NULL, 16);
+}
+
+//CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
+bool blocks_are_buddies(t_block_information* block_information_A, t_block_information* block_information_B){
+    uint32_t block_size_A = block_information_A->block_size;
+    uint32_t block_size_B = block_information_B->block_size;
+
+    unsigned long position_of_A = get_pointer_position_as_decimal(block_information_A->initial_position);
+    unsigned long position_of_B = get_pointer_position_as_decimal(block_information_B->initial_position);
+
+    unsigned long position_B_xor_size_A = position_of_B ^ block_size_A;
+    unsigned long position_A_xor_size_B = position_of_A ^ block_size_B;
+
+    bool same_size = block_size_A == block_size_B;
+    bool position_A_equals_position_B_xor_size_A = position_of_A == position_B_xor_size_A;
+    bool position_B_equals_position_A_xor_size_B = position_of_B == position_A_xor_size_B;
+
+    return same_size && position_A_equals_position_B_xor_size_A && position_B_equals_position_A_xor_size_B;
+}
+
+bool is_valid_block_for_buddy_compaction(t_list* blocks_information,t_block_information* master_block, int index_of_candidate){
+   bool valid_index = is_valid_index(blocks_information,index_of_candidate);
+   bool block_is_free = is_free_block_in_index(blocks_information,index_of_candidate);
+   bool block_is_buddy = false;
+   if (valid_index && block_is_free){
+       t_block_information* block_candidate_for_buddy_compaction = (t_block_information*) list_get(blocks_information, index_of_candidate);
+       block_is_buddy = blocks_are_buddies(master_block,block_candidate_for_buddy_compaction);
+   }
+   return valid_index && block_is_free && block_is_buddy;
+}
+//unify block with buddies if possible
+void associate_with_buddies(t_list* blocks_information,t_block_information* master_block){
+    bool left_is_buddy = true;
+    bool right_is_buddy = true;
+
+    while(left_is_buddy && right_is_buddy){
+
+        int master_block_current_index = block_index_position(master_block,blocks_information);
+
+        if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index-1)){
+            t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
+            consolidate_block_with(master_block,buddy_block);
+        }else{
+            left_is_buddy = false;
+        }
+
+        if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index+1)){
+            t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index+1);
+            consolidate_block_with(master_block,buddy_block);
+        }else{
+            right_is_buddy = false;
+        }
+    }
+
+}
 
 //split block to buddies if possible, recursively
 void disassociate_buddy_if_possible(t_list* blocks_information, t_block_information* block_information_found, uint32_t message_size){
@@ -28,15 +94,16 @@ void disassociate_buddy_if_possible(t_list* blocks_information, t_block_informat
 //associates buddies recursively
 void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
     t_block_information* block_to_free = message_allocator->partition_free_algorithm (blocks_information);
+
     if (block_to_free != NULL){
         void* position_of_partition_freed = block_to_free->initial_position;
         empty_block_information(block_to_free);
-
-        //consolido el bloque
-        int block_freed_index = block_index_position(block_to_free,blocks_information);
-        consolidate_block(blocks_information,block_freed_index);
-
         log_succesful_free_partition_to_cache(position_of_partition_freed);
+
+        //consolido el bloque con buddy system
+        associate_with_buddies(blocks_information,block_to_free);
+
+
     }else{
         log_invalid_free_partition_error();
         free_system();
@@ -48,7 +115,7 @@ t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_inf
 
         t_block_information* block_information_found = message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, message_allocator->min_partition_size);
         if (block_information_found != NULL){
-            //if buddy chosen is too big it may need to be split
+            //if buddy found is too big it may need to be split
             disassociate_buddy_if_possible(blocks_information, block_information_found, memory_block_to_save->message_size);
             return block_information_found;
         }
@@ -59,7 +126,7 @@ t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_inf
 }
 
 t_block_information* save_memory_block_in_block_information_for_buddy(t_block_information* block_information_found, t_memory_block* memory_block_to_save){
-    //disassociate buddies
+
     uint32_t memory_size_to_partition = block_information_found->block_size;
     uint32_t block_size_to_allocate = block_size_for(memory_block_to_save);
 
