@@ -38,15 +38,16 @@ set(SOURCES
         src/deadlock_detection_and_recovery_algorithm.c
         src/deadlock_detecter.c
         src/deadlock_solver.c
-        src/exchanges_inferrer.c
-        src/benefitial_exchanges_for_both_parties.c
-        src/benefitial_exchanges_only_for_first_party.c
-        src/benefitial_exchanges_only_for_second_party.c
-        src/non_benefitial_exchange.c
-        src/identified_exchanges_provider.c
-        src/exchange_action.c
+        src/trades_inferrer.c
+        src/benefitial_trades_for_both_parties.c
+        src/benefitial_trades_only_for_first_party.c
+        src/benefitial_trades_only_for_second_party.c
+        src/non_benefitial_trade.c
+        src/identified_trades_provider.c
+        src/trade_action.c
         src/metrics.c
-        src/event_notifier.c)
+        src/event_notifier.c
+        src/trades_calculator.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

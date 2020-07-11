@@ -57,27 +57,27 @@ t_thread_action* waiting_for_more_pokemons_thread_action(){
     return thread_action;
 }
 
-void free_waiting_for_exchange_action(t_waiting_for_exchange_action* waiting_for_exchange_action){
-    list_destroy(waiting_for_exchange_action -> pokemons_in_excess);
-    list_destroy(waiting_for_exchange_action -> required_pokemons_not_caught);
-    free(waiting_for_exchange_action);
+void free_waiting_for_trade_action(t_waiting_for_trade_action* waiting_for_trade_action){
+    list_destroy(waiting_for_trade_action -> pokemons_in_excess);
+    list_destroy(waiting_for_trade_action -> required_pokemons_not_caught);
+    free(waiting_for_trade_action);
 }
 
-t_thread_action* waiting_for_exchange_thread_action_for(t_trainer* trainer){
+t_thread_action* waiting_for_trade_thread_action_for(t_trainer* trainer){
 
     t_list* required_pokemons_not_caught = requirements_of(trainer);
     t_list* pokemons_in_excess = pokemons_in_excess_of(trainer);
 
-    t_waiting_for_exchange_action* waiting_for_exchange_action =
-            safe_malloc(sizeof(t_waiting_for_exchange_action));
+    t_waiting_for_trade_action* waiting_for_trade_action =
+            safe_malloc(sizeof(t_waiting_for_trade_action));
 
-    waiting_for_exchange_action -> pokemons_in_excess = pokemons_in_excess;
-    waiting_for_exchange_action -> required_pokemons_not_caught = required_pokemons_not_caught;
+    waiting_for_trade_action -> pokemons_in_excess = pokemons_in_excess;
+    waiting_for_trade_action -> required_pokemons_not_caught = required_pokemons_not_caught;
 
     t_thread_action* thread_action = new_thread_action();
-    thread_action -> request -> operation = WAITING_FOR_EXCHANGE;
-    thread_action -> request -> structure = waiting_for_exchange_action;
-    thread_action -> request -> sanitizer_function = (void (*)(void *)) free_waiting_for_exchange_action;
+    thread_action -> request -> operation = WAITING_FOR_TRADE;
+    thread_action -> request -> structure = waiting_for_trade_action;
+    thread_action -> request -> sanitizer_function = (void (*)(void *)) free_waiting_for_trade_action;
     thread_action -> execution_function = NULL;
 
     return thread_action;

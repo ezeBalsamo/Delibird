@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "team_manager.h"
 #include "trainer_threads.h"
-#include "identified_exchanges_provider.h"
+#include "identified_trades_provider.h"
 
 void initialize_team_logs_manager();
 void log_failed_attempt_to_communicate_with_broker(char* default_action);
@@ -43,7 +43,7 @@ void log_invalid_state_error();
 void log_more_than_one_trainer_thread_context_executing_error_for(t_list* trainer_thread_contexts);
 void log_not_matching_pokemon_name_between_get_and_localized_error(char* get_response_pokemon_name, char* localized_pokemon_name);
 void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_pokemon* localized_pokemon);
-void log_no_suitable_exchange_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context);
+void log_no_suitable_trade_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context);
 void log_invalid_localizable_object_type_error();
 void log_deadlock_detection_algorithm_has_begun();
 void log_deadlock_detection_algorithm_has_finished_with_deadlock_detected();
@@ -51,8 +51,8 @@ void log_deadlock_detection_algorithm_has_finished_with_no_deadlock_detected();
 void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts);
 void log_deadlock_solver_has_finished();
 void log_pokemon_not_found_error_for(char* pokemon_name);
-void log_exchange_to_do_according_to(t_identified_exchange* identified_exchange);
-void log_exchange_completed(char* printable_exchange_completed);
+void log_trade_to_do_according_to(t_identified_trade* identified_trade);
+void log_trade_completed(char* printable_trade_completed);
 void log_no_trainer_found_to_increment_its_execution_cycles_quantity_error_for(t_trainer* trainer);
 void log_global_goal_accomplished();
 void log_metrics_report(char* metrics_report);

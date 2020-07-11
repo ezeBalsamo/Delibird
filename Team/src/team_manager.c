@@ -136,7 +136,7 @@ char* safe_pokemon_remove(t_list* pokemons, char* pokemon_name_to_find){
     return pokemon_removed;
 }
 
-void exchange_trainers_pokemons(char* first_party_pokemon_name,
+void trade_trainers_pokemons(char* first_party_pokemon_name,
                                 t_localizable_object* first_party_localizable_trainer,
                                 char* second_party_pokemon_name,
                                 t_localizable_object* second_party_localizable_trainer){
@@ -144,7 +144,7 @@ void exchange_trainers_pokemons(char* first_party_pokemon_name,
     t_trainer* first_party_trainer = first_party_localizable_trainer -> object;
     t_trainer* second_party_trainer = second_party_localizable_trainer -> object;
 
-    void _exchange(){
+    void _trade(){
         char* pokemon_for_second_party_trainer =
                 safe_pokemon_remove(first_party_trainer -> current_pokemons, first_party_pokemon_name);
 
@@ -155,7 +155,7 @@ void exchange_trainers_pokemons(char* first_party_pokemon_name,
         list_add(second_party_trainer -> current_pokemons, pokemon_for_second_party_trainer);
     }
 
-    handling_localized_trainers_concurrency_do(_exchange);
+    handling_localized_trainers_concurrency_do(_trade);
 }
 
 void assert_there_are_no_more_global_goal_requirements(){
