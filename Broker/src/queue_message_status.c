@@ -40,12 +40,12 @@ void delete_message(uint32_t operation_message, uint32_t message_id, char* reaso
     t_message_status* message_status = list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
 
     if(message_status == NULL){
-        log_message_status_not_found_in_queue_error();
-        free_system();
+        log_message_status_not_found_in_queue_error(message_id);    //PUEDE PASAR QUE SE QUIERA BORRAR ALGO QUE YA SE BORRO DE LA LISTA DE SUBSCRIPTORES POR HABERSE ENVIADO A TODOS
+    }else{
+        log_succesful_eliminating_message_of_a_queue(message_status, reason);
+        free_message_status(message_status);
     }
 
-    log_succesful_eliminating_message_of_a_queue(message_status, reason);
-    free_message_status(message_status);
 }
 
 void delete_message_if_necessary(t_message_status* message_status,t_queue_context* queue_context) {

@@ -210,9 +210,9 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
     free(message);
 }
 
-void log_message_status_not_found_in_queue_error(){
-    char* message = "No se pudo borrar un mensaje de la cola de mensajes, algo funcionó mal!";
-    log_errorful_message(process_execution_logger(), message);
+void log_message_status_not_found_in_queue_error(uint32_t message_id){
+    char* message = string_from_format("No se pudo borrar el mensaje id:'%d' de la cola de mensajes, posiblemente ya haya sido borrado de la cola por haber sido enviado a todos sus subscriptore (revisar logs).",message_id);
+    log_warning_message(process_execution_logger(), message);
     free(message);
 }
 

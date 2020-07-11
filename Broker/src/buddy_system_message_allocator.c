@@ -40,8 +40,12 @@ bool blocks_are_buddies(t_block_information* block_information_A, t_block_inform
 
 bool is_valid_block_for_buddy_compaction(t_list* blocks_information,t_block_information* master_block, int index_of_candidate){
    bool valid_index = is_valid_index(blocks_information,index_of_candidate);
-   bool block_is_free = is_free_block_in_index(blocks_information,index_of_candidate);
-   bool block_is_buddy = false;
+    bool block_is_free = false;
+    bool block_is_buddy = false;
+
+   if (valid_index)
+       block_is_free = is_free_block_in_index(blocks_information,index_of_candidate);
+
    if (valid_index && block_is_free){
        t_block_information* block_candidate_for_buddy_compaction = (t_block_information*) list_get(blocks_information, index_of_candidate);
        block_is_buddy = blocks_are_buddies(master_block,block_candidate_for_buddy_compaction);
@@ -53,13 +57,14 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
     bool left_is_buddy = true;
     bool right_is_buddy = true;
 
-    while(left_is_buddy && right_is_buddy){
+    while(left_is_buddy || right_is_buddy){
 
         int master_block_current_index = block_index_position(master_block,blocks_information);
 
         if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index-1)){
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
             consolidate_block_with(master_block,buddy_block);
+            right_is_buddy = true;
         }else{
             left_is_buddy = false;
         }
@@ -67,6 +72,7 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
         if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index+1)){
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index+1);
             consolidate_block_with(master_block,buddy_block);
+            left_is_buddy = true;
         }else{
             right_is_buddy = false;
         }
