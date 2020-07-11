@@ -71,22 +71,6 @@ t_list* schedulable_trainer_thread_contexts(){
     return trainer_thread_contexts;
 }
 
-void consider_continue_executing(){
-
-    t_list* trainer_thread_contexts = trainer_thread_contexts_in(READY);
-    if(!list_is_empty(trainer_thread_contexts)){
-        execute_trainer_thread_context();
-    }
-}
-
-void stop_current_execution_doing(void (*state_function) ()){
-    notify(CONTEXT_SWITCH_REALIZED);
-    state_function();
-    remove_from_execute();
-    pthread_mutex_unlock(&execute_mutex);
-    consider_continue_executing();
-}
-
 void move_to_ready_according_scheduling_algorithm(t_trainer_thread_context* trainer_thread_context){
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
@@ -129,6 +113,22 @@ t_trainer_thread_context* trainer_thread_context_executing(){
 bool is_anybody_executing(){
     t_list* trainer_thread_contexts = trainer_thread_contexts_in(EXECUTE);
     return !list_is_empty(trainer_thread_contexts);
+}
+
+void consider_continue_executing(){
+
+    t_list* trainer_thread_contexts = trainer_thread_contexts_in(READY);
+    if(!list_is_empty(trainer_thread_contexts)){
+        execute_trainer_thread_context();
+    }
+}
+
+void stop_current_execution_doing(void (*state_function) ()){
+    notify_with_argument(CONTEXT_SWITCH_REALIZED, trainer_thread_context_executing());
+    state_function();
+    remove_from_execute();
+    pthread_mutex_unlock(&execute_mutex);
+    consider_continue_executing();
 }
 
 void execute_trainer_thread_context(){
