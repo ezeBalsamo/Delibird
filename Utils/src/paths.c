@@ -23,66 +23,65 @@ char* module_absolute_path(){
     return project_absolute_path;
 }
 
-t_list* find_regular_files_in_directory(char* path){
+t_list* regular_files_names_in_directory(DIR* directory, char* path){
 
-    DIR* directory_stream_found;
     struct dirent* file;
-    directory_stream_found = opendir(path);
-    t_list* regular_files = list_create();
+    t_list* regular_files_names = list_create();
 
-    if (!directory_stream_found) {
+    if (!directory) {
         log_directory_could_not_open_in_path_error(path);
         free_system();
     }
 
-    while ((file = readdir(directory_stream_found)) != NULL) {
+    while ((file = readdir(directory)) != NULL) {
         char* name = file -> d_name;
-        unsigned char type = file -> d_type;  //Los archivos son de tipo DT_REG.
+        unsigned char type = file -> d_type;  //Los archivos regulares son de tipo DT_REG.
 
         if(type == DT_REG){
-            list_add(regular_files, name);
+            list_add(regular_files_names, name);
         }
     }
 
-    closedir(directory_stream_found);
-
-    return regular_files;
+    return regular_files_names;
 }
 
-char* find_file_with_extension(t_list* files, char* extension){
+char* find_file_name_with_extension(t_list* files_names, char* extension){
 
-    bool _is_a_file_with_extension(char* file_name){
+    bool _is_a_file_name_with_extension(char* file_name){
         return string_contains(file_name, extension);
     }
 
-    char* file_name_found = list_find(files, (bool (*) (void*))_is_a_file_with_extension);
+    char* file_name_found = list_find(files_names, (bool (*) (void*))_is_a_file_name_with_extension);
 
     if(file_name_found == NULL){
         log_file_not_found_error(extension);
         free_system();
     }
 
-    list_destroy(files);
-
     return file_name_found;
 
 }
 
-char* get_file_name_with_extension(char* path, char* extension) {
+char* get_file_name_with_extension(DIR* directory, char* path, char* extension) {
 
-        t_list* regular_files_found = find_regular_files_in_directory(path);
-        char* file_found = find_file_with_extension(regular_files_found, extension);
+    t_list* regular_files_names_found = regular_files_names_in_directory(directory, path);
+    char* file_found = find_file_name_with_extension(regular_files_names_found, extension);
 
-        return file_found;
+    list_destroy(regular_files_names_found);
+
+    return file_found;
 }
 
 char* absolute_path_for_config(){
 
     char* project_path = module_absolute_path();
-    char* config_name = get_file_name_with_extension(project_path, ".config");
+    DIR* directory = opendir(project_path);
+
+    char* config_name = get_file_name_with_extension(directory, project_path, ".config");
     char* config_absolute_path = string_from_format("%s/%s", project_path, config_name);
 
     free(project_path);
+    closedir(directory);
     return config_absolute_path;
 }
 

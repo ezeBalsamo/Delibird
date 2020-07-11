@@ -155,3 +155,7 @@ void consolidate_block(t_list* blocks_information,int index_of_block_to_consolid
         }
     }
 }
+
+void free_broker_memory_algorithms(){
+    dictionary_destroy(algorithms);
+}
