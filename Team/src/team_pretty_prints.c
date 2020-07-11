@@ -99,15 +99,15 @@ char* pokemon_names_as_string(t_list* pokemon_names){
     return pokemon_names_as_string;
 }
 
-char* exchange_with_concrete_action_as_string(t_identified_exchange* identified_exchange, char* concrete_action){
+char* trade_with_concrete_action_as_string(t_identified_trade* identified_trade, char* concrete_action){
 
-    t_trainer* first_party_trainer = first_party_localizable_trainer_in(identified_exchange) -> object;
+    t_trainer* first_party_trainer = first_party_localizable_trainer_in(identified_trade) -> object;
     char* printable_first_party_trainer = trainer_as_string(first_party_trainer);
-    char* first_party_pokemon_name = first_party_pokemon_name_in(identified_exchange);
+    char* first_party_pokemon_name = first_party_pokemon_name_in(identified_trade);
 
-    t_trainer* second_party_trainer = second_party_localizable_trainer_in(identified_exchange) -> object;
+    t_trainer* second_party_trainer = second_party_localizable_trainer_in(identified_trade) -> object;
     char* printable_second_party_trainer = trainer_as_string(second_party_trainer);
-    char* second_party_pokemon_name = second_party_pokemon_name_in(identified_exchange);
+    char* second_party_pokemon_name = second_party_pokemon_name_in(identified_trade);
 
     char* message =
             string_from_format(
@@ -124,10 +124,10 @@ char* exchange_with_concrete_action_as_string(t_identified_exchange* identified_
     return message;
 }
 
-char* exchange_to_do_as_string(t_identified_exchange* identified_exchange){
-    return exchange_with_concrete_action_as_string(identified_exchange, "intercambiará");
+char* trade_to_do_as_string(t_identified_trade* identified_trade){
+    return trade_with_concrete_action_as_string(identified_trade, "intercambiará");
 }
 
-char* exchange_completed_as_string(t_identified_exchange* identified_exchange){
-    return exchange_with_concrete_action_as_string(identified_exchange, "intercambió");
+char* trade_completed_as_string(t_identified_trade* identified_trade){
+    return trade_with_concrete_action_as_string(identified_trade, "intercambió");
 }

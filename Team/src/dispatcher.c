@@ -168,7 +168,7 @@ void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_threa
 void consider_deadlock_occurred_according_to(t_trainer_thread_context* trainer_thread_context){
 
     uint32_t thread_action_type = internal_thread_action_type_in(trainer_thread_context);
-    if(thread_action_type == WAITING_FOR_EXCHANGE && !is_deadlock_resolution_in_process()){
+    if(thread_action_type == WAITING_FOR_TRADE && !is_deadlock_resolution_in_process()){
         detect_and_recover_from_deadlock();
     }
 }

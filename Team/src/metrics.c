@@ -11,7 +11,8 @@
 int total_execution_cycles_quantity;
 int context_switches_quantity;
 t_list* execution_cycles_quantity_per_trainers;
-t_list* produced_and_resolved_deadlocks;
+int produced_and_resolved_deadlocks_quantity;
+t_list* trades_made_for_deadlocks_resolution;
 
 void initialize_execution_cycles_of(t_localizable_object* localizable_trainer){
     t_execution_cycles_quantity_per_trainer* execution_cycles_quantity_per_trainer = safe_malloc(sizeof(t_execution_cycles_quantity_per_trainer));
@@ -48,8 +49,12 @@ void increment_context_switches_quantity(){
     context_switches_quantity++;
 }
 
-void save_produced_and_solved_deadlock_record(char* printable_exchange_completed){
-    list_add(produced_and_resolved_deadlocks, printable_exchange_completed);
+void increment_produced_and_solved_deadlocks_quantity(){
+    produced_and_resolved_deadlocks_quantity++;
+}
+
+void save_printable_trade_completed(char* printable_trade_completed){
+    list_add(trades_made_for_deadlocks_resolution, printable_trade_completed);
 }
 
 static void subscribe_to_events(){
@@ -61,14 +66,17 @@ static void subscribe_to_events(){
     subscribe_to_event_doing(CONTEXT_SWITCH_REALIZED, increment_context_switches_quantity);
 
     subscribe_to_event_doing(PRODUCED_AND_SOLVED_DEADLOCK,
-                            (void (*)(void *)) save_produced_and_solved_deadlock_record);
+                            (void (*)(void *)) increment_produced_and_solved_deadlocks_quantity);
+
+    subscribe_to_event_doing(TRADE_COMPLETED, (void (*)(void *)) save_printable_trade_completed);
 }
 
 void initialize_metrics(){
     total_execution_cycles_quantity = 0;
     context_switches_quantity = 0;
     execution_cycles_quantity_per_trainers = list_create();
-    produced_and_resolved_deadlocks = list_create();
+    produced_and_resolved_deadlocks_quantity = 0;
+    trades_made_for_deadlocks_resolution = list_create();
 
     with_trainers_do(initialize_execution_cycles_of);
 
@@ -105,17 +113,17 @@ char* execution_cycles_quantity_per_trainers_metrics_report_block(){
 char* produced_and_resolved_deadlocks_metrics_report_block(){
     char* metric_report_block =
             metrics_report_line_for("Deadlocks producidos y resueltos",
-                                    list_size(produced_and_resolved_deadlocks));
+                                    produced_and_resolved_deadlocks_quantity);
 
-    void _load_metric_of(char* printable_exchange_completed){
-        char* indented_printable_exchange_completed =
-                string_from_format("\t* %s\n", printable_exchange_completed);
+    void _load_metric_of(char* printable_trade_completed){
+        char* indented_printable_trade_completed =
+                string_from_format("\t* %s\n", printable_trade_completed);
 
-        string_append(&metric_report_block, indented_printable_exchange_completed);
-        free(indented_printable_exchange_completed);
+        string_append(&metric_report_block, indented_printable_trade_completed);
+        free(indented_printable_trade_completed);
     }
 
-    list_iterate(produced_and_resolved_deadlocks, (void (*)(void *)) _load_metric_of);
+    list_iterate(trades_made_for_deadlocks_resolution, (void (*)(void *)) _load_metric_of);
     return metric_report_block;
 }
 
@@ -147,5 +155,5 @@ void dump_metrics(){
 
 void free_metrics(){
     list_destroy_and_destroy_elements(execution_cycles_quantity_per_trainers, free);
-    list_destroy_and_destroy_elements(produced_and_resolved_deadlocks, free);
+    list_destroy_and_destroy_elements(trades_made_for_deadlocks_resolution, free);
 }

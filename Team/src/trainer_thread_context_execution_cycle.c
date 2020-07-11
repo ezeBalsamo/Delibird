@@ -6,7 +6,7 @@
 #include <trainer_thread_context_state_chained_evaluation.h>
 #include <team_logs_manager.h>
 #include <waiting_actions.h>
-#include <exchange_action.h>
+#include <trade_action.h>
 #include "trainer_thread_context_execution_cycle.h"
 #include "../../Utils/include/t_list_extension.h"
 
@@ -28,7 +28,7 @@ void movement_action_completed_by(t_trainer_thread_context* trainer_thread_conte
     free_thread_action(trainer_thread_context -> thread_action);
 
     if(is_deadlock_resolution_in_process()){
-        trainer_thread_context -> thread_action = exchange_thread_action();
+        trainer_thread_context -> thread_action = trade_thread_action();
         log_thread_action_to_perform_by(trainer_thread_context);
         sem_post(&trainer_thread_context -> semaphore);
     }else{
@@ -76,7 +76,7 @@ void prepare_for_waiting_for_deadlock_resolution(t_trainer_thread_context* train
     
     free_thread_action(trainer_thread_context -> thread_action);
     t_trainer* trainer = trainer_thread_context -> localizable_trainer -> object;
-    trainer_thread_context -> thread_action = waiting_for_exchange_thread_action_for(trainer);
+    trainer_thread_context -> thread_action = waiting_for_trade_thread_action_for(trainer);
     trainer_thread_context_has_become_blocked(trainer_thread_context);
 }
 
@@ -91,7 +91,7 @@ void consider_graceful_finished_of(t_trainer_thread_context* trainer_thread_cont
     }
 }
 
-void exchange_action_completed_using(t_list* identified_exchanges){
+void trade_action_completed_using(t_list* identified_trades){
 
     /* Sin importar el intercambio, me interesa recalcular el estado de ambos contextos,
      * ya sea para transicionar de ejecución a bloqueado, en el caso de un intercambio beneficioso
@@ -99,11 +99,11 @@ void exchange_action_completed_using(t_list* identified_exchanges){
      * los pokemones en exceso, en el caso de un intercambio beneficioso para la primera parte.
      */
 
-    t_identified_exchange* identified_exchange = list_first(identified_exchanges);
+    t_identified_trade* identified_trade = list_first(identified_trades);
     t_trainer_thread_context* first_party_trainer_thread_context =
-            identified_exchange -> exchange -> first_party_trainer_thread_context;
+            identified_trade -> trade -> first_party_trainer_thread_context;
     t_trainer_thread_context* second_party_trainer_thread_context =
-            identified_exchange -> exchange -> second_party_trainer_thread_context;
+            identified_trade -> trade -> second_party_trainer_thread_context;
 
     trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(first_party_trainer_thread_context);
     trainer_thread_context_state_chained_evaluation_value_when_caught_success_for(second_party_trainer_thread_context);

@@ -328,7 +328,7 @@ void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_po
     free(message);
 }
 
-void log_no_suitable_exchange_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
+void log_no_suitable_trade_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context){
     char* printable_trainer = localizable_trainer_as_string(trainer_thread_context -> localizable_trainer);
     char* printable_another_trainer = localizable_trainer_as_string(another_trainer_thread_context -> localizable_trainer);
 
@@ -395,17 +395,17 @@ void log_deadlock_solver_has_finished(){
     log_succesful_message(process_execution_logger(), message);
 }
 
-void log_exchange_to_do_according_to(t_identified_exchange* identified_exchange){
-    char* printable_exchange_to_realize = exchange_to_do_as_string(identified_exchange);
-    char* message = string_from_format("A punto de realizar un intercambio: %s", printable_exchange_to_realize);
+void log_trade_to_do_according_to(t_identified_trade* identified_trade){
+    char* printable_trade_to_realize = trade_to_do_as_string(identified_trade);
+    char* message = string_from_format("A punto de realizar un intercambio: %s", printable_trade_to_realize);
 
     log_succesful_message(process_execution_logger(), message);
-    free(printable_exchange_to_realize);
+    free(printable_trade_to_realize);
     free(message);
 }
 
-void log_exchange_completed(char* printable_exchange_completed){
-    char* message = string_from_format("Intercambio realizado exitosamente: %s", printable_exchange_completed);
+void log_trade_completed(char* printable_trade_completed){
+    char* message = string_from_format("Intercambio realizado exitosamente: %s", printable_trade_completed);
 
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);

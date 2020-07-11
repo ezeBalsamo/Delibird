@@ -39,7 +39,9 @@ void quantum_consumed(){
 }
 
 static void subscribe_to_events(){
-    subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED, quantum_consumed);
+    // No se incluye subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED, quantum_consumed);
+    // Debido a que el único que lo envía es GET y esto causa problemas con el quantum.
+
     subscribe_to_event_doing(EXECUTION_CYCLE_CONSUMED_BY_TRAINER, quantum_consumed);
     subscribe_to_event_doing(CONTEXT_SWITCH_REALIZED, reset_quantum_consumed);
 }

@@ -9,7 +9,7 @@
 #include <waiting_actions.h>
 #include <team_pretty_prints.h>
 #include <deadlock_solver.h>
-#include <identified_exchanges_provider.h>
+#include <identified_trades_provider.h>
 
 char* catch_pokemon_reason_for(t_trainer_thread_context* trainer_thread_context){
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
@@ -59,9 +59,9 @@ char* waiting_for_more_pokemons_reason(){
     return string_from_format("%s", "Esperar a que aparezcan más pokemones.");
 }
 
-char* waiting_for_exchange_reason_for(t_trainer_thread_context* trainer_thread_context){
+char* waiting_for_trade_reason_for(t_trainer_thread_context* trainer_thread_context){
 
-    t_waiting_for_exchange_action* waiting_for_deadlock_resolution_action =
+    t_waiting_for_trade_action* waiting_for_deadlock_resolution_action =
             internal_thread_action_in(trainer_thread_context);
 
     char* required_pokemons_not_caught_as_string =
@@ -80,12 +80,12 @@ char* waiting_for_exchange_reason_for(t_trainer_thread_context* trainer_thread_c
     return reason;
 }
 
-char* exchange_reason(){
-    t_list* identified_exchanges_in_process = current_identified_exchanges_in_process();
-    t_identified_exchange* identified_exchange = list_first(identified_exchanges_in_process);
+char* trade_reason(){
+    t_list* identified_trades_in_process = current_identified_trades_in_process();
+    t_identified_trade* identified_trade = list_first(identified_trades_in_process);
 
     t_trainer* second_party_trainer =
-            second_party_localizable_trainer_in(identified_exchange) -> object;
+            second_party_localizable_trainer_in(identified_trade) -> object;
     char* printable_second_party_localizable_trainer =
             trainer_as_string(second_party_trainer);
 
@@ -126,11 +126,11 @@ char* thread_action_reason_for(t_trainer_thread_context* trainer_thread_context)
         case WAITING_FOR_MORE_POKEMONS:
             reason = waiting_for_more_pokemons_reason();
             break;
-        case WAITING_FOR_EXCHANGE:
-            reason = waiting_for_exchange_reason_for(trainer_thread_context);
+        case WAITING_FOR_TRADE:
+            reason = waiting_for_trade_reason_for(trainer_thread_context);
             break;
-        case EXCHANGE:
-            reason = exchange_reason();
+        case TRADE:
+            reason = trade_reason();
             break;
         default:
             log_unknown_thread_action_type_error();
