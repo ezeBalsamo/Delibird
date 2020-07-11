@@ -7,9 +7,9 @@
 
 t_config* config;
 
-void initialize_configuration_manager_named(char* config_name){
+void initialize_configuration_manager(){
 
-    char* config_absolute_path = absolute_path_for_config_named(config_name);
+    char* config_absolute_path = absolute_path_for_config();
     config = config_create(config_absolute_path);
     free(config_absolute_path);
 

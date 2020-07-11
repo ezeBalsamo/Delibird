@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 void initialize_entry_point_connection_builder(){
-    initialize_configuration_manager_named("gameboy");
+    initialize_configuration_manager();
 }
 
 t_request* safe_request(){

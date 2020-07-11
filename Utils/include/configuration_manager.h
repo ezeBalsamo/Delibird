@@ -3,7 +3,7 @@
 
 #include <commons/collections/list.h>
 
-void initialize_configuration_manager_named(char* config_name);
+void initialize_configuration_manager();
 
 int config_get_int_at(char* key);
 char* config_get_string_at(char* key);

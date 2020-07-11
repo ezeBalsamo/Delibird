@@ -7,7 +7,7 @@ int time_delay_in_seconds;
 int timeout_in_seconds;
 
 void initialize_team_configuration_manager(){
-    initialize_configuration_manager_named("team-RR");
+    initialize_configuration_manager();
 
     ip = config_get_string_at("IP_BROKER");
     port = config_get_string_at("PUERTO_BROKER");
