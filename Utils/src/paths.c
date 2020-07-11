@@ -3,6 +3,11 @@
 #include <unistd.h>
 #include "paths.h"
 #include <sys/stat.h>
+#include <dirent.h>
+#include <stdio.h>
+#include <commons/collections/list.h>
+#include <garbage_collector.h>
+#include <general_logs.h>
 
 char* module_absolute_path(){
     char* executable_path = getcwd(NULL, 0);
@@ -18,10 +23,44 @@ char* module_absolute_path(){
     return project_absolute_path;
 }
 
-char* absolute_path_for_config_named(char* config_name){
+char* get_file_name_with_extension(char* path, char* extension) {
+
+        DIR* directory_stream_found;
+        struct dirent* file;
+        directory_stream_found = opendir(path);
+        t_list* directory_files = list_create();
+
+        if (!directory_stream_found) {
+            log_directory_could_not_open_in_path_error();
+            free_system();
+        }
+
+        while ((file = readdir(directory_stream_found)) != NULL) {
+            char* name = file -> d_name;
+            unsigned char type = file -> d_type;  //Los archivos son de tipo 8. Las carpetas de tipo 4.
+
+            if(type == 8){
+                list_add(directory_files, file);
+            }
+        }
+
+        bool _is_a_file_with_extension(struct dirent* file){
+            return string_contains(file -> d_name, extension);
+        }
+
+        struct dirent* file_found = list_find(directory_files, (bool (*) (void*))_is_a_file_with_extension);
+        list_destroy(directory_files);
+
+        closedir(directory_stream_found);
+
+        return file_found -> d_name;
+}
+
+char* absolute_path_for_config(){
 
     char* project_path = module_absolute_path();
-    char* config_absolute_path = string_from_format("%s/%s.config", project_path, config_name);
+    char* config_name = get_file_name_with_extension(project_path, "config");
+    char* config_absolute_path = string_from_format("%s/%s", project_path, config_name);
 
     free(project_path);
     return config_absolute_path;

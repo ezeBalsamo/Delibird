@@ -18,7 +18,7 @@ int main() {
     initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();
-    initialize_configuration_manager_named("broker");
+    initialize_configuration_manager();
     initialize_queue_context_provider();
     initialize_broker_memory_manager();
     log_succesful_start_up();

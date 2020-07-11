@@ -162,6 +162,10 @@ void log_expected_to_have_only_one_element_error(){
     log_errorful_message(process_execution_logger(), "Se esperaba que la lista tuviera un único elemento.");
 }
 
+void log_directory_could_not_open_in_path_error(){
+    log_errorful_message(process_execution_logger(), "No se pudo abrir un directorio en la ruta indicada.");
+}
+
 void log_broker_disconnection(){
     char* message = "Se cayó la conexión con el broker!";
     log_warning_message(process_execution_logger(), message);
