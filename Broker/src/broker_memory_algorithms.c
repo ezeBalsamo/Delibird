@@ -43,7 +43,7 @@ bool can_save_message(t_block_information* block_information, uint32_t message_s
 }
 
 void empty_block_information(t_block_information* block_found){
-    delete_message(block_found->memory_block->message_operation,block_found->memory_block->message_id, "Algoritmo de reemplazo.");
+    no_longer_in_memory(block_found->memory_block->message_operation,block_found->memory_block->message_id);
     block_found->is_free = true;
     free(block_found->memory_block);
     block_found->memory_block = NULL;

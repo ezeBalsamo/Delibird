@@ -9,6 +9,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "broker_memory_manager.h"
 
 void update_subscribers_to_send(t_message_status* message_status, t_queue_context* queue_context){
 
@@ -47,27 +48,30 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
         list_destroy(waiting_for_ack_subscribers_threads);
     } else {
 
-        void _send_message(t_subscriber_context* subscriber_context) {
+        if(message_status -> is_allocated){
+            void _send_message(t_subscriber_context* subscriber_context) {
 
-            serialize_and_send_structure(request, subscriber_context -> socket_fd);
-            log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
+                update_lru_for(message_status -> identified_message -> message_id);
+                serialize_and_send_structure(request, subscriber_context -> socket_fd);
+                log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
-            pthread_t waiting_for_ack_thread =
-                    default_safe_thread_create(receive_ack_thread, (void*) &(subscriber_context -> socket_fd));
+                pthread_t waiting_for_ack_thread =
+                        default_safe_thread_create(receive_ack_thread, (void*) &(subscriber_context -> socket_fd));
 
-            t_subscriber_ack_thread* subscriber_ack_thread = safe_malloc(sizeof(t_subscriber_ack_thread));
-            subscriber_ack_thread -> subscriber_thread = waiting_for_ack_thread;
-            subscriber_ack_thread -> subscriber_context = subscriber_context;
-            subscriber_ack_thread -> message_status = message_status;
+                t_subscriber_ack_thread* subscriber_ack_thread = safe_malloc(sizeof(t_subscriber_ack_thread));
+                subscriber_ack_thread -> subscriber_thread = waiting_for_ack_thread;
+                subscriber_ack_thread -> subscriber_context = subscriber_context;
+                subscriber_ack_thread -> message_status = message_status;
 
-            list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
+                list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
+            }
+
+            t_list* subscribers_with_connection_active = list_filter(subscribers, (bool (*)(void *)) has_active_connection);
+            list_iterate(subscribers_with_connection_active, (void (*) (void *)) _send_message);
+            log_succesful_message_sent_to_suscribers(request);
+
+            join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
         }
-
-        t_list* subscribers_with_connection_active = list_filter(subscribers, (bool (*)(void *)) has_active_connection);
-        list_iterate(subscribers_with_connection_active, (void (*) (void *)) _send_message);
-        log_succesful_message_sent_to_suscribers(request);
-
-        join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
     }
 
     consider_as_garbage(request, (void (*)(void *)) free_request); //tengo que hacer esto porque no puedo romper lo de adentro.
