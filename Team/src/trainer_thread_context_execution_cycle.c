@@ -10,6 +10,18 @@
 #include "trainer_thread_context_execution_cycle.h"
 #include "../../Utils/include/t_list_extension.h"
 
+void trainer_thread_context_succesfully_created(t_trainer_thread_context* trainer_thread_context){
+    t_trainer* trainer = trainer_from_thread_context(trainer_thread_context);
+
+    if(can_catch_pokemons(trainer)){
+       register_trainer_thread_context_as_new(trainer_thread_context);
+    }else{
+        free_thread_action(trainer_thread_context -> thread_action);
+        trainer_thread_context -> thread_action = waiting_for_trade_thread_action_for(trainer);
+        register_trainer_thread_context_as_blocked(trainer_thread_context);
+    }
+}
+
 void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* destiny_object){
 
     free_thread_action(trainer_thread_context -> thread_action);

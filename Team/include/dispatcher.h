@@ -6,7 +6,6 @@
 
 void initialize_dispatcher();
 
-void new_thread_created_for(t_trainer_thread_context* t_trainer_thread_context);
 t_list* schedulable_trainer_thread_contexts();
 t_list* non_schedulable_blocked_trainer_thread_contexts();
 
@@ -23,6 +22,8 @@ bool preemption_must_take_place();
 void preempt();
 void preemption_completed();
 
+void register_trainer_thread_context_as_new(t_trainer_thread_context* trainer_thread_context);
+void register_trainer_thread_context_as_blocked(t_trainer_thread_context* trainer_thread_context);
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);
 

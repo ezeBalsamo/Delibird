@@ -3,6 +3,7 @@
 
 #include "trainer_threads.h"
 
+void trainer_thread_context_succesfully_created(t_trainer_thread_context* t_trainer_thread_context);
 void prepare_for_movement_action(t_trainer_thread_context* trainer_thread_context, t_localizable_object* localizable_pokemon);
 void movement_action_completed_by(t_trainer_thread_context* trainer_thread_context);
 void catch_action_completed_successfully_by(t_trainer_thread_context* trainer_thread_context);

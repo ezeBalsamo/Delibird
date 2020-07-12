@@ -158,6 +158,13 @@ void log_trainer_added_to_new(t_localizable_object* localizable_trainer){
     log_trainer_dispatch_action(localizable_trainer, "fue agregado a la", state_as_string(NEW));
 }
 
+void log_trainer_added_to_blocked(t_trainer_thread_context* trainer_thread_context){
+    t_localizable_object* localizable_trainer = trainer_thread_context -> localizable_trainer;
+    char* reason = thread_action_reason_for(trainer_thread_context);
+
+    log_trainer_dispatch_action_with_reason(localizable_trainer, "fue agregado a la", state_as_string(BLOCKED), reason);
+}
+
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason){
     log_trainer_dispatch_action_with_reason(localizable_trainer, "fue movido a la", state_as_string(READY), reason);
 }
@@ -438,7 +445,6 @@ void log_trainer_remaining_time_estimator_not_found_error_for(t_trainer* trainer
     log_errorful_message(process_execution_logger(), message);
     free(printable_trainer);
     free(message);
-
 }
 
 void log_unknown_preemptive_algorithm_name_error_for(char* algorithm_name){

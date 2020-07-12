@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <trainer_thread_context_state_chained_evaluation.h>
 #include <deadlock_detection_and_recovery_algorithm.h>
+#include <trainer_thread_context_execution_cycle.h>
 
 t_list* trainer_thread_contexts;
 t_list* trainers_tids;
@@ -44,7 +45,7 @@ void initialize_and_load_trainer_thread_for(void* trainer_thread_context){
     *trainer_tid = thread_create(trainer_thread, trainer_thread_context, log_trainer_thread_create_error);
 
     list_add(trainers_tids, (void*) trainer_tid);
-    new_thread_created_for((t_trainer_thread_context*) trainer_thread_context);
+    trainer_thread_context_succesfully_created((t_trainer_thread_context*) trainer_thread_context);
 }
 
 void initialize_and_load_trainer_thread_context_for(t_localizable_object* localizable_trainer){

@@ -29,9 +29,14 @@ void initialize_dispatcher(){
     safe_mutex_initialize(&execute_mutex);
 }
 
-void new_thread_created_for(t_trainer_thread_context* trainer_thread_context){
+void register_trainer_thread_context_as_new(t_trainer_thread_context* trainer_thread_context){
     add_to_dispatcher_queue(trainer_thread_context, NEW);
     log_trainer_added_to_new(trainer_thread_context -> localizable_trainer);
+}
+
+void register_trainer_thread_context_as_blocked(t_trainer_thread_context* trainer_thread_context){
+    add_to_dispatcher_queue(trainer_thread_context, BLOCKED);
+    log_trainer_added_to_blocked(trainer_thread_context);
 }
 
 bool can_be_schedule(t_trainer_thread_context* trainer_thread_context){

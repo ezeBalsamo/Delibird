@@ -23,6 +23,7 @@ void log_scheduling_algorithm_not_found_error_for(char* scheduling_algorithm_nam
 void log_pokemon_not_belonging_to_global_goal_error_for(char* pokemon_name);
 void log_targetable_pokemon_not_found_error_for(t_localizable_object* localizable_pokemon);
 void log_trainer_added_to_new(t_localizable_object* localizable_trainer);
+void log_trainer_added_to_blocked(t_trainer_thread_context* trainer_thread_context);
 void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reason);
 void log_trainer_movement(t_localizable_object* localizable_trainer);
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason);
