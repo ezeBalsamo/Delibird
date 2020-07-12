@@ -13,14 +13,15 @@ uint32_t default_message_id_when_missing(){
 }
 
 uint32_t message_id_according_to(char** arguments){
-    return arguments[3] == NULL ? default_message_id_when_missing() : atoi(arguments[3]);
+    return arguments[3] == NULL ? default_message_id_when_missing() : (uint32_t) atoi(arguments[3]);
 }
 
 bool should_build_correlative_identified_message_according_to(char** arguments){
     return arguments[4] != NULL;
 }
 
-t_identified_message* correlative_identified_message_built_with(t_identified_message* identified_message, char** arguments){
+t_identified_message* correlative_identified_message_built_with(t_identified_message* identified_message){
+
     t_request* correlative_request = safe_malloc(sizeof(t_request));
     correlative_request -> operation = IDENTIFIED_MESSAGE;
     correlative_request -> structure = (void*) identified_message;
@@ -42,7 +43,7 @@ t_identified_message* identified_message_from(t_request* request, char** argumen
     identified_message -> request = request;
 
     if(should_build_correlative_identified_message_according_to(arguments)){
-        return correlative_identified_message_built_with(identified_message, arguments);
+        return correlative_identified_message_built_with(identified_message);
     }
 
     return identified_message;
