@@ -1,6 +1,5 @@
 #!/bin/bash
 
-CAPITALIZED_MODULE_NAME=${1^}
-cd ${CAPITALIZED_MODULE_NAME}/target
+cd Gameboy/target
 export LD_LIBRARY_PATH=$HOME/tp-2020-1c-El-Kuelgue/Utils/target:$LD_LIBRARY_PATH
-./$@
+./$1
