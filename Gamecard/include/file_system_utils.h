@@ -20,6 +20,7 @@ void close_metadata(char* metadata_path);
 t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata_config);
 t_file_metadata* read_file_metadata_from_config(t_config* metadata_config);
 void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds);
+char* get_pokemon_name_from_path(char* pokemon_path);
 
 
 #endif //DELIBIRD_FILE_SYSTEM_UTILS_H

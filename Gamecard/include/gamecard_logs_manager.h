@@ -16,6 +16,7 @@ void log_file_system_metadata_info(t_file_system_metadata* pointer_file_system_m
 void log_file_metadata_info(t_file_metadata* pointer_file_metadata);
 void log_block_metadata_info(int32_t x, int32_t y, int32_t quantity);
 void log_unknown_file_type_error();
+void log_pokemon_file_destroyed(char* pokemon_name);
 void free_gamecard_logs_manager();
 
 #endif //DELIBIRD_GAMECARD_LOGS_MANAGER_H

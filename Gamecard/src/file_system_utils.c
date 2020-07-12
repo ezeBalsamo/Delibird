@@ -16,6 +16,15 @@ void show_bitmap_state(t_bitarray* bitarray){ //va a ser solo para testear los 1
 	}
 }
 
+char* get_pokemon_name_from_path(char* pokemon_path){
+
+    char** path_array = string_split(pokemon_path, "/");
+
+    uint32_t path_array_length = sizeof(path_array);
+
+    return path_array[path_array_length - 1];
+}
+
 char* block_line_to_string(t_pokemon_block_line *line){
     return string_from_format("%d-%d=%d\n",line -> position_x, line -> position_y, line -> quantity);
 }

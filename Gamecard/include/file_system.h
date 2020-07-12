@@ -37,11 +37,11 @@ t_file_system_metadata* read_file_system_metadata(char* file_path);
 t_file_metadata* read_file_metadata(char* file_path);
 t_list* read_block(char* file_path);
 void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_metadata_path);
-void write_pokemon_data(t_list* pokemon_data_list, t_file_metadata* metadata_file_information);
+void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_file_information);
 void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract);
 void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add);
 t_list* data_to_write(t_new_pokemon* new_pokemon);
-void create_pokemon_metadata(char* new_block_number, char* pokemon_name);
+t_file_metadata* create_pokemon_metadata(char* new_block_number, char* pokemon_name);
 void add_to_blocks(char* string_to_modify, char* block_to_add);
 char* get_new_block();
 

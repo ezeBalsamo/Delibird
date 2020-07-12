@@ -50,7 +50,7 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     		subtract_or_remove_from(blocks_information, catch_pokemon);
 
     		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-    		write_pokemon_data(blocks_information, metadata_file_information);
+    		write_pokemon_blocks(blocks_information, metadata_file_information);
 
     		//Esperar cantidad de segundos definidos por archivo de configuracion
 			sleep(operation_delay_time_getter());

@@ -92,6 +92,14 @@ void log_unknown_file_type_error(){
     free(message);
 }
 
+void log_pokemon_file_destroyed(char* pokemon_name){
+
+    char* message = string_from_format("Se eliminó del file system el Pokemon: %s\n", pokemon_name);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+
+}
+
 void free_gamecard_logs_manager(){
     free_loggers();
 }

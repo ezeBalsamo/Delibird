@@ -19,10 +19,11 @@
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/paths.h"
 
-
-
 t_bitarray* bitmap;
 t_file_system_metadata* file_system_metadata;
+
+sem_t bitmap_mutex;
+
 uint32_t maximum_length_of_line = 40;
 
 bool can_read_line(char* buffer, uint32_t size, FILE* file_pointer)
@@ -244,11 +245,10 @@ void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add)
 
 }
 
-void remove_from_blocks(t_file_metadata* metadata_file_information, char* block_to_remove){
-	uint32_t aux = strlen(block_to_remove);
-	aux += 2; //uno por el ']' y otro por la ','
-	metadata_file_information -> blocks = string_substring_until(metadata_file_information -> blocks, strlen(metadata_file_information -> blocks) - aux);
-	string_append(&metadata_file_information -> blocks, "]");
+void remove_from_blocks(char* pokemon_blocks, char* block_to_remove){
+	uint32_t aux = strlen(block_to_remove) + 2; //uno por el ']' y otro por la ','
+	pokemon_blocks = string_substring_until(pokemon_blocks, strlen(pokemon_blocks) - aux);
+	string_append(&pokemon_blocks, "]");
 }
 
 void add_to_blocks(char* string_to_modify, char* block_to_add){
@@ -256,22 +256,45 @@ void add_to_blocks(char* string_to_modify, char* block_to_add){
 	string_append_with_format(&string_to_modify, ",%s]",block_to_add); //agrego el bloque nuevo y ]
 }
 
+void update_bitmap_file(){
+    char* bitmap_path = string_from_format("%s/Metadata/Bitmap.bin", tallgrass_mount_point());
+
+    FILE* bitmap_file = fopen(bitmap_path, "w");
+
+    fputs(string_substring(bitmap -> bitarray, 0, file_system_metadata -> blocks / 8), bitmap_file);
+
+    fclose(bitmap_file);
+
+}
+
 char* get_new_block(){
 	char* block_number_string_format;
 	uint32_t index = 0;
 
+	sem_wait(&bitmap_mutex);
+	//<-------region critica-------->
 	while(bitarray_test_bit(bitmap,index)){
 		index++;
 	}//itero mientras los bits esten en 1, hasta encontrar un 0
 
 	bitarray_set_bit(bitmap, index);
+    update_bitmap_file();
+    //<-------region critica-------->
+    sem_post(&bitmap_mutex);
+
 	block_number_string_format = string_from_format("%d",index);
 	return block_number_string_format;
 }
 
 void free_block_number(char* block_name){
 	uint32_t index = atoi(block_name);
+
+    sem_wait(&bitmap_mutex);
+    //<-------region critica-------->
 	bitarray_clean_bit(bitmap,index);
+    update_bitmap_file();
+    //<-------region critica-------->
+    sem_post(&bitmap_mutex);
 }
 
 bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* total_size){
@@ -318,6 +341,8 @@ void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* po
 		remove(pokemon_metadata_path);
 		char* pokemon_path = string_substring_until(pokemon_metadata_path,strlen(pokemon_metadata_path)-strlen("/Metadata.bin"));
 		remove(pokemon_path);
+		char* pokemon_name = get_pokemon_name_from_path(pokemon_path);
+		log_pokemon_file_destroyed(pokemon_name);
 	}else{
 		char* line_to_write;
 		FILE* file_pointer = fopen(pokemon_metadata_path, "w");
@@ -339,8 +364,7 @@ void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* po
 
 }
 
-
-void write_pokemon_data(t_list* pokemon_data_list, t_file_metadata* metadata_file_information){
+void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_file_information){
 	uint32_t i = 1;
 	char block_name[12];
 	char* block_path;
@@ -351,7 +375,6 @@ void write_pokemon_data(t_list* pokemon_data_list, t_file_metadata* metadata_fil
 	if(list_is_empty(pokemon_data_list)){
 		remove(create_block_path(block_name));
 		metadata_file_information -> blocks = "[]";
-		//log
 		return;
 	}
 
@@ -373,7 +396,7 @@ void write_pokemon_data(t_list* pokemon_data_list, t_file_metadata* metadata_fil
 	//si i quedo = a cant_bloques o menor, => le sobraron bloques
 	while(i <= blocks_quantity){//si NO estoy escribiendo en el ultimo bloque
 		split(metadata_file_information -> blocks,blocks_quantity,"[,]",block_name);
-		remove_from_blocks(metadata_file_information, block_name);
+		remove_from_blocks(metadata_file_information -> blocks, block_name);
 		blocks_quantity--;
 		free_block_number(block_name);
 		remove(create_block_path(block_name));
@@ -382,17 +405,18 @@ void write_pokemon_data(t_list* pokemon_data_list, t_file_metadata* metadata_fil
 	metadata_file_information -> size = total_size;
 }
 
-void create_pokemon_metadata(char* new_block_number, char* pokemon_name){
-	printf("el path es: %s\n",pokemon_name);
+t_file_metadata* create_pokemon_metadata(char* new_block_number, char* pokemon_name){
+
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), pokemon_name);
 	mkdir(string_from_format("%s/Files/%s", tallgrass_mount_point(), pokemon_name),0777);
-	t_file_metadata* metadata_file_information = (t_file_metadata*)safe_malloc(500);
+	t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
 
 	metadata_file_information -> directory = "N";
 	metadata_file_information -> size = 0;
 	metadata_file_information -> blocks = string_from_format("[%s]",new_block_number);
 	metadata_file_information -> open = "N";
-	write_pokemon_metadata(metadata_file_information, pokemon_metadata_path);
+
+	return metadata_file_information;
 }
 
 void* read_file_of_type(uint32_t file_type, char* file_name){
@@ -401,6 +425,34 @@ void* read_file_of_type(uint32_t file_type, char* file_name){
 
     return (*(file_information -> reader_function)) (file_name);
 
+}
+
+void initialize_bitmap(){
+	char* bitmap_path = string_from_format("%s/Metadata/Bitmap.bin", tallgrass_mount_point());
+	uint32_t bitmap_size = (file_system_metadata -> blocks)/8;
+	char* bitmap_buffer = safe_malloc(bitmap_size);
+    FILE* bitmap_file;
+
+	if(exists_file_at(bitmap_path)){
+		bitmap_file = fopen(bitmap_path, "r");
+
+		//Escribir en buffer, el stream contenido en bitmap_file de tamaño "size"
+		fread(bitmap_buffer, bitmap_size, 1, bitmap_file);
+		//Guardar en buffer los "size" caracteres de buffer como string
+		bitmap_buffer = string_substring_until(bitmap_buffer, bitmap_size);
+
+		//Guardo en bitmap el t_bitarray con los datos correspondientes
+		bitmap = bitarray_create_with_mode(bitmap_buffer, bitmap_size, LSB_FIRST);
+	}else{
+		bitmap_file = fopen(bitmap_path, "w");
+
+		bitmap = bitarray_create_with_mode(bitmap_buffer,file_system_metadata -> blocks, LSB_FIRST);
+		for(uint32_t i = 0; i < file_system_metadata -> blocks; i++){
+			bitarray_clean_bit(bitmap,i);
+		}
+		fprintf(bitmap_file, "%s", bitmap -> bitarray);
+	}
+	fclose(bitmap_file);
 }
 
 void initialize_metadata(){
@@ -412,44 +464,9 @@ void initialize_metadata(){
 
 void initialize_file_system(){
 
-    //TODO: verificar si existe el archivo de bitmap, y en caso que no, crearlo a partir de los datos del metadata. inicializar metadata y bitmap
-
     initialize_files_information();
     initialize_metadata();
-    char* bitmap_path = string_from_format("%s/Metadata/Bitmap.bin", tallgrass_mount_point());
-    if(exists_file_at(bitmap_path)){
-    	FILE* bitmap_file = fopen(bitmap_path, "r");
-
-		int size = file_system_metadata -> blocks;
-		char* buffer;
-		/*//Muevo el puntero de archivo a la ultima posicion del archivo
-		//OL = long int con todos los bits seteados en 0
-		fseek(bitmap_file, 0L, SEEK_END);
-		//Me guardo la posicion actual del puntero de archivo, al estar en la ultima posicion, me dira el tamaño
-		size = ftell(bitmap_file);
-		//Devuelvo el puntero de archivo al principio del archivo
-		fseek(bitmap_file, 0L, SEEK_SET);
-		 */
-		buffer = safe_malloc(size);
-		//Escribir en buffer, el stream contenido en bitmap_file de tamaño "size"
-		fread(buffer, size, 1, bitmap_file);
-		//Guardar en buffer los "size" caracteres de buffer como string
-		buffer = string_substring_until(buffer, size);
-
-		//Guardo en bitmap el t_bitarray con los datos correspondientes
-		bitmap = bitarray_create_with_mode(buffer, file_system_metadata ->blocks / 8, LSB_FIRST);
-
-		fclose(bitmap_file);
-    }else{
-    	FILE* bitmap_file = fopen(bitmap_path, "w");
-
-    	char* bitmap_memory = safe_malloc((file_system_metadata -> blocks)/8);
-    	bitmap = bitarray_create_with_mode(bitmap_memory,file_system_metadata -> blocks, LSB_FIRST);
-    	for(uint32_t i = 0; i < file_system_metadata -> blocks; i++){
-    		bitarray_clean_bit(bitmap,i);
-    	}
-
-    	fprintf(bitmap_file, "%s", bitmap -> bitarray);
-    	fclose(bitmap_file);
-    }
+    sem_init(&bitmap_mutex, 0, 1);
+    consider_as_garbage(&bitmap_mutex, (void (*)) sem_destroy);
+ 	initialize_bitmap();
 }
