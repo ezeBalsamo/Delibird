@@ -7,11 +7,25 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <commons/string.h>
+#include <unistd.h>
 
 t_gamecard_query_performer *catch_pokemon_query_performer;
 
 t_gamecard_query_performer* catch_query_performer(){
     return catch_pokemon_query_performer;
+}
+
+t_request* catch_caught_request(uint32_t caught_status){
+
+    t_caught_pokemon* caught_structure = safe_malloc(sizeof(t_caught_pokemon));
+    caught_structure -> caught_status = caught_status;
+
+    t_request* caught_request = safe_malloc(sizeof(t_request));
+    caught_request -> operation = CAUGHT_POKEMON;
+    caught_request -> structure = caught_structure;
+    caught_request -> sanitizer_function = (void (*)(void *)) free_caught_pokemon;
+
+    return caught_request;
 }
 
 t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
@@ -22,7 +36,8 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     	char* pokemon_name = catch_pokemon -> pokemon_name;
     	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), pokemon_name);
 
-    	t_request* localized_request;
+    	t_request* caught_request;
+    	uint32_t caught_status;
 
     	if(exists_file_at(pokemon_metadata_path)) {
     		//Leo el archivo de metadata
@@ -35,13 +50,28 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     		subtract_or_remove_from(blocks_information, catch_pokemon);
 
     		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-    		write_pokemon_data(blocks_information, metadata_file_information -> blocks);
+    		write_pokemon_data(blocks_information, metadata_file_information);
 
-//TODO:    		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+    		//Esperar cantidad de segundos definidos por archivo de configuracion
+			sleep(operation_delay_time_getter());
+
+			write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+			caught_status = 1;
     	}
     	else{
     		//fallo, no existe el que queres catchear
+    		// loggeo ?
+    		caught_status = 0;
     	}
+
+    	caught_request = catch_caught_request(caught_status);
+
+		//Armado de la estructura de mensaje
+		t_identified_message* caught_message = safe_malloc(sizeof(t_identified_message));
+		caught_message -> message_id = identified_message -> message_id;
+		caught_message -> request = caught_request;
+
+		return caught_message;
 }
 
 bool catch_query_performer_can_handle(uint32_t operation){

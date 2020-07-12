@@ -8,6 +8,14 @@
 #include <sys/file.h>
 #include <unistd.h>
 
+void show_bitmap_state(t_bitarray* bitarray){ //va a ser solo para testear los 1 del bitmap
+	for(int i = 0; i < bitarray -> size; i++){
+		if(bitarray_test_bit(bitarray,i)){
+			printf("%d, ",i);
+		}
+	}
+}
+
 char* block_line_to_string(t_pokemon_block_line *line){
     return string_from_format("%d-%d=%d\n",line -> position_x, line -> position_y, line -> quantity);
 }

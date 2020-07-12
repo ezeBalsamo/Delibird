@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <commons/string.h>
+#include <unistd.h>
 
 t_gamecard_query_performer *new_pokemon_query_performer;
 
@@ -15,15 +16,33 @@ t_gamecard_query_performer* new_query_performer(){
     return new_pokemon_query_performer;
 }
 
+t_request* new_appeared_request(char* pokemon_name, uint32_t pos_x, uint32_t pos_y){
+
+    t_appeared_pokemon* appeared_structure = safe_malloc(sizeof(t_appeared_pokemon));
+    appeared_structure -> pokemon_name = pokemon_name;
+    appeared_structure -> pos_x = pos_x;
+    appeared_structure -> pos_y = pos_y;
+
+    t_request* localized_request = safe_malloc(sizeof(t_request));
+    localized_request -> operation = APPEARED_POKEMON;
+    localized_request -> structure = appeared_structure;
+    localized_request -> sanitizer_function = (void (*)(void *)) free_appeared_pokemon;
+
+    return localized_request;
+}
+
 t_identified_message* new_query_performer_function(t_identified_message* identified_message){
     printf("Se recibio el mensaje NEW_POKEMON con id = %d\n", identified_message -> message_id);
 
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
-	char* pokemon_name = new_pokemon -> pokemon_name;
+	char* pokemon_name = malloc(string_length(new_pokemon -> pokemon_name));
+	strcpy(pokemon_name,new_pokemon -> pokemon_name);
+	uint32_t position_x = new_pokemon -> pos_x;
+	uint32_t position_y = new_pokemon -> pos_y;
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), pokemon_name);
 
-	t_request* localized_request;
+	t_request* appeared_request;
 
 	if(exists_file_at(pokemon_metadata_path)) {
 		//Leo el archivo de metadata
@@ -36,16 +55,31 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		add_or_modify_to(blocks_information, new_pokemon);
 
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-		write_pokemon_data(blocks_information, metadata_file_information -> blocks);
-//TODO:		rewrite_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
-        close_metadata(pokemon_metadata_path);
+		write_pokemon_data(blocks_information, metadata_file_information);
+
+		//Esperar cantidad de segundos definidos por archivo de configuracion
+		sleep(operation_delay_time_getter());
+		write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 	}
 	else{
-		//tengo que crear el metadata
+		char* new_block_number = get_new_block();
+		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
+		metadata_file_information -> blocks = new_block_number;
+		write_pokemon_data(data_to_write(new_pokemon), metadata_file_information);
+		sleep(operation_delay_time_getter());
+		create_pokemon_metadata(new_block_number, pokemon_name);
 		//tengo que que pedir un bloque, escribir en ese bloque
 		//crear el metadata de ese pokemon, en bloques tendra el bloque creado arriba
 	}
 
+	appeared_request = new_appeared_request(pokemon_name, position_x, position_y);
+
+	//Armado de la estructura de mensaje
+	t_identified_message* appeared_message = safe_malloc(sizeof(t_identified_message));
+	appeared_message -> message_id = identified_message -> message_id;
+	appeared_message -> request = appeared_request;
+
+	return appeared_message;
 }
 
 bool new_query_performer_can_handle(uint32_t operation){
