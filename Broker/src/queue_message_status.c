@@ -15,6 +15,7 @@ t_message_status* create_message_status_for(t_identified_message* identified_mes
     message_status -> identified_message = identified_message;
     message_status -> subscribers_to_send = list_create();
     message_status -> subscribers_who_received = list_create();
+    message_status -> is_allocated = true;
 
     return message_status;
 }
@@ -27,6 +28,24 @@ t_request* create_request_from(t_message_status* message_status){
     request -> sanitizer_function = (void (*)(void *)) free_identified_message;
 
     return request;
+}
+
+void no_longer_in_memory(uint32_t operation_message, uint32_t message_id){
+
+    t_queue_context* queue_context = queue_context_of_queue_named(queue_name_of(operation_message));
+
+    bool _message_status_with_message_id(t_message_status* message_status){
+        return message_status -> identified_message -> message_id  == message_id;
+    }
+
+    t_message_status* message_status = list_find(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
+
+    if(message_status == NULL){
+        log_message_status_not_found_in_queue_error(message_id);    //PUEDE PASAR QUE SE QUIERA BORRAR ALGO QUE YA SE BORRO DE LA LISTA DE SUBSCRIPTORES POR HABERSE ENVIADO A TODOS
+    }else{
+        message_status -> is_allocated = false;
+        log_succesful_no_longer_in_memory(message_status);
+    }
 }
 
 void delete_message(uint32_t operation_message, uint32_t message_id, char* reason){
@@ -45,7 +64,6 @@ void delete_message(uint32_t operation_message, uint32_t message_id, char* reaso
         log_succesful_eliminating_message_of_a_queue(message_status, reason);
         free_message_status(message_status);
     }
-
 }
 
 void delete_message_if_necessary(t_message_status* message_status,t_queue_context* queue_context) {

@@ -219,8 +219,16 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
 }
 
 void log_message_status_not_found_in_queue_error(uint32_t message_id){
-    char* message = string_from_format("No se pudo borrar el mensaje id:'%d' de la cola de mensajes, posiblemente ya haya sido borrado de la cola por haber sido enviado a todos sus subscriptore (revisar logs).",message_id);
+    char* message = string_from_format("No se pudo encontrar un mensaje con id:'%d' de la cola de mensajes.",message_id);
     log_warning_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_succesful_no_longer_in_memory(t_message_status* message_status){
+    char* printed_object = request_pretty_print(message_status -> identified_message -> request);
+    char* message = string_from_format("El mensaje:\n %s \n fue removido de la memoria correctamente.", printed_object);
+    log_succesful_message(process_execution_logger(), message);
+    free(printed_object);
     free(message);
 }
 
