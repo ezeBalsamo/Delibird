@@ -18,7 +18,9 @@ void new_to_ready_transition_function(t_trainer_thread_context* trainer_thread_c
 
 void ready_to_execute_transition_function(t_trainer_thread_context* trainer_thread_context){
 
-    if(should_execute(trainer_thread_context)){
+    (void) trainer_thread_context;
+
+    if(!is_anybody_executing()){
         execute_trainer_thread_context();
     }
 }
@@ -76,6 +78,7 @@ void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_th
     void _to_blocked_function(){
         add_to_dispatcher_queue(trainer_thread_context, BLOCKED);
         log_trainer_blocked(trainer_thread_context);
+        consider_deadlock_occurred_according_to(trainer_thread_context);
     }
 
     stop_current_execution_doing(_to_blocked_function);

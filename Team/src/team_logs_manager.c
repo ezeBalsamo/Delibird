@@ -441,6 +441,13 @@ void log_trainer_remaining_time_estimator_not_found_error_for(t_trainer* trainer
 
 }
 
+void log_unknown_preemptive_algorithm_name_error_for(char* algorithm_name){
+    char* message = string_from_format("%s no fue designado como un algoritmo con desalojo.", algorithm_name);
+
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void log_global_goal_accomplished(){
     char* message = "Team ha cumplido su objetivo global.";
     log_succesful_message(main_logger(), message);

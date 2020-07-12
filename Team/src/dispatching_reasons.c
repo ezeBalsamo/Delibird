@@ -10,6 +10,7 @@
 #include <team_pretty_prints.h>
 #include <deadlock_solver.h>
 #include <identified_trades_provider.h>
+#include <scheduling_algorithm.h>
 
 char* catch_pokemon_reason_for(t_trainer_thread_context* trainer_thread_context){
     t_catch_action* catch_action = internal_thread_action_in(trainer_thread_context);
@@ -104,9 +105,33 @@ char* quantum_consumed_reason(){
     return string_from_format("%s", "Quantum agotado");
 }
 
+char* shortest_trainer_reason(){
+    //Se aloca memoria en lugar de devolver el string porque los
+    //otros motivos de logueo de schedule la alocan y la función
+    //que loguea asume eso y realiza un free
+
+    return string_from_format("%s", "Un entrenador con menor estimación ha sido movido a la cola de listos");
+}
+
 char* preemption_reason(){
-    //TODO: sumarle la lógica para cuando SJF CD
-    return quantum_consumed_reason();
+
+    char* algorithm_name = scheduling_algorithm_name();
+    char* reason_found = NULL;
+
+    if(string_equals_ignore_case(algorithm_name, "RR")){
+        reason_found = quantum_consumed_reason();
+    }
+
+    if(string_equals_ignore_case(algorithm_name, "SJF-CD")){
+        reason_found = shortest_trainer_reason();
+    }
+
+    if(!reason_found){
+        log_unknown_preemptive_algorithm_name_error_for(algorithm_name);
+        free_system();
+    }
+
+    return reason_found;
 }
 
 char* thread_action_reason_for(t_trainer_thread_context* trainer_thread_context){

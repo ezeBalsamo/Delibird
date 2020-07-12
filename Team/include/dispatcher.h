@@ -16,6 +16,7 @@ void stop_current_execution_doing(void (*state_function) ());
 
 void consider_continue_executing();
 bool is_anybody_executing();
+t_trainer_thread_context* trainer_thread_context_executing();
 void execute_trainer_thread_context();
 
 bool preemption_must_take_place();
@@ -24,6 +25,8 @@ void preemption_completed();
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);
+
+void consider_deadlock_occurred_according_to(t_trainer_thread_context* trainer_thread_context);
 
 bool is_deadlock_resolution_in_process();
 void deadlock_solver_has_begun();

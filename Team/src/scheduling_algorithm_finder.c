@@ -8,15 +8,17 @@
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
+#include <basic_sjf_scheduling_algorithm_behaviour.h>
+#include <commons/string.h>
 
 t_list* scheduling_algorithms;
-char* scheduling_algorithm_name;
+char* algorithm_name;
 
 void initialize_scheduling_algorithms(){
     initialize_fifo_scheduling_algorithm();
     initialize_round_robin_scheduling_algorithm();
-    initialize_preemptive_sjf_scheduling_algorithm();
     initialize_non_preemptive_sjf_scheduling_algorithm();
+    initialize_preemptive_sjf_scheduling_algorithm();
 
     scheduling_algorithms = list_create();
     list_add(scheduling_algorithms, fifo_scheduling_algorithm());
@@ -26,7 +28,7 @@ void initialize_scheduling_algorithms(){
 }
 
 bool can_handle(t_scheduling_algorithm* scheduling_algorithm){
-    return scheduling_algorithm -> can_handle_function (scheduling_algorithm_name);
+    return string_equals_ignore_case(scheduling_algorithm -> algorithm_name, algorithm_name);
 }
 
 void free_scheduling_algorithms(){
@@ -34,7 +36,7 @@ void free_scheduling_algorithms(){
 }
 
 t_scheduling_algorithm* chosen_scheduling_algorithm(){
-    scheduling_algorithm_name = config_get_string_at("ALGORITMO_PLANIFICACION");
+    algorithm_name = config_get_string_at("ALGORITMO_PLANIFICACION");
 
     initialize_scheduling_algorithms();
 
@@ -42,7 +44,7 @@ t_scheduling_algorithm* chosen_scheduling_algorithm(){
             list_remove_by_condition(scheduling_algorithms, (bool (*)(void *)) can_handle);
 
     if(!scheduling_algorithm_found){
-        log_scheduling_algorithm_not_found_error_for(scheduling_algorithm_name);
+        log_scheduling_algorithm_not_found_error_for(algorithm_name);
         free_system();
     }
 

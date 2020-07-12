@@ -177,8 +177,6 @@ void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, BLOCKED);
     state_transition -> state_transition_function (trainer_thread_context);
-
-    consider_deadlock_occurred_according_to(trainer_thread_context);
 }
 
 bool is_deadlock_resolution_in_process(){
