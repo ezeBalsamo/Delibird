@@ -1,0 +1,5 @@
+#!/bin/bash
+
+CAPITALIZED_MODULE_NAME=${1^}
+make $CAPITALIZED_MODULE_NAME
+./run $1
