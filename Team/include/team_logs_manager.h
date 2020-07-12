@@ -54,6 +54,8 @@ void log_pokemon_not_found_error_for(char* pokemon_name);
 void log_trade_to_do_according_to(t_identified_trade* identified_trade);
 void log_trade_completed(char* printable_trade_completed);
 void log_no_trainer_found_to_increment_its_execution_cycles_quantity_error_for(t_trainer* trainer);
+void log_trainer_remaining_time_estimator_not_found_error_for(t_trainer* trainer);
+void log_unknown_preemptive_algorithm_name_error_for(char* algorithm_name);
 void log_global_goal_accomplished();
 void log_metrics_report(char* metrics_report);
 

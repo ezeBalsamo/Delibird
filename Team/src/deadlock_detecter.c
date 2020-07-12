@@ -37,7 +37,6 @@ bool deadlock_exists(){
     t_list* queues_expected_to_be_empty = list_create();
     list_add(queues_expected_to_be_empty, dispatcher_queue_of(NEW));
     list_add(queues_expected_to_be_empty, dispatcher_queue_of(READY));
-    list_add(queues_expected_to_be_empty, dispatcher_queue_of(EXECUTE));
 
     bool deadlock_has_occurred =
             list_all_satisfy(queues_expected_to_be_empty, (bool (*)(void *)) is_dispatcher_queue_empty) &&

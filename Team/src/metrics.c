@@ -14,7 +14,7 @@ t_list* execution_cycles_quantity_per_trainers;
 int produced_and_resolved_deadlocks_quantity;
 t_list* trades_made_for_deadlocks_resolution;
 
-void initialize_execution_cycles_of(t_localizable_object* localizable_trainer){
+void initialize_and_load_execution_cycles_of(t_localizable_object* localizable_trainer){
     t_execution_cycles_quantity_per_trainer* execution_cycles_quantity_per_trainer = safe_malloc(sizeof(t_execution_cycles_quantity_per_trainer));
 
     execution_cycles_quantity_per_trainer -> trainer = localizable_trainer -> object;
@@ -78,7 +78,7 @@ void initialize_metrics(){
     produced_and_resolved_deadlocks_quantity = 0;
     trades_made_for_deadlocks_resolution = list_create();
 
-    with_trainers_do(initialize_execution_cycles_of);
+    with_trainers_do(initialize_and_load_execution_cycles_of);
 
     subscribe_to_events();
 }
