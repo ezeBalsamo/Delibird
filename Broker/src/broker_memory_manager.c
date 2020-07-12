@@ -1,5 +1,6 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
+#include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
@@ -19,6 +20,7 @@ t_block_information* initialize_first_block_information(){
     initial_block_information->initial_position = safe_malloc(memory_size);
     initial_block_information->memory_block = NULL;
 
+    consider_as_garbage(initial_block_information -> initial_position, free);
     return initial_block_information;
 }
 
@@ -43,10 +45,8 @@ char* dump_cache(){
     return cache_information_builder(blocks_information);
 }
 
-//TODO NO PUEDO BORRAR MESSAGE DE MEMORY_BLOCK! Se rompe todooo
 void free_block_information(t_block_information* block_information){
     if (!block_information->is_free){
-        free(block_information->memory_block->message);
         free(block_information -> memory_block);
     }
     free(block_information);

@@ -145,6 +145,7 @@ void log_succesful_eliminating_message_of_a_queue(t_message_status* message_stat
     char* printed_object = request_pretty_print(message_status ->identified_message -> request);
     char* message = string_from_format("Se borro el mensaje:\n %s\n con id: %d correctamente! Motivo de borrado: %s", printed_object, message_status -> identified_message -> message_id, reason);
     log_succesful_message(process_execution_logger(), message);
+    free(printed_object);
     free(message);
 }
 

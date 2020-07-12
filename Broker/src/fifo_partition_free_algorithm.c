@@ -17,5 +17,7 @@ t_block_information* fifo_partition_free_algorithm(t_list* blocks_information){
         block_to_free = list_fold(blocks_occupied, list_get(blocks_occupied,0),(void* (*) (void*, void*)) _block_with_oldest_id);
     }
 
+    list_destroy(blocks_occupied);
+
     return block_to_free;
 }

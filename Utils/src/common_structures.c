@@ -160,6 +160,9 @@ uint64_t current_time_in_milliseconds(){
    int minutes_in_milliseconds = atoi(minutes) * 60000;
    int seconds_in_milliseconds = atoi(seconds) * 1000;
 
+   free(time);
+   free_char_array(time_splitted);
+
    return hours_in_milliseconds + minutes_in_milliseconds + seconds_in_milliseconds + milliseconds;
 }
 
