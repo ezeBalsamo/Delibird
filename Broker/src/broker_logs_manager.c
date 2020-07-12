@@ -67,8 +67,8 @@ void log_succesful_save_message_to_cache(t_request* request, void* message_posit
     free(message);
 }
 
-void log_succesful_free_partition_to_cache(void* message_position){
-    char* message = string_from_format("Se liberó correctamente un mensaje en la posicion de memoria: %p", message_position);
+void log_succesful_free_partition_to_cache(void* message_position,uint32_t message_id){
+    char* message = string_from_format("Se liberó correctamente el mensaje con id:'%d' en la posicion de memoria: %p",message_id, message_position);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -77,6 +77,13 @@ void log_succesful_free_partition_to_cache(void* message_position){
 void log_succesful_memory_compaction(int amount_of_partitions_compacted) {
     char *message = string_from_format("Se compactó correctamente la memoria, compactando %d bloque/s.",
                                        amount_of_partitions_compacted);
+    log_succesful_message(main_logger(), message);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_succesful_memory_compaction_as_buddies(void* master_block_position, void* buddy_block_position){
+    char* message = string_from_format("Se asoció correctamente los bloques buddy en la posicion de memoria: '%p' con '%p' ",master_block_position, buddy_block_position);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);

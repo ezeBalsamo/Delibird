@@ -57,7 +57,7 @@ void log_succesful_save_message_to_cache(t_request* request, void* message_posit
 
 void log_succesful_memory_compaction(int amount_of_partitions_compacted);
 
-void log_succesful_free_partition_to_cache(void* message_position);
+void log_succesful_free_partition_to_cache(void* message_position, uint32_t message_id);
 
 void log_invalid_minimum_partition_size_for_buddy_system_error();
 

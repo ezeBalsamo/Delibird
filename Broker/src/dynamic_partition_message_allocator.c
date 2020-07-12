@@ -34,13 +34,14 @@ void free_partition_by_algorithm(t_list* blocks_information){
     t_block_information* block_to_free = dynamic_partition_message_allocator->partition_free_algorithm (blocks_information);
     if (block_to_free != NULL){
         void* position_of_partition_freed = block_to_free->initial_position;
+        uint32_t message_id_from_block_to_free = block_to_free->memory_block->message_id;
         empty_block_information(block_to_free);
 
         //consolido el bloque
         int block_freed_index = block_index_position(block_to_free,blocks_information);
         consolidate_block_for_dynamic_partition(blocks_information,block_freed_index);
 
-        log_succesful_free_partition_to_cache(position_of_partition_freed);
+        log_succesful_free_partition_to_cache(position_of_partition_freed,message_id_from_block_to_free);
     }else{
         log_invalid_free_partition_error();
         free_system();

@@ -15,9 +15,10 @@ t_message_allocator *message_allocator;
 
 unsigned long get_pointer_position_as_decimal(void* pointer){
     char* pointer_as_string = string_from_format("%p",pointer);
-    char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,3); //Ignore 0x from hexadecimal position
-
-    return strtoul(pointer_as_hexadecimal, NULL, 16);
+    int amount_of_hexadecimal_prefix_characters = 2;
+    char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,amount_of_hexadecimal_prefix_characters+1); //Ignore 0x from hexadecimal position
+    int hexadecimal_base = 16;
+    return strtoul(pointer_as_hexadecimal, NULL, hexadecimal_base);
 }
 
 //CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
@@ -62,10 +63,13 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
         int master_block_current_index = block_index_position(master_block,blocks_information);
 
         if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index-1)){
+            uint32_t master_block_position = master_block->initial_position;
+            uint32_t buddy_block_position = buddy_block->initial_position;
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
             consolidate_block_with(master_block,buddy_block);
             right_is_buddy = true;
-        }else{
+            log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
+            }else{
             left_is_buddy = false;
         }
 
@@ -104,8 +108,10 @@ void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
 
     if (block_to_free != NULL){
         void* position_of_partition_freed = block_to_free->initial_position;
+        uint32_t message_id_from_block_to_free = block_to_free->memory_block->message_id;
+
         empty_block_information(block_to_free);
-        log_succesful_free_partition_to_cache(position_of_partition_freed);
+        log_succesful_free_partition_to_cache(position_of_partition_freed,message_id_from_block_to_free);
 
         //consolido el bloque con buddy system
         associate_with_buddies(blocks_information,block_to_free);
