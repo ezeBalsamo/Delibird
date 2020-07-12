@@ -45,12 +45,14 @@ char* dump_cache(){
 
 //TODO NO PUEDO BORRAR MESSAGE DE MEMORY_BLOCK! Se rompe todooo
 void free_block_information(t_block_information* block_information){
-    free(block_information -> initial_position);
-    free(block_information -> memory_block);
+    if (!block_information->is_free){
+        free(block_information->memory_block->message);
+        free(block_information -> memory_block);
+    }
     free(block_information);
 }
 
 void free_broker_memory_manager(){
     list_destroy_and_destroy_elements(blocks_information, (void (*)(void *)) free_block_information);
-    free(message_allocator);
+    free_message_allocator();
 }

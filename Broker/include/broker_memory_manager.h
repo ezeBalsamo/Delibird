@@ -12,6 +12,7 @@ typedef struct Memory_block{
     uint32_t message_operation;
     uint32_t message_size;
     uint32_t lru_value;
+    uint64_t memory_block_id; //id to handle FIFO order
 
     void* message; //polimorfico segun anexo 2
 

@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include "broker_message_allocator.h"
 #include "../../Utils/include/garbage_collector.h"
-#include "../../Utils/include/serialization_interface.h"
 #include "../../Utils/include/pokemon_request_bytes_calculator.h"
 #include "../../Utils/include/configuration_manager.h"
 
 t_dictionary* allocation_algorithms;
 t_message_allocator* message_allocator;
+uint64_t fifo_id;
 
 void initialize_allocation_algorithms(){
     allocation_algorithms = dictionary_create();
@@ -62,11 +62,10 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     memory_block_to_save->message_id =  message->message_id;
     memory_block_to_save->message_operation = message_request->operation;
 
-    t_serialization_information *request_serialized = serialize(message_request);
-
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
-    memory_block_to_save->message = ((t_request *) request_serialized->serialized_request)->structure;
+    memory_block_to_save->message = message_request->structure;
     memory_block_to_save->lru_value = current_time_in_milliseconds();
+    memory_block_to_save->memory_block_id = get_next_fifo_id();
 
     if(memory_block_to_save->message_size > message_allocator->max_partition_size){
         log_invalid_operation_to_save_message_error();
@@ -75,12 +74,23 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     return memory_block_to_save;
 }
 
+uint64_t get_next_fifo_id(){
+    //se podria chequear ademas de que no supere la cantidad maxima de un uint64
+    fifo_id++;
+    return fifo_id;
+}
+
 t_message_allocator* initialize_message_allocator() {
 
     char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
     void* initialize_message_allocator_from_dictionary = dictionary_get(allocation_algorithms, memory_algorithm);
     t_message_allocator *(*initialize_message_allocator_function)() = (t_message_allocator *(*)()) initialize_message_allocator_from_dictionary;
     message_allocator = initialize_message_allocator_function();
-
+    fifo_id = 0;
     return message_allocator;
+}
+
+void free_message_allocator(){
+    dictionary_destroy(allocation_algorithms);
+    free(message_allocator);
 }

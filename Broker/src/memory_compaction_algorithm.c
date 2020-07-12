@@ -1,5 +1,6 @@
 #include <commons/collections/list.h>
 #include <broker_memory_manager.h>
+#include <stdlib.h>
 #include "memory_compaction_algorithm.h"
 #include "../../Utils/include/t_list_extension.h"
 
@@ -24,7 +25,8 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
         list_add(blocks_information,block_to_reposition);
     }
 }
-
+//esta funcion supone que a partir del master block (primer bloque libre), todos los siguientes bloques van a estar libres
+//mejora para mañana: el master block podria obtenerse al principio y no hacer un get en cada iteracion al dope
 void combine_all_free_partitions(t_list* blocks_information){
     for (int i = 0; i < list_size(blocks_information)-1;i++){
         t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);
@@ -33,10 +35,12 @@ void combine_all_free_partitions(t_list* blocks_information){
             t_block_information* block_to_compact = (t_block_information*) list_remove(blocks_information,i+1);
 
             master_block->block_size += block_to_compact->block_size;
+            free(block_to_compact);
+            //analizo el tamaño de la lista en cada iteracion ya que fue achicando su tamaño
             if ((i+1) == list_size(blocks_information)){
                 break;
             }
-            i--;
+            i--; //ya que achique su tamaño, si no disminuyo este i, en la siguiente iteracion voy a peder un bloque
         }
     }
 }
