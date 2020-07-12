@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "team_manager.h"
 #include "trainer_threads.h"
+#include "identified_trades_provider.h"
 
 void initialize_team_logs_manager();
 void log_failed_attempt_to_communicate_with_broker(char* default_action);
@@ -26,16 +27,15 @@ void log_trainer_schedule(t_localizable_object* localizable_trainer, char* reaso
 void log_trainer_movement(t_localizable_object* localizable_trainer);
 void log_trainer_execution(t_localizable_object* localizable_trainer, char* reason);
 void log_trainer_blocked(t_trainer_thread_context* trainer_thread_context);
+void log_trainer_remains_blocked(t_trainer_thread_context* trainer_thread_context);
 void log_trainer_has_accomplished_own_goal(t_localizable_object* localizable_trainer);
 void log_unknown_thread_action_type_error();
 void log_thread_action_to_perform_by(t_trainer_thread_context* trainer_thread_context);
 void log_failed_caught_of(t_localizable_object* localizable_pokemon);
 void log_succesfully_caught(t_localizable_object* localizable_pokemon);
 void log_succesfully_caught_due_to_failed_communication_with_broker(t_localizable_object* localizable_pokemon);
-void log_expected_to_be_empty_error_for(uint32_t state);
-void log_expected_to_be_not_empty_error_for(uint32_t state);
+void log_expected_global_goal_to_be_accomplished_error();
 void log_message_id_not_required(uint32_t queue_code, uint32_t message_id);
-void log_not_matching_trainers_amount_with_finished_thread_contexts_amount_on_global_goal_accomplished_error();
 void log_appeared_pokemon_not_necessary_for_global_goal(char* pokemon_name);
 void log_global_goal_not_consistent_with_trainers_requirements_error();
 void log_invalid_transition_error();
@@ -43,7 +43,19 @@ void log_invalid_state_error();
 void log_more_than_one_trainer_thread_context_executing_error_for(t_list* trainer_thread_contexts);
 void log_not_matching_pokemon_name_between_get_and_localized_error(char* get_response_pokemon_name, char* localized_pokemon_name);
 void log_message_ignored_due_to_previous_existing_occurrences_for(t_localized_pokemon* localized_pokemon);
+void log_no_suitable_trade_inferrer_found_error_for(t_trainer_thread_context* trainer_thread_context, t_trainer_thread_context* another_trainer_thread_context);
+void log_invalid_localizable_object_type_error();
+void log_deadlock_detection_algorithm_has_begun();
+void log_deadlock_detection_algorithm_has_finished_with_deadlock_detected();
+void log_deadlock_detection_algorithm_has_finished_with_no_deadlock_detected();
+void log_deadlock_solver_algorithm_has_begun_for(t_list* trainer_thread_contexts);
+void log_deadlock_solver_has_finished();
+void log_pokemon_not_found_error_for(char* pokemon_name);
+void log_trade_to_do_according_to(t_identified_trade* identified_trade);
+void log_trade_completed(char* printable_trade_completed);
+void log_no_trainer_found_to_increment_its_execution_cycles_quantity_error_for(t_trainer* trainer);
 void log_global_goal_accomplished();
+void log_metrics_report(char* metrics_report);
 
 void free_team_logs_manager();
 

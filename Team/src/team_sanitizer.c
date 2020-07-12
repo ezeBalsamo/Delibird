@@ -6,6 +6,7 @@
 #include <team_gameboy_connection_handler.h>
 #include <team_broker_connection_handler.h>
 #include <main_threads_executor.h>
+#include <event_notifier.h>
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
@@ -16,6 +17,7 @@ void free_system(){
     free_main_threads_executor();
     free_pretty_printer();
     free_team_serializable_objects();
+    free_event_notifier();
     free_dispatcher();
     free_team_manager();
     free_team_gameboy_connection_handler();

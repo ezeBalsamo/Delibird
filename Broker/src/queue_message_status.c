@@ -7,6 +7,8 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/t_list_extension.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 
 t_message_status* create_message_status_for(t_identified_message* identified_message){
     t_message_status* message_status = safe_malloc(sizeof(t_message_status));
@@ -27,8 +29,51 @@ t_request* create_request_from(t_message_status* message_status){
     return request;
 }
 
+void delete_message(uint32_t operation_message, uint32_t message_id, char* reason){
+
+    t_queue_context* queue_context = queue_context_of_queue_named(queue_name_of(operation_message));
+
+    bool _message_status_with_message_id(t_message_status* message_status){
+        return message_status -> identified_message -> message_id  == message_id;
+    }
+
+    t_message_status* message_status = list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
+
+    if(message_status == NULL){
+        log_message_status_not_found_in_queue_error();
+        free_system();
+    }
+
+    log_succesful_eliminating_message_of_a_queue(message_status, reason);
+    free_message_status(message_status);
+}
+
+void delete_message_if_necessary(t_message_status* message_status,t_queue_context* queue_context) {
+    t_list *subscribers_message_who_received = message_status->subscribers_who_received;
+    t_list *subscribers_queue = queue_context->subscribers;
+    bool have_the_same_subscriber = true;
+
+    if (list_size(subscribers_message_who_received) == list_size(subscribers_queue)) {
+        for (int i = 0; i < list_size(subscribers_message_who_received) && have_the_same_subscriber; i++) {
+            have_the_same_subscriber = list_includes(subscribers_queue, list_get(subscribers_message_who_received, i),
+                                                     (bool (*)(void *, void *)) are_equivalent_subscribers);
+        }
+    }
+
+    if (have_the_same_subscriber) {
+        uint32_t operation = message_status->identified_message->request->operation;
+
+        if (operation == IDENTIFIED_MESSAGE) {
+            operation = internal_operation_in_correlative(message_status->identified_message);
+        }
+
+        delete_message(operation, message_status->identified_message->message_id,
+                       "Se le envió a todos los suscriptores de la cola.");
+    }
+}
+
 void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
-        t_message_status* message_status){
+        t_message_status* message_status, t_queue_context* queue_context){
 
     void *subscriber_ack;
     uint32_t expected_ack = message_status -> identified_message -> message_id;
@@ -39,12 +84,14 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
 
     if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
         log_failed_to_receive_ack_error(subscriber_context);
+        log_subscriber_disconnection(subscriber_context);
         set_inactive_connection_for(subscriber_context);
 
     } else {
         subscriber_context -> last_message_id_received = expected_ack;
         move_subscriber_to_ACK(message_status, subscriber_context);
-        log_succesful_all_messages_of_a_queue_sent_to(subscriber_context);
+        log_succesful_message_received_by(subscriber_context, message_status);
+        delete_message_if_necessary(message_status, queue_context);
     }
 
     return subscriber_ack;

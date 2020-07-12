@@ -34,7 +34,20 @@ set(SOURCES
         src/team_pretty_prints.c
         src/state_transitions.c
         src/dispatcher_queues.c
-        src/main_threads_executor.c)
+        src/main_threads_executor.c
+        src/deadlock_detection_and_recovery_algorithm.c
+        src/deadlock_detecter.c
+        src/deadlock_solver.c
+        src/trades_inferrer.c
+        src/benefitial_trades_for_both_parties.c
+        src/benefitial_trades_only_for_first_party.c
+        src/benefitial_trades_only_for_second_party.c
+        src/non_benefitial_trade.c
+        src/identified_trades_provider.c
+        src/trade_action.c
+        src/metrics.c
+        src/event_notifier.c
+        src/trades_calculator.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(team ${SOURCES})

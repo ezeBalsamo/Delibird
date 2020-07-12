@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 void initialize_entry_point_connection_builder(){
-    initialize_configuration_manager_named("gameboy");
+    initialize_configuration_manager();
 }
 
 t_request* safe_request(){
@@ -40,6 +40,10 @@ char* process_port(){
 
     free(process_port);
     return port;
+}
+
+int ack_timeout(){
+    return config_get_int_at("ACK_TIMEOUT");
 }
 
 void free_entry_point_connection_builder(){

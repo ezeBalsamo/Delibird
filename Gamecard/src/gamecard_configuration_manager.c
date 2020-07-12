@@ -10,7 +10,7 @@ uint32_t operation_retry_time;
 char* mount_point;
 
 void initialize_gamecard_configuration_manager(){
-    initialize_configuration_manager_named("gamecard");
+    initialize_configuration_manager();
 
     ip_broker = config_get_string_at("IP_BROKER");
     port_broker = config_get_string_at("PUERTO_BROKER");

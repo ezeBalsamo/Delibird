@@ -19,7 +19,7 @@ void subscribe_client_to_queue(t_subscriber_context* subscriber_context){
     t_subscriber_context* old_subscriptor = old_suscriptor_of(queue_context, subscriber_context);
 
     if(!old_subscriptor){
-        log_subscriber_not_found_in_queue_subscribers_warning(subscriber_context, queue_context -> operation);
+        log_subscriber_not_found_in_queue_subscribers(subscriber_context, queue_context->operation);
     } else {
         update_last_message_id_received_for(subscriber_context, old_subscriptor -> last_message_id_received);
         log_update_of_message_id_received_for(subscriber_context);
@@ -41,7 +41,8 @@ void add_subscriber_to_all_messages_status_subscribers_to_send_list(t_list* mess
 
         t_list* subscribers_to_send = message_status -> subscribers_to_send;
 
-        if(!list_contains(subscribers_to_send, subscriber_context, (bool (*) (void*, void*)) are_equivalent_subscribers)){
+        if(!list_includes(subscribers_to_send, subscriber_context,
+                          (bool (*)(void *, void *)) are_equivalent_subscribers)){
             list_add(subscribers_to_send, (void*) subscriber_context);
         }
     }
@@ -70,7 +71,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
-        void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status);
+        void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
         ack = *((uint32_t *) ack_result);
         free(ack_result);
         free(request);

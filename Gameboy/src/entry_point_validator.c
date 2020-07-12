@@ -15,6 +15,8 @@ t_role_mode* role_mode;
 
 void initialize_entry_point_validator(int arguments_amount, char** arguments){
 
+    initialize_processes_information();
+
     if (arguments_amount < 3) {
         incorrect_arguments_amount_error();
         free_system();
@@ -22,7 +24,6 @@ void initialize_entry_point_validator(int arguments_amount, char** arguments){
 
     gameboy_arguments = arguments;
     gameboy_arguments_amount = arguments_amount;
-    initialize_processes_information();
     uint32_t process_code = process_information_code_of(gameboy_arguments[1]);
     role_mode = role_mode_for(process_code);
 

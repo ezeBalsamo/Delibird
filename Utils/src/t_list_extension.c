@@ -16,17 +16,13 @@ t_list* list_flat(t_list* self){
     return flattened_list;
 }
 
-bool list_contains(t_list* self, void* element_to_find, bool (*comparer) (void*, void*)){
+bool list_includes(t_list* self, void* element_to_find, bool (*comparer) (void*, void*)){
 
-    for(int i = 0; i < list_size(self); i++){
-
-        void* element_to_compare = list_get(self, i);
-
-        if((*comparer)(element_to_find, element_to_compare)){
-            return true;
-        }
+    bool _is_equals(void* element_to_compare){
+        return (*comparer) (element_to_find, element_to_compare);
     }
-    return false;
+
+    return list_any_satisfy(self, _is_equals);
 }
 
 t_list* list_difference(t_list* self, t_list* other, bool (*comparer) (void*, void*)){
@@ -36,7 +32,7 @@ t_list* list_difference(t_list* self, t_list* other, bool (*comparer) (void*, vo
 
         void* element_to_find = list_get(other, i);
 
-        if(list_contains(self, element_to_find, comparer)){
+        if(list_includes(self, element_to_find, comparer)){
 
             bool _comparer(void* element_to_compare){
                 return (*comparer) (element_to_compare, element_to_find);
@@ -48,6 +44,7 @@ t_list* list_difference(t_list* self, t_list* other, bool (*comparer) (void*, vo
 
     return result;
 }
+
 void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destroyer)(void*)){
     for(int i = 0; i < list_size(self); i++){
         t_list* internal_list = (t_list*) list_get(self, i);
@@ -75,7 +72,7 @@ void list_add_as_set(t_list* self, void* element){
         return element_to_find == element_to_compare;
     }
 
-    if(!list_contains(self, element, _equality)){
+    if(!list_includes(self, element, _equality)){
         list_add(self, element);
     }
 }
@@ -86,4 +83,47 @@ void list_add_as_first(t_list* self, void* element){
 
 void* list_remove_first(t_list* self){
     return list_remove(self, 0);
+}
+
+void* list_first(t_list* self){
+    return list_get(self, 0);
+}
+
+t_list* list_intersection(t_list* self, t_list* another, bool (*comparer) (void*, void*)){
+
+    t_list* list_intersection = list_create();
+
+    void _load_if_belongs_to_both(void* element_to_find){
+        if(list_includes(another, element_to_find, comparer)){
+            list_add(list_intersection, element_to_find);
+        }
+    }
+
+    list_iterate(self, _load_if_belongs_to_both);
+    return list_intersection;
+}
+
+void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*)){
+
+    t_list* elements_to_remove = list_filter(self, comparer);
+
+    void _remove_it(void* element_to_remove){
+
+        bool _are_equals(void* element_to_compare){
+            return element_to_compare == element_to_remove;
+        }
+
+        list_remove_by_condition(self, _are_equals);
+    }
+
+    list_iterate(elements_to_remove, _remove_it);
+    list_destroy(elements_to_remove);
+}
+
+bool is_valid_index(t_list* self, int index){
+    return (list_size(self) > index) && (index >= 0);
+}
+
+void* list_get_last_element(t_list* self){
+    return list_get(self, list_size(self) - 1);
 }

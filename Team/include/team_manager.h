@@ -5,10 +5,15 @@
 #include <commons/collections/list.h>
 #include <semaphore.h>
 
+enum Localizable_object_types{
+    POKEMON, TRAINER
+};
+
 typedef struct Localizable_object{
     int32_t pos_x;
     int32_t pos_y;
     void* object;
+    uint32_t type;
 }t_localizable_object;
 
 typedef struct Targetable_object{
@@ -40,7 +45,12 @@ bool global_goal_contains(char* pokemon_name);
 uint32_t amount_required_of(char* pokemon_name);
 
 void update_current_pokemons_after_caught(t_localizable_object* localizable_trainer, char* pokemon_name);
-void consider_global_goal_accomplished();
+void trade_trainers_pokemons(char* first_party_pokemon_name,
+                                t_localizable_object* first_party_localizable_trainer,
+                                char* second_party_pokemon_name,
+                                t_localizable_object* second_party_localizable_trainer);
+
+void all_trainer_threads_context_have_finished();
 
 bool is_global_goal_accomplished();
 

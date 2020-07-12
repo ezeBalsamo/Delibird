@@ -17,6 +17,8 @@ void initialize_dispatcher_queues();
 t_dispatcher_queue* dispatcher_queue_of(uint32_t state);
 t_list* trainer_thread_contexts_in(uint32_t state);
 
+void handling_concurrency_do(t_dispatcher_queue* dispatcher_queue, void (*function) ());
+
 void move_to(t_trainer_thread_context* trainer_thread_context, uint32_t to_queue);
 void add_to_dispatcher_queue(t_trainer_thread_context* trainer_thread_context, uint32_t state);
 void remove_from_dispatcher_queue(t_trainer_thread_context* trainer_thread_context);

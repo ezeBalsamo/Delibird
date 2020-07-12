@@ -12,8 +12,7 @@ t_query_performer* caught_query_performer(){
 }
 
 bool is_waiting_catch_response(t_trainer_thread_context* trainer_thread_context){
-    t_thread_action* thread_action = trainer_thread_context -> thread_action;
-    return thread_action -> request -> operation == WAITING_CATCH_RESPONSE;
+    return internal_thread_action_type_in(trainer_thread_context) == WAITING_CATCH_RESPONSE;
 }
 
 t_trainer_thread_context* blocked_trainer_thread_context_waiting_for(int message_id){

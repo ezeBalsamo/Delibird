@@ -2,22 +2,27 @@
 #include <stdlib.h>
 #include "../include/broker_memory_manager.h"
 #include "../include/fifo_partition_free_algorithm.h"
+#include "../include/broker_memory_algorithms.h"
 
-bool is_not_free(void* block_information){
-    return !((t_block_information*) block_information) -> is_free;
-}
+void* fifo_partition_free_algorithm(t_list* blocks_information){
+    //busco el primero no ocupado junto con el indice para consolidarlo
+    int nearest_occupied_block_found_index = 0;
+    t_block_information* block_found = NULL;
 
-void fifo_partition_free_algorithm(t_list* blocks_information){
-    //busco el primero no ocupado
+    for(int i = 0; i<list_size(blocks_information);i++){
 
-    t_block_information* block_found = (t_block_information*) list_find(blocks_information,is_not_free);
+        block_found = (t_block_information*) list_get(blocks_information,i);
+        if (!block_found->is_free){
+            nearest_occupied_block_found_index = i; //por este cornudo no hago un list_find
+            break;
+        }
+    }
+    void* freed_block_position = block_found->initial_position;
+    if (block_found != NULL){
+        empty_block_information(block_found);
+        //consolido el bloque
 
-    //vacio este bloque:
-    block_found->is_free = true;
-    free(block_found->memory_block); // TODO: CHECK
-    block_found->memory_block = NULL;
-}
-
-void* get_fifo_partition_free_algorithm(){
-    return fifo_partition_free_algorithm;
+        consolidate_block(blocks_information,nearest_occupied_block_found_index);
+    }
+    return freed_block_position;
 }

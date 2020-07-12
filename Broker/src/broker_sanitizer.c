@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <connection_handler.h>
 #include <broker_memory_manager.h>
+#include <broker_memory_algorithms.h>
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/serializable_objects.h"
 #include "../../Utils/include/configuration_manager.h"
@@ -18,6 +19,7 @@ void free_system(){
     free_message_identifier();
     free_connection_handler();
     free_garbage_collector();
+    free_broker_memory_algorithms();
 
     log_successful_clean_up();
     free_broker_logs_manager();
