@@ -129,6 +129,7 @@ t_file_metadata* read_file_metadata(char* file_path){
     set_open(file_pointer); //Una vez que sali del loop tengo que escribir la Y en el open
     fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
 
+    //NO LO ESTA HACIENDO
     consider_as_garbage(file_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     flock(file_descriptor,LOCK_UN);
@@ -198,12 +199,12 @@ t_pokemon_block_line* find_line_with_position(uint32_t position_x, uint32_t posi
 	    auxiliar_index = NULL;
 	}
 
-	index = auxiliar_index;
-
 	if(auxiliar_index == NULL){
+		index = NULL;
 		return NULL;
 	}
 	else{
+		*index = *auxiliar_index;
 		return list_get(list, *auxiliar_index);
 	}
 }
@@ -212,7 +213,7 @@ void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemo
 
 	uint32_t* index = safe_malloc(sizeof(uint32_t));
 
-	t_pokemon_block_line*  requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, index);
+	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, index);
 
 	//si no lo encuentro coord == NULL
 	if (requested_line == NULL){
@@ -245,15 +246,17 @@ void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add)
 
 }
 
-void remove_from_blocks(char* pokemon_blocks, char* block_to_remove){
+char* remove_from_blocks(char* pokemon_blocks, char* block_to_remove){
 	uint32_t aux = strlen(block_to_remove) + 2; //uno por el ']' y otro por la ','
 	pokemon_blocks = string_substring_until(pokemon_blocks, strlen(pokemon_blocks) - aux);
 	string_append(&pokemon_blocks, "]");
+	return pokemon_blocks;
 }
 
-void add_to_blocks(char* string_to_modify, char* block_to_add){
+char* add_to_blocks(char* string_to_modify, char* block_to_add){
 	string_to_modify = string_substring(string_to_modify,0,strlen(string_to_modify)-1); //recorto el ']'
 	string_append_with_format(&string_to_modify, ",%s]",block_to_add); //agrego el bloque nuevo y ]
+	return string_to_modify;
 }
 
 void update_bitmap_file(){
@@ -261,7 +264,7 @@ void update_bitmap_file(){
 
     FILE* bitmap_file = fopen(bitmap_path, "w");
 
-    fputs(string_substring(bitmap -> bitarray, 0, file_system_metadata -> blocks / 8), bitmap_file);
+    fprintf(bitmap_file, "%s", string_substring(bitmap -> bitarray, 0, file_system_metadata -> blocks / 8));
 
     fclose(bitmap_file);
 
@@ -311,7 +314,7 @@ bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* tot
 		line = list_remove(pokemon_data_list, 0);
 		line_with_string_format = block_line_to_string(line);
 
-		int line_length = strlen(line_with_string_format) + 1;
+		int line_length = strlen(line_with_string_format);
 
 		if(size_already_written + line_length > file_system_metadata -> block_size){ //si la linea no me entra en el bloque, la mando de nuevo a la lista
 			list_add(pokemon_data_list,line);
@@ -381,7 +384,7 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 	do{
 		if(i > blocks_quantity){
 			char* new_block_number = get_new_block(); //NECESITO UN BLOQUE NUEVO
-			add_to_blocks(metadata_file_information -> blocks, new_block_number); // block_name tiene forma [n1,n2,n3,n] yo quiero borrar ], agregar ",new_block_number]\0"
+			metadata_file_information -> blocks = add_to_blocks(metadata_file_information -> blocks, new_block_number); // block_name tiene forma [n1,n2,n3,n] yo quiero borrar ], agregar ",new_block_number]\0"
 			strcpy(block_name, new_block_number);
 		}
 		else{
@@ -396,7 +399,7 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 	//si i quedo = a cant_bloques o menor, => le sobraron bloques
 	while(i <= blocks_quantity){//si NO estoy escribiendo en el ultimo bloque
 		split(metadata_file_information -> blocks,blocks_quantity,"[,]",block_name);
-		remove_from_blocks(metadata_file_information -> blocks, block_name);
+		metadata_file_information -> blocks = remove_from_blocks(metadata_file_information -> blocks, block_name);
 		blocks_quantity--;
 		free_block_number(block_name);
 		remove(create_block_path(block_name));
@@ -405,18 +408,13 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 	metadata_file_information -> size = total_size;
 }
 
-t_file_metadata* create_pokemon_metadata(char* new_block_number, char* pokemon_name){
+void create_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_name){
 
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), pokemon_name);
 	mkdir(string_from_format("%s/Files/%s", tallgrass_mount_point(), pokemon_name),0777);
-	t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
 
 	metadata_file_information -> directory = "N";
-	metadata_file_information -> size = 0;
-	metadata_file_information -> blocks = string_from_format("[%s]",new_block_number);
 	metadata_file_information -> open = "N";
-
-	return metadata_file_information;
 }
 
 void* read_file_of_type(uint32_t file_type, char* file_name){
@@ -442,7 +440,7 @@ void initialize_bitmap(){
 		bitmap_buffer = string_substring_until(bitmap_buffer, bitmap_size);
 
 		//Guardo en bitmap el t_bitarray con los datos correspondientes
-		bitmap = bitarray_create_with_mode(bitmap_buffer, bitmap_size, LSB_FIRST);
+		bitmap = bitarray_create_with_mode(bitmap_buffer, file_system_metadata -> blocks, LSB_FIRST);
 	}else{
 		bitmap_file = fopen(bitmap_path, "w");
 
@@ -469,4 +467,8 @@ void initialize_file_system(){
     sem_init(&bitmap_mutex, 0, 1);
     consider_as_garbage(&bitmap_mutex, (void (*)) sem_destroy);
  	initialize_bitmap();
+}
+
+t_bitarray* bitmap_get(){
+	return bitmap;
 }

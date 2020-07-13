@@ -4,6 +4,7 @@
 #include "../../Utils/include/common_structures.h"
 #include <stdint.h>
 #include <commons/collections/list.h>
+#include <commons/bitarray.h>
 
 enum File_Types {
     FILE_SYSTEM_METADATA, FILE_METADATA,
@@ -41,8 +42,8 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract);
 void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add);
 t_list* data_to_write(t_new_pokemon* new_pokemon);
-t_file_metadata* create_pokemon_metadata(char* new_block_number, char* pokemon_name);
-void add_to_blocks(char* string_to_modify, char* block_to_add);
+void create_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_name);
 char* get_new_block();
+t_bitarray* bitmap_get();
 
 #endif //DELIBIRD_FILE_SYSTEM_H

@@ -9,9 +9,9 @@
 #include <unistd.h>
 
 void show_bitmap_state(t_bitarray* bitarray){ //va a ser solo para testear los 1 del bitmap
-	for(int i = 0; i < bitarray -> size; i++){
-		if(bitarray_test_bit(bitarray,i)){
-			printf("%d, ",i);
+	for(uint32_t i = 0; i < bitarray -> size; i++){
+		if(bitarray_test_bit(bitarray, i)){
+			printf("%d\n", i);
 		}
 	}
 }
