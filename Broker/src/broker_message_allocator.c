@@ -53,17 +53,35 @@ int block_index_position(t_block_information* block_to_find,t_list* blocks_infor
     return -1;
 }
 
+uint32_t get_correlative_message_id_from(t_identified_message* message){
+    if(internal_operation_in(message) == IDENTIFIED_MESSAGE){
+       t_identified_message* correlative_identified_message = internal_object_in(message);
+       return correlative_identified_message -> message_id;
+    } else {
+        return 0;
+    }
+}
+
+uint32_t get_size_of(t_identified_message* message){
+
+    t_request* message_request = message_request_from_identified_message(message);
+
+    return size_to_allocate_for(message_request);
+}
+
 t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     //Obtengo el mensaje
     t_request* message_request = message_request_from_identified_message(message);
 
     t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 
+    uint32_t correlative_message_id = get_correlative_message_id_from(message);
     memory_block_to_save->message_id =  message->message_id;
+    memory_block_to_save->correlative_message_id = correlative_message_id;
     memory_block_to_save->message_operation = message_request->operation;
 
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
-    memory_block_to_save->message = message_request->structure;
+    memory_block_to_save->message = message_request -> structure + sizeof(uint32_t);
     memory_block_to_save->lru_value = current_time_in_milliseconds();
     memory_block_to_save->memory_block_id = get_next_fifo_id();
 

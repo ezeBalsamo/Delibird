@@ -45,17 +45,33 @@ char* dump_cache(){
     return cache_information_builder(blocks_information);
 }
 
-void update_lru_for(uint32_t message_id){
-
+t_block_information* find_block_information_with_id(uint32_t message_id){
     bool _block_information_with_id(t_block_information* block_information){
         return block_information -> memory_block -> message_id == message_id;
     }
 
     t_list* blocks_information_occupied = list_filter(blocks_information, (bool (*) (void*)) is_not_free_block);
     t_block_information* block_information_found = list_find(blocks_information_occupied, (bool (*) (void*)) _block_information_with_id);
-    block_information_found -> memory_block -> lru_value = current_time_in_milliseconds();
+
+    if(block_information_found == NULL){
+//        log_block_information_with_id_not_found();
+    }
 
     list_destroy(blocks_information_occupied);
+
+    return block_information_found;
+}
+
+void update_lru_for(uint32_t message_id){
+
+    t_block_information* block_information_found = find_block_information_with_id(message_id);
+    block_information_found -> memory_block -> lru_value = current_time_in_milliseconds();
+}
+
+t_memory_block* get_memory_block_from_memory(uint32_t message_id){
+
+    t_block_information* block_information_found = find_block_information_with_id(message_id);
+    return block_information_found -> memory_block;
 }
 
 void free_block_information(t_block_information* block_information){

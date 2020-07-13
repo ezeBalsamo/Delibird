@@ -9,6 +9,7 @@
 typedef struct Memory_block{
     //info del bloque en si: (metadata)
     uint32_t message_id;
+    uint32_t correlative_message_id;
     uint32_t message_operation;
     uint32_t message_size;
     uint32_t lru_value;
@@ -44,6 +45,8 @@ void free_broker_memory_manager();
 void allocate_message(t_identified_message* message);
 char* dump_cache();
 void update_lru_for(uint32_t message_id);
+t_block_information* find_block_information_with_id(uint32_t message_id);
+t_memory_block* get_memory_block_from_memory(uint32_t message_id);
 void free_block_information(t_block_information* block_information);
 
 #endif //DELIBIRD_BROKER_MEMORY_MANAGER_H
