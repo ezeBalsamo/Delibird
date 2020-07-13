@@ -122,13 +122,13 @@ void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
     }
 }
 
-t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_information, t_memory_block* memory_block_to_save){
+t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_information, uint32_t message_size){
     for ever{
 
-        t_block_information* block_information_found = message_allocator->available_partition_search_algorithm (memory_block_to_save->message_size, blocks_information, message_allocator->min_partition_size);
+        t_block_information* block_information_found = message_allocator->available_partition_search_algorithm (message_size, blocks_information, message_allocator->min_partition_size);
         if (block_information_found != NULL){
             //if buddy found is too big it may need to be split
-            disassociate_buddy_if_possible(blocks_information, block_information_found, memory_block_to_save->message_size);
+            disassociate_buddy_if_possible(blocks_information, block_information_found, message_size);
             return block_information_found;
         }
 
@@ -141,9 +141,11 @@ t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_inf
 void partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
-    t_memory_block* memory_block_to_save = build_memory_block_from_message(message);
+    uint32_t message_size = get_size_of(message);
 
-    t_block_information* block_information_found = find_block_to_allocate_message_for_buddy(blocks_information, memory_block_to_save);
+    t_block_information* block_information_found = find_block_to_allocate_message_for_buddy(blocks_information, message_size);
+
+    t_memory_block* memory_block_to_save = build_memory_block_from(message, block_information_found);
 
     block_information_found->is_free = false;
     block_information_found->memory_block = memory_block_to_save;

@@ -29,29 +29,33 @@ t_message_status* create_message_status_for(t_identified_message* identified_mes
     return message_status;
 }
 
+t_request* create_request_for(t_memory_block* memory_block){
+
+    t_serializable_object* serializable_object = serializable_object_with_code(memory_block -> message_operation);
+
+    t_request* request = serializable_object -> deserialize_function (memory_block -> message);
+
+    return request;
+}
+
 t_identified_message* create_identified_message_considering_message_ids_from(t_memory_block* memory_block){
 
     t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
-    t_serializable_object* serializable_object = serializable_object_with_code(memory_block -> message_operation);
     update_lru_for(memory_block -> message_id);
 
     identified_message -> message_id = memory_block -> message_id;
 
+    t_request* request = create_request_for(memory_block);
+    identified_message -> request = request;
+
     if(memory_block -> correlative_message_id != 0){
+
         t_identified_message* correlative_identified_message = safe_malloc(sizeof(t_identified_message));
         correlative_identified_message -> message_id = memory_block -> correlative_message_id;
-        correlative_identified_message -> request = (*(serializable_object -> deserialize_function)) (memory_block -> message);
+        correlative_identified_message -> request = (void*)identified_message;
 
-
-        t_request* request = safe_malloc(sizeof(t_request));
-        request -> operation = IDENTIFIED_MESSAGE;
-        request -> structure = correlative_identified_message;
-        request -> sanitizer_function = (void (*)(void *)) free_identified_message;
-
-    } else {
-        identified_message -> request = (*(serializable_object -> deserialize_function)) (memory_block -> message);
+        return correlative_identified_message;
     }
-
     return identified_message;
 }
 

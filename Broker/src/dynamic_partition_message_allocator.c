@@ -4,6 +4,7 @@
 #include <broker_logs_manager.h>
 #include <broker_message_allocator.h>
 #include <memory_compaction_algorithm.h>
+#include <pthread.h>
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/t_list_extension.h"
@@ -87,9 +88,6 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
     block_information_found->memory_block = memory_block_to_save;
     block_information_found->block_size = block_size_to_allocate;
 
-    memcpy(block_information_found -> initial_position, memory_block_to_save -> message, memory_block_to_save -> message_size);
-
-    memory_block_to_save -> message = block_information_found -> initial_position;
     uint32_t memory_size_left = memory_size_to_partition - block_information_found->block_size;
 
     t_block_information* new_block_information = NULL;
@@ -108,11 +106,14 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
 void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
+    pthread_mutex_t memory_mutex = get_memory_mutex();
+    pthread_mutex_lock(&memory_mutex);
+
     uint32_t message_size = get_size_of(message);
 
     t_block_information* block_information_found = find_block_to_allocate_message(blocks_information, message_size);
 
-    t_memory_block* memory_block_to_save = build_memory_block_from_message(message);
+    t_memory_block* memory_block_to_save = build_memory_block_from(message, block_information_found);
 
     //encontre un block manager disponible, lo spliteo y creo uno nuevo que tenga la memoria restante, que este libre
     t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found,memory_block_to_save);
@@ -123,6 +124,8 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
         list_add_in_index(blocks_information,position+1,(void*) new_block_information);
     }
     log_succesful_save_message_to_cache(message_request_from_identified_message(message),block_information_found->initial_position);
+
+    pthread_mutex_unlock(&memory_mutex);
 }
 
 t_message_allocator* initialize_dynamic_partition_message_allocator(){

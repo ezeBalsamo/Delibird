@@ -7,10 +7,17 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pokemon_request_bytes_calculator.h"
 #include "../../Utils/include/configuration_manager.h"
+#include "../../Utils/include/serializable_objects.h"
+#include <string.h>
 
 t_dictionary* allocation_algorithms;
 t_message_allocator* message_allocator;
 uint64_t fifo_id;
+pthread_mutex_t memory_mutex;
+
+pthread_mutex_t get_memory_mutex(){
+    return memory_mutex;
+}
 
 void initialize_allocation_algorithms(){
     allocation_algorithms = dictionary_create();
@@ -69,10 +76,11 @@ uint32_t get_size_of(t_identified_message* message){
     return size_to_allocate_for(message_request);
 }
 
-t_memory_block* build_memory_block_from_message(t_identified_message* message) {
+t_memory_block* build_memory_block_from(t_identified_message* message, t_block_information* block_information) {
     //Obtengo el mensaje
     t_request* message_request = message_request_from_identified_message(message);
 
+    t_serializable_object* serializable_object = serializable_object_with_code(message -> request -> operation);
     t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 
     uint32_t correlative_message_id = get_correlative_message_id_from(message);
@@ -81,7 +89,14 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
     memory_block_to_save->message_operation = message_request->operation;
 
     memory_block_to_save->message_size = size_to_allocate_for(message_request);
-    memory_block_to_save->message = message_request -> structure + sizeof(uint32_t);
+    t_serialization_information* serialization_information = serializable_object -> serialize_function (message -> request -> structure);
+
+    memory_block_to_save -> message = block_information ->initial_position;
+
+    memcpy(memory_block_to_save -> message,serialization_information -> serialized_request, memory_block_to_save -> message_size);
+
+    free_serialization_information(serialization_information);
+
     memory_block_to_save->lru_value = current_time_in_milliseconds();
     memory_block_to_save->memory_block_id = get_next_fifo_id();
 
@@ -89,6 +104,7 @@ t_memory_block* build_memory_block_from_message(t_identified_message* message) {
         log_invalid_operation_to_save_message_error();
         free_system();
     }
+
     return memory_block_to_save;
 }
 

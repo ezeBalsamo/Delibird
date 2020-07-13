@@ -33,7 +33,7 @@ void log_succesful_subscription_process(t_subscriber_context* subscriber_context
 }
 
 void log_succesful_new_message_pushed_to_a_queue(uint32_t message_id, uint32_t queue_code){
-    char* message = string_from_format("Se pusheo el mensaje con id:%d \na la cola de mensajes: %s correctamente!", message_id, queue_name_of(queue_code));
+    char* message = string_from_format("Se pusheo el mensaje con id: %d a la cola de mensajes: %s correctamente!", message_id, queue_name_of(queue_code));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
