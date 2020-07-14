@@ -51,7 +51,8 @@ t_identified_message* create_identified_message_considering_message_ids_from(t_m
     if(memory_block -> correlative_message_id != 0){
 
         t_identified_message* correlative_identified_message = safe_malloc(sizeof(t_identified_message));
-        correlative_identified_message -> message_id = memory_block -> correlative_message_id;
+        identified_message -> message_id = memory_block -> correlative_message_id;
+        correlative_identified_message -> message_id = memory_block -> message_id;
 
         t_request* identified_message_as_request = safe_malloc(sizeof(t_request));
         identified_message_as_request->structure = (void*) identified_message;
