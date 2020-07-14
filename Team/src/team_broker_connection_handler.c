@@ -136,7 +136,8 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
         t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
         t_identified_message* correlative_identified_message = deserialized_request -> structure;
-        send_ack_message(correlative_identified_message -> message_id, current_active_socket_fd);
+        t_identified_message* identified_message = correlative_identified_message -> request -> structure;
+        send_ack_message(identified_message -> message_id, current_active_socket_fd);
 
         log_request_received(deserialized_request);
         query_perform(deserialized_request);

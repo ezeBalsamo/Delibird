@@ -117,9 +117,9 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
         t_message_status* message_status, t_queue_context* queue_context){
 
     void *subscriber_ack;
-    uint32_t expected_ack = message_status -> message_id;
-
     pthread_join(waiting_for_ack_thread, &subscriber_ack);
+
+    uint32_t expected_ack = message_status -> message_id;
 
     uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
 
