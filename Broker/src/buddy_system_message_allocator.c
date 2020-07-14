@@ -63,9 +63,9 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
         int master_block_current_index = block_index_position(master_block,blocks_information);
 
         if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index-1)){
-            uint32_t master_block_position = master_block->initial_position;
-            uint32_t buddy_block_position = buddy_block->initial_position;
+            void* master_block_position = master_block->initial_position;
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
+            void* buddy_block_position = buddy_block->initial_position;
             consolidate_block_with(master_block,buddy_block);
             right_is_buddy = true;
             log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
@@ -74,9 +74,13 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
         }
 
         if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index+1)){
+            void* master_block_position = master_block->initial_position;
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index+1);
+            void* buddy_block_position = buddy_block->initial_position;
             consolidate_block_with(master_block,buddy_block);
             left_is_buddy = true;
+            log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
+
         }else{
             right_is_buddy = false;
         }
