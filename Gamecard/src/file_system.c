@@ -182,11 +182,12 @@ t_list* read_block(char* file_path){
 
 t_pokemon_block_line* find_line_with_position(uint32_t position_x, uint32_t position_y, t_list* list, uint32_t* index){
 	uint32_t i = 0;
-	uint32_t* auxiliar_index = safe_malloc(sizeof(uint32_t));
+	uint32_t auxiliar_index;
 	bool found_flag = false;
+
 	void _positions_match(t_pokemon_block_line *position_in_list) {
 		if(position_in_list -> position_x == position_x && position_in_list -> position_y == position_y){
-			*auxiliar_index = i;
+			auxiliar_index = i;
 			found_flag = true;
 			return;
 		}
@@ -196,24 +197,20 @@ t_pokemon_block_line* find_line_with_position(uint32_t position_x, uint32_t posi
 	list_iterate(list, (void*) _positions_match);
 
 	if(!found_flag){
-	    auxiliar_index = NULL;
-	}
-
-	if(auxiliar_index == NULL){
-		index = NULL;
 		return NULL;
-	}
-	else{
-		*index = *auxiliar_index;
-		return list_get(list, *auxiliar_index);
+	} else {
+		if(index != NULL){
+			*index = auxiliar_index;
+		}
+		return list_get(list, auxiliar_index);
 	}
 }
 
 void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract){
 
-	uint32_t* index = safe_malloc(sizeof(uint32_t));
+	uint32_t index;
 
-	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, index);
+	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, &index);
 
 	//si no lo encuentro coord == NULL
 	if (requested_line == NULL){
@@ -221,7 +218,7 @@ void subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemo
 	}
 	else{
 		if((requested_line -> quantity -1) == 0){
-			list_remove(blocks_information,*index);
+			list_remove(blocks_information, index);
 		}
 		else{
             requested_line -> quantity -= 1;

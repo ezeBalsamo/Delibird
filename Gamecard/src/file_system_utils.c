@@ -22,7 +22,7 @@ char* get_pokemon_name_from_path(char* pokemon_path){
 
     uint32_t path_array_length = sizeof(path_array);
 
-    return path_array[path_array_length - 1];
+    return path_array[path_array_length];
 }
 
 char* block_line_to_string(t_pokemon_block_line *line){
