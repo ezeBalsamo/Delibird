@@ -31,9 +31,9 @@ t_message_status* create_message_status_for(t_identified_message* identified_mes
 
 t_request* create_request_for(t_memory_block* memory_block){
 
-    t_request* request = safe_malloc(sizeof(t_request));
-    request->operation = memory_block->message_operation;
-    request->structure = memory_block->message;
+    t_serializable_object* serializable_object = serializable_object_with_code(memory_block -> message_operation);
+
+    t_request* request = serializable_object -> deserialize_function (memory_block -> message);
 
     return request;
 }

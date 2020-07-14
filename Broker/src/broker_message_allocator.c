@@ -93,7 +93,19 @@ t_memory_block* build_memory_block_from(t_identified_message* message, t_block_i
 
     memory_block_to_save -> message = block_information ->initial_position;
     //No pasar serialize request directo, hay que sacar operation, y creo que el espacio del structure tambien!!
-    memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) + sizeof(uint32_t), memory_block_to_save -> message_size);
+    //me parece que en el caso de un identified hay que poner solo un sizeof.
+
+    if(memory_block_to_save ->correlative_message_id != 0){
+        //tamaño de estructura (identified_message)
+        //id mensaje
+        //tamaño de la estructura(identified_message)
+        //id mensaje
+        //tamaño de la estructura
+        //estos son los 6 uint32_t que hay que moverse!
+        memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) * 6, memory_block_to_save -> message_size);
+    } else {
+        memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) + sizeof(uint32_t), memory_block_to_save -> message_size);
+    }
 
     free_serialization_information(serialization_information);
 
