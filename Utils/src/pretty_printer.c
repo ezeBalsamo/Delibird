@@ -109,8 +109,8 @@ char* correlative_identified_message_as_string(t_identified_message* correlative
     char * request_as_string = request_pretty_print(original_identified_message -> request);
     char* message =
             string_from_format("Operación: CORRELATIVE_IDENTIFIED_MESSAGE\nArgumentos:\n"
-                               "\t-> message_id: %d (original)\n\t-> Operación: IDENTIFIED_MESSAGE\n"
-                               "\t   Argumentos:\n\t\t   -> message_id: %d (correlativo)\n\t\t   -> %s",
+                               "\t-> message_id: %d\n\t-> Operación: IDENTIFIED_MESSAGE\n"
+                               "\t   Argumentos:\n\t\t   -> message_id: %d\n\t\t   -> %s",
                                correlative_identified_message -> message_id,
                                original_identified_message -> message_id,
                                request_as_string);
