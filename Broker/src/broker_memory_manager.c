@@ -7,6 +7,7 @@
 #include <cache_information_builder.h>
 #include <stdlib.h>
 #include <broker_message_allocator.h>
+#include <pthread.h>
 
 t_message_allocator* message_allocator;
 t_list* blocks_information;
@@ -38,7 +39,10 @@ void initialize_broker_memory_manager(){
 }
 
 void allocate_message(t_identified_message* message){
+    pthread_mutex_t memory_mutex = get_memory_mutex();
+    pthread_mutex_lock(&memory_mutex);
     message_allocator->allocate_message_function (message,blocks_information);
+    pthread_mutex_unlock(&memory_mutex);
 }
 
 char* dump_cache(){

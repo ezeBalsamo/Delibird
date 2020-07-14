@@ -92,7 +92,7 @@ t_memory_block* build_memory_block_from(t_identified_message* message, t_block_i
     t_serialization_information* serialization_information = serializable_object -> serialize_function (message -> request -> structure);
 
     memory_block_to_save -> message = block_information ->initial_position;
-
+    //No pasar serialize request directo, hay que sacar operation, y creo que el espacio del structure tambien!!
     memcpy(memory_block_to_save -> message,serialization_information -> serialized_request, memory_block_to_save -> message_size);
 
     free_serialization_information(serialization_information);

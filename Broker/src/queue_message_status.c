@@ -31,9 +31,9 @@ t_message_status* create_message_status_for(t_identified_message* identified_mes
 
 t_request* create_request_for(t_memory_block* memory_block){
 
-    t_serializable_object* serializable_object = serializable_object_with_code(memory_block -> message_operation);
-
-    t_request* request = serializable_object -> deserialize_function (memory_block -> message);
+    t_request* request = safe_malloc(sizeof(t_request));
+    request->operation = memory_block->message_operation;
+    request->structure = memory_block->message;
 
     return request;
 }
@@ -52,7 +52,12 @@ t_identified_message* create_identified_message_considering_message_ids_from(t_m
 
         t_identified_message* correlative_identified_message = safe_malloc(sizeof(t_identified_message));
         correlative_identified_message -> message_id = memory_block -> correlative_message_id;
-        correlative_identified_message -> request = (void*)identified_message;
+
+        t_request* identified_message_as_request = safe_malloc(sizeof(t_request));
+        identified_message_as_request->structure = (void*) identified_message;
+        identified_message_as_request->operation = IDENTIFIED_MESSAGE;
+
+        correlative_identified_message -> request = identified_message_as_request;
 
         return correlative_identified_message;
     }

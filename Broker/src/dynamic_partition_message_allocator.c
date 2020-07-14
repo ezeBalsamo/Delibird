@@ -58,7 +58,6 @@ t_block_information*  find_block_to_allocate_message(t_list* blocks_information,
             return block_information_found;
         }
 
-        //todo: semaforizar
         if (number_of_partitions_freed >= dynamic_partition_message_allocator->max_search_tries){
             int amount_of_partitions_before_compaction = list_size(blocks_information);
 
@@ -106,8 +105,7 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
 void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
-    pthread_mutex_t memory_mutex = get_memory_mutex();
-    pthread_mutex_lock(&memory_mutex);
+
 
     uint32_t message_size = get_size_of(message);
 
@@ -125,7 +123,6 @@ void dynamic_partition_allocate_message(t_identified_message* message,t_list* bl
     }
     log_succesful_save_message_to_cache(message_request_from_identified_message(message),block_information_found->initial_position);
 
-    pthread_mutex_unlock(&memory_mutex);
 }
 
 t_message_allocator* initialize_dynamic_partition_message_allocator(){
