@@ -101,6 +101,7 @@ t_memory_block* build_memory_block_from(t_identified_message* message, t_block_i
         //tamaño de la estructura(identified_message)
         //id mensaje
         //tamaño de la estructura
+        //codigo de operacion
         //estos son los 6 uint32_t que hay que moverse!
         memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) * 6, memory_block_to_save -> message_size);
     } else {
