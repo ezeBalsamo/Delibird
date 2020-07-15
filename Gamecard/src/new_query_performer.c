@@ -37,8 +37,6 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
-//	char* pokemon_name = safe_malloc(string_length(new_pokemon -> pokemon_name));
-//	strcpy(pokemon_name,new_pokemon -> pokemon_name);
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), new_pokemon -> pokemon_name);
 
     t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
@@ -62,8 +60,6 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
 		write_pokemon_blocks(data_to_write(new_pokemon), metadata_file_information);
 		create_pokemon_metadata(metadata_file_information, new_pokemon -> pokemon_name);
-		//tengo que que pedir un bloque, escribir en ese bloque
-		//crear el metadata de ese pokemon, en bloques tendra el bloque creado arriba
 	}
 
     //Esperar cantidad de segundos definidos por archivo de configuracion

@@ -39,6 +39,7 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     	t_request* caught_request;
     	uint32_t caught_status;
 
+
     	if(exists_file_at(pokemon_metadata_path)) {
     		//Leo el archivo de metadata
     		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
@@ -47,20 +48,25 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     		//Leo bloques del archivo
     		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-    		subtract_or_remove_from(blocks_information, catch_pokemon);
+    		bool line_exists = subtract_or_remove_from(blocks_information, catch_pokemon);
+    		if(line_exists){
+    			//tengo que usar contenido file metadata para tomar el primer bloque y compactar
+				write_pokemon_blocks(blocks_information, metadata_file_information);
 
-    		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
-    		write_pokemon_blocks(blocks_information, metadata_file_information);
+				//Esperar cantidad de segundos definidos por archivo de configuracion
+				sleep(operation_delay_time_getter());
 
-    		//Esperar cantidad de segundos definidos por archivo de configuracion
-			sleep(operation_delay_time_getter());
+				write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+				caught_status = 1;
+    		}
+    		else{//fallo, existe el pokemon pero no en la posicion pedida
+    			caught_status = 0;
+    		}
 
-			write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
-			caught_status = 1;
     	}
     	else{
-    		//fallo, no existe el que queres catchear
-    		// loggeo ?
+    		//fallo, no existe el archivo pokemon
+    		sleep(operation_delay_time_getter());
     		caught_status = 0;
     	}
 
