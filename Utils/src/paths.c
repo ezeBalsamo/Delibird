@@ -9,6 +9,17 @@
 #include <garbage_collector.h>
 #include <general_logs.h>
 
+char* get_file_name_from_path(char* path){
+
+    char* logs_path_reversed = string_reverse(path);
+    char** logs_path_splitted = string_split(logs_path_reversed, "/");
+    char* file_name = string_reverse(logs_path_splitted[0]);
+
+    free(logs_path_reversed);
+    string_iterate_lines(logs_path_splitted, (void (*)(char *)) free);
+    return file_name;
+}
+
 char* module_absolute_path(){
     char* executable_path = getcwd(NULL, 0);
     char* reversed_path_for_split = string_reverse(executable_path);
