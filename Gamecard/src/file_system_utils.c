@@ -5,8 +5,15 @@
 #include <commons/string.h>
 #include <commons/config.h>
 #include <string.h>
+#include <stdlib.h>
 #include <sys/file.h>
 #include <unistd.h>
+#include "../../Utils/include/garbage_collector.h"
+
+
+void list_destroy_and_free_elements(t_list* list){
+	list_destroy_and_destroy_elements(list,free);
+}
 
 void show_bitmap_state(t_bitarray* bitarray){ //va a ser solo para testear los 1 del bitmap
 	for(uint32_t i = 0; i < bitarray -> size; i++){

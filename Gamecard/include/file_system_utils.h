@@ -7,7 +7,7 @@
 #include "file_system.h"
 #include <commons/bitarray.h>
 
-
+void list_destroy_and_free_elements(t_list* list);
 void show_bitmap_state(t_bitarray* bitarray);
 char* block_line_to_string(t_pokemon_block_line* line);
 char* create_block_path(char block_pointer[]);

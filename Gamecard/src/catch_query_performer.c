@@ -1,5 +1,6 @@
 #include "catch_query_performer.h"
 #include "file_system.h"
+#include "file_system_utils.h"
 #include "gamecard_query_performers.h"
 #include "gamecard_configuration_manager.h"
 #include "../../Utils/include/common_structures.h"
@@ -8,6 +9,7 @@
 #include <stdio.h>
 #include <commons/string.h>
 #include <unistd.h>
+#include "../../Utils/include/garbage_collector.h"
 
 t_gamecard_query_performer *catch_pokemon_query_performer;
 
@@ -41,8 +43,12 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 
     	if(exists_file_at(pokemon_metadata_path)) {
+    		//En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
+        	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata);
+
     		//Leo el archivo de metadata
     		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
+    		consider_as_garbage(metadata_file_information, (void (*) (void*)) free);
     		metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
     		//Leo bloques del archivo
@@ -57,6 +63,12 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 				sleep(operation_delay_time_getter());
 
 				write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
+
+				free(metadata_file_information);
+				stop_considering_garbage(metadata_file_information);
+				list_destroy_and_free_elements(blocks_information);
+				stop_considering_garbage(blocks_information);
+
 				caught_status = 1;
     		}
     		else{//fallo, existe el pokemon pero no en la posicion pedida
@@ -66,7 +78,6 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     	}
     	else{
     		//fallo, no existe el archivo pokemon
-    		sleep(operation_delay_time_getter());
     		caught_status = 0;
     	}
 

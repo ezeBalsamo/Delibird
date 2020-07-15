@@ -10,6 +10,7 @@
 #include <string.h>
 #include <commons/string.h>
 #include <unistd.h>
+#include "../../Utils/include/garbage_collector.h"
 
 t_gamecard_query_performer *new_pokemon_query_performer;
 
@@ -38,8 +39,10 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), new_pokemon -> pokemon_name);
+	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
+    consider_as_garbage(metadata_file_information, (void (*) (void*)) free);
 	t_request* appeared_request;
 
 	if(exists_file_at(pokemon_metadata_path)) {
@@ -54,6 +57,8 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
 		write_pokemon_blocks(blocks_information, metadata_file_information);
 
+		list_destroy_and_free_elements(blocks_information);
+		stop_considering_garbage(blocks_information);
 	}
 	else{
 		char* new_block_number = get_new_block();
@@ -67,6 +72,8 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
     free(metadata_file_information);
+    stop_considering_garbage(metadata_file_information);
+
 
     show_bitmap_state(bitmap_get());
 	appeared_request = new_appeared_request(new_pokemon);

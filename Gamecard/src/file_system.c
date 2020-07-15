@@ -125,12 +125,8 @@ t_file_metadata* read_file_metadata(char* file_path){
 
     } while(is_open(file_metadata));
 
-    consider_as_garbage(metadata_config, (void (*)(void *)) config_destroy);
-
     set_open(file_pointer); //Una vez que sali del loop tengo que escribir la Y en el open
     fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
-
-    consider_as_garbage(file_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     flock(file_descriptor,LOCK_UN);
     stop_considering_garbage(&file_descriptor);
@@ -148,6 +144,7 @@ t_list* read_block(char* file_path){
     uint32_t blocks_quantity;
     char* final_path;
     t_list* blocks_data = list_create();
+    consider_as_garbage(blocks_data,(void (*) (void*)) list_destroy_and_free_elements);
 
     uint32_t i = 1;
     do{
