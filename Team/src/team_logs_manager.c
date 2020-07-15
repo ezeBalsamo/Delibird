@@ -15,7 +15,7 @@
 
 void initialize_team_logs_manager(){
     initialize_logger_for("Team");
-    create_main_logger();
+    create_main_logger_from_config();
     create_process_execution_logger();
 }
 

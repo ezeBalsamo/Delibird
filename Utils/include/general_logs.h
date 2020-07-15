@@ -7,7 +7,6 @@
 void log_succesful_start_up();
 void log_successful_execution();
 void log_successful_clean_up();
-void log_succesful_initialize_config_manager();
 void log_succesful_initialize_pretty_printer();
 void log_succesful_initialize_serializable_objects();
 void log_syscall_error(char* message_error);

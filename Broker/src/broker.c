@@ -14,11 +14,11 @@
 int main() {
     initialize_broker_signal_handler();
     initialize_garbage_collector();
+    initialize_configuration_manager();
     initialize_messages_roles();
     initialize_broker_logs_manager();
     initialize_pretty_printer();
     initialize_serializable_objects();
-    initialize_configuration_manager();
     initialize_queue_context_provider();
     initialize_broker_memory_manager();
     log_succesful_start_up();

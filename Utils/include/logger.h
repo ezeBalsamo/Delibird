@@ -5,7 +5,7 @@
 
 void initialize_logger_for(char* program_name);
 char* get_program_name();
-void create_main_logger();
+void create_main_logger_from_config();
 void create_log_named(char* log_name);
 t_log* main_logger();
 void create_process_execution_logger();

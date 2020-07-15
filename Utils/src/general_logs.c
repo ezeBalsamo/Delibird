@@ -37,10 +37,6 @@ void log_successful_clean_up(){
     free(blue_message);
 }
 
-void log_succesful_initialize_config_manager(){
-    log_succesful_message(process_execution_logger(), "El configuration_manager se ha inicializado correctamente!\n");
-}
-
 void log_succesful_initialize_pretty_printer(){
     log_succesful_message(process_execution_logger(), "Pretty printer se ha inicializado correctamente!\n");
 }
