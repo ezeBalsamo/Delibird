@@ -22,16 +22,6 @@ pthread_t caught_queue_tid;
 
 char* team_process_description;
 
-void sleep_for(int reconnection_time_in_seconds){
-    struct timespec deadline;
-    deadline.tv_sec = reconnection_time_in_seconds;
-    deadline.tv_nsec = 0;
-    if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
-        log_thread_sleep_time_configuration_error();
-        free_system();
-    }
-}
-
 void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker();
     t_connection_information* cast_connection_information = (t_connection_information*) connection_information;

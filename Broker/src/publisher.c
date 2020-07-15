@@ -157,6 +157,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
             t_list* subscribers_with_connection_active = list_filter(subscribers, (bool (*)(void *)) has_active_connection);
             list_iterate(subscribers_with_connection_active, (void (*) (void *)) _send_message);
+            list_destroy(subscribers_with_connection_active);
             log_succesful_message_sent_to_suscribers(message_status -> message_id);
 
             join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);

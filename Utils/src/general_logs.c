@@ -179,3 +179,14 @@ void log_file_not_found_error(char* extension){
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }
+
+void log_thread_sleep_time_configuration_error(){
+    char* message = string_new();
+    string_append(&message, "Se produjo un error al intentar dormir el hilo: ");
+    string_append(&message, strerror(errno));
+
+    log_errorful_message(main_logger(), message);
+    log_errorful_message(process_execution_logger(), message);
+
+    free(message);
+}

@@ -110,7 +110,7 @@ void log_server_initial_status(){
 void log_received_message_of(uint32_t operation_code){
 
     char* operation_name = operation_code_as_string(operation_code);
-    char* message = string_from_format("El server recibió un mensaje de tipo: \n %s", operation_name);
+    char* message = string_from_format("El server recibió un mensaje de tipo %s\n", operation_name);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

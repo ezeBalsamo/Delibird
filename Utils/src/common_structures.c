@@ -5,8 +5,9 @@
 #include <signal.h>
 #include <commons/string.h>
 #include <unistd.h>
-#include "../../Broker/include/broker_memory_manager.h"
 #include <commons/temporal.h>
+#include <time.h>
+#include <pthread_wrapper.h>
 
 void handler(){
     char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
@@ -148,6 +149,28 @@ void assert_only_one_in(t_list* self){
     }
 }
 
+void sleep_for(int reconnection_time_in_seconds){
+    struct timespec deadline;
+    deadline.tv_sec = reconnection_time_in_seconds;
+    deadline.tv_nsec = 0;
+    if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
+        log_thread_sleep_time_configuration_error();
+        free_system();
+    }
+}
+
 int minimum_integer_between(int number, int another_number){
     return number < another_number ? number : another_number;
+}
+
+void* free_system_debugging_thread(){
+
+    sleep_for(30);
+    free_system();
+    return NULL;
+}
+
+void debugging_thread(){
+    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
+    safe_thread_join(debugging_tid);
 }

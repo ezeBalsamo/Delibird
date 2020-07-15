@@ -76,7 +76,10 @@ char* process_description_for(char* process_name, t_list* strings_to_hash);
 uint64_t current_time_in_milliseconds();
 void assert_only_one_in(t_list* self);
 
+void sleep_for(int reconnection_time_in_seconds);
 int minimum_integer_between(int number, int another_number);
+
+void debugging_thread();
 
 void free_identified_message(t_identified_message* identified_message);
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon);

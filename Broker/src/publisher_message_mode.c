@@ -27,8 +27,7 @@ void publisher_mode_attending_message_function(t_connection_deserialization_info
 
     push_to_queue(message_status);
 
-    free(connection_deserialization_information);
-    free(connection_deserialization_information -> deserialization_information);
+    free_connection_deserialization_information(connection_deserialization_information);
 }
 
 void initialize_publisher_message_mode(){
