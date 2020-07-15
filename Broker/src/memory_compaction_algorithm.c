@@ -27,6 +27,7 @@ void reposition_free_block_to_end(t_block_information *block_to_reposition, t_li
 }
 //esta funcion supone que a partir del master block (primer bloque libre), todos los siguientes bloques van a estar libres
 //mejora para mañana: el master block podria obtenerse al principio y no hacer un get en cada iteracion al dope
+//va hasta list_size -1, porque no tiene sentido compactar el ultimo bloque
 void combine_all_free_partitions(t_list* blocks_information){
     for (int i = 0; i < list_size(blocks_information)-1;i++){
         t_block_information* master_block = (t_block_information*) list_get(blocks_information,i);

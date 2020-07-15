@@ -40,7 +40,8 @@ void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t
 void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
     t_list* subscribers = message_status -> subscribers_to_send;
-    t_request* request = create_request_from(message_status);
+    t_memory_block* memory_block = get_memory_block_from_memory(message_status -> message_id);
+    t_request* request = create_request_from(memory_block);
     t_list* waiting_for_ack_subscribers_threads = list_create();
 
     if (list_is_empty(subscribers)) {
@@ -48,10 +49,8 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
         list_destroy(waiting_for_ack_subscribers_threads);
     } else {
 
-        if(message_status -> is_allocated){
             void _send_message(t_subscriber_context* subscriber_context) {
 
-                update_lru_for(message_status -> identified_message -> message_id);
                 serialize_and_send_structure(request, subscriber_context -> socket_fd);
                 log_succesful_message_sent_to_a_suscriber(request, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.
 
@@ -72,7 +71,6 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
             join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
         }
-    }
 
     consider_as_garbage(request, (void (*)(void *)) free_request); //tengo que hacer esto porque no puedo romper lo de adentro.
                                                                    // Puedo hacer free(request) nada mas pero no se liberaria mas adelante toda la estructura.
@@ -80,20 +78,15 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
 void push_to_queue(t_message_status* message_status){
 
-    uint32_t operation = internal_operation_in(message_status -> identified_message);
-
-    if(operation == IDENTIFIED_MESSAGE){ //caso en donde es un identified con otro identified adentro.
-        uint32_t internal_operation = internal_operation_in_correlative(message_status -> identified_message);
-        operation = internal_operation;
-    }
+    uint32_t operation = message_status -> operation_queue;
 
     t_queue_context* queue_context = queue_context_with_code(operation);
 
     update_subscribers_to_send(message_status, queue_context);
-    log_succesful_get_and_update_subscribers_to_send(message_status -> identified_message);
+    log_succesful_get_and_update_subscribers_to_send(message_status -> message_id);
 
     queue_context -> queue_context_operations -> add_message_status_to_queue_function (queue_context, message_status);
-    log_succesful_new_message_pushed_to_a_queue(message_status -> identified_message, queue_context -> operation);
+    log_succesful_new_message_pushed_to_a_queue(message_status -> message_id, queue_context -> operation);
 
     publish(message_status, queue_context);
 }

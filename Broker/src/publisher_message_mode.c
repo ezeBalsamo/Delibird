@@ -27,6 +27,7 @@ void publisher_mode_attending_message_function(t_connection_request* connection_
     push_to_queue(message_status);
 
     free(connection_request);
+    free_identified_message(identified_message);
 }
 
 void initialize_publisher_message_mode(){

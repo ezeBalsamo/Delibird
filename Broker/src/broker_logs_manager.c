@@ -32,12 +32,10 @@ void log_succesful_subscription_process(t_subscriber_context* subscriber_context
     free(message);
 }
 
-void log_succesful_new_message_pushed_to_a_queue(t_identified_message* identified_message, uint32_t queue_code){
-    char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se pusheo el mensaje:\n%s con id:%d \na la cola de mensajes: %s correctamente!", printed_object, identified_message -> message_id, queue_name_of(queue_code));
+void log_succesful_new_message_pushed_to_a_queue(uint32_t message_id, uint32_t queue_code){
+    char* message = string_from_format("Se pusheo el mensaje con id: %d a la cola de mensajes: %s correctamente!", message_id, queue_name_of(queue_code));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -50,11 +48,9 @@ void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_
     free(message);
 }
 
-void log_succesful_message_received_by(t_subscriber_context* subscriber_context, t_message_status* message_status){
-    char* printed_object = request_pretty_print(message_status -> identified_message -> request);
-    char* message = string_from_format("El suscriptor: %s recibió el mensaje: \n%s\n con id: %d\n",subscriber_context -> process_description,printed_object, message_status -> identified_message -> message_id);
+void log_succesful_message_received_by(t_subscriber_context* subscriber_context, uint32_t message_id){
+    char* message = string_from_format("El suscriptor: %s recibió el mensaje con id: %d\n", subscriber_context -> process_description, message_id);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -126,11 +122,9 @@ void log_succesful_message_sent_to_suscribers(t_request* request){
     free(message);
 }
 
-void log_succesful_get_and_update_subscribers_to_send(t_identified_message* identified_message){
-    char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje:\n%s con id: %d\n",printed_object, identified_message -> message_id);
+void log_succesful_get_and_update_subscribers_to_send(uint32_t message_id){
+    char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje con id: %d\n",message_id);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -148,11 +142,9 @@ void log_update_of_message_id_received_for(t_subscriber_context* subscriber_cont
     free(message);
 }
 
-void log_succesful_eliminating_message_of_a_queue(t_message_status* message_status, char* reason){
-    char* printed_object = request_pretty_print(message_status ->identified_message -> request);
-    char* message = string_from_format("Se borro el mensaje:\n %s\n con id: %d correctamente! Motivo de borrado: %s", printed_object, message_status -> identified_message -> message_id, reason);
+void log_succesful_eliminating_message_of_a_queue(uint32_t message_id, char* reason){
+    char* message = string_from_format("Se borro el mensaje con id: %d correctamente! Motivo de borrado: %s", message_id, reason);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -198,12 +190,10 @@ void log_failed_to_receive_ack_error(t_subscriber_context* subscriber_context){
     free(message);
 }
 
-void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, t_identified_message* identified_message){
+void log_subscriber_not_found_in_message_status_subscribers_error(t_subscriber_context* subscriber_context, uint32_t message_id){
 
-    char* printed_object = request_pretty_print(identified_message -> request);
-    char* message = string_from_format("No se encontro al suscriptor: %s para removerlo de la lista de este mensaje:", subscriber_context -> process_description, printed_object);
+    char* message = string_from_format("No se encontro al suscriptor: %s para removerlo de la lista del mensaje con id: %d", subscriber_context -> process_description, message_id);
     log_errorful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -221,14 +211,6 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
 void log_message_status_not_found_in_queue_error(uint32_t message_id){
     char* message = string_from_format("No se pudo encontrar un mensaje con id:'%d' de la cola de mensajes.",message_id);
     log_warning_message(process_execution_logger(), message);
-    free(message);
-}
-
-void log_succesful_no_longer_in_memory(t_message_status* message_status){
-    char* printed_object = request_pretty_print(message_status -> identified_message -> request);
-    char* message = string_from_format("El mensaje:\n %s \n fue removido de la memoria correctamente.", printed_object);
-    log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
