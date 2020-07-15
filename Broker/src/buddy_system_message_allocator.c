@@ -113,14 +113,14 @@ void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
     if (block_to_free != NULL){
         void* position_of_partition_freed = block_to_free->initial_position;
         uint32_t message_id_from_block_to_free = block_to_free->memory_block->message_id;
+        uint32_t message_operation_from_block_to_free = block_to_free->memory_block->message_operation;
 
         empty_block_information(block_to_free);
         log_succesful_free_partition_to_cache(position_of_partition_freed,message_id_from_block_to_free);
 
         //consolido el bloque con buddy system
         associate_with_buddies(blocks_information,block_to_free);
-
-
+        delete_message(message_operation_from_block_to_free,message_id_from_block_to_free,"Victima del algoritmo de reemplazo.");
     }else{
         log_invalid_free_partition_error();
         free_system();

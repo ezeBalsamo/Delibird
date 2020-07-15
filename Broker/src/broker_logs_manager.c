@@ -214,6 +214,12 @@ void log_message_status_not_found_in_queue_error(uint32_t message_id){
     free(message);
 }
 
+void log_block_information_with_id_not_found(uint32_t message_id){
+    char* message = string_from_format("No se encontró un mensaje (memory_block) con el id: %d", message_id);
+    log_errorful_message(process_execution_logger(), message);
+    free(message);
+}
+
 void free_broker_logs_manager(){
     free_loggers();
 }

@@ -69,4 +69,6 @@ void log_succesful_memory_compaction_as_buddies(void* master_block_position,void
 
 void log_invalid_memory_size_for_buddy_system_error();
 
+void log_block_information_with_id_not_found(uint32_t message_id);
+
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H

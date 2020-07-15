@@ -59,7 +59,8 @@ t_block_information* find_block_information_with_id(uint32_t message_id){
     t_block_information* block_information_found = list_find(blocks_information_occupied, (bool (*) (void*)) _block_information_with_id);
 
     if(block_information_found == NULL){
-//        log_block_information_with_id_not_found();
+        log_block_information_with_id_not_found(message_id);
+        free_system();
     }
 
     list_destroy(blocks_information_occupied);
