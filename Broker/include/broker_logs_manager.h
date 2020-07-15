@@ -13,7 +13,7 @@ void log_succesful_subscription_process(t_subscriber_context* subscriber_context
 
 void log_succesful_new_message_pushed_to_a_queue(uint32_t message_id, uint32_t queue_code);
 
-void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_context* subscriber_context);
+void log_succesful_message_sent_to_a_suscriber(uint32_t message_id, t_subscriber_context* subscriber_context);
 
 void log_succesful_message_received_by(t_subscriber_context* subscriber_context, uint32_t message_id);
 
@@ -25,11 +25,9 @@ void log_server_initial_status();
 
 void log_structure_received(void* serialized_request);
 
-void log_succesful_message_sent_to_suscribers(t_request* request);
+void log_succesful_message_sent_to_suscribers(uint32_t message_id);
 
 void log_succesful_get_and_update_subscribers_to_send(uint32_t message_id);
-
-void log_no_subscribers_for_request(t_request* request);
 
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context);
 
@@ -48,6 +46,8 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
 void log_cache_dump_information(char* cache_information);
 
 void log_message_status_not_found_in_queue_error(uint32_t message_id);
+
+void log_no_subscribers_for_message_with_id(uint32_t message_id);
 
 void free_broker_logs_manager();
 

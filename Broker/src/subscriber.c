@@ -8,6 +8,7 @@
 #include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <stdlib.h>
+#include <publisher.h>
 
 void update_last_message_id_received_for(t_subscriber_context* subscriber_context, uint32_t last_message_id_received){
     subscriber_context -> last_message_id_received = last_message_id_received;
@@ -68,15 +69,15 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         t_block_information* block_information = find_block_information_with_id(message_status -> message_id);
 
-        t_request* request = create_request_from(block_information -> memory_block);
-        serialize_and_send_structure(request, subscriber_context -> socket_fd);
+        t_serialization_information* serialization_information = create_serialization_information_from(block_information->memory_block);
+        send_serialized_structure(serialization_information, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
         void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
         ack = *((uint32_t *) ack_result);
         free(ack_result);
-        free(request);
+        free_serialization_information(serialization_information);
     }
     list_destroy(messages_to_send);
 }
