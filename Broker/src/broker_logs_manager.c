@@ -1,7 +1,6 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <subscriber_context_provider.h>
-#include <queue_message_status.h>
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -39,12 +38,10 @@ void log_succesful_new_message_pushed_to_a_queue(uint32_t message_id, uint32_t q
     free(message);
 }
 
-void log_succesful_message_sent_to_a_suscriber(t_request* request, t_subscriber_context* subscriber_context){
-    char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("Se envió correctamente el mensaje:\n%s\nal suscriptor: %s con socket: %d", printed_object, subscriber_context -> process_description, subscriber_context -> socket_fd);
+void log_succesful_message_sent_to_a_suscriber(uint32_t message_id, t_subscriber_context* subscriber_context){
+    char* message = string_from_format("Se envió correctamente el mensaje con id: %d al suscriptor: %s con socket: %d", message_id, subscriber_context -> process_description, subscriber_context -> socket_fd);
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -101,9 +98,11 @@ void log_cache_dump_information(char* cache_info){
 void log_succesful_initialize_queue_context_provider(){
     log_succesful_message(process_execution_logger(), "El queue_context_provider se ha inicializado correctamente!\n");
 }
+
 void log_successful_initialize_broker_memory_manager(){
     log_succesful_message(process_execution_logger(), "El broker_memory_manager se ha inicializado correctamente!\n");
 }
+
 void log_server_initial_status(){
     log_succesful_message(process_execution_logger(), "El server multihilo fue levantado y esta esperando recibir información.\n");
 }
@@ -116,25 +115,15 @@ void log_received_message_of(uint32_t operation_code){
     free(message);
 }
 
-void log_succesful_message_sent_to_suscribers(t_request* request){
-    char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("El siguiente mensaje fue enviado correctamente a todos los suscriptores:\n %s", printed_object);
+void log_succesful_message_sent_to_suscribers(uint32_t message_id){
+    char* message = string_from_format("El mensaje con id: %d fue enviado correctamente a todos los suscriptores.", message_id);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
 void log_succesful_get_and_update_subscribers_to_send(uint32_t message_id){
     char* message = string_from_format("Se actualizaron los suscriptores a enviar del mensaje con id: %d\n",message_id);
     log_succesful_message(process_execution_logger(), message);
-    free(message);
-}
-
-void log_no_subscribers_for_request(t_request* request){
-    char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra este mensaje:\n%s", printed_object);
-    log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -213,6 +202,18 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
 void log_message_status_not_found_in_queue_error(uint32_t message_id){
     char* message = string_from_format("No se pudo encontrar un mensaje con id:'%d' de la cola de mensajes.",message_id);
     log_warning_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_no_subscribers_for_message_with_id(uint32_t message_id){
+    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra el mensaje con id:\n%s", message_id);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
+}
+
+void log_block_information_with_id_not_found(uint32_t message_id){
+    char* message = string_from_format("No se encontró un mensaje (memory_block) con el id: %d", message_id);
+    log_errorful_message(process_execution_logger(), message);
     free(message);
 }
 

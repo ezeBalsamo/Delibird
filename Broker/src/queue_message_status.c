@@ -25,54 +25,6 @@ t_message_status* create_message_status_using(uint32_t message_id, t_deserializa
     return message_status;
 }
 
-t_request* create_request_for(t_memory_block* memory_block){
-
-    t_serializable_object* serializable_object = serializable_object_with_code(memory_block -> message_operation);
-
-    t_request* request = serializable_object -> deserialize_function (memory_block -> message);
-
-    return request;
-}
-
-t_identified_message* create_identified_message_considering_message_ids_from(t_memory_block* memory_block){
-
-    t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
-    update_lru_for(memory_block -> message_id);
-
-    identified_message -> message_id = memory_block -> message_id;
-
-    t_request* request = create_request_for(memory_block);
-    identified_message -> request = request;
-
-    if(memory_block -> correlative_message_id != 0){
-
-        t_identified_message* correlative_identified_message = safe_malloc(sizeof(t_identified_message));
-        identified_message -> message_id = memory_block -> correlative_message_id;
-        correlative_identified_message -> message_id = memory_block -> message_id;
-
-        t_request* identified_message_as_request = safe_malloc(sizeof(t_request));
-        identified_message_as_request->structure = (void*) identified_message;
-        identified_message_as_request->operation = IDENTIFIED_MESSAGE;
-
-        correlative_identified_message -> request = identified_message_as_request;
-
-        return correlative_identified_message;
-    }
-    return identified_message;
-}
-
-t_request* create_request_from(t_memory_block* memory_block){
-
-    t_identified_message* identified_message = create_identified_message_considering_message_ids_from(memory_block);
-
-    t_request* request = safe_malloc(sizeof(t_request));
-    request -> operation = IDENTIFIED_MESSAGE;
-    request -> structure = identified_message;
-    request -> sanitizer_function = (void (*)(void *)) free_identified_message;
-
-    return request;
-}
-
 void delete_message(uint32_t operation_message, uint32_t message_id, char* reason){
 
     t_queue_context* queue_context = queue_context_of_queue_named(queue_name_of(operation_message));

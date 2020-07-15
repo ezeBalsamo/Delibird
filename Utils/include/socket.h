@@ -38,6 +38,8 @@ void synchronize_connection_information_closing_old(t_connection_information* co
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
 
+void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd);
+
 void close_connection(int socket_fd);
 
 void free_and_close_connection(void* socket_fd);
