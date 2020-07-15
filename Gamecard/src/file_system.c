@@ -83,7 +83,7 @@ uint32_t amount_of_positions(t_list* positions_list){
 
 t_file_system_metadata* read_file_system_metadata(char* file_path){
 
-    FILE* file_pointer = fopen(file_path, "r+");
+    FILE* file_pointer = fopen(file_path, "r");
 
     //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
     t_config* metadata_config = config_create(file_path);
@@ -102,6 +102,7 @@ t_file_metadata* read_file_metadata(char* file_path){
     FILE* file_pointer = fopen(file_path, "r+");
     uint32_t file_descriptor = fileno(file_pointer); //el file descriptor para los flocks :D
     flock(file_descriptor, LOCK_SH);
+    consider_as_garbage(&file_descriptor, (void (*)(void *)) file_unlock);
 
     t_file_metadata* file_metadata;
     bool first_time_reading = true;
@@ -129,10 +130,10 @@ t_file_metadata* read_file_metadata(char* file_path){
     set_open(file_pointer); //Una vez que sali del loop tengo que escribir la Y en el open
     fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
 
-    //NO LO ESTA HACIENDO
     consider_as_garbage(file_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     flock(file_descriptor,LOCK_UN);
+    stop_considering_garbage(&file_descriptor);
 
     return file_metadata;
 }
@@ -348,7 +349,10 @@ void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* po
 		char* line_to_write;
 		FILE* file_pointer = fopen(pokemon_metadata_path, "w");
 		int file_descriptor = fileno(file_pointer);
+
 		flock(file_descriptor, LOCK_SH);
+		consider_as_garbage(&file_descriptor, (void (*)(void *)) file_unlock);
+
 
 		line_to_write = string_from_format("DIRECTORY=%s\n" ,metadata_file_information -> directory);
 		fprintf(file_pointer, "%s", line_to_write);
@@ -361,7 +365,9 @@ void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* po
 
 		fclose(file_pointer);
 		flock(file_descriptor,LOCK_UN);
+		stop_considering_garbage(&file_descriptor);
 	}
+	stop_considering_garbage(pokemon_metadata_path);
 
 }
 

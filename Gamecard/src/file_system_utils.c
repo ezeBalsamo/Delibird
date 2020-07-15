@@ -60,6 +60,10 @@ uint32_t split(char* string, uint32_t index, char* separator, char found_string[
     return i-1;
 }
 
+void file_unlock(int* file_descriptor_pointer){
+	flock(*file_descriptor_pointer,LOCK_UN);
+}
+
 void change_file_open_flag(FILE* file_pointer, char* new_flag){
 
     fseek(file_pointer, -2, SEEK_END); // 1 para la y, otro por el \n
@@ -94,11 +98,14 @@ void close_metadata(char* metadata_path) {
     FILE *file_pointer = fopen(metadata_path, "r+");
     uint32_t file_descriptor = fileno(file_pointer); //el file descriptor para los flocks :D
     flock(file_descriptor, LOCK_SH);
+    consider_as_garbage(&file_descriptor, (void (*)(void *)) file_unlock);
 
     set_closed(file_pointer);
 
     fclose(file_pointer);
     flock(file_descriptor, LOCK_UN);
+    stop_considering_garbage(&file_descriptor);
+    stop_considering_garbage(metadata_path);
 }
 
 t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata_config){
