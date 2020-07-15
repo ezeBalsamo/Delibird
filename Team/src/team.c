@@ -12,12 +12,12 @@ int main(void) {
 
     initialize_signal_handler();
     initialize_garbage_collector();
+    initialize_team_configuration_manager();
 
     initialize_main_threads_executor();
     initialize_team_logs_manager();
     initialize_pretty_printer();
     initialize_team_serializable_objects();
-    initialize_team_configuration_manager();
     initialize_event_notifier();
     initialize_dispatcher();
 

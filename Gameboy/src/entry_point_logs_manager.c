@@ -6,7 +6,7 @@
 
 void initialize_entry_point_logs_manager(){
     initialize_logger_for("Gameboy");
-    create_main_logger();
+    create_main_logger_from_config();
     create_process_execution_logger();
 }
 

@@ -11,7 +11,7 @@ char* cache_dump_log_name = "cache_dump.log";
 
 void initialize_broker_logs_manager(){
     initialize_logger_for("Broker");
-    create_main_logger();
+    create_main_logger_from_config();
     create_log_named(cache_dump_log_name);
     create_process_execution_logger();
 }

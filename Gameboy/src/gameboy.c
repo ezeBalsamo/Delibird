@@ -12,8 +12,8 @@ int main(int arguments_amount, char* arguments[]) {
     initialize_signal_handler();
     initialize_garbage_collector();
 
-    initialize_entry_point_logs_manager();
     initialize_entry_point_connection_builder();
+    initialize_entry_point_logs_manager();
     initialize_pretty_printer();
     initialize_entry_point_validator(arguments_amount, arguments);
 

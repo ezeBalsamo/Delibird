@@ -6,10 +6,11 @@
 #include <sys/stat.h>
 #include <garbage_collector.h>
 #include <general_logs.h>
+#include <configuration_manager.h>
 
 t_dictionary* loggers_by_name;
 char* process_execution_log_name = "process-execution.log";
-char* main_log_name = "main.log";
+char* main_log_name;
 char* program_name;
 
 char* get_program_name(){
@@ -53,8 +54,27 @@ void initialize_logger_for(char* program_name_parameter){
     program_name = program_name_parameter;
 }
 
-void create_main_logger(){
+char* get_logs_name_of(char** logs_path){
+
+    char* last_element;
+
+    for(int i = 0; logs_path[i] != NULL; i ++){
+        last_element = logs_path[i];
+
+        if(logs_path[i+1] == NULL){
+            return last_element;
+        }
+        free(last_element);
+    }
+    return last_element;
+}
+
+void create_main_logger_from_config(){
+    char* logs_path = config_get_string_at("LOG_FILE");
+    char** logs_path_splitted = string_split(logs_path, "/");
+    main_log_name = get_logs_name_of(logs_path_splitted);
     create_log_named(main_log_name);
+    free(logs_path_splitted);
 }
 
 t_log* main_logger(){

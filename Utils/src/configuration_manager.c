@@ -13,7 +13,6 @@ void initialize_configuration_manager(){
     config = config_create(config_absolute_path);
     free(config_absolute_path);
 
-    log_succesful_initialize_config_manager();
 }
 
 int config_get_int_at(char* key){
