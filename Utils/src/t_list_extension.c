@@ -54,7 +54,7 @@ void list_of_lists_destroy_and_destroy_elements(t_list* self,void(*element_destr
     list_destroy_and_destroy_elements(self, (void (*)(void *)) list_destroy);
 }
 
-t_list* list_swap(t_list* self, int index ,int another_index){
+void list_swap(t_list* self, int index ,int another_index){
 
     if (list_size(self)< index || list_size(self)<another_index){
         log_list_invalid_index_access( index,  another_index, self);

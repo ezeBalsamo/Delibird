@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd $HOME/so-commons-library
+make uninstall
+cd ..
+rm -r -f so-commons-library/
+cd tp-2020-1c-El-Kuelgue/

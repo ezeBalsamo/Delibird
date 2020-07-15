@@ -8,16 +8,16 @@ all: $(SHARED_MODULE) $(MODULES)
 Utils:
 	$(MAKE) -C $@
 
-Team:
+Team: Utils
 	$(MAKE) -C $@
 
-Broker:
+Broker: Utils
 	$(MAKE) -C $@
 
-Gamecard:
+Gamecard: Utils
 	$(MAKE) -C $@
 
-Gameboy:
+Gameboy: Utils
 	$(MAKE) -C $@
 
 clean:
