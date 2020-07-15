@@ -23,7 +23,7 @@ void log_successful_initialize_broker_memory_manager();
 
 void log_server_initial_status();
 
-void log_structure_received(void* serialized_request);
+void log_received_message_of(uint32_t operation_code);
 
 void log_succesful_message_sent_to_suscribers(t_request* request);
 
@@ -53,7 +53,7 @@ void free_broker_logs_manager();
 
 void log_invalid_operation_to_save_message_error();
 
-void log_succesful_save_message_to_cache(t_request* request, void* message_position);
+void log_succesful_save_message_to_cache(uint32_t message_id, uint32_t message_size, void* message_position);
 
 void log_succesful_memory_compaction(int amount_of_partitions_compacted);
 

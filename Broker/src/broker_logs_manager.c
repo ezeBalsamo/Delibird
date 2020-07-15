@@ -54,12 +54,14 @@ void log_succesful_message_received_by(t_subscriber_context* subscriber_context,
     free(message);
 }
 
-void log_succesful_save_message_to_cache(t_request* request, void* message_position){
-    char* printed_object = request_pretty_print(request);
-    char* message = string_from_format("Se guardó correctamente el mensaje:\n%s\nen la posicion de memoria: %p", printed_object, message_position);
+void log_succesful_save_message_to_cache(uint32_t message_id, uint32_t message_size, void* message_position){
+
+    char* message =
+            string_from_format("Se guardó correctamente el mensaje con ID: %lu, de tamaño %lu, en la posicion de memoria: %p",
+                                       message_id, message_size, message_position);
+
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 
@@ -106,11 +108,11 @@ void log_server_initial_status(){
     log_succesful_message(process_execution_logger(), "El server multihilo fue levantado y esta esperando recibir información.\n");
 }
 
-void log_structure_received(void* serialized_request){
-    char* printed_object = request_pretty_print(serialized_request);
-    char* message = string_from_format("El server recibió el siguiente mensaje:\n %s", printed_object);
+void log_received_message_of(uint32_t operation_code){
+
+    char* operation_name = operation_code_as_string(operation_code);
+    char* message = string_from_format("El server recibió un mensaje de tipo: \n %s", operation_name);
     log_succesful_message(process_execution_logger(), message);
-    free(printed_object);
     free(message);
 }
 

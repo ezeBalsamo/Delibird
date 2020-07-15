@@ -128,10 +128,6 @@ t_serializable_object* serializable_subscribe_me(){
     return serializable_object_with_code(SUBSCRIBE_ME);
 }
 
-t_serializable_object* serializable_identified_me(){
-    return serializable_object_with_code(IDENTIFIED_MESSAGE);
-}
-
 t_serializable_object* serializable_object_with_code(uint32_t operation_code){
 
     bool _is_for(void* serializable_object){

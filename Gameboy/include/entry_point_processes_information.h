@@ -2,6 +2,7 @@
 #define DELIBIRD_ENTRY_POINT_PROCESSES_INFORMATION_H
 
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/serialization_interface.h"
 #include <stdbool.h>
 
 typedef struct Process_information{

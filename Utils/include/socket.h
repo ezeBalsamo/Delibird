@@ -1,6 +1,7 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <stdbool.h>
 #include "serialization_interface.h"
 
 #define THREAD_POOL_SIZE 25

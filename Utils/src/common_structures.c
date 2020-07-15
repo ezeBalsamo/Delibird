@@ -43,22 +43,6 @@ void* safe_malloc(size_t size){
     return pointer;
 }
 
-t_identified_message* create_identified_message(uint32_t message_id, t_request* request){
-    t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
-    identified_message -> message_id = message_id;
-    identified_message -> request = request;
-
-    return identified_message;
-}
-
-t_connection_request* create_connection_request(int connection_fd, t_request* request){
-    t_connection_request* connection_request = safe_malloc(sizeof(t_connection_request));
-    connection_request -> socket_fd = connection_fd;
-    connection_request -> request = request;
-
-    return connection_request;
-}
-
 unsigned long long hash(char* value){
     unsigned long long hash = 0;
     int value_length = string_length(value);
@@ -87,11 +71,6 @@ char* process_description_for(char* process_name, t_list* strings_to_hash){
     return string_from_format("%s-%llu", process_name, hash_sum);
 }
 
-void free_request(t_request* self){
-    self -> sanitizer_function (self -> structure);
-    free(self);
-}
-
 void free_identified_message(t_identified_message* identified_message){
     t_request* internal_request = identified_message -> request;
     free_request(internal_request);
@@ -106,10 +85,6 @@ void free_char_array(char** char_array){
     free( char_array );
 }
 
-void free_serialization_information(t_serialization_information* serialization_information){
-    free(serialization_information -> serialized_request);
-    free(serialization_information);
-}
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
     list_destroy_and_destroy_elements(localized_pokemon->positions,free);
     free(localized_pokemon);

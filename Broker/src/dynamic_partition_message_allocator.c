@@ -4,6 +4,7 @@
 #include <broker_logs_manager.h>
 #include <broker_message_allocator.h>
 #include <memory_compaction_algorithm.h>
+#include <deserialization_information_content_provider.h>
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/t_list_extension.h"
@@ -100,26 +101,25 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
 }
 
 //ACA ARRANCA LA PAPA
-void dynamic_partition_allocate_message(t_identified_message* message,t_list* blocks_information){
+void dynamic_partition_allocate_message(uint32_t message_id, t_deserialization_information* deserialization_information, t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
-
-
-    uint32_t message_size = get_size_of(message);
+    uint32_t message_size = message_size_using(deserialization_information);
 
     t_block_information* block_information_found = find_block_to_allocate_message(blocks_information, message_size);
 
-    t_memory_block* memory_block_to_save = build_memory_block_from(message, block_information_found);
+    t_memory_block* memory_block_to_save = build_memory_block_from(message_id, message_size, deserialization_information, block_information_found);
 
     //encontre un block manager disponible, lo spliteo y creo uno nuevo que tenga la memoria restante, que este libre
-    t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found,memory_block_to_save);
+    t_block_information* new_block_information = save_memory_block_in_block_information(block_information_found, memory_block_to_save);
 
     // es posible que no haya que crear uno nuevo, si la particion tenia el tamaño exacto necesario
     if (new_block_information != NULL){
         int position = block_index_position(block_information_found,blocks_information);
         list_add_in_index(blocks_information,position+1,(void*) new_block_information);
     }
-    log_succesful_save_message_to_cache(message_request_from_identified_message(message),block_information_found->initial_position);
+
+    log_succesful_save_message_to_cache(message_id, message_size, block_information_found -> initial_position);
 
 }
 

@@ -5,10 +5,8 @@
 #include <stdlib.h>
 #include "broker_message_allocator.h"
 #include "../../Utils/include/garbage_collector.h"
-#include "../../Utils/include/pokemon_request_bytes_calculator.h"
 #include "../../Utils/include/configuration_manager.h"
-#include "../../Utils/include/serializable_objects.h"
-#include <string.h>
+#include <deserialization_information_content_provider.h>
 
 t_dictionary* allocation_algorithms;
 t_message_allocator* message_allocator;
@@ -38,11 +36,6 @@ uint32_t block_size_for(t_memory_block *  memory_block_to_save){
     return block_to_save_bigger_than_min_partition_size ? memory_block_to_save->message_size : message_allocator->min_partition_size;
 }
 
-t_request* message_request_from_identified_message(t_identified_message* message){
-    uint32_t operation = internal_operation_in(message);
-    return operation == IDENTIFIED_MESSAGE ?  (t_request *) internal_request_in_correlative(message) : message->request;
-}
-
 int block_index_position(t_block_information* block_to_find,t_list* blocks_information){
 
     for(int i= 0; i < list_size(blocks_information); i++){
@@ -55,60 +48,23 @@ int block_index_position(t_block_information* block_to_find,t_list* blocks_infor
     return -1;
 }
 
-uint32_t get_correlative_message_id_from(t_identified_message* message){
-    if(internal_operation_in(message) == IDENTIFIED_MESSAGE){
-       t_identified_message* correlative_identified_message = internal_object_in(message);
-       return correlative_identified_message -> message_id;
-    } else {
-        return 0;
-    }
-}
+t_memory_block* build_memory_block_from(uint32_t message_id, uint32_t message_size, t_deserialization_information* deserialization_information, t_block_information* block_information) {
 
-uint32_t get_size_of(t_identified_message* message){
-
-    t_request* message_request = message_request_from_identified_message(message);
-
-    return size_to_allocate_for(message_request);
-}
-
-t_memory_block* build_memory_block_from(t_identified_message* message, t_block_information* block_information) {
-    //Obtengo el mensaje
-    t_request* message_request = message_request_from_identified_message(message);
-
-    t_serializable_object* serializable_object = serializable_object_with_code(message -> request -> operation);
     t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 
-    uint32_t correlative_message_id = get_correlative_message_id_from(message);
-    memory_block_to_save->message_id =  message->message_id;
-    memory_block_to_save->correlative_message_id = correlative_message_id;
-    memory_block_to_save->message_operation = message_request->operation;
+    memory_block_to_save -> message_id = message_id;
+    memory_block_to_save -> correlative_message_id = correlative_message_id_using(deserialization_information);
+    memory_block_to_save -> message_operation = operation_queue_using(deserialization_information);
 
-    memory_block_to_save->message_size = size_to_allocate_for(message_request);
-    t_serialization_information* serialization_information = serializable_object -> serialize_function (message -> request -> structure);
+    memory_block_to_save -> message_size = message_size;
+    memory_block_to_save -> message = block_information -> initial_position;
+    store_message_using(&memory_block_to_save -> message, deserialization_information);
 
-    memory_block_to_save -> message = block_information ->initial_position;
-    //No pasar serialize request directo, hay que sacar operation, y creo que el espacio del structure tambien!!
-    //me parece que en el caso de un identified hay que poner solo un sizeof.
 
-    if(memory_block_to_save ->correlative_message_id != 0){
-        //tamaño de estructura (identified_message)
-        //id mensaje
-        //tamaño de la estructura(identified_message)
-        //id mensaje
-        //tamaño de la estructura
-        //codigo de operacion
-        //estos son los 6 uint32_t que hay que moverse!
-        memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) * 6, memory_block_to_save -> message_size);
-    } else {
-        memcpy(memory_block_to_save -> message,serialization_information -> serialized_request + sizeof(uint32_t) + sizeof(uint32_t), memory_block_to_save -> message_size);
-    }
+    memory_block_to_save -> lru_value = current_time_in_milliseconds();
+    memory_block_to_save -> memory_block_id = get_next_fifo_id();
 
-    free_serialization_information(serialization_information);
-
-    memory_block_to_save->lru_value = current_time_in_milliseconds();
-    memory_block_to_save->memory_block_id = get_next_fifo_id();
-
-    if(memory_block_to_save->message_size > message_allocator->max_partition_size){
+    if(memory_block_to_save -> message_size > message_allocator -> max_partition_size){
         log_invalid_operation_to_save_message_error();
         free_system();
     }
@@ -131,8 +87,9 @@ void initialize_message_allocator() {
     fifo_id = 0;
 }
 
-void allocate_with_message_allocator_in_blocks_information(t_identified_message* identified_message, t_list* blocks_information){
-    message_allocator->allocate_message_function (identified_message, blocks_information);
+void allocate_with_message_allocator_in_blocks_information(uint32_t message_id, t_deserialization_information* deserialization_information, t_list* blocks_information){
+
+    message_allocator -> allocate_message_function (message_id, deserialization_information, blocks_information);
 }
 
 void free_message_allocator(){

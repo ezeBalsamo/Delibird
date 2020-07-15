@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <commons/string.h>
+#include <deserialization_information_content_provider.h>
 
 t_message_allocator* buddy_system_message_allocator;
 
@@ -68,7 +69,7 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
             void* buddy_block_position = buddy_block->initial_position;
             consolidate_block_with(master_block,buddy_block);
             right_is_buddy = true;
-            log_succesful_memory_compaction_as_buddies(master_block_position, master_block_position);
+            log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
             }else{
             left_is_buddy = false;
         }
@@ -143,19 +144,19 @@ t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_inf
 }
 
 //LA PAPA DEL BUDDY SYSTEM
-void partition_allocate_message(t_identified_message* message,t_list* blocks_information){
+void partition_allocate_message(uint32_t message_id, t_deserialization_information* deserialization_information, t_list* blocks_information){
     //logica para guardar un mensaje en memoria
 
-    uint32_t message_size = get_size_of(message);
+    uint32_t message_size = message_size_using(deserialization_information);
 
     t_block_information* block_information_found = find_block_to_allocate_message_for_buddy(blocks_information, message_size);
 
-    t_memory_block* memory_block_to_save = build_memory_block_from(message, block_information_found);
+    t_memory_block* memory_block_to_save = build_memory_block_from(message_id, message_size, deserialization_information, block_information_found);
 
     block_information_found->is_free = false;
     block_information_found->memory_block = memory_block_to_save;
 
-    log_succesful_save_message_to_cache(message_request_from_identified_message(message),block_information_found->initial_position);
+    log_succesful_save_message_to_cache(message_id, message_size, block_information_found -> initial_position);
 }
 
 bool is_power_of_two(int size){

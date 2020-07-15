@@ -1,6 +1,8 @@
 #ifndef DELIBIRD_POKEMON_REQUEST_BYTES_CALCULATOR_H
 #define DELIBIRD_POKEMON_REQUEST_BYTES_CALCULATOR_H
 
+#include <common_structures.h>
+
 uint32_t size_to_allocate_for(t_request* request);
 
 uint32_t amount_of_bytes_of_new(t_new_pokemon* new_pokemon);

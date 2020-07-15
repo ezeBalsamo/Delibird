@@ -13,7 +13,7 @@ typedef struct Message_status {
     t_list* subscribers_who_received;
 } t_message_status;
 
-t_message_status* create_message_status_for(t_identified_message* identified_message);
+t_message_status* create_message_status_using(uint32_t message_id, t_deserialization_information* deserialization_information);
 void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_context* subscriber_context);
 t_request* create_request_from(t_memory_block* memory_block);
 void* receive_ack_thread(void* subscriber_fd);

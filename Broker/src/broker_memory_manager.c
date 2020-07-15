@@ -40,9 +40,9 @@ void initialize_broker_memory_manager(){
     log_successful_initialize_broker_memory_manager();
 }
 
-void allocate_message(t_identified_message* message){
+void allocate_message_using(uint32_t message_id, t_deserialization_information* deserialization_information){
     pthread_mutex_lock(&memory_mutex);
-    allocate_with_message_allocator_in_blocks_information(message, blocks_information);
+    allocate_with_message_allocator_in_blocks_information(message_id, deserialization_information, blocks_information);
     pthread_mutex_unlock(&memory_mutex);
 }
 

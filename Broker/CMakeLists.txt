@@ -25,7 +25,8 @@ set(SOURCES
         src/broker_signal_handler.c
         src/buddy_system_message_allocator.c
         src/broker_message_allocator.c
-        src/memory_compaction_algorithm.c)
+        src/memory_compaction_algorithm.c
+        src/deserialization_information_content_provider.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(broker ${SOURCES})

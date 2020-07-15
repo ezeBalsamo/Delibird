@@ -1,12 +1,14 @@
 #include <messages_roles.h>
 #include <semaphore.h>
 #include <pthread.h>
+#include <stdlib.h>
 #include "connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/pthread_wrapper.h"
+#include "../../Utils/include/operation_deserialization.h"
 
 uint32_t message_id = 0;
 pthread_mutex_t mutex_id;
@@ -22,6 +24,18 @@ uint32_t update_and_get_message_id(){
     return message_id;
 }
 
+t_connection_deserialization_information* create_connection_deserialization_information(int connection_fd,
+                                                                                        t_deserialization_information* deserialization_information){
+
+    t_connection_deserialization_information* connection_deserialization_information =
+            safe_malloc(sizeof(t_connection_deserialization_information));
+
+    connection_deserialization_information -> socket_fd = connection_fd;
+    connection_deserialization_information -> deserialization_information = deserialization_information;
+
+    return connection_deserialization_information;
+}
+
 void* main_thread_handler(void* connection_fd){
     int cast_connection_fd = *((int*) connection_fd);
     t_receive_information* receive_information = receive_structure(cast_connection_fd);
@@ -30,12 +44,15 @@ void* main_thread_handler(void* connection_fd){
     if(receive_information -> receive_was_successful){
         consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
 
-        t_request* request = deserialize(receive_information -> serialization_information -> serialized_request);
-        log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
+        t_deserialization_information* deserialization_information =
+                deserialization_information_of(receive_information -> serialization_information -> serialized_request);
 
-        t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
+        log_received_message_of(deserialization_information -> operation);
 
-        attend_with_message_role(connection_request);
+        t_connection_deserialization_information* connection_deserialization_information =
+                create_connection_deserialization_information(cast_connection_fd, deserialization_information);
+
+        attend_with_message_role(connection_deserialization_information);
     }else{
         free_receive_information(receive_information);
     }
@@ -55,4 +72,9 @@ void* initialize_connection_handler(){
 void free_connection_handler(){
     pthread_mutex_destroy(&mutex_id);
     free_multithreaded_server();
+}
+
+void free_connection_deserialization_information(t_connection_deserialization_information* connection_deserialization_information){
+    free_deserialization_information(connection_deserialization_information -> deserialization_information);
+    free(connection_deserialization_information);
 }

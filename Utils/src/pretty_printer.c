@@ -143,6 +143,7 @@ char* identified_message_as_string(t_identified_message* identified_message){
 void initialize_and_load_new_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = NEW_POKEMON;
+    printable_object -> code_as_string = "NEW_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) new_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -151,6 +152,7 @@ void initialize_and_load_new_pokemon_pretty_print(){
 void initialize_and_load_appeared_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = APPEARED_POKEMON;
+    printable_object -> code_as_string = "APPEARED_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) appeared_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -159,6 +161,7 @@ void initialize_and_load_appeared_pokemon_pretty_print(){
 void initialize_and_load_get_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = GET_POKEMON;
+    printable_object -> code_as_string = "GET_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) get_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -167,6 +170,7 @@ void initialize_and_load_get_pokemon_pretty_print(){
 void initialize_and_load_localized_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = LOCALIZED_POKEMON;
+    printable_object -> code_as_string = "LOCALIZED_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) localized_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -175,6 +179,7 @@ void initialize_and_load_localized_pokemon_pretty_print(){
 void initialize_and_load_catch_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CATCH_POKEMON;
+    printable_object -> code_as_string = "CATCH_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) catch_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -183,6 +188,7 @@ void initialize_and_load_catch_pokemon_pretty_print(){
 void initialize_and_load_caught_pokemon_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = CAUGHT_POKEMON;
+    printable_object -> code_as_string = "CAUGHT_POKEMON";
     printable_object -> print_function = (char *(*)(void *)) caught_pokemon_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -191,6 +197,7 @@ void initialize_and_load_caught_pokemon_pretty_print(){
 void initialize_and_load_subscribe_me_pretty_print(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = SUBSCRIBE_ME;
+    printable_object -> code_as_string = "SUBSCRIBE_ME";
     printable_object -> print_function = (char *(*)(void *)) subscribe_me_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -199,6 +206,7 @@ void initialize_and_load_subscribe_me_pretty_print(){
 void initialize_and_load_identified_message(){
     t_printable_object* printable_object = safe_malloc(sizeof(t_printable_object));
     printable_object -> code = IDENTIFIED_MESSAGE;
+    printable_object -> code_as_string = "IDENTIFIED_MESSAGE";
     printable_object -> print_function = (char *(*)(void *)) identified_message_as_string;
 
     list_add(printable_objects, (void*) printable_object);
@@ -219,7 +227,7 @@ void initialize_pretty_printer(){
     log_succesful_initialize_pretty_printer();
 }
 
-char* pretty_print_of(uint32_t code, void* structure){
+t_printable_object* printable_object_with_code(uint32_t code){
 
     bool _has_code(void* printable_object){
         t_printable_object* cast_printable_object = (t_printable_object*) printable_object;
@@ -233,7 +241,20 @@ char* pretty_print_of(uint32_t code, void* structure){
         free_system();
     }
 
-    return (*(printable_object_found -> print_function)) (structure);
+    return printable_object_found;
+}
+
+char* pretty_print_of(uint32_t code, void* structure){
+
+    t_printable_object* printable_object = printable_object_with_code(code);
+    return printable_object -> print_function (structure);
+}
+
+
+char* operation_code_as_string(uint32_t code){
+
+    t_printable_object* printable_object = printable_object_with_code(code);
+    return printable_object -> code_as_string;
 }
 
 char* request_pretty_print(t_request* request){

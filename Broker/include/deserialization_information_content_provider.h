@@ -1,0 +1,11 @@
+#ifndef DELIBIRD_DESERIALIZATION_INFORMATION_CONTENT_PROVIDER_H
+#define DELIBIRD_DESERIALIZATION_INFORMATION_CONTENT_PROVIDER_H
+
+#include "../../Utils/include/serialization_interface.h"
+
+uint32_t operation_queue_using(t_deserialization_information* deserialization_information);
+uint32_t message_size_using(t_deserialization_information* deserialization_information);
+uint32_t correlative_message_id_using(t_deserialization_information* deserialization_information);
+void store_message_using(void** message_initial_position, t_deserialization_information* deserialization_information);
+
+#endif //DELIBIRD_DESERIALIZATION_INFORMATION_CONTENT_PROVIDER_H

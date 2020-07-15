@@ -12,17 +12,13 @@
 #include "../../Utils/include/queue_code_name_associations.h"
 #include "../../Utils/include/operation_deserialization.h"
 #include "../../Utils/include/serializable_objects.h"
+#include <deserialization_information_content_provider.h>
 
-t_message_status* create_message_status_for(t_identified_message* identified_message){
+t_message_status* create_message_status_using(uint32_t message_id, t_deserialization_information* deserialization_information){
+
     t_message_status* message_status = safe_malloc(sizeof(t_message_status));
-    message_status -> message_id = identified_message -> message_id;
-
-    if(internal_operation_in(identified_message) == IDENTIFIED_MESSAGE){
-        message_status -> operation_queue = internal_operation_in_correlative(identified_message);
-    } else {
-        message_status -> operation_queue = internal_operation_in(identified_message);
-    }
-
+    message_status -> message_id = message_id;
+    message_status -> operation_queue = operation_queue_using(deserialization_information);
     message_status -> subscribers_to_send = list_create();
     message_status -> subscribers_who_received = list_create();
 
