@@ -1,6 +1,7 @@
 #include "../include/broker_memory_manager.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/pthread_wrapper.h"
 #include <commons/string.h>
 #include <broker_memory_algorithms.h>
 #include <broker_logs_manager.h>
@@ -9,8 +10,8 @@
 #include <broker_message_allocator.h>
 #include <pthread.h>
 
-t_message_allocator* message_allocator;
 t_list* blocks_information;
+pthread_mutex_t memory_mutex;
 
 t_block_information* initialize_first_block_information(){
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
@@ -28,7 +29,8 @@ t_block_information* initialize_first_block_information(){
 void initialize_broker_memory_manager(){
 
     initialize_broker_memory_algorithms();
-    message_allocator = initialize_message_allocator();
+    safe_mutex_initialize(&memory_mutex);
+    initialize_message_allocator();
 
     t_block_information* initial_block_information = initialize_first_block_information();
 
@@ -39,9 +41,8 @@ void initialize_broker_memory_manager(){
 }
 
 void allocate_message(t_identified_message* message){
-    pthread_mutex_t memory_mutex = get_memory_mutex();
     pthread_mutex_lock(&memory_mutex);
-    message_allocator->allocate_message_function (message,blocks_information);
+    allocate_with_message_allocator_in_blocks_information(message, blocks_information);
     pthread_mutex_unlock(&memory_mutex);
 }
 
@@ -86,6 +87,7 @@ void free_block_information(t_block_information* block_information){
 }
 
 void free_broker_memory_manager(){
+    pthread_mutex_destroy(&memory_mutex);
     list_destroy_and_destroy_elements(blocks_information, (void (*)(void *)) free_block_information);
     free_message_allocator();
 }

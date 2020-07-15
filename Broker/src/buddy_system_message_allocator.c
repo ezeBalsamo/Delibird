@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <commons/string.h>
 
-t_message_allocator *message_allocator;
+t_message_allocator* buddy_system_message_allocator;
 
 unsigned long get_pointer_position_as_decimal(void* pointer){
     char* pointer_as_string = string_from_format("%p",pointer);
@@ -103,7 +103,7 @@ void disassociate_buddy_if_possible(t_list* blocks_information, t_block_informat
 
 //associates buddies recursively
 void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
-    t_block_information* block_to_free = message_allocator->partition_free_algorithm (blocks_information);
+    t_block_information* block_to_free = buddy_system_message_allocator->partition_free_algorithm (blocks_information);
 
     if (block_to_free != NULL){
         void* position_of_partition_freed = block_to_free->initial_position;
@@ -125,7 +125,7 @@ void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
 t_block_information* find_block_to_allocate_message_for_buddy(t_list* blocks_information, uint32_t message_size){
     for ever{
 
-        t_block_information* block_information_found = message_allocator->available_partition_search_algorithm (message_size, blocks_information, message_allocator->min_partition_size);
+        t_block_information* block_information_found = buddy_system_message_allocator->available_partition_search_algorithm (message_size, blocks_information, buddy_system_message_allocator->min_partition_size);
         if (block_information_found != NULL){
             //if buddy found is too big it may need to be split
             disassociate_buddy_if_possible(blocks_information, block_information_found, message_size);
@@ -190,15 +190,15 @@ int get_valid_total_memory_size(){
 
 t_message_allocator* initialize_buddy_system_message_allocator(){
 
-    message_allocator = safe_malloc(sizeof(t_message_allocator));
-    message_allocator->allocate_message_function = partition_allocate_message;
+    buddy_system_message_allocator = safe_malloc(sizeof(t_message_allocator));
+    buddy_system_message_allocator->allocate_message_function = partition_allocate_message;
 
-    message_allocator->min_partition_size = get_valid_minimum_partition_size();
-    message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
-    message_allocator->max_partition_size = get_valid_total_memory_size();
-    message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
-    message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
-    message_allocator->memory_compaction_algorithm = memory_compaction_algorithm;
+    buddy_system_message_allocator->min_partition_size = get_valid_minimum_partition_size();
+    buddy_system_message_allocator->max_search_tries = config_get_int_at("FRECUENCIA_COMPACTACION");
+    buddy_system_message_allocator->max_partition_size = get_valid_total_memory_size();
+    buddy_system_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
+    buddy_system_message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
+    buddy_system_message_allocator->memory_compaction_algorithm = memory_compaction_algorithm;
 
-    return message_allocator;
+    return buddy_system_message_allocator;
 }

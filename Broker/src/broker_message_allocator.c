@@ -13,11 +13,6 @@
 t_dictionary* allocation_algorithms;
 t_message_allocator* message_allocator;
 uint64_t fifo_id;
-pthread_mutex_t memory_mutex;
-
-pthread_mutex_t get_memory_mutex(){
-    return memory_mutex;
-}
 
 void initialize_allocation_algorithms(){
     allocation_algorithms = dictionary_create();
@@ -127,14 +122,17 @@ uint64_t get_next_fifo_id(){
     return fifo_id;
 }
 
-t_message_allocator* initialize_message_allocator() {
+void initialize_message_allocator() {
 
     char* memory_algorithm = config_get_string_at("ALGORITMO_MEMORIA");
     void* initialize_message_allocator_from_dictionary = dictionary_get(allocation_algorithms, memory_algorithm);
     t_message_allocator *(*initialize_message_allocator_function)() = (t_message_allocator *(*)()) initialize_message_allocator_from_dictionary;
     message_allocator = initialize_message_allocator_function();
     fifo_id = 0;
-    return message_allocator;
+}
+
+void allocate_with_message_allocator_in_blocks_information(t_identified_message* identified_message, t_list* blocks_information){
+    message_allocator->allocate_message_function (identified_message, blocks_information);
 }
 
 void free_message_allocator(){
