@@ -11,7 +11,6 @@
 #include <pthread.h>
 
 t_list* blocks_information;
-pthread_mutex_t memory_mutex;
 
 t_block_information* initialize_first_block_information(){
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
@@ -29,7 +28,6 @@ t_block_information* initialize_first_block_information(){
 void initialize_broker_memory_manager(){
 
     initialize_broker_memory_algorithms();
-    safe_mutex_initialize(&memory_mutex);
     initialize_message_allocator();
 
     t_block_information* initial_block_information = initialize_first_block_information();
@@ -41,9 +39,7 @@ void initialize_broker_memory_manager(){
 }
 
 void allocate_message_using(uint32_t message_id, t_deserialization_information* deserialization_information){
-    pthread_mutex_lock(&memory_mutex);
     allocate_with_message_allocator_in_blocks_information(message_id, deserialization_information, blocks_information);
-    pthread_mutex_unlock(&memory_mutex);
 }
 
 char* dump_cache(){
@@ -68,15 +64,14 @@ t_block_information* find_block_information_with_id(uint32_t message_id){
     return block_information_found;
 }
 
-void update_lru_for(uint32_t message_id){
-
-    t_block_information* block_information_found = find_block_information_with_id(message_id);
+void update_lru_for(t_block_information* block_information_found){
     block_information_found -> memory_block -> lru_value = current_time_in_milliseconds();
 }
 
 t_memory_block* get_memory_block_from_memory(uint32_t message_id){
 
     t_block_information* block_information_found = find_block_information_with_id(message_id);
+    update_lru_for(block_information_found);
     return block_information_found -> memory_block;
 }
 
@@ -88,7 +83,6 @@ void free_block_information(t_block_information* block_information){
 }
 
 void free_broker_memory_manager(){
-    pthread_mutex_destroy(&memory_mutex);
     list_destroy_and_destroy_elements(blocks_information, (void (*)(void *)) free_block_information);
     free_message_allocator();
 }

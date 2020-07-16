@@ -7,20 +7,16 @@
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/garbage_collector.h"
-#include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/operation_deserialization.h"
 
 uint32_t message_id = 0;
-pthread_mutex_t mutex_id;
 
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
 }
 
 uint32_t update_and_get_message_id(){
-    pthread_mutex_lock(&mutex_id);
     message_id++;
-    pthread_mutex_unlock(&mutex_id);
     return message_id;
 }
 
@@ -62,7 +58,6 @@ void* main_thread_handler(void* connection_fd){
 
 void* initialize_connection_handler(){
     log_server_initial_status();
-    safe_mutex_initialize(&mutex_id);
     start_multithreaded_server(port(), main_thread_handler);
 
     return NULL;
@@ -70,7 +65,6 @@ void* initialize_connection_handler(){
 }
 
 void free_connection_handler(){
-    pthread_mutex_destroy(&mutex_id);
     free_multithreaded_server();
 }
 

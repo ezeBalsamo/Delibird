@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -g -Wall -Wextra --coverage
-LIBS = -lcommons -lutils
+LIBS = -lcommons -lutils -lrt
 
 SOURCE_DIR = src
 INCLUDE_DIR = include

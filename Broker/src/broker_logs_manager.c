@@ -134,7 +134,7 @@ void log_update_of_message_id_received_for(t_subscriber_context* subscriber_cont
 }
 
 void log_succesful_eliminating_message_of_a_queue(uint32_t message_id, char* reason){
-    char* message = string_from_format("Se borro el mensaje con id: %d correctamente! Motivo de borrado: %s", message_id, reason);
+    char* message = string_from_format("Se quitó de la cola el mensaje con id: %d correctamente! Motivo de borrado: %s", message_id, reason);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
@@ -200,13 +200,13 @@ void log_subscriber_not_found_in_queue_subscribers(t_subscriber_context* subscri
 }
 
 void log_message_status_not_found_in_queue_error(uint32_t message_id){
-    char* message = string_from_format("No se pudo encontrar un mensaje con id:'%d' de la cola de mensajes.",message_id);
+    char* message = string_from_format("No se pudo encontrar un mensaje con id:'%d' en la cola de mensajes. Ya fue eliminado previamente.",message_id);
     log_warning_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_no_subscribers_for_message_with_id(uint32_t message_id){
-    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra el mensaje con id:\n%s", message_id);
+    char* message = string_from_format("No hay suscriptores en la cola donde se encuentra el mensaje con id:%d", message_id);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

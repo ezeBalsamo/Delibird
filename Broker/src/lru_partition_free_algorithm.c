@@ -17,6 +17,6 @@ t_block_information* lru_partition_free_algorithm(t_list* blocks_information){
     if (list_size(blocks_occupied)>0){
         block_to_free = list_fold(blocks_occupied, list_get(blocks_occupied,0),(void* (*) (void*, void*)) _block_least_recently_used);
     }
-
+    list_destroy(blocks_occupied);
      return block_to_free;
 }

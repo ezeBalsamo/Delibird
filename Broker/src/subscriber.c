@@ -67,9 +67,9 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         t_message_status* message_status = list_get(messages_to_send, i);
 
-        t_block_information* block_information = find_block_information_with_id(message_status -> message_id);
+        t_memory_block * memory_block = get_memory_block_from_memory(message_status -> message_id);
 
-        t_serialization_information* serialization_information = create_serialization_information_from(block_information->memory_block);
+        t_serialization_information* serialization_information = create_serialization_information_from(memory_block);
         send_serialized_structure(serialization_information, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);

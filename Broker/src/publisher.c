@@ -128,17 +128,17 @@ t_serialization_information* create_serialization_information_from(t_memory_bloc
 void publish(t_message_status* message_status, t_queue_context* queue_context) {
 
     t_list* subscribers = message_status -> subscribers_to_send;
-    t_memory_block* memory_block = get_memory_block_from_memory(message_status -> message_id);
-
-    t_serialization_information* serialization_information = create_serialization_information_from(memory_block);
-    t_list* waiting_for_ack_subscribers_threads = list_create();
 
     if (list_is_empty(subscribers)) {
         log_no_subscribers_for_message_with_id(message_status -> message_id);
-        list_destroy(waiting_for_ack_subscribers_threads);
     } else {
 
-            void _send_message(t_subscriber_context* subscriber_context) {
+        t_memory_block* memory_block = get_memory_block_from_memory(message_status -> message_id);
+
+        t_serialization_information* serialization_information = create_serialization_information_from(memory_block);
+        t_list* waiting_for_ack_subscribers_threads = list_create();
+
+        void _send_message(t_subscriber_context* subscriber_context) {
 
                 send_serialized_structure(serialization_information, subscriber_context -> socket_fd);
                 log_succesful_message_sent_to_a_suscriber(message_status -> message_id, subscriber_context); //loguea por cada suscriptor al cual se le fue enviado el mensaje.

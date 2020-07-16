@@ -3,7 +3,6 @@
 #include <publisher.h>
 #include <publisher_message_mode.h>
 #include <broker_memory_manager.h>
-#include <stdlib.h>
 #include "../../Utils/include/socket.h"
 
 t_message_role* publisher_message_mode;

@@ -12,7 +12,7 @@ typedef struct Memory_block{
     uint32_t correlative_message_id;
     uint32_t message_operation;
     uint32_t message_size;
-    uint32_t lru_value;
+    uint64_t lru_value;
     uint64_t memory_block_id; //id to handle FIFO order
 
     void* message; //polimorfico segun anexo 2
@@ -44,7 +44,7 @@ void initialize_broker_memory_manager();
 void free_broker_memory_manager();
 void allocate_message_using(uint32_t message_id, t_deserialization_information* deserialization_information);
 char* dump_cache();
-void update_lru_for(uint32_t message_id);
+void update_lru_for(t_block_information* block_information_found);
 t_block_information* find_block_information_with_id(uint32_t message_id);
 t_memory_block* get_memory_block_from_memory(uint32_t message_id);
 void free_block_information(t_block_information* block_information);
