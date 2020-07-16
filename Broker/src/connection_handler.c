@@ -56,11 +56,10 @@ void* main_thread_handler(void* connection_fd){
     return NULL;
 }
 
-void* initialize_connection_handler(){
+void initialize_connection_handler(){
+
     log_server_initial_status();
     start_multithreaded_server(port(), main_thread_handler);
-
-    return NULL;
 
 }
 

@@ -175,14 +175,19 @@ int minimum_integer_between(int number, int another_number){
     return number < another_number ? number : another_number;
 }
 
-void* free_system_debugging_thread(){
+void* free_system_debugging_thread(void* seconds){
 
-    sleep_for(30);
+    int cast_seconds = (*(int*) seconds);
+    free(seconds);
+    sleep_for(cast_seconds);
     free_system();
     return NULL;
 }
 
-void debugging_thread(){
-    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
-    safe_thread_join(debugging_tid);
+void free_system_debugging_thread_alive_for(int seconds){
+
+    int* seconds_pointer = safe_malloc(sizeof(int));
+    *seconds_pointer = seconds;
+
+    default_safe_thread_create(free_system_debugging_thread, (void*) seconds_pointer);
 }
