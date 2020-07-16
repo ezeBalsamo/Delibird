@@ -19,7 +19,7 @@ t_list* current_trades_in_process;
 
 void initialize_deadlock_solver(){
     remaining_identified_trades = queue_create();
-    sem_initialize(&trade_resolution_semaphore);
+    safe_sem_initialize(&trade_resolution_semaphore);
     initialize_trades_inferrer();
 }
 
@@ -137,6 +137,6 @@ void recover_from_deadlock(){
 
 void free_deadlock_solver(){
     queue_destroy(remaining_identified_trades);
-    sem_destroy(&trade_resolution_semaphore);
+    safe_sem_destroy(&trade_resolution_semaphore);
     free_trades_inferrer();
 }

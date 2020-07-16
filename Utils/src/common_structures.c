@@ -119,8 +119,20 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
     return internal_object_in(original_identified_message);
 }
 
-void sem_initialize(sem_t* semaphore){
-    sem_init(semaphore, false, 0);
+void safe_sem_initialize(sem_t* semaphore){
+
+    if(sem_init(semaphore, false, 0) != 0){
+        log_syscall_error("Error al inicializar un semáforo");
+        free_system();
+    }
+}
+
+void safe_sem_destroy(sem_t* semaphore){
+
+    if(sem_destroy(semaphore) != 0){
+        log_syscall_error("Error al destruir un semáforo");
+        free_system();
+    }
 }
 
 uint64_t current_time_in_milliseconds(){

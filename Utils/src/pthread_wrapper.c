@@ -41,6 +41,13 @@ void safe_mutex_initialize(pthread_mutex_t* mutex){
     }
 }
 
+void safe_mutex_destroy(pthread_mutex_t* mutex){
+    if(pthread_mutex_destroy(mutex) != 0){
+        log_syscall_error("Error al destruir un mutex");
+        free_system();
+    }
+}
+
 void safe_thread_cancel(pthread_t thread){
 
     char* message = string_from_format("Error al cancelar el hilo %u", process_get_thread_id());

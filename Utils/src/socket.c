@@ -349,7 +349,7 @@ t_receive_information* receive_structure(int socket_fd){
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
     queue = queue_create();
-    sem_initialize(&client_sockets_amount_in_queue);
+    safe_sem_initialize(&client_sockets_amount_in_queue);
 
     void* _thread_function(){
         for ever{

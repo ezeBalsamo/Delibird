@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/pthread_wrapper.h"
 
 t_message_role* publisher_message_mode;
 pthread_mutex_t mutex_for_id_and_allocation;
@@ -41,5 +42,5 @@ void initialize_publisher_message_mode(){
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 
     pthread_mutex_init(&mutex_for_id_and_allocation, NULL);
-    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) pthread_mutex_destroy);
+    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
 }

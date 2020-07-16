@@ -23,8 +23,8 @@ void wait_until_trainer_threads_are_created(){
 }
 
 void initialize_main_threads_executor(){
-    sem_initialize(&localized_trainers_created);
-    sem_initialize(&trainer_thread_created);
+    safe_sem_initialize(&localized_trainers_created);
+    safe_sem_initialize(&trainer_thread_created);
 }
 
 void execute_main_threads(){
@@ -39,8 +39,8 @@ void execute_main_threads(){
 }
 
 void free_main_threads_executor(){
-    sem_destroy(&localized_trainers_created);
-    sem_destroy(&trainer_thread_created);
+    safe_sem_destroy(&localized_trainers_created);
+    safe_sem_destroy(&trainer_thread_created);
 
     safe_thread_cancel(broker_connection_handler_thread);
     safe_thread_cancel(gameboy_connection_handler_thread);
