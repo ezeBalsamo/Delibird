@@ -24,7 +24,7 @@ void preemption_completed();
 
 void register_trainer_thread_context_as_new(t_trainer_thread_context* trainer_thread_context);
 void register_trainer_thread_context_as_blocked(t_trainer_thread_context* trainer_thread_context);
-void consider_deadlock_already_happened_when_trainer_thread_context_finished();
+void consider_deadlock_already_happened_when_trainer_thread_context_finishes();
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context);
 void trainer_thread_context_has_become_blocked(t_trainer_thread_context* trainer_thread_context);
 

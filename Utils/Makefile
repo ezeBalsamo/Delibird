@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -fPIC -g -Wall -Wextra --coverage
+CFLAGS = -fPIC -g -Wall -Wextra
 LDFLAGS = -shared
 LIBS = -lcommons -pthread
 
@@ -29,5 +29,6 @@ $(APPLICATIONS): $(OBJECTS)
 	$(CC) $(LDFLAGS) $(CFLAGS) $(OBJECTS) $(LIBS) -o $(TARGET_DIR)/lib$@.so
 
 clean:
-	@echo "About to delete $(TARGET_DIR)/ ..."
-	rm -r -f $(TARGET_DIR)/*
+	@echo "About to delete objects and applications in $(TARGET_DIR)/ ..."
+	rm -f $(TARGET_DIR)/*.o
+	rm -f $(TARGET_DIR)/$(APPLICATIONS)

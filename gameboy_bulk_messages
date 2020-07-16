@@ -1,5 +1,6 @@
 #!/bin/bash
 
+make Gameboy
 cd Gameboy/target
 export LD_LIBRARY_PATH=$HOME/tp-2020-1c-El-Kuelgue/Utils/target:$LD_LIBRARY_PATH
 ./$1

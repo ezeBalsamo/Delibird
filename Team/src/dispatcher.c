@@ -164,7 +164,7 @@ void preemption_completed(){
     must_preempt = false;
 }
 
-void consider_deadlock_already_happened_when_trainer_thread_context_finished(){
+void consider_deadlock_already_happened_when_trainer_thread_context_finishes(){
 
     t_list* blocked_trainer_thread_contexts = trainer_thread_contexts_in(BLOCKED);
 
@@ -174,12 +174,14 @@ void consider_deadlock_already_happened_when_trainer_thread_context_finished(){
     }
 
     t_list* waiting_for_trade_trainer_thread_contexts =
-            list_filter(blocked_trainer_thread_contexts, _is_waiting_for_trade);
+            list_filter(blocked_trainer_thread_contexts, (bool (*)(void *)) _is_waiting_for_trade);
 
 
     if(list_size(waiting_for_trade_trainer_thread_contexts) >= 2 && !is_deadlock_resolution_in_process()){
         detect_and_recover_from_deadlock();
     }
+
+    list_destroy(waiting_for_trade_trainer_thread_contexts);
 }
 
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){

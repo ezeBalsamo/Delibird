@@ -61,7 +61,7 @@ void execute_to_finished_transition_function(t_trainer_thread_context* trainer_t
     void _to_finished_function(){
         add_to_dispatcher_queue(trainer_thread_context, FINISHED);
         log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
-        consider_deadlock_already_happened_when_trainer_thread_context_finished();
+        consider_deadlock_already_happened_when_trainer_thread_context_finishes();
     }
 
     stop_current_execution_doing(_to_finished_function);
@@ -73,7 +73,7 @@ void blocked_to_finished_transition_function(t_trainer_thread_context* trainer_t
     move_to(trainer_thread_context, FINISHED);
     log_trainer_has_accomplished_own_goal(trainer_thread_context -> localizable_trainer);
     consider_ending();
-    consider_deadlock_already_happened_when_trainer_thread_context_finished();
+    consider_deadlock_already_happened_when_trainer_thread_context_finishes();
 }
 
 void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
