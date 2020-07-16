@@ -17,6 +17,7 @@ char* get_file_name_from_path(char* path){
 
     free(logs_path_reversed);
     string_iterate_lines(logs_path_splitted, (void (*)(char *)) free);
+    free(logs_path_splitted);
     return file_name;
 }
 

@@ -85,5 +85,10 @@ void log_warning_message(t_log* logger, char* message){
 }
 
 void free_loggers(){
+
+    if(main_log_name != NULL){
+        free(main_log_name);
+    }
+
     dictionary_destroy_and_destroy_elements(loggers_by_name, (void (*)(void *)) log_destroy);
 }
