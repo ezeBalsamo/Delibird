@@ -9,6 +9,7 @@ typedef struct Subscriber_ack_thread{
     t_message_status* message_status;
 } t_subscriber_ack_thread;
 
+t_serialization_information* create_serialization_information_from(t_memory_block* memory_block);
 void push_to_queue(t_message_status* message_status);
 
 #endif //DELIBIRD_PUBLISHER_H

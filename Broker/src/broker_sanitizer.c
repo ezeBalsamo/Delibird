@@ -11,15 +11,15 @@
 #include "../../Utils/include/garbage_collector.h"
 
 void free_system(){
+    free_connection_handler();
     free_pretty_printer();
     free_serializable_objects();
-    free_queue_context_provider();
     free_broker_memory_manager();
     free_configuration_manager();
     free_message_identifier();
-    free_connection_handler();
     free_garbage_collector();
     free_broker_memory_algorithms();
+    free_queue_context_provider();
 
     log_successful_clean_up();
     free_broker_logs_manager();

@@ -5,24 +5,9 @@
 #include <commons/collections/list.h>
 #include <stddef.h>
 #include <semaphore.h>
+#include "serialization_interface.h"
 
 #define ever (;;)
-
-typedef struct Request{
-    uint32_t operation;
-    void* structure;
-    void (*sanitizer_function) (void* request_structure);
-}t_request;
-
-typedef struct Serialization_information{
-    void* serialized_request;
-    uint32_t amount_of_bytes;
-}t_serialization_information;
-
-typedef struct Connection_request{
-    t_request* request;
-    int socket_fd;
-}t_connection_request;
 
 typedef struct Appeared_pokemon{
     char* pokemon_name;
@@ -74,12 +59,6 @@ enum Operation {
     SUBSCRIBE_ME, IDENTIFIED_MESSAGE
 };
 
-typedef struct Serializable_object{
-    uint32_t code;
-    t_serialization_information* (*serialize_function) (void* structure);
-    t_request* (*deserialize_function) (void* serialized_structure);
-}t_serializable_object;
-
 uint32_t internal_operation_in(t_identified_message* identified_message);
 uint32_t internal_operation_in_correlative(t_identified_message* correlative_identified_message);
 void* internal_object_in(t_identified_message* identified_message);
@@ -92,18 +71,17 @@ void handle_signal(int signal_number, void (*handler_function) ());
 void sem_initialize(sem_t* semaphore);
 
 void* safe_malloc(size_t size);
-t_identified_message* create_identified_message(uint32_t message_id, t_request* request);
-t_connection_request* create_connection_request(int connection_fd, t_request* request);
 
 char* process_description_for(char* process_name, t_list* strings_to_hash);
 uint64_t current_time_in_milliseconds();
 void assert_only_one_in(t_list* self);
 
+void sleep_for(int reconnection_time_in_seconds);
 int minimum_integer_between(int number, int another_number);
 
-void free_request(t_request* request);
+void debugging_thread();
+
 void free_identified_message(t_identified_message* identified_message);
-void free_serialization_information(t_serialization_information* serialization_information);
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon);
 void free_subscribe_me(t_subscribe_me* subscribe_me);
 void free_char_array(char**);

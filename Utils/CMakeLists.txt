@@ -1,5 +1,6 @@
 include_directories(include)
 set(SOURCES
+        src/serialization_interface.c
         src/common_structures.c
         src/configuration_manager.c
         src/logger.c

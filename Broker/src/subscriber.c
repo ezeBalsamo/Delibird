@@ -8,6 +8,7 @@
 #include "../../Utils/include/garbage_collector.h"
 #include <commons/string.h>
 #include <stdlib.h>
+#include <publisher.h>
 
 void update_last_message_id_received_for(t_subscriber_context* subscriber_context, uint32_t last_message_id_received){
     subscriber_context -> last_message_id_received = last_message_id_received;
@@ -55,7 +56,7 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
     t_list* queue_messages = queue_context -> messages;
 
     bool _has_to_be_send(t_message_status* message_status){
-        return message_status -> identified_message -> message_id > subscriber_context -> last_message_id_received;
+        return message_status -> message_id > subscriber_context -> last_message_id_received;
     }
 
     t_list* messages_to_send = list_filter(queue_messages, (bool (*)(void*)) _has_to_be_send);
@@ -66,15 +67,17 @@ void send_all_messages(t_subscriber_context* subscriber_context) {
 
         t_message_status* message_status = list_get(messages_to_send, i);
 
-        t_request* request = create_request_from(message_status);
-        serialize_and_send_structure(request, subscriber_context -> socket_fd);
+        t_memory_block * memory_block = get_memory_block_from_memory(message_status -> message_id);
+
+        t_serialization_information* serialization_information = create_serialization_information_from(memory_block);
+        send_serialized_structure(serialization_information, subscriber_context -> socket_fd);
 
         pthread_t waiting_for_ack_thread = default_safe_thread_create(receive_ack_thread, (void*) &subscriber_context -> socket_fd);
 
         void* ack_result = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_context, message_status, queue_context);
         ack = *((uint32_t *) ack_result);
         free(ack_result);
-        free(request);
+        free_serialization_information(serialization_information);
     }
     list_destroy(messages_to_send);
 }

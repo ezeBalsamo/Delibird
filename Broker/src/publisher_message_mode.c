@@ -3,10 +3,12 @@
 #include <publisher.h>
 #include <publisher_message_mode.h>
 #include <broker_memory_manager.h>
-#include <stdlib.h>
+#include <pthread.h>
 #include "../../Utils/include/socket.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_message_role* publisher_message_mode;
+pthread_mutex_t mutex_for_id_and_allocation;
 
 t_message_role* publisher_mode(){
     return publisher_message_mode;
@@ -16,21 +18,28 @@ bool publisher_mode_can_handle(uint32_t operation){
     return operation != SUBSCRIBE_ME;
 }
 
-void publisher_mode_attending_message_function(t_connection_request* connection_request){
+void publisher_mode_attending_message_function(t_connection_deserialization_information* connection_deserialization_information){
 
+    t_deserialization_information* deserialization_information = connection_deserialization_information -> deserialization_information;
+
+    pthread_mutex_lock(&mutex_for_id_and_allocation);
     uint32_t message_id = update_and_get_message_id();
-    t_identified_message* identified_message = create_identified_message(message_id, connection_request -> request);
-    allocate_message(identified_message);
-    send_ack_message(message_id, connection_request -> socket_fd);
-    t_message_status* message_status = create_message_status_for(identified_message);
+    allocate_message_using(message_id, deserialization_information);
+    pthread_mutex_unlock(&mutex_for_id_and_allocation);
+
+    send_ack_message(message_id, connection_deserialization_information -> socket_fd);
+    t_message_status* message_status = create_message_status_using(message_id, deserialization_information);
 
     push_to_queue(message_status);
 
-    free(connection_request);
+    free_connection_deserialization_information(connection_deserialization_information);
 }
 
 void initialize_publisher_message_mode(){
     publisher_message_mode = safe_malloc(sizeof(t_message_role));
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
+
+    pthread_mutex_init(&mutex_for_id_and_allocation, NULL);
+    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) pthread_mutex_destroy);
 }

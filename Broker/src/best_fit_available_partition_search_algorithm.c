@@ -10,7 +10,7 @@ t_block_information* best_fit_available_partition_search_algorithm(uint32_t mess
     }
 
     t_block_information* _best_block_information(t_block_information* block_information, t_block_information* another_block_information){
-        if(block_information -> block_size - message_size < another_block_information -> block_size - message_size){
+        if(block_information -> block_size < another_block_information -> block_size){
             return block_information;
         }
         return another_block_information;

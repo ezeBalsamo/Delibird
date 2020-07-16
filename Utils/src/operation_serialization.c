@@ -6,7 +6,7 @@
 t_serialization_information* serialize(t_request* request){
 
     t_serializable_object* serializable_object = serializable_object_with_code(request -> operation);
-    return (*(serializable_object -> serialize_function)) (request -> structure);
+    return (serializable_object -> serialize_function) (request -> structure);
 }
 
 t_serialization_information* serialize_new_pokemon(void* structure){

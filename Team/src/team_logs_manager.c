@@ -44,17 +44,6 @@ void log_failed_retry_of_communication_with_broker(){
     log_errorful_message(process_execution_logger(), message);
 }
 
-void log_thread_sleep_time_configuration_error(){
-    char* message = string_new();
-    string_append(&message, "Se produjo un error al intentar dormir el hilo: ");
-    string_append(&message, strerror(errno));
-
-    log_errorful_message(main_logger(), message);
-    log_errorful_message(process_execution_logger(), message);
-
-    free(message);
-}
-
 void log_queue_thread_create_error(){
     char* message = string_new();
     string_append(&message, "Falló la creación del hilo para escuchar una cola del Broker: ");

@@ -76,4 +76,3 @@ uint32_t size_to_allocate_for(t_request* request){
     }
     return size;
 }
-

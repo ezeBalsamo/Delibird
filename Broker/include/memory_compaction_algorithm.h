@@ -1,0 +1,6 @@
+#ifndef DELIBIRD_MEMORY_COMPACTION_ALGORITHM_H
+#define DELIBIRD_MEMORY_COMPACTION_ALGORITHM_H
+
+void memory_compaction_algorithm(t_list* blocks_information);
+
+#endif //DELIBIRD_MEMORY_COMPACTION_ALGORITHM_H

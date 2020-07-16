@@ -1,24 +1,35 @@
 #include <messages_roles.h>
 #include <semaphore.h>
 #include <pthread.h>
+#include <stdlib.h>
 #include "connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/operation_deserialization.h"
 
 uint32_t message_id = 0;
-pthread_mutex_t mutex_id;
 
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
 }
 
 uint32_t update_and_get_message_id(){
-    pthread_mutex_lock(&mutex_id);
     message_id++;
-    pthread_mutex_unlock(&mutex_id);
     return message_id;
+}
+
+t_connection_deserialization_information* create_connection_deserialization_information(int connection_fd,
+                                                                                        t_deserialization_information* deserialization_information){
+
+    t_connection_deserialization_information* connection_deserialization_information =
+            safe_malloc(sizeof(t_connection_deserialization_information));
+
+    connection_deserialization_information -> socket_fd = connection_fd;
+    connection_deserialization_information -> deserialization_information = deserialization_information;
+
+    return connection_deserialization_information;
 }
 
 void* main_thread_handler(void* connection_fd){
@@ -29,12 +40,15 @@ void* main_thread_handler(void* connection_fd){
     if(receive_information -> receive_was_successful){
         consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
 
-        t_request* request = deserialize(receive_information -> serialization_information -> serialized_request);
-        log_structure_received(request); //todo mejorar y poner nombre de suscriptor.
+        t_deserialization_information* deserialization_information =
+                deserialization_information_of(receive_information -> serialization_information -> serialized_request);
 
-        t_connection_request* connection_request = create_connection_request(cast_connection_fd, request);
+        log_received_message_of(deserialization_information -> operation);
 
-        attend_with_message_role(connection_request);
+        t_connection_deserialization_information* connection_deserialization_information =
+                create_connection_deserialization_information(cast_connection_fd, deserialization_information);
+
+        attend_with_message_role(connection_deserialization_information);
     }else{
         free_receive_information(receive_information);
     }
@@ -44,7 +58,6 @@ void* main_thread_handler(void* connection_fd){
 
 void* initialize_connection_handler(){
     log_server_initial_status();
-    pthread_mutex_init(&mutex_id, NULL);
     start_multithreaded_server(port(), main_thread_handler);
 
     return NULL;
@@ -53,4 +66,9 @@ void* initialize_connection_handler(){
 
 void free_connection_handler(){
     free_multithreaded_server();
+}
+
+void free_connection_deserialization_information(t_connection_deserialization_information* connection_deserialization_information){
+    free_deserialization_information(connection_deserialization_information -> deserialization_information);
+    free(connection_deserialization_information);
 }

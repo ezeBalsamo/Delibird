@@ -1,6 +1,7 @@
 #include <new_pokemon_operation_parser.h>
 #include <stdlib.h>
 #include "../../Utils/include/serializable_objects.h"
+#include "../../Utils/include/common_structures.h"
 
 t_pokemon_operation_parser* new_pokemon_parser;
 

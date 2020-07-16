@@ -5,8 +5,9 @@
 #include <signal.h>
 #include <commons/string.h>
 #include <unistd.h>
-#include "../../Broker/include/broker_memory_manager.h"
 #include <commons/temporal.h>
+#include <time.h>
+#include <pthread_wrapper.h>
 
 void handler(){
     char* goodbye_message = "\nOK. Me vas a matar. :( Pero antes voy a liberar tooodaaa la memoria que utilicé! :D\n\n";
@@ -43,22 +44,6 @@ void* safe_malloc(size_t size){
     return pointer;
 }
 
-t_identified_message* create_identified_message(uint32_t message_id, t_request* request){
-    t_identified_message* identified_message = safe_malloc(sizeof(t_identified_message));
-    identified_message -> message_id = message_id;
-    identified_message -> request = request;
-
-    return identified_message;
-}
-
-t_connection_request* create_connection_request(int connection_fd, t_request* request){
-    t_connection_request* connection_request = safe_malloc(sizeof(t_connection_request));
-    connection_request -> socket_fd = connection_fd;
-    connection_request -> request = request;
-
-    return connection_request;
-}
-
 unsigned long long hash(char* value){
     unsigned long long hash = 0;
     int value_length = string_length(value);
@@ -87,11 +72,6 @@ char* process_description_for(char* process_name, t_list* strings_to_hash){
     return string_from_format("%s-%llu", process_name, hash_sum);
 }
 
-void free_request(t_request* self){
-    self -> sanitizer_function (self -> structure);
-    free(self);
-}
-
 void free_identified_message(t_identified_message* identified_message){
     t_request* internal_request = identified_message -> request;
     free_request(internal_request);
@@ -106,10 +86,6 @@ void free_char_array(char** char_array){
     free( char_array );
 }
 
-void free_serialization_information(t_serialization_information* serialization_information){
-    free(serialization_information -> serialized_request);
-    free(serialization_information);
-}
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
     list_destroy_and_destroy_elements(localized_pokemon->positions,free);
     free(localized_pokemon);
@@ -160,6 +136,9 @@ uint64_t current_time_in_milliseconds(){
    int minutes_in_milliseconds = atoi(minutes) * 60000;
    int seconds_in_milliseconds = atoi(seconds) * 1000;
 
+   free(time);
+   free_char_array(time_splitted);
+
    return hours_in_milliseconds + minutes_in_milliseconds + seconds_in_milliseconds + milliseconds;
 }
 
@@ -170,6 +149,28 @@ void assert_only_one_in(t_list* self){
     }
 }
 
+void sleep_for(int reconnection_time_in_seconds){
+    struct timespec deadline;
+    deadline.tv_sec = reconnection_time_in_seconds;
+    deadline.tv_nsec = 0;
+    if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
+        log_thread_sleep_time_configuration_error();
+        free_system();
+    }
+}
+
 int minimum_integer_between(int number, int another_number){
     return number < another_number ? number : another_number;
+}
+
+void* free_system_debugging_thread(){
+
+    sleep_for(30);
+    free_system();
+    return NULL;
+}
+
+void debugging_thread(){
+    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
+    safe_thread_join(debugging_tid);
 }

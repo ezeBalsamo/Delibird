@@ -1,6 +1,7 @@
 #ifndef SOCKET_H
 #define SOCKET_H
 
+#include <stdbool.h>
 #include "serialization_interface.h"
 
 #define THREAD_POOL_SIZE 25
@@ -36,6 +37,8 @@ t_receive_information* receive_structure(int socket_fd);
 void synchronize_connection_information_closing_old(t_connection_information* connection_information, t_connection_information* updated_connection_information);
 
 void start_multithreaded_server(char* port, void* (*thread_function) (void* thread_argument));
+
+void send_serialized_structure(t_serialization_information* serialization_information, int socket_fd);
 
 void close_connection(int socket_fd);
 

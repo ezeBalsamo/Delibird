@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <subscriber_message_mode.h>
 #include <broker_logs_manager.h>
+#include <connection_handler.h>
 #include "../include/messages_roles.h"
 #include "../../Utils/include/common_structures.h"
 #include "../include/publisher_message_mode.h"
@@ -40,8 +41,10 @@ t_message_role* find_message_role(uint32_t operation){
     return message_role;
 }
 
-void attend_with_message_role(t_connection_request* connection_request){
+void attend_with_message_role(t_connection_deserialization_information* connection_deserialization_information){
 
-    t_message_role* message_role = find_message_role(connection_request->request->operation);
-    message_role -> attending_message_function (connection_request);
+    uint32_t operation = connection_deserialization_information -> deserialization_information -> operation;
+
+    t_message_role* message_role = find_message_role(operation);
+    message_role -> attending_message_function (connection_deserialization_information);
 }
