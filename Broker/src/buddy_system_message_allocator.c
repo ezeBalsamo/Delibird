@@ -14,12 +14,12 @@
 
 t_message_allocator* buddy_system_message_allocator;
 
-unsigned long get_pointer_position_as_decimal(void* pointer){
+unsigned long long get_pointer_position_as_decimal(void* pointer){
     char* pointer_as_string = string_from_format("%p",pointer);
     int amount_of_hexadecimal_prefix_characters = 2;
-    char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,amount_of_hexadecimal_prefix_characters+1); //Ignore 0x from hexadecimal position
+    char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,amount_of_hexadecimal_prefix_characters); //Ignore 0x123 from hexadecimal position
     int hexadecimal_base = 16;
-    return strtoul(pointer_as_hexadecimal, NULL, hexadecimal_base);
+    return strtoull(pointer_as_hexadecimal, NULL, hexadecimal_base);
 }
 
 //CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
@@ -27,11 +27,11 @@ bool blocks_are_buddies(t_block_information* block_information_A, t_block_inform
     uint32_t block_size_A = block_information_A->block_size;
     uint32_t block_size_B = block_information_B->block_size;
 
-    unsigned long position_of_A = get_pointer_position_as_decimal(block_information_A->initial_position);
-    unsigned long position_of_B = get_pointer_position_as_decimal(block_information_B->initial_position);
+    unsigned long long position_of_A = get_pointer_position_as_decimal(block_information_A->initial_position);
+    unsigned long long position_of_B = get_pointer_position_as_decimal(block_information_B->initial_position);
 
-    unsigned long position_B_xor_size_A = position_of_B ^ block_size_A;
-    unsigned long position_A_xor_size_B = position_of_A ^ block_size_B;
+    unsigned long long position_B_xor_size_A = position_of_B ^ block_size_A;
+    unsigned long long position_A_xor_size_B = position_of_A ^ block_size_B;
 
     bool same_size = block_size_A == block_size_B;
     bool position_A_equals_position_B_xor_size_A = position_of_A == position_B_xor_size_A;
