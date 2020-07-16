@@ -222,6 +222,13 @@ void* initialize_gamecard_broker_connection_handler(){
     return NULL;
 }
 
+void cancel_all_broker_connection_handler_threads(){
+    safe_thread_cancel(new_queue_tid);
+    safe_thread_cancel(catch_queue_tid);
+    safe_thread_cancel(get_queue_tid);
+}
+
 void free_gamecard_broker_connection_handler(){
     free(gamecard_process_description);
+   // cancel_all_broker_connection_handler_threads();
 }

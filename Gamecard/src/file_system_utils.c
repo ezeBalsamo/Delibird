@@ -112,7 +112,6 @@ void close_metadata(char* metadata_path) {
     fclose(file_pointer);
     flock(file_descriptor, LOCK_UN);
     stop_considering_garbage(&file_descriptor);
-    stop_considering_garbage(metadata_path);
 }
 
 t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata_config){
@@ -121,7 +120,7 @@ t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata
 
     file_system_metadata -> block_size = config_get_int_value(metadata_config, "BLOCK_SIZE");
     file_system_metadata -> blocks = config_get_int_value(metadata_config, "BLOCKS");
-    file_system_metadata -> magic_number = config_get_string_value(metadata_config, "MAGIC_NUMBER");
+    file_system_metadata -> magic_number = string_duplicate(config_get_string_value(metadata_config, "MAGIC_NUMBER"));
 
     return file_system_metadata;
 }
@@ -130,10 +129,10 @@ t_file_metadata* read_file_metadata_from_config(t_config* metadata_config){
 
     t_file_metadata* file_metadata = safe_malloc(sizeof(t_file_metadata));
 
-    file_metadata -> directory = config_get_string_value(metadata_config, "DIRECTORY");
+    file_metadata -> directory = string_duplicate(config_get_string_value(metadata_config, "DIRECTORY"));
     file_metadata -> size = config_get_int_value(metadata_config, "SIZE");
-    file_metadata -> blocks = config_get_string_value(metadata_config, "BLOCKS");
-    file_metadata -> open = config_get_string_value(metadata_config, "OPEN");
+    file_metadata -> blocks = string_duplicate(config_get_string_value(metadata_config, "BLOCKS"));
+    file_metadata -> open = string_duplicate(config_get_string_value(metadata_config, "OPEN"));
 
     return file_metadata;
 }
@@ -142,4 +141,9 @@ void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds)
     flock(file_descriptor,LOCK_UN);
     sleep(time_in_seconds);
     flock(file_descriptor,LOCK_SH);
+}
+
+void free_metadata_file(t_file_metadata* file_metadata_path){
+    free(file_metadata_path -> blocks);
+    free(file_metadata_path);
 }

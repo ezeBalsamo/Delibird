@@ -322,25 +322,32 @@ t_receive_information* receive_structure(int socket_fd){
 
     t_receive_information* receive_information = safe_malloc(sizeof(t_receive_information));
     receive_information -> receive_was_successful = true;
+    consider_as_garbage(receive_information, free);
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) <= 0){
             log_syscall_error("Error al recibir estructura");
             close(socket_fd);
         set_as_failed_reception(receive_information);
+        stop_considering_garbage(receive_information);
     }
 
     if(receive_information -> receive_was_successful){
         serialized_request = safe_malloc(amount_of_bytes_of_request);
+        consider_as_garbage(serialized_request, free);
 
         if(recv(socket_fd, serialized_request, amount_of_bytes_of_request, MSG_WAITALL) <= 0){
             log_syscall_error("Error al recibir serialized_request");
+            stop_considering_garbage(serialized_request);
             free(serialized_request);
             close(socket_fd);
             set_as_failed_reception(receive_information);
+            stop_considering_garbage(receive_information);
         }
         else{
             t_serialization_information* serialization_information = create_serialization_information(amount_of_bytes_of_request, serialized_request);
             receive_information -> serialization_information = serialization_information;
+            stop_considering_garbage(serialized_request);
+            stop_considering_garbage(receive_information);
         }
     }
 

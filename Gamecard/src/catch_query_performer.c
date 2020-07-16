@@ -48,7 +48,6 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
     		//Leo el archivo de metadata
     		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
-    		consider_as_garbage(metadata_file_information, (void (*) (void*)) free);
     		metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
     		//Leo bloques del archivo
@@ -64,23 +63,25 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 				write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
-				free(metadata_file_information);
-				stop_considering_garbage(metadata_file_information);
 				list_destroy_and_free_elements(blocks_information);
 				stop_considering_garbage(blocks_information);
 
 				caught_status = 1;
     		}
     		else{//fallo, existe el pokemon pero no en la posicion pedida
-    			caught_status = 0;
-    		}
+    			close_metadata(pokemon_metadata_path);
 
+			    caught_status = 0;
+    		}
+            free_metadata_file(metadata_file_information);
     	}
     	else{
     		//fallo, no existe el archivo pokemon
-    		caught_status = 0;
+			caught_status = 0;
+			free(metadata_file_information);
     	}
 
+		free(pokemon_metadata_path);
     	caught_request = catch_caught_request(caught_status);
 
 		//Armado de la estructura de mensaje

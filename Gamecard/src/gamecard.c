@@ -11,6 +11,11 @@
 #include "../include/gamecard_query_performers.h"
 #include <stdlib.h>
 
+void* free_system_debugging_thread(){
+    sleep_for(25);
+    free_system();
+    return NULL;
+}
 
 int main(void) {
 
@@ -32,6 +37,8 @@ int main(void) {
 
     //Levanto hilo para la conexión con el Gameboy
     pthread_t gameboy_connection_handler_thread = default_safe_thread_create(initialize_gamecard_gameboy_connection_handler, NULL);
+
+    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
 
     safe_thread_join(broker_connection_handler_thread);
     safe_thread_join(gameboy_connection_handler_thread);

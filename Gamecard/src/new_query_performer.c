@@ -42,7 +42,6 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
-    consider_as_garbage(metadata_file_information, (void (*) (void*)) free);
 	t_request* appeared_request;
 
 	if(exists_file_at(pokemon_metadata_path)) {
@@ -63,7 +62,10 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 	else{
 		char* new_block_number = get_new_block();
 		metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
-		write_pokemon_blocks(data_to_write(new_pokemon), metadata_file_information);
+		free(new_block_number);
+        t_list* line_to_write = data_to_write(new_pokemon);
+		write_pokemon_blocks(line_to_write, metadata_file_information);
+		list_destroy_and_destroy_elements(line_to_write, free);
 		create_pokemon_metadata(metadata_file_information, new_pokemon -> pokemon_name);
 	}
 
@@ -71,9 +73,10 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     sleep(operation_delay_time_getter());
     write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
-    free(metadata_file_information);
-    stop_considering_garbage(metadata_file_information);
+	stop_considering_garbage(pokemon_metadata_path);
 
+    free_metadata_file(metadata_file_information);
+	free(pokemon_metadata_path);
 
     show_bitmap_state(bitmap_get());
 	appeared_request = new_appeared_request(new_pokemon);
