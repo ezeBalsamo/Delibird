@@ -164,6 +164,24 @@ void preemption_completed(){
     must_preempt = false;
 }
 
+void consider_deadlock_already_happened_when_trainer_thread_context_finished(){
+
+    t_list* blocked_trainer_thread_contexts = trainer_thread_contexts_in(BLOCKED);
+
+    bool _is_waiting_for_trade(t_trainer_thread_context* trainer_thread_context){
+        uint32_t thread_action_type = internal_thread_action_type_in(trainer_thread_context);
+        return thread_action_type == WAITING_FOR_TRADE;
+    }
+
+    t_list* waiting_for_trade_trainer_thread_contexts =
+            list_filter(blocked_trainer_thread_contexts, _is_waiting_for_trade);
+
+
+    if(list_size(waiting_for_trade_trainer_thread_contexts) >= 2 && !is_deadlock_resolution_in_process()){
+        detect_and_recover_from_deadlock();
+    }
+}
+
 void trainer_thread_context_has_finished(t_trainer_thread_context* trainer_thread_context){
 
     t_state_transition* state_transition = state_transition_for(trainer_thread_context, FINISHED);
