@@ -54,7 +54,7 @@ void log_succesful_message_received_by(t_subscriber_context* subscriber_context,
 void log_succesful_save_message_to_cache(uint32_t message_id, uint32_t message_size, void* message_position){
 
     char* message =
-            string_from_format("Se guardó correctamente el mensaje con ID: %lu, de tamaño %lu, en la posicion de memoria: %p",
+            string_from_format("Se guardó correctamente el mensaje con id: %lu, de tamaño %lu, en la posicion de memoria: %p",
                                        message_id, message_size, message_position);
 
     log_succesful_message(main_logger(), message);

@@ -19,7 +19,10 @@ unsigned long long get_pointer_position_as_decimal(void* pointer){
     int amount_of_hexadecimal_prefix_characters = 2;
     char* pointer_as_hexadecimal = string_substring_from(pointer_as_string,amount_of_hexadecimal_prefix_characters); //Ignore 0x123 from hexadecimal position
     int hexadecimal_base = 16;
-    return strtoull(pointer_as_hexadecimal, NULL, hexadecimal_base);
+    unsigned long long pointer_position_as_decimal =  strtoull(pointer_as_hexadecimal, NULL, hexadecimal_base);
+    free(pointer_as_string);
+    free(pointer_as_hexadecimal);
+    return pointer_position_as_decimal;
 }
 
 //CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
@@ -68,7 +71,7 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
             void* buddy_block_position = buddy_block->initial_position;
             consolidate_block_with(master_block,buddy_block);
-            right_is_buddy = true;
+            left_is_buddy = true;
             log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
             }else{
             left_is_buddy = false;
@@ -79,7 +82,7 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
             t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index+1);
             void* buddy_block_position = buddy_block->initial_position;
             consolidate_block_with(master_block,buddy_block);
-            left_is_buddy = true;
+            right_is_buddy = true;
             log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
 
         }else{
@@ -118,10 +121,10 @@ void free_partition_by_algorithm_for_buddy(t_list* blocks_information){
 
         empty_block_information(block_to_free);
         log_succesful_free_partition_to_cache(position_of_partition_freed,message_id_from_block_to_free);
+        delete_message(message_operation_from_block_to_free,message_id_from_block_to_free,"Victima del algoritmo de reemplazo.");
 
         //consolido el bloque con buddy system
         associate_with_buddies(blocks_information,block_to_free);
-        delete_message(message_operation_from_block_to_free,message_id_from_block_to_free,"Victima del algoritmo de reemplazo.");
     }else{
         log_invalid_free_partition_error();
         free_system();
