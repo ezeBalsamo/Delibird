@@ -233,7 +233,7 @@ void initialize_team_process_description(){
 
 void* initialize_team_broker_connection_handler(){
 
-    sem_initialize(&subscriber_threads_request_sent);
+    safe_sem_initialize(&subscriber_threads_request_sent);
     initialize_team_process_description();
 
     subscribe_to_queues();
@@ -251,6 +251,6 @@ void cancel_all_broker_connection_handler_threads(){
 
 void free_team_broker_connection_handler(){
     free(team_process_description);
-    sem_destroy(&subscriber_threads_request_sent);
+    safe_sem_destroy(&subscriber_threads_request_sent);
     cancel_all_broker_connection_handler_threads();
 }

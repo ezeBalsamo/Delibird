@@ -153,5 +153,5 @@ void free_targetable_pokemons(t_list* targetable_pokemons){
 
 void free_pokemon_occurrences(){
     dictionary_destroy_and_destroy_elements(targetable_pokemons_by_name, (void (*)(void *)) free_targetable_pokemons);
-    pthread_mutex_destroy(&ocurrences_mutex);
+    safe_mutex_destroy(&ocurrences_mutex);
 }

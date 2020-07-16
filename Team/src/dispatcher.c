@@ -231,8 +231,8 @@ int finished_trainer_thread_contexts_amount(){
 
 void free_dispatcher(){
 
-    pthread_mutex_destroy(&execute_mutex);
-    pthread_mutex_destroy(&schedulable_trainer_thread_contexts_mutex);
+    safe_mutex_destroy(&execute_mutex);
+    safe_mutex_destroy(&schedulable_trainer_thread_contexts_mutex);
     free_dispatcher_queues();
     free_scheduling_algorithm();
     free_state_transitions();

@@ -68,7 +68,8 @@ void* internal_request_in_correlative(t_identified_message* correlative_identifi
 void initialize_signal_handler();
 void handle_signal(int signal_number, void (*handler_function) ());
 
-void sem_initialize(sem_t* semaphore);
+void safe_sem_initialize(sem_t* semaphore);
+void safe_sem_destroy(sem_t* semaphore);
 
 void* safe_malloc(size_t size);
 

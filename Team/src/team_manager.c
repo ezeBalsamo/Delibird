@@ -235,6 +235,6 @@ void free_team_manager(){
     list_destroy_and_destroy_elements(global_goal, (void (*)(void *)) free);
     list_destroy_and_destroy_elements(localized_trainers, (void (*)(void *)) free_localizable_trainer);
 
-    pthread_mutex_destroy(&localized_trainers_mutex);
-    pthread_mutex_destroy(&global_goal_mutex);
+    safe_mutex_destroy(&localized_trainers_mutex);
+    safe_mutex_destroy(&global_goal_mutex);
 }

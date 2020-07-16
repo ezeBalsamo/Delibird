@@ -134,8 +134,8 @@ void free_team_query_performers(){
     dictionary_destroy_and_destroy_elements(pokemon_occurrence_status_by_name, free);
     list_destroy_and_destroy_elements(query_performers, free);
 
-    pthread_mutex_destroy(&targetable_status_mutex);
-    pthread_mutex_destroy(&pokemon_occurrence_status_by_name_mutex);
+    safe_mutex_destroy(&targetable_status_mutex);
+    safe_mutex_destroy(&pokemon_occurrence_status_by_name_mutex);
 
     free_localized_query_performer();
 }

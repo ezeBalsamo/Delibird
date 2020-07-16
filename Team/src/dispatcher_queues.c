@@ -128,7 +128,7 @@ void move_to(t_trainer_thread_context* trainer_thread_context, uint32_t to_state
 }
 
 void free_dispatcher_queue(t_dispatcher_queue* dispatcher_queue){
-    pthread_mutex_destroy(&dispatcher_queue -> mutex);
+    safe_mutex_destroy(&dispatcher_queue -> mutex);
     list_destroy(dispatcher_queue -> trainer_thread_contexts);
     free(dispatcher_queue);
 }
