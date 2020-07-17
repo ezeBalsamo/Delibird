@@ -402,13 +402,13 @@ void free_multithreaded_server(){
 
     queue_destroy_and_destroy_elements(queue, free);
 
-    safe_mutex_destroy(&queue_mutex);
-    safe_sem_destroy(&client_sockets_amount_in_queue);
-
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         pthread_t thread = thread_pool[i];
         safe_thread_cancel(thread);
     }
+
+    safe_sem_destroy(&client_sockets_amount_in_queue);
+    safe_mutex_destroy(&queue_mutex);
 }
 
 void free_receive_information(t_receive_information* receive_information){

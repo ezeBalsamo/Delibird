@@ -4,6 +4,7 @@
 #include <garbage_collector.h>
 #include <commons/string.h>
 #include <stdlib.h>
+#include <asm/errno.h>
 
 void default_thread_create_error_response(){
     unsigned int process_id = process_getpid();
@@ -61,11 +62,12 @@ void safe_mutex_unlock(pthread_mutex_t* mutex){
 
 void safe_mutex_destroy(pthread_mutex_t* mutex){
 
-    safe_mutex_unlock(mutex); // Si el lock está tomado, lo libero para poder destruirlo
+    int destroy_result = pthread_mutex_destroy(mutex);
 
-    if(pthread_mutex_destroy(mutex) != 0){
-        log_syscall_error("Error al destruir un mutex");
-        free_system();
+    if(destroy_result == EBUSY){
+        safe_mutex_lock(mutex);
+        safe_mutex_unlock(mutex);
+        safe_mutex_destroy(mutex);
     }
 }
 
