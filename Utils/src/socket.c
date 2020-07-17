@@ -400,10 +400,10 @@ void free_and_close_connection(void* socket_fd){
 
 void free_multithreaded_server(){
 
-    safe_sem_destroy(&client_sockets_amount_in_queue);
-    safe_mutex_destroy(&queue_mutex);
-
     queue_destroy_and_destroy_elements(queue, free);
+
+    safe_mutex_destroy(&queue_mutex);
+    safe_sem_destroy(&client_sockets_amount_in_queue);
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         pthread_t thread = thread_pool[i];

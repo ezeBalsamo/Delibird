@@ -24,6 +24,7 @@ int main() {
 
     log_succesful_start_up();
 
+    free_system_debugging_thread_alive_for(90);
     initialize_connection_handler();
 
     return EXIT_SUCCESS;
