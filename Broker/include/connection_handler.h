@@ -1,7 +1,7 @@
 #ifndef DELIBIRD_TEAM_CONNECTION_HANDLER_H
 #define DELIBIRD_TEAM_CONNECTION_HANDLER_H
 
-#include <stdint.h>
+#include "../../Utils/include/serialization_interface.h"
 
 typedef struct Connection_deserialization_information{
     t_deserialization_information* deserialization_information;
