@@ -71,7 +71,7 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 			    caught_status = 0;
     		}
-    		remove_from_open_files(pokemon_metadata_path);
+    		//remove_from_open_files(pokemon_metadata_path);
             free_metadata_file(metadata_file_information);
     	}
     	else{

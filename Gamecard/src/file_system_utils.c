@@ -138,6 +138,6 @@ void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds)
 }
 
 void free_metadata_file(t_file_metadata* file_metadata_path){
-    free(file_metadata_path -> blocks);
+    //free(file_metadata_path -> blocks);
     free(file_metadata_path);
 }

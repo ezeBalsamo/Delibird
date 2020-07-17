@@ -234,6 +234,8 @@ void* deserialized_request_thread_function(){
 
 void initialize_gamecard_thread_pool(){
 
+    deserialized_request_queue = queue_create();
+
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         if(pthread_create(&gamecard_thread_pool[i], NULL, deserialized_request_thread_function, NULL) != 0){
             log_syscall_error("Error al crear hilos que atienden clientes");

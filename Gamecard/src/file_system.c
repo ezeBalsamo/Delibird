@@ -120,7 +120,6 @@ t_file_metadata* read_file_metadata(char* file_path){
     //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
     metadata_config = config_create(file_path);
     file_metadata = read_file_metadata_from_config(metadata_config);
-	config_destroy(metadata_config);
 
     log_file_metadata_info(file_metadata);
 
@@ -128,8 +127,10 @@ t_file_metadata* read_file_metadata(char* file_path){
 
     } while(is_open(file_metadata));
 
+    config_destroy(metadata_config);
+
     set_open(file_pointer); //Una vez que sali del loop tengo que escribir la Y en el open
-    add_to_open_files(file_path);
+    //add_to_open_files(file_path);
     fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
 
     flock(file_descriptor,LOCK_UN);

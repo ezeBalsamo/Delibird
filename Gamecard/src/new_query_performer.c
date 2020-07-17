@@ -15,9 +15,9 @@
 
 void create_metadata_with_open_flag(t_file_metadata* metadata_with_open_flag){
 
-	metadata_with_open_flag -> directory = "";
+	metadata_with_open_flag -> directory = "N";
 	metadata_with_open_flag -> size = 0;
-	metadata_with_open_flag -> blocks = "";
+	metadata_with_open_flag -> blocks = "[-1]";
 	metadata_with_open_flag -> open = "Y";
 }
 
