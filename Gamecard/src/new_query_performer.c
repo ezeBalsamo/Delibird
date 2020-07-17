@@ -60,7 +60,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		//Leo bloques del archivo
 		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-		add_or_modify_to(blocks_information, new_pokemon);
+        update_pokemon_line_to(blocks_information, new_pokemon);
 
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
 		write_pokemon_blocks(blocks_information, metadata_file_information);

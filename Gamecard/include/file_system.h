@@ -39,11 +39,10 @@ t_file_metadata* read_file_metadata(char* file_path);
 t_list* read_block(char* file_path);
 void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_metadata_path);
 void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_file_information);
-bool subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract);
-void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add);
+bool subtract_pokemon_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract);
+void update_pokemon_line_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add);
 t_list* data_to_write(t_new_pokemon* new_pokemon);
 void create_pokemon_metadata(char* pokemon_name);
 char* get_new_block();
-t_bitarray* bitmap_get();
 
 #endif //DELIBIRD_FILE_SYSTEM_H

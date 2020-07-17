@@ -1,10 +1,3 @@
-/*
- * open_files_structure.h
- *
- *  Created on: 16 jul. 2020
- *      Author: utnso
- */
-
 #ifndef GAMECARD_INCLUDE_OPEN_FILES_STRUCTURE_H_
 #define GAMECARD_INCLUDE_OPEN_FILES_STRUCTURE_H_
 

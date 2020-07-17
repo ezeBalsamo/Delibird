@@ -8,11 +8,9 @@
 #include <commons/bitarray.h>
 
 void list_destroy_and_free_elements(t_list* list);
-void show_bitmap_state(t_bitarray* bitarray);
 char* block_line_to_string(t_pokemon_block_line* line);
 char* create_block_path(char block_pointer[]);
 uint32_t split(char* string, uint32_t index, char* separator, char found_string[]);
-void file_unlock(int* file_descriptor_pointer);
 bool is_open(t_file_metadata* file_metadata);
 void set_open(FILE* file_pointer);
 void set_closed(FILE* file_pointer);

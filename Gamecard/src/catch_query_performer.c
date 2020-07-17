@@ -51,8 +51,8 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     		//Leo bloques del archivo
     		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-    		bool line_exists = subtract_or_remove_from(blocks_information, catch_pokemon);
-    		if(line_exists){
+    		bool pokemon_line_exists = subtract_pokemon_from(blocks_information, catch_pokemon);
+    		if(pokemon_line_exists){
     			//tengo que usar contenido file metadata para tomar el primer bloque y compactar
 				write_pokemon_blocks(blocks_information, metadata_file_information);
 
@@ -99,4 +99,3 @@ void initialize_catch_query_performer(){
     catch_pokemon_query_performer->can_be_handled_function = catch_query_performer_can_handle;
     catch_pokemon_query_performer->perform_function = catch_query_performer_function;
 }
-

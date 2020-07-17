@@ -1,6 +1,5 @@
 #include "../include/file_system_utils.h"
 #include "../include/gamecard_configuration_manager.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
 #include <commons/config.h>
@@ -8,19 +7,9 @@
 #include <stdlib.h>
 #include <sys/file.h>
 #include <unistd.h>
-#include "../../Utils/include/garbage_collector.h"
-
 
 void list_destroy_and_free_elements(t_list* list){
 	list_destroy_and_destroy_elements(list,free);
-}
-
-void show_bitmap_state(t_bitarray* bitarray){ //va a ser solo para testear los 1 del bitmap
-	for(uint32_t i = 0; i < bitarray -> size; i++){
-		if(bitarray_test_bit(bitarray, i)){
-			printf("%d\n", i);
-		}
-	}
 }
 
 char* get_pokemon_name_from_path(char* pokemon_path){
@@ -29,7 +18,10 @@ char* get_pokemon_name_from_path(char* pokemon_path){
 
     uint32_t path_array_length = sizeof(path_array);
 
-    return path_array[path_array_length];
+    char* pokemon_name = path_array[path_array_length];
+    free(path_array);
+
+    return pokemon_name;
 }
 
 char* block_line_to_string(t_pokemon_block_line *line){

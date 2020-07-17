@@ -91,13 +91,13 @@ t_file_system_metadata* read_file_system_metadata(char* file_path){
 
     //Crear el t_config a partir del archivo mount_point/Metadata/Metadata.bin
     t_config* metadata_config = config_create(file_path);
-    t_file_system_metadata* file_system_metadata = read_file_system_metadata_from_config(metadata_config);
+    t_file_system_metadata* file_metadata = read_file_system_metadata_from_config(metadata_config);
     config_destroy(metadata_config);
 
-    log_file_system_metadata_info(file_system_metadata);
+    log_file_system_metadata_info(file_metadata);
 
     fclose(file_pointer);
-    return file_system_metadata;
+    return file_metadata;
 }
 
 t_file_metadata* read_file_metadata(char* file_path){
@@ -172,7 +172,8 @@ t_list* read_block(char* file_path){
             uint32_t quantity = atoi(line_data_parameter);
 
             //Guardarlo en la lista, lo vi asi en las commons el agregado a la lista
-            list_add(blocks_data, create_pokemon_block_line(x, y, quantity));
+            t_pokemon_block_line* pokemon_line = create_pokemon_block_line(x, y, quantity);
+            list_add(blocks_data, pokemon_line);
 
             log_block_metadata_info(x, y, quantity);
         }
@@ -210,42 +211,53 @@ t_pokemon_block_line* find_line_with_position(uint32_t position_x, uint32_t posi
 	}
 }
 
-bool subtract_or_remove_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract){
+bool there_are_no_more_pokemons_in(t_pokemon_block_line* requested_line){
+       return (requested_line -> quantity - 1) == 0;
+}
+
+void remove_pokemon_line_with_index(t_list* blocks_information, uint32_t index){
+    list_remove(blocks_information, index);
+}
+
+bool subtract_pokemon_from(t_list* blocks_information, t_catch_pokemon* pokemon_to_subtract){
 
 	uint32_t index;
 
-	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, &index);
+	t_pokemon_block_line* pokemon_line = find_line_with_position(pokemon_to_subtract -> pos_x, pokemon_to_subtract -> pos_y, blocks_information, &index);
 
-	//si no lo encuentro coord == NULL
-	if (requested_line == NULL){
-		return false;
-		//deberia tirar un error
+	if (pokemon_line == NULL){
+        log_pokemon_not_found_error(pokemon_to_subtract);
+	    return false;
 	}
 	else{
-		if((requested_line -> quantity -1) == 0){
-			list_remove(blocks_information, index);
+		if(there_are_no_more_pokemons_in(pokemon_line)){
+			remove_pokemon_line_with_index(blocks_information, index);
 		}
 		else{
-            requested_line -> quantity -= 1;
+            pokemon_line -> quantity -= 1;
 		}
 		return true;
 	}
-
 }
 
-void add_or_modify_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add){
+bool is_a_new_pokemon_line (t_pokemon_block_line* pokemon_block_line){
+    return pokemon_block_line == NULL;
+}
+
+void add_pokemon_line_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add){
+    t_pokemon_block_line* new_pokemon_line = create_pokemon_block_line(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, pokemon_to_add -> quantity);
+    list_add(blocks_information, new_pokemon_line);
+}
+
+void update_pokemon_line_to(t_list* blocks_information, t_new_pokemon* pokemon_to_add){
 
 	t_pokemon_block_line* requested_line = find_line_with_position(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, blocks_information, NULL);
 
-	//si no existe ninguna linea con esa posicion, lo agrego a la lista de lineas
-	if (requested_line == NULL){
-        t_pokemon_block_line* new_pokemon_line = create_pokemon_block_line(pokemon_to_add -> pos_x, pokemon_to_add -> pos_y, pokemon_to_add -> quantity);
-		list_add(blocks_information, new_pokemon_line);
-	}
-	else{//si ya existia agrego en esa linea la cantidad que se esta sumando
+	if(is_a_new_pokemon_line(requested_line)){
+	    add_pokemon_line_to(blocks_information, pokemon_to_add);
+	} else {
         requested_line -> quantity += pokemon_to_add -> quantity;
 	}
-
 }
 
 char* remove_from_blocks(char* pokemon_blocks, char* block_to_remove){
@@ -304,7 +316,8 @@ bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* tot
 
 		int line_length = strlen(line_with_string_format);
 
-		if(size_already_written + line_length > file_system_metadata -> block_size){ //si la linea no me entra en el bloque, la mando de nuevo a la lista
+		if(size_already_written + line_length > file_system_metadata -> block_size){ //si la linea no me entra en el bloque,
+		                                                                             // la mando de nuevo a la lista
 			list_add(pokemon_data_list,line);
 			fclose(fp);
 			*total_size += size_already_written;
@@ -325,19 +338,24 @@ bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* tot
 
 t_list* data_to_write(t_new_pokemon* new_pokemon){//hago esto para que coincida con el tipo de dato que espera la funcion que escribe
 	t_list* line = list_create();
-	list_add(line, create_pokemon_block_line(new_pokemon -> pos_x, new_pokemon -> pos_y, new_pokemon -> quantity));
+    t_pokemon_block_line * pokemon_block_line = create_pokemon_block_line(new_pokemon -> pos_x, new_pokemon -> pos_y, new_pokemon -> quantity);
+	list_add(line, pokemon_block_line);
 	return line;
 }
 
 void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_metadata_path){
-	if(string_equals_ignore_case(metadata_file_information -> blocks, "[]")){//el pokemon ya no tiene bloques
+
+    if(string_equals_ignore_case(metadata_file_information -> blocks, "[]")){//el pokemon ya no tiene bloques
+
 		remove(pokemon_metadata_path);
 		char* pokemon_path = string_substring_until(pokemon_metadata_path,strlen(pokemon_metadata_path)-strlen("/Metadata.bin"));
 		remove(pokemon_path);
 		char* pokemon_name = get_pokemon_name_from_path(pokemon_path);
 		log_pokemon_file_destroyed(pokemon_name);
-	}else{
-		char* line_to_write;
+
+	} else{
+
+        char* line_to_write;
 		FILE* file_pointer = fopen(pokemon_metadata_path, "w");
 		int file_descriptor = fileno(file_pointer);
 
@@ -419,7 +437,6 @@ void* read_file_of_type(uint32_t file_type, char* file_name){
     t_file_information* file_information = file_information_with_code(file_type);
 
     return (*(file_information -> reader_function)) (file_name);
-
 }
 
 void initialize_bitmap(){
@@ -428,9 +445,7 @@ void initialize_bitmap(){
     uint32_t bitmap_size_in_bytes = (file_system_metadata -> blocks)/8;
     FILE* bitmap_file;
 	int file_descriptor;
-	//int status;
 	char* bitmap_buffer;
-	//int i;
 
 	if(exists_file_at(bitmap_path)){
 		bitmap_file = fopen(bitmap_path, "r+");
@@ -479,8 +494,4 @@ void initialize_file_system(){
     sem_init(&bitmap_mutex, 0, 1);
     consider_as_garbage(&bitmap_mutex, (void (*)) sem_destroy);
  	initialize_bitmap();
-}
-
-t_bitarray* bitmap_get(){
-	return bitmap;
 }
