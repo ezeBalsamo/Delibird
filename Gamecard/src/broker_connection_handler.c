@@ -260,15 +260,15 @@ void cancel_all_broker_connection_handler_threads(){
 
 void free_gamecard_thread_pool(){
 
-    sem_destroy(&deserialized_request_in_queue_semaphore);
-    pthread_mutex_destroy(&deserialized_request_queue_mutex);
-
     queue_destroy_and_destroy_elements(deserialized_request_queue, (void (*)(void *)) free_request);
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         pthread_t thread = gamecard_thread_pool[i];
         safe_thread_cancel(thread);
     }
+
+    sem_destroy(&deserialized_request_in_queue_semaphore);
+    pthread_mutex_destroy(&deserialized_request_queue_mutex);
 }
 
 void free_gamecard_broker_connection_handler(){
