@@ -22,5 +22,7 @@ t_block_information* best_fit_available_partition_search_algorithm(uint32_t mess
         block_information_found = list_fold(blocks_information_availables,list_get(blocks_information_availables,0), (void* (*)(void *, void*)) _best_block_information);
     }
 
+    list_destroy(blocks_information_availables);
+
     return block_information_found;
 }
