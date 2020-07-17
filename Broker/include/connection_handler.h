@@ -8,7 +8,7 @@ typedef struct Connection_deserialization_information{
     int socket_fd;
 }t_connection_deserialization_information;
 
-void initialize_connection_handler();
+void* initialize_connection_handler();
 
 uint32_t update_and_get_message_id();
 
