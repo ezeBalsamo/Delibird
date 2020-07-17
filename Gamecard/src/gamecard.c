@@ -36,7 +36,7 @@ int main(void) {
     initialize_gamecard_broker_connection_handler();
     initialize_gamecard_gameboy_connection_handler();
 
-    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
+    //pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
 
 	return EXIT_SUCCESS;
 }

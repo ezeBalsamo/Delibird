@@ -306,7 +306,6 @@ bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* tot
 			list_add(pokemon_data_list,line);
 			fclose(fp);
 			*total_size += size_already_written;
-			free(line);
 			free(line_with_string_format);
 			return false; //se acabo el espacio del bloque, no termine de escribir
 		}
