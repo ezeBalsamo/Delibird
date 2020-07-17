@@ -21,7 +21,7 @@ void* main_thread_handler(void* connection_fd){
         t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
         //Loguear y mostrar por consola mensaje recibido
-        log_request_received(deserialized_request);
+        log_request_received(process_execution_logger(), deserialized_request);
 
         //Realizar lógica
         //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp

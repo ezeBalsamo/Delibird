@@ -7,6 +7,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <string.h>
 #include <team_configuration_manager.h>
@@ -92,7 +93,8 @@ t_connection_information* subscribe_to_broker_queue(void* queue_operation_identi
         free_connection_information(connection_information);
         connection_information = subscribe_to_broker_queue(queue_operation_identifier);
     }else{
-        log_succesful_suscription_to(operation_queue);
+        log_succesful_suscription_to(main_logger(), operation_queue);
+        log_succesful_suscription_to(process_execution_logger(), operation_queue);
         stop_considering_garbage(connection_information);
     }
 
@@ -104,7 +106,8 @@ t_connection_information* subscribe_to_broker_queue(void* queue_operation_identi
 
 void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_information* connection_information){
 
-    log_broker_disconnection();
+    log_broker_disconnection_using(main_logger());
+    log_broker_disconnection_using(process_execution_logger());
     consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
 
     t_connection_information* current_active_connection_information = subscribe_to_broker_queue(queue_operation_identifier);
@@ -127,7 +130,8 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
         t_identified_message* correlative_identified_message = deserialized_request -> structure;
         send_ack_message(correlative_identified_message -> message_id, current_active_socket_fd);
 
-        log_request_received(deserialized_request);
+        log_request_received(main_logger(), deserialized_request);
+        log_request_received(process_execution_logger(), deserialized_request);
         query_perform(deserialized_request);
 
         free_request(deserialized_request);

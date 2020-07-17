@@ -24,7 +24,13 @@ char* memory_block_as_string(t_memory_block* memory_block){
     string_append(&id," ID: ");
     string_append(&id,string_itoa(memory_block->message_id));
 
-    return string_from_format("%s%s%s",lru_value,queue,id);
+    char* memory_block_as_string = string_from_format("%s%s%s",lru_value,queue,id);
+    free(lru_value);
+    free(queue);
+    free(id);
+
+    return memory_block_as_string;
+
 }
 
 char* block_information_availabity_as_string(t_block_information* block_information){
@@ -44,16 +50,22 @@ char* block_information_as_string(t_block_information* block_information){
 
     char* block_size_info = string_from_format("Size: %sb ",block_size);
 
-
+    free(block_size);
 
     char* memory_block_info = string_new();
     if (!block_information->is_free){
 
         char* memory_block = memory_block_as_string(block_information->memory_block);
         string_append(&memory_block_info,memory_block);
+        free(memory_block);
     }
 
     char* block_info = string_from_format("%s - %s %s %s%s",initial_address_position,last_address_position,symbol,block_size_info,memory_block_info);
+
+    free(initial_address_position);
+    free(last_address_position);
+    free(block_size_info);
+    free(memory_block_info);
 
     return block_info;
 }

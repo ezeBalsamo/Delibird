@@ -127,10 +127,9 @@ void log_request_sent(t_request* request){
     log_request_with_event(process_execution_logger(), request, "Pedido enviado");
 }
 
-void log_request_received(t_request* request){
+void log_request_received(t_log* logger, t_request* request){
     char* event = "Pedido recibido";
-    log_request_with_event(main_logger(), request, event);
-    log_request_with_event(process_execution_logger(), request, event);
+    log_request_with_event(logger, request, event);
 }
 
 void log_unknown_chained_evaluation_type_error(){
@@ -145,10 +144,9 @@ void log_failed_ack_error(){
     log_errorful_message(process_execution_logger(), "Se recibió un ACK no esperado\n");
 }
 
-void log_succesful_suscription_to(uint32_t operation_queue){
+void log_succesful_suscription_to(t_log* logger, uint32_t operation_queue){
     char* message = string_from_format("Suscripción exitosa a la cola %s", queue_name_of(operation_queue));
-    log_succesful_message(main_logger(), message);
-    log_succesful_message(process_execution_logger(), message);
+    log_succesful_message(logger, message);
     free(message);
 }
 
@@ -168,25 +166,13 @@ void log_directory_could_not_open_in_path_error(char* path){
     free(message);
 }
 
-void log_broker_disconnection(){
+void log_broker_disconnection_using(t_log* logger){
     char* message = "Se cayó la conexión con el broker!";
-    log_warning_message(process_execution_logger(), message);
-    log_warning_message(main_logger(), message);
+    log_warning_message(logger, message);
 }
 
 void log_file_not_found_error(char* extension){
     char* message = string_from_format("No se encontró un archivo con extensión: %s", extension);
     log_errorful_message(process_execution_logger(), message);
-    free(message);
-}
-
-void log_thread_sleep_time_configuration_error(){
-    char* message = string_new();
-    string_append(&message, "Se produjo un error al intentar dormir el hilo: ");
-    string_append(&message, strerror(errno));
-
-    log_errorful_message(main_logger(), message);
-    log_errorful_message(process_execution_logger(), message);
-
     free(message);
 }

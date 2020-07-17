@@ -88,20 +88,20 @@ void* internal_structure_using(t_deserialization_information* deserialization_in
     return deserialization_information -> serialized_structure + sizeof(uint32_t) * 4;
 }
 
-void store_internal_message_using(void** message_initial_position, t_deserialization_information* deserialization_information){
+void store_internal_message_using(void* message_initial_position, t_deserialization_information* deserialization_information){
 
     void* internal_structure = internal_structure_using(deserialization_information);
     uint32_t internal_message_size = internal_message_size_using(deserialization_information);
 
-    memcpy(*message_initial_position, internal_structure, internal_message_size);
+    memcpy(message_initial_position, internal_structure, internal_message_size);
 }
 
-void store_message_using(void** message_initial_position, t_deserialization_information* deserialization_information){
+void store_message_using(void* message_initial_position, t_deserialization_information* deserialization_information){
 
     if(deserialization_information -> operation == IDENTIFIED_MESSAGE){
         store_internal_message_using(message_initial_position, deserialization_information);
     }else{
-        memcpy(*message_initial_position,
+        memcpy(message_initial_position,
                deserialization_information -> serialized_structure,
                deserialization_information -> serialized_structure_size);
     }

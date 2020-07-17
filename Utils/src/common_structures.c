@@ -184,7 +184,7 @@ void sleep_for(int reconnection_time_in_seconds){
     deadline.tv_sec = reconnection_time_in_seconds;
     deadline.tv_nsec = 0;
     if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
-        log_thread_sleep_time_configuration_error();
+        log_syscall_error("Se produjo un error al intentar dormir el hilo.");
         free_system();
     }
 }

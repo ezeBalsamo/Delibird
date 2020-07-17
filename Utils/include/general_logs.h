@@ -22,17 +22,16 @@ void log_queue_code_not_found_error(char* queue_name);
 void log_printable_object_not_found_error();
 void log_about_to_send_request(t_request* request);
 void log_request_sent(t_request* request);
-void log_request_received(t_request* request);
+void log_request_received(t_log* logger, t_request* request);
 void log_unknown_chained_evaluation_type_error();
 void log_garbage_to_stop_considering_that_not_found_error();
 void log_failed_ack_error();
-void log_succesful_suscription_to(uint32_t operation_queue);
+void log_succesful_suscription_to(t_log* logger, uint32_t operation_queue);
 void log_errorful_not_existing_log(char* log_name);
 void log_expected_to_have_only_one_element_error();
 void log_directory_could_not_open_in_path_error(char* path);
-void log_broker_disconnection();
+void log_broker_disconnection_using(t_log* logger);
 void log_file_not_found_error(char* extension);
-void log_thread_sleep_time_configuration_error();
 
 void log_list_invalid_index_access(int index, int another_index,t_list* self);
 #endif //DELIBIRD_GENERAL_LOGS_H

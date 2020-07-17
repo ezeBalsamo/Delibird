@@ -2,6 +2,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/general_logs.h"
+#include "../../Utils/include/logger.h"
 #include <appeared_query_performer.h>
 #include <stdlib.h>
 
@@ -22,7 +23,8 @@ void* main_thread_handler(void* connection_fd){
         t_identified_message* correlative_identified_message = deserialized_request -> structure;
         send_ack_message(correlative_identified_message -> message_id, cast_connection_fd);
 
-        log_request_received(deserialized_request);
+        log_request_received(main_logger(), deserialized_request);
+        log_request_received(process_execution_logger(), deserialized_request);
 
         query_performer -> perform_function (deserialized_request -> structure);
 

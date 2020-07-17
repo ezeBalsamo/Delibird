@@ -58,7 +58,7 @@ t_memory_block* build_memory_block_from(uint32_t message_id, uint32_t message_si
 
     memory_block_to_save -> message_size = message_size;
     memory_block_to_save -> message = block_information -> initial_position;
-    store_message_using(&memory_block_to_save -> message, deserialization_information);
+    store_message_using(memory_block_to_save -> message, deserialization_information);
 
 
     memory_block_to_save -> lru_value = current_time_in_milliseconds();

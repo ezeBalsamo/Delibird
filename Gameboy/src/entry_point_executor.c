@@ -17,7 +17,8 @@ void consume_messages_from(int socket_fd){
         t_receive_information* receive_information = receive_structure(socket_fd);
 
         if(!receive_information -> receive_was_successful){
-            log_broker_disconnection();
+            log_broker_disconnection_using(main_logger());
+            log_broker_disconnection_using(process_execution_logger());
             free_system();
         }
 
@@ -26,7 +27,8 @@ void consume_messages_from(int socket_fd){
         t_identified_message* identified_message = deserialized_request -> structure;
         send_ack_message(identified_message -> message_id, socket_fd);
 
-        log_request_received(deserialized_request);
+        log_request_received(main_logger(), deserialized_request);
+        log_request_received(process_execution_logger(), deserialized_request);
 
         free_receive_information(receive_information);
         free_request(deserialized_request);
@@ -90,11 +92,13 @@ void subscriber_mode_execution(){
     int ack = serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
 
     if(ack == FAILED_ACK){
-        log_broker_disconnection();
+        log_broker_disconnection_using(main_logger());
+        log_broker_disconnection_using(process_execution_logger());
     }else{
         log_request_sent(request);
         t_subscribe_me* subscribe_me = request -> structure;
-        log_succesful_suscription_to(subscribe_me -> operation_queue);
+        log_succesful_suscription_to(main_logger(), subscribe_me -> operation_queue);
+        log_succesful_suscription_to(process_execution_logger(), subscribe_me -> operation_queue);
 
         int time_in_seconds = suscriber_mode_time_in_seconds();
         start_timer_with_seconds(time_in_seconds);

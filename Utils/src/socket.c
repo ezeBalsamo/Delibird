@@ -377,10 +377,10 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     for ever{
         int* client_socket_fd = safe_malloc(sizeof(int));
-        consider_as_garbage(client_socket_fd, free);
+//        consider_as_garbage(client_socket_fd, free);
 
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
-        stop_considering_garbage(client_socket_fd);
+//        stop_considering_garbage(client_socket_fd);
 
         safe_mutex_lock(&queue_mutex);
         queue_push(queue, (void*) client_socket_fd);
