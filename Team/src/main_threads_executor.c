@@ -35,7 +35,6 @@ void execute_main_threads(){
     broker_connection_handler_thread = default_safe_thread_create(initialize_team_broker_connection_handler, NULL);
     gameboy_connection_handler_thread = default_safe_thread_create(initialize_team_gameboy_connection_handler, NULL);
 
-    free_system_debugging_thread_alive_for(10);
     safe_thread_join(team_manager_thread);
 }
 

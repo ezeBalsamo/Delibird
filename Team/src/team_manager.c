@@ -208,10 +208,7 @@ void with_trainers_do(void (*closure) (t_localizable_object*)){
 
 void with_global_goal_do(void (*closure) (t_pokemon_goal*)){
 
-    void _iterate(){
-        list_iterate(global_goal, (void (*)(void *)) closure);
-    }
-    handling_global_goal_concurrency_do(_iterate);
+    list_iterate(global_goal, (void (*)(void *)) closure);
 }
 
 int trainers_amount(){
