@@ -17,7 +17,7 @@
 #include <general_logs.h>
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
-pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t queue_mutex;
 sem_t client_sockets_amount_in_queue;
 t_queue* queue;
 
@@ -34,7 +34,7 @@ char* get_local_ip_address() {
     char* local_ip_address = NULL;
 
     if (getifaddrs(&interface_addresses) == -1) {
-        log_syscall_error("Error al obtener ifaddrs");
+        log_syscall_error_with_errno_description("Error al obtener ifaddrs");
         free_system();
     }
 
@@ -83,7 +83,7 @@ int get_socket_fd_using(struct addrinfo* address_interface){
     if ((socket_fd = socket(address_interface -> ai_family,
                             address_interface -> ai_socktype,
                             address_interface -> ai_protocol)) == -1) {
-        log_syscall_error("Error al obtener socket_fd");
+        log_syscall_error_with_errno_description("Error al obtener socket_fd");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -96,7 +96,7 @@ void allow_port_reusability(int socket_fd, struct addrinfo* address_interface){
 
     if (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse_ports, sizeof(int)) == -1) {
         close(socket_fd);
-        log_syscall_error("Error al habilitar reutilización de puerto");
+        log_syscall_error_with_errno_description("Error al habilitar reutilización de puerto");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -106,7 +106,7 @@ void bind_port_to_socket(int socket_fd, struct addrinfo* address_interface){
 
     if (bind(socket_fd, address_interface -> ai_addr, address_interface -> ai_addrlen) == -1) {
         close(socket_fd);
-        log_syscall_error("Error de server al hacer bind");
+        log_syscall_error_with_errno_description("Error de server al hacer bind");
         freeaddrinfo(address_interface);
         free_system();
     }
@@ -116,7 +116,7 @@ void listen_with(int socket_fd){
 
     if (listen(socket_fd, SOMAXCONN) == -1) {
         close(socket_fd);
-        log_syscall_error("Error al escuchar con socket");
+        log_syscall_error_with_errno_description("Error al escuchar con socket");
         free_system();
     }
 }
@@ -129,7 +129,7 @@ int accept_incoming_connections_on(int socket_fd){
     address_size = sizeof client_address;
     connection_fd = accept(socket_fd, (struct sockaddr *) &client_address, &address_size);
     if (connection_fd == -1) {
-        log_syscall_error("Error al aceptar conexiones en socket");
+        log_syscall_error_with_errno_description("Error al aceptar conexiones en socket");
         free_system();
     }
 
@@ -181,7 +181,7 @@ int reconnect(t_connection_information* connection_information){
 }
 
 void close_failed_connection(t_connection_information* connection_information){
-    log_syscall_error("Error de conexión");
+    log_syscall_error_with_errno_description("Error de conexión");
     free_and_close_connection_information(connection_information);
     free_system();
 }
@@ -324,7 +324,7 @@ t_receive_information* receive_structure(int socket_fd){
     receive_information -> receive_was_successful = true;
 
     if(recv(socket_fd, &amount_of_bytes_of_request, sizeof(uint32_t), MSG_WAITALL) <= 0){
-            log_syscall_error("Error al recibir estructura");
+        log_syscall_error("Error al recibir estructura");
             close(socket_fd);
         set_as_failed_reception(receive_information);
     }
@@ -348,15 +348,17 @@ t_receive_information* receive_structure(int socket_fd){
 }
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
+
     queue = queue_create();
+    safe_mutex_initialize(&queue_mutex);
     safe_sem_initialize(&client_sockets_amount_in_queue);
 
     void* _thread_function(){
         for ever{
-            sem_wait(&client_sockets_amount_in_queue);
-            pthread_mutex_lock(&queue_mutex);
+            safe_sem_wait(&client_sockets_amount_in_queue);
+            safe_mutex_lock(&queue_mutex);
             void* client_socket_fd = queue_pop(queue);
-            pthread_mutex_unlock(&queue_mutex);
+            safe_mutex_unlock(&queue_mutex);
 
             (*handle_connection_function) (client_socket_fd);
         }
@@ -366,7 +368,7 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         if(pthread_create(&thread_pool[i], NULL, _thread_function, NULL) != 0){
-            log_syscall_error("Error al crear hilos que atienden clientes");
+            log_syscall_error("Error al crear hilos del servidor multihilos");
             free_system();
         }
     }
@@ -380,10 +382,10 @@ void start_multithreaded_server(char* port, void* (*handle_connection_function) 
         *client_socket_fd = accept_incoming_connections_on(server_socket_fd);
         stop_considering_garbage(client_socket_fd);
 
-        pthread_mutex_lock(&queue_mutex);
+        safe_mutex_lock(&queue_mutex);
         queue_push(queue, (void*) client_socket_fd);
-        sem_post(&client_sockets_amount_in_queue);
-        pthread_mutex_unlock(&queue_mutex);
+        safe_sem_post(&client_sockets_amount_in_queue);
+        safe_mutex_unlock(&queue_mutex);
     }
 }
 
@@ -397,12 +399,16 @@ void free_and_close_connection(void* socket_fd){
 }
 
 void free_multithreaded_server(){
+
     queue_destroy_and_destroy_elements(queue, free);
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
         pthread_t thread = thread_pool[i];
         safe_thread_cancel(thread);
     }
+
+    safe_sem_destroy(&client_sockets_amount_in_queue);
+    safe_mutex_destroy(&queue_mutex);
 }
 
 void free_receive_information(t_receive_information* receive_information){

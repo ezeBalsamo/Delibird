@@ -45,10 +45,14 @@ void log_succesful_initialize_serializable_objects(){
     log_succesful_message(process_execution_logger(), "Los serializable_objects se han inicializado correctamente!\n");
 }
 
-void log_syscall_error(char* message_error){
+void log_syscall_error_with_errno_description(char* message_error){
     char* message = string_from_format("%s: %s", message_error, strerror(errno));
     log_errorful_message(process_execution_logger(), message);
     free(message);
+}
+
+void log_syscall_error(char* message_error){
+    log_errorful_message(process_execution_logger(), message_error);
 }
 
 void log_send_all_error(int sent_bytes, int amount_of_bytes){
@@ -74,7 +78,7 @@ void log_invalid_positions_error(){
 }
 
 void log_pthread_create_error(unsigned int process_id){
-    char* message = string_from_format("Ocurrió un error al querer crear un hilo para el proceso: %u", process_id);
+    char* message = string_from_format("Ocurrió un error al intentar crear un hilo para el proceso: %u", process_id);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }

@@ -67,14 +67,14 @@ void consider_as_new_if_necessary_occurrences_of(t_localized_pokemon* localized_
 
     char* pokemon_name = localized_pokemon -> pokemon_name;
 
-    pthread_mutex_lock(&pokemon_occurrence_status_by_name_mutex);
+    safe_mutex_lock(&pokemon_occurrence_status_by_name_mutex);
 
     if(exists_previous_occurrence_of(pokemon_name)){
         log_message_ignored_due_to_previous_existing_occurrences_for(localized_pokemon);
-        pthread_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
+        safe_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
     }else{
         mark_occurrence_status_of(pokemon_name);
-        pthread_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
+        safe_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
         add_new_occurrences_according_to(localized_pokemon);
     }
 }
@@ -94,9 +94,9 @@ void localized_query_performer_function(t_identified_message* correlative_identi
 }
 
 void get_pokemon_sent_successfully(t_get_response* get_response){
-    pthread_mutex_lock(&get_responses_mutex);
+    safe_mutex_lock(&get_responses_mutex);
     list_add(get_responses, get_response);
-    pthread_mutex_unlock(&get_responses_mutex);
+    safe_mutex_unlock(&get_responses_mutex);
 }
 
 bool localized_query_performer_can_handle(uint32_t operation){

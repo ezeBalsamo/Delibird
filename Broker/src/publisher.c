@@ -14,9 +14,9 @@
 
 void update_subscribers_to_send(t_message_status* message_status, t_queue_context* queue_context){
 
-    pthread_mutex_lock(&(queue_context -> subscribers_mutex));
+    safe_mutex_lock(&(queue_context -> subscribers_mutex));
     list_add_all(message_status -> subscribers_to_send, queue_context -> subscribers);
-    pthread_mutex_unlock(&(queue_context -> subscribers_mutex));
+    safe_mutex_unlock(&(queue_context -> subscribers_mutex));
 }
 
 void free_subscriber_ack_thread(t_subscriber_ack_thread* subscriber_ack_thread){

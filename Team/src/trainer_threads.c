@@ -29,10 +29,10 @@ void* trainer_thread(void* trainer_thread_context){
     t_trainer* trainer = cast_trainer_thread_context -> localizable_trainer -> object;
     log_succesful_creation_of_thread_of_trainer(trainer -> sequential_number);
 
-    sem_post(&trainer_thread_created);
+    safe_sem_post(&trainer_thread_created);
 
     while(cast_trainer_thread_context -> state != FINISHED){
-        sem_wait(&cast_trainer_thread_context -> semaphore);
+        safe_sem_wait(&cast_trainer_thread_context -> semaphore);
         execute_trainer_thread_context_action(cast_trainer_thread_context);
     }
 

@@ -16,7 +16,7 @@ void handler(){
 }
 
 void sigpipe_handler(){
-    log_syscall_error("Se produjo una señal SIGPIPE");
+    log_syscall_error_with_errno_description("Se produjo una señal SIGPIPE");
 }
 
 void handle_signal(int signal_number, void (*handler_function) ()){
@@ -24,7 +24,7 @@ void handle_signal(int signal_number, void (*handler_function) ()){
     struct sigaction signal_action = {.sa_handler = handler_function};
 
     if(sigaction(signal_number, &signal_action, NULL) == -1){
-        log_syscall_error("Error en la creación de una acción de signals");
+        log_syscall_error_with_errno_description("Error en la creación de una acción de signals");
         free_system();
     }
 }
@@ -37,7 +37,7 @@ void initialize_signal_handler(){
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
-    if(pointer == NULL && size != 0){
+    if(pointer == NULL && size < 0){
         log_syscall_error("Error al guardar espacio de memoria con safe_malloc");
         free_system();
     }
@@ -121,16 +121,34 @@ void* internal_object_in_correlative(t_identified_message* correlative_identifie
 
 void safe_sem_initialize(sem_t* semaphore){
 
-    if(sem_init(semaphore, false, 0) != 0){
-        log_syscall_error("Error al inicializar un semáforo");
+    if(sem_init(semaphore, false, 0) == -1){
+        log_syscall_error_with_errno_description("Error al inicializar un semáforo");
+        free_system();
+    }
+}
+
+void safe_sem_wait(sem_t* semaphore){
+
+    if(sem_wait(semaphore) == -1){
+        log_syscall_error_with_errno_description("Error al intentar tomar el lock del semáforo");
+        free_system();
+    }
+}
+
+void safe_sem_post(sem_t* semaphore){
+
+    if(sem_post(semaphore) == -1){
+        log_syscall_error_with_errno_description("Error al intentar liberar el lock del semáforo");
         free_system();
     }
 }
 
 void safe_sem_destroy(sem_t* semaphore){
 
-    if(sem_destroy(semaphore) != 0){
-        log_syscall_error("Error al destruir un semáforo");
+    safe_sem_post(semaphore); // Si el lock está tomado, lo libero para poder destruirlo
+
+    if(sem_destroy(semaphore) == -1){
+        log_syscall_error_with_errno_description("Error al destruir un semáforo");
         free_system();
     }
 }

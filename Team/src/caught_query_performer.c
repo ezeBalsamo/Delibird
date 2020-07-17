@@ -55,7 +55,7 @@ void caught_query_performer_function(t_identified_message* correlative_identifie
         t_caught_pokemon* caught_pokemon = internal_object_in(identified_message);
 
         waiting_catch_response_action -> caught_succeeded = caught_pokemon -> caught_status;
-        sem_post(&trainer_thread_context_found -> semaphore);
+        safe_sem_post(&trainer_thread_context_found -> semaphore);
     }else{
         log_message_id_not_required(CAUGHT_POKEMON, message_id);
     }

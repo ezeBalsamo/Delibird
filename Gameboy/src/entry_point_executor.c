@@ -45,7 +45,7 @@ struct itimerspec itimerspec_for_seconds(int amount_of_seconds){
 
 void set_timer_with(struct itimerspec itimerspec){
     if(timer_settime(timer, 0, &itimerspec, NULL) == -1){
-        log_syscall_error("Error en la configuración del tiempo para el timer");
+        log_syscall_error_with_errno_description("Error en la configuración del tiempo para el timer");
         free_system();
     }
 }
@@ -59,7 +59,7 @@ void initialize_timer(){
     handle_signal(SIGALRM, timer_handler);
 
     if(timer_create(CLOCK_MONOTONIC, NULL, &timer) == -1){
-        log_syscall_error("Error en la creación del timer");
+        log_syscall_error_with_errno_description("Error en la creación del timer");
         free_system();
     }
 }

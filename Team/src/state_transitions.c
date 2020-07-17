@@ -45,7 +45,7 @@ void execute_to_ready_transition_due_to_preemption_for(t_trainer_thread_context*
     }
 
     stop_current_execution_doing(_to_ready_function);
-    sem_wait(&trainer_thread_context -> semaphore);
+    safe_sem_wait(&trainer_thread_context -> semaphore);
 }
 
 void execute_to_ready_transition_function(t_trainer_thread_context* trainer_thread_context){

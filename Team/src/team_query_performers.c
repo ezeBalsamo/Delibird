@@ -119,7 +119,7 @@ t_targetable_object* targetable_pokemon_according_to(char* pokemon_name, uint32_
     localizable_pokemon -> pos_y = pos_y;
     localizable_pokemon -> object = pokemon_name;
 
-    pthread_mutex_lock(&targetable_status_mutex);
+    safe_mutex_lock(&targetable_status_mutex);
     bool should_be_targeted = should_be_targeted_pokemon_named(pokemon_name);
 
     t_targetable_object* targetable_pokemon = safe_malloc(sizeof(t_targetable_object));

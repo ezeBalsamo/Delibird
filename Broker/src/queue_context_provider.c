@@ -17,8 +17,8 @@ void initialize_and_load_queue_context_for(uint32_t queue_code){
     pthread_mutex_t subscribers_mutex;
     t_list* messages = list_create();
     t_list* subscribers = list_create();
-    pthread_mutex_init(&queue_mutex, NULL);
-    pthread_mutex_init(&subscribers_mutex, NULL);
+    safe_mutex_initialize(&queue_mutex);
+    safe_mutex_initialize(&subscribers_mutex);
 
     t_queue_context* queue_context = safe_malloc(sizeof(t_queue_context));
     uint32_t operation = queue_code;

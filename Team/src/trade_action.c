@@ -68,7 +68,7 @@ void trade_action_execution_function(t_trainer_thread_context* trainer_thread_co
 
     list_iterate(identified_trades, (void (*)(void *)) _trade);
     trade_action_completed_using(identified_trades);
-    sem_post(&trade_resolution_semaphore);
+    safe_sem_post(&trade_resolution_semaphore);
 }
 
 t_thread_action* trade_thread_action(){

@@ -62,7 +62,7 @@ t_list* non_schedulable_blocked_trainer_thread_contexts(){
 
 t_list* schedulable_trainer_thread_contexts(){
 
-    pthread_mutex_lock(&schedulable_trainer_thread_contexts_mutex);
+    safe_mutex_lock(&schedulable_trainer_thread_contexts_mutex);
 
     t_list* trainer_thread_contexts = list_create();
 
@@ -80,9 +80,9 @@ void move_to_ready_according_scheduling_algorithm(t_trainer_thread_context* trai
 
     t_dispatcher_queue* dispatcher_queue = dispatcher_queue_of(READY);
 
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
+    safe_mutex_lock(&dispatcher_queue -> mutex);
     update_ready_queue_when_adding(dispatcher_queue -> trainer_thread_contexts, trainer_thread_context);
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    safe_mutex_unlock(&dispatcher_queue -> mutex);
 
     trainer_thread_context -> state = READY;
 }
@@ -132,13 +132,13 @@ void stop_current_execution_doing(void (*state_function) ()){
     notify_with_argument(CONTEXT_SWITCH_REALIZED, trainer_thread_context_executing());
     state_function();
     remove_from_execute();
-    pthread_mutex_unlock(&execute_mutex);
+    safe_mutex_unlock(&execute_mutex);
     consider_continue_executing();
 }
 
 void execute_trainer_thread_context(){
 
-    pthread_mutex_lock(&execute_mutex);
+    safe_mutex_lock(&execute_mutex);
 
     move_to_execute();
     t_trainer_thread_context* trainer_thread_context = trainer_thread_context_executing();
@@ -146,7 +146,7 @@ void execute_trainer_thread_context(){
     log_trainer_execution(trainer_thread_context -> localizable_trainer,
             thread_action_reason_for(trainer_thread_context));
 
-    sem_post(&trainer_thread_context -> semaphore);
+    safe_sem_post(&trainer_thread_context -> semaphore);
 }
 
 bool preemption_must_take_place(){

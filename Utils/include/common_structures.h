@@ -69,6 +69,8 @@ void initialize_signal_handler();
 void handle_signal(int signal_number, void (*handler_function) ());
 
 void safe_sem_initialize(sem_t* semaphore);
+void safe_sem_wait(sem_t* semaphore);
+void safe_sem_post(sem_t* semaphore);
 void safe_sem_destroy(sem_t* semaphore);
 
 void* safe_malloc(size_t size);

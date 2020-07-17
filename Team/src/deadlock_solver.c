@@ -33,7 +33,7 @@ void execute_all_remaining_trades(){
         t_localizable_object* localizable_trainer = first_identified_trade -> trade -> second_party_trainer_thread_context -> localizable_trainer;
 
         prepare_for_movement_action(trainer_thread_context, localizable_trainer);
-        sem_wait(&trade_resolution_semaphore);
+        safe_sem_wait(&trade_resolution_semaphore);
         list_destroy_and_destroy_elements(current_trades_in_process, (void (*)(void *)) free_identified_trade);
     }
 }

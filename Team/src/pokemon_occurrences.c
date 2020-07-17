@@ -81,10 +81,10 @@ t_list* not_yet_targeted_pokemons(){
 
 void new_occurrence_of(t_targetable_object* targetable_pokemon){
 
-    pthread_mutex_lock(&ocurrences_mutex);
+    safe_mutex_lock(&ocurrences_mutex);
     add_occurrence_of(targetable_pokemon);
-    pthread_mutex_unlock(&ocurrences_mutex);
-    pthread_mutex_unlock(&targetable_status_mutex);
+    safe_mutex_unlock(&ocurrences_mutex);
+    safe_mutex_unlock(&targetable_status_mutex);
 
     if(targetable_pokemon -> should_be_targeted){
         chase(targetable_pokemon);
