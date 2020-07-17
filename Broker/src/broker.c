@@ -2,8 +2,7 @@
 #include <subscriber.h>
 #include <broker_memory_manager.h>
 #include <broker_signal_handler.h>
-#include "../../Utils/include/pthread_wrapper.h"
-#include "../include/connection_handler.h"
+#include <main_thread_executor.h>
 #include "../../Utils/include/configuration_manager.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/serializable_objects.h"
@@ -21,10 +20,11 @@ int main() {
     initialize_serializable_objects();
     initialize_queue_context_provider();
     initialize_broker_memory_manager();
+    initialize_main_thread_executor();
 
     log_succesful_start_up();
 
-    initialize_connection_handler();
+    execute_main_thread();
 
     return EXIT_SUCCESS;
 }

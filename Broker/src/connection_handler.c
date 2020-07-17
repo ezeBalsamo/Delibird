@@ -1,8 +1,6 @@
 #include <messages_roles.h>
 #include <semaphore.h>
-#include <pthread.h>
 #include <stdlib.h>
-#include "connection_handler.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
@@ -56,11 +54,12 @@ void* main_thread_handler(void* connection_fd){
     return NULL;
 }
 
-void initialize_connection_handler(){
+void* initialize_connection_handler(){
 
     log_server_initial_status();
     start_multithreaded_server(port(), main_thread_handler);
 
+    return NULL;
 }
 
 void free_connection_handler(){
