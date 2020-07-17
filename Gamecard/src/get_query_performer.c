@@ -10,6 +10,8 @@
 #include <commons/string.h>
 #include <unistd.h>
 #include "../../Utils/include/garbage_collector.h"
+#include "open_files_structure.h"
+
 
 t_gamecard_query_performer *get_pokemon_query_performer;
 
@@ -63,7 +65,7 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
 
         //Cerrar archivo metadata
         close_metadata(pokemon_metadata_path);
-        stop_considering_garbage(pokemon_metadata_path);
+        remove_from_open_files(pokemon_metadata_path);
         stop_considering_garbage(blocks_information);
 
         localized_request = get_localized_request(pokemon_name, positions_amount, positions_list);

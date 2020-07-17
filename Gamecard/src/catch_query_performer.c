@@ -10,6 +10,7 @@
 #include <commons/string.h>
 #include <unistd.h>
 #include "../../Utils/include/garbage_collector.h"
+#include "open_files_structure.h"
 
 t_gamecard_query_performer *catch_pokemon_query_performer;
 
@@ -43,9 +44,6 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 
     	if(exists_file_at(pokemon_metadata_path)) {
-    		//En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
-        	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata);
-
     		//Leo el archivo de metadata
     		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
     		metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
@@ -73,12 +71,12 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 			    caught_status = 0;
     		}
+    		remove_from_open_files(pokemon_metadata_path);
             free_metadata_file(metadata_file_information);
     	}
     	else{
     		//fallo, no existe el archivo pokemon
 			caught_status = 0;
-			free(metadata_file_information);
     	}
 
 		free(pokemon_metadata_path);
