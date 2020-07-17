@@ -10,10 +10,12 @@
 #include "../include/gamecard_configuration_manager.h"
 #include "../include/gamecard_query_performers.h"
 #include <stdlib.h>
+#include "open_files_structure.h"
 
 void* free_system_debugging_thread(){
     sleep_for(25);
-    free_system();
+    //free_system();
+    exit(EXIT_SUCCESS);
     return NULL;
 }
 
@@ -29,6 +31,7 @@ int main(void) {
     initialize_gamecard_configuration_manager();
     initialize_gamecard_query_performers();
     initialize_file_system();
+    initialize_open_files_list();
 
     log_succesful_start_up();
 
@@ -38,7 +41,7 @@ int main(void) {
     //Levanto hilo para la conexión con el Gameboy
     pthread_t gameboy_connection_handler_thread = default_safe_thread_create(initialize_gamecard_gameboy_connection_handler, NULL);
 
-    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
+    //pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
 
     safe_thread_join(broker_connection_handler_thread);
     safe_thread_join(gameboy_connection_handler_thread);

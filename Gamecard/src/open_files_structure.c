@@ -1,11 +1,11 @@
-#include "stdbool.h"
-#include "file_system_utils.h"
-#include <stdlib.h>
-#include <file_system_utils.h>
-#include <commons/string.h>
-#include <pthread_wrapper.h>
 #include <open_files_structure.h>
+#include "file_system_utils.h"
+#include "../../Utils/include/pthread_wrapper.h"
+#include "stdbool.h"
+#include <stdlib.h>
+#include <commons/string.h>
 #include <commons/process.h>
+
 
 pthread_mutex_t open_files_mutex;
 t_list* open_files_list;
@@ -49,4 +49,8 @@ void close_open_files(){
 
 	t_list* files_filtered_by_tid = list_filter(open_files_list,(void*)_same_tid);
 	list_destroy_and_destroy_elements(files_filtered_by_tid, (void (*)(void *)) free_structure_and_close_file);
+}
+
+void initialize_open_files_list(){
+	open_files_list = list_create();
 }

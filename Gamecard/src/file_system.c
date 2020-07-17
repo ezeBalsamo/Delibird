@@ -403,15 +403,13 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 	metadata_file_information -> size = total_size;
 }
 
-void create_pokemon_metadata(t_file_metadata* metadata_file_information, char* pokemon_name){
+void create_pokemon_metadata(char* pokemon_name){
 
     char* pokemon_metadata_path = string_from_format("%s/Files/%s", tallgrass_mount_point(), pokemon_name);
-
-	mkdir(pokemon_metadata_path, 0777);
+	mode_t old_mask = umask(0);
+    mkdir(pokemon_metadata_path, 0777);
+    umask(old_mask);
     free(pokemon_metadata_path);
-
-	metadata_file_information -> directory = "N";
-	metadata_file_information -> open = "N";
 }
 
 void* read_file_of_type(uint32_t file_type, char* file_name){

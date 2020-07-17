@@ -13,13 +13,12 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "open_files_structure.h"
 
-t_file_metadata* create_metadata_with_open_flag(){
-	t_file_metadata* metadata_with_open_flag = (t_file_metadata*) safe_malloc (sizeof(t_file_metadata*));
+void create_metadata_with_open_flag(t_file_metadata* metadata_with_open_flag){
+
 	metadata_with_open_flag -> directory = "";
 	metadata_with_open_flag -> size = 0;
 	metadata_with_open_flag -> blocks = "";
 	metadata_with_open_flag -> open = "Y";
-	return metadata_with_open_flag;
 }
 
 
@@ -71,24 +70,29 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		stop_considering_garbage(blocks_information);
 	}
 	else{
-		t_file_metadata* metadata_with_open_flag = create_metadata_with_open_flag();
+		create_pokemon_metadata(new_pokemon -> pokemon_name);
+
+		t_file_metadata* metadata_with_open_flag = safe_malloc(sizeof(t_file_metadata));
+		create_metadata_with_open_flag(metadata_with_open_flag);
+
 		write_pokemon_metadata(metadata_with_open_flag,pokemon_metadata_path);
-		free_metadata_file(metadata_with_open_flag);
+		free(metadata_with_open_flag);
 
 		char* new_block_number = get_new_block();
 		metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
+		metadata_file_information -> directory = "N";
+		metadata_file_information -> open = "N";
 		free(new_block_number);
         t_list* line_to_write = data_to_write(new_pokemon);
 		write_pokemon_blocks(line_to_write, metadata_file_information);
 		list_destroy_and_destroy_elements(line_to_write, free);
-		create_pokemon_metadata(metadata_file_information, new_pokemon -> pokemon_name);
-	}
+		}
 
     //Esperar cantidad de segundos definidos por archivo de configuracion
     sleep(operation_delay_time_getter());
     write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
-    remove_from_open_files(pokemon_metadata_path);
+    //remove_from_open_files(pokemon_metadata_path);
     free_metadata_file(metadata_file_information);
 	free(pokemon_metadata_path);
 
