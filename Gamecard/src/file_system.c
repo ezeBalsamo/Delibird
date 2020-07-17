@@ -421,21 +421,6 @@ void* read_file_of_type(uint32_t file_type, char* file_name){
     return (*(file_information -> reader_function)) (file_name);
 
 }
-/*
-static void check (int test, const char * message, ...)
-{
-    if (test) {
-        va_list args;
-        va_start (args, message);
-        vfprintf (stderr, message, args);
-        va_end (args);
-        fprintf (stderr, "\n");
-        exit (EXIT_FAILURE);
-    }
-}*/
-
-/* The file descriptor. */
-
 
 void initialize_bitmap(){
 

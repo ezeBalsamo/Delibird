@@ -68,7 +68,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		list_destroy_and_free_elements(blocks_information);
 		stop_considering_garbage(blocks_information);
 	}
-	else{
+	else{//el archivo no existe, hay que crearlo
 		create_pokemon_metadata(new_pokemon -> pokemon_name);
 
 		t_file_metadata* metadata_with_open_flag = safe_malloc(sizeof(t_file_metadata));
@@ -82,7 +82,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		metadata_file_information -> directory = "N";
 		metadata_file_information -> open = "N";
 		free(new_block_number);
-        t_list* line_to_write = data_to_write(new_pokemon);
+        t_list* line_to_write = data_to_write(new_pokemon);//creo una lista con la linea que quiero escribir en blocks
 		write_pokemon_blocks(line_to_write, metadata_file_information);
 		list_destroy_and_destroy_elements(line_to_write, free);
 		}
@@ -95,7 +95,6 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     free_metadata_file(metadata_file_information);
 	free(pokemon_metadata_path);
 
-    show_bitmap_state(bitmap_get());
 	appeared_request = new_appeared_request(new_pokemon);
 
 	//Armado de la estructura de mensaje

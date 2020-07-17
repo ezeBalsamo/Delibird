@@ -75,13 +75,13 @@ void log_file_system_metadata_info(t_file_system_metadata* pointer_file_system_m
 }
 
 void log_file_metadata_info(t_file_metadata* pointer_file_metadata){
-    char* message = string_from_format("Directorio: %s, Tamanio: %d, Bloques: %s, Abierto: %s\n", pointer_file_metadata -> directory, pointer_file_metadata -> size,  pointer_file_metadata -> blocks, pointer_file_metadata -> open);
+    char* message = string_from_format("La Metadata del file system tiene Directorio: %s, Tamanio: %d, Bloques: %s, Abierto: %s\n", pointer_file_metadata -> directory, pointer_file_metadata -> size,  pointer_file_metadata -> blocks, pointer_file_metadata -> open);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }
 
 void log_block_metadata_info(int32_t x, int32_t y, int32_t quantity){
-    char* message = string_from_format("Pos X: %d, Pos Y: %d, Cantidad: %d\n", x, y, quantity);
+    char* message = string_from_format("Leida linea con Pos X: %d, Pos Y: %d, Cantidad: %d\n", x, y, quantity);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

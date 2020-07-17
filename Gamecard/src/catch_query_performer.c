@@ -74,12 +74,12 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
     		remove_from_open_files(pokemon_metadata_path);
             free_metadata_file(metadata_file_information);
     	}
-    	else{
-    		//fallo, no existe el archivo pokemon
+    	else{//fallo, no existe el archivo pokemon
 			caught_status = 0;
     	}
 
 		free(pokemon_metadata_path);
+
     	caught_request = catch_caught_request(caught_status);
 
 		//Armado de la estructura de mensaje
