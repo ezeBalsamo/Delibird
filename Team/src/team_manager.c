@@ -40,7 +40,7 @@ void* initialize_team_manager(){
     safe_mutex_initialize(&global_goal_mutex);
 
     localized_trainers = parsed_trainers();
-    sem_post(&localized_trainers_created);
+    safe_sem_post(&localized_trainers_created);
 
     global_goal = team_global_goal_according_to(localized_trainers);
     subscribe_to_events();
@@ -89,15 +89,15 @@ bool global_goal_contains(char* pokemon_name){
 }
 
 void handling_localized_trainers_concurrency_do(void (*function) ()){
-    pthread_mutex_lock(&localized_trainers_mutex);
+    safe_mutex_lock(&localized_trainers_mutex);
     function();
-    pthread_mutex_unlock(&localized_trainers_mutex);
+    safe_mutex_unlock(&localized_trainers_mutex);
 }
 
 void handling_global_goal_concurrency_do(void (*function) ()){
-    pthread_mutex_lock(&global_goal_mutex);
+    safe_mutex_lock(&global_goal_mutex);
     function();
-    pthread_mutex_unlock(&global_goal_mutex);
+    safe_mutex_unlock(&global_goal_mutex);
 }
 
 void decrement_global_goal_quantity_after_caught_of(char* pokemon_name){

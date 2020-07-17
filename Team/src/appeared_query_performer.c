@@ -1,8 +1,8 @@
 #include <team_query_performers.h>
 #include <pokemon_occurrences.h>
 #include <team_logs_manager.h>
-#include <pthread.h>
 #include "appeared_query_performer.h"
+#include "../../Utils/include/pthread_wrapper.h"
 
 t_query_performer* appeared_pokemon_query_performer;
 
@@ -25,13 +25,13 @@ void consider_as_new_if_necessary_occurrence_of(t_appeared_pokemon* appeared_pok
 
     char* pokemon_name = appeared_pokemon -> pokemon_name;
 
-    pthread_mutex_lock(&pokemon_occurrence_status_by_name_mutex);
+    safe_mutex_lock(&pokemon_occurrence_status_by_name_mutex);
 
     if(!exists_previous_occurrence_of(pokemon_name)){
         mark_occurrence_status_of(pokemon_name);
     }
 
-    pthread_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
+    safe_mutex_unlock(&pokemon_occurrence_status_by_name_mutex);
 }
 
 void appeared_query_performer_function(t_identified_message* correlative_identified_message){

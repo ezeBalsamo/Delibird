@@ -52,9 +52,9 @@ t_list* trainer_thread_contexts_in(uint32_t state){
 }
 
 void handling_concurrency_do(t_dispatcher_queue* dispatcher_queue, void (*function) ()){
-    pthread_mutex_lock(&dispatcher_queue -> mutex);
+    safe_mutex_lock(&dispatcher_queue -> mutex);
     function();
-    pthread_mutex_unlock(&dispatcher_queue -> mutex);
+    safe_mutex_unlock(&dispatcher_queue -> mutex);
 }
 
 void remove_from(t_list* list_to_search, t_trainer_thread_context* trainer_thread_context_to_find){

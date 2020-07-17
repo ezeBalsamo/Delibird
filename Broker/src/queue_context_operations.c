@@ -1,18 +1,18 @@
 #include "../../Utils/include/common_structures.h"
+#include "../../Utils/include/pthread_wrapper.h"
 #include <queue_context_provider.h>
-#include <pthread.h>
 #include <queue_message_status.h>
 
 void queue_context_add_subscriber_function(t_queue_context* queue_context, t_subscriber_context* subscriber_context){
-    pthread_mutex_lock(&queue_context -> subscribers_mutex);
+    safe_mutex_lock(&queue_context -> subscribers_mutex);
     list_add(queue_context -> subscribers, subscriber_context);
-    pthread_mutex_unlock(&queue_context -> subscribers_mutex);
+    safe_mutex_unlock(&queue_context -> subscribers_mutex);
 }
 
 void queue_context_push_message_status_to_queue_function(t_queue_context* queue_context, t_message_status* message_status){
-    pthread_mutex_lock(&(queue_context -> queue_mutex));
+    safe_mutex_lock(&(queue_context -> queue_mutex));
     list_add(queue_context -> messages, message_status);
-    pthread_mutex_unlock(&(queue_context -> queue_mutex));
+    safe_mutex_unlock(&(queue_context -> queue_mutex));
 }
 
 t_queue_context_operations* new_queue_context_operations(){

@@ -14,11 +14,11 @@ sem_t localized_trainers_created;
 
 void wait_until_trainer_threads_are_created(){
 
-    sem_wait(&localized_trainers_created);
+    safe_sem_wait(&localized_trainers_created);
     int total_trainers_amount = trainers_amount();
 
     for(int i = 0; i < total_trainers_amount; i++){
-        sem_wait(&trainer_thread_created);
+        safe_sem_wait(&trainer_thread_created);
     }
 }
 
@@ -35,6 +35,7 @@ void execute_main_threads(){
     broker_connection_handler_thread = default_safe_thread_create(initialize_team_broker_connection_handler, NULL);
     gameboy_connection_handler_thread = default_safe_thread_create(initialize_team_gameboy_connection_handler, NULL);
 
+    free_system_debugging_thread_alive_for(10);
     safe_thread_join(team_manager_thread);
 }
 

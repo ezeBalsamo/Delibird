@@ -23,10 +23,10 @@ void publisher_mode_attending_message_function(t_connection_deserialization_info
 
     t_deserialization_information* deserialization_information = connection_deserialization_information -> deserialization_information;
 
-    pthread_mutex_lock(&mutex_for_id_and_allocation);
+    safe_mutex_lock(&mutex_for_id_and_allocation);
     uint32_t message_id = update_and_get_message_id();
     allocate_message_using(message_id, deserialization_information);
-    pthread_mutex_unlock(&mutex_for_id_and_allocation);
+    safe_mutex_unlock(&mutex_for_id_and_allocation);
 
     send_ack_message(message_id, connection_deserialization_information -> socket_fd);
     t_message_status* message_status = create_message_status_using(message_id, deserialization_information);
@@ -41,6 +41,6 @@ void initialize_publisher_message_mode(){
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 
-    pthread_mutex_init(&mutex_for_id_and_allocation, NULL);
+    safe_mutex_initialize(&mutex_for_id_and_allocation);
     consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
 }

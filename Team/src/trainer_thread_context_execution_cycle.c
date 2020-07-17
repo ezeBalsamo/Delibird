@@ -42,7 +42,7 @@ void movement_action_completed_by(t_trainer_thread_context* trainer_thread_conte
     if(is_deadlock_resolution_in_process()){
         trainer_thread_context -> thread_action = trade_thread_action();
         log_thread_action_to_perform_by(trainer_thread_context);
-        sem_post(&trainer_thread_context -> semaphore);
+        safe_sem_post(&trainer_thread_context -> semaphore);
     }else{
         trainer_thread_context -> thread_action = catch_thread_action_for(destiny_object);
         log_thread_action_to_perform_by(trainer_thread_context);
@@ -99,7 +99,7 @@ void consider_graceful_finished_of(t_trainer_thread_context* trainer_thread_cont
         free_thread_action(trainer_thread_context -> thread_action);
         t_thread_action* null_thread_action = new_null_thread_action();
         trainer_thread_context -> thread_action = null_thread_action;
-        sem_post(&trainer_thread_context -> semaphore);
+        safe_sem_post(&trainer_thread_context -> semaphore);
     }
 }
 

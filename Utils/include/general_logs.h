@@ -9,6 +9,7 @@ void log_successful_execution();
 void log_successful_clean_up();
 void log_succesful_initialize_pretty_printer();
 void log_succesful_initialize_serializable_objects();
+void log_syscall_error_with_errno_description(char* message_error);
 void log_syscall_error(char* message_error);
 void log_send_all_error(int sent_bytes, int amount_of_bytes);
 void log_expanding_unexpandable_matrix_error();

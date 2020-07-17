@@ -4,7 +4,7 @@
 #include <trainer_threads.h>
 #include <trainer_thread_context_execution_cycle.h>
 #include <distance_calculator.h>
-#include <pthread.h>
+#include "../../Utils/include/pthread_wrapper.h"
 
 extern pthread_mutex_t schedulable_trainer_thread_contexts_mutex;
 
@@ -16,13 +16,13 @@ void chase(t_targetable_object* targetable_pokemon){
 
     if(list_is_empty(trainer_thread_contexts)){
         log_no_schedulable_threads_available_for(localizable_pokemon -> object);
-        pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
+        safe_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
     }else{
         t_trainer_thread_context* trainer_thread_context =
                 trainer_thread_context_closest_to_localizable_object(trainer_thread_contexts, localizable_pokemon);
         targetable_pokemon -> is_being_targeted = true;
         prepare_for_movement_action(trainer_thread_context, localizable_pokemon);
-        pthread_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
+        safe_mutex_unlock(&schedulable_trainer_thread_contexts_mutex);
     }
 
     list_destroy(trainer_thread_contexts);

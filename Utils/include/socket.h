@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "serialization_interface.h"
 
-#define THREAD_POOL_SIZE 25
+#define THREAD_POOL_SIZE 3
 #define FAILED_ACK 0
 
 typedef struct Connection_Information{

@@ -20,6 +20,7 @@ pthread_t thread_create(void* (*thread_function) (void*), void* thread_argument,
 }
 
 void safe_thread_join_waiting_value(pthread_t thread, void** return_value){
+
     if(pthread_join(thread, return_value) != 0){
         log_syscall_error("Error al ejecutar pthread_join");
         free_system();
@@ -35,13 +36,33 @@ pthread_t default_safe_thread_create(void* (*thread_function) (void*), void* thr
 }
 
 void safe_mutex_initialize(pthread_mutex_t* mutex){
+
     if(pthread_mutex_init(mutex, NULL) != 0){
         log_syscall_error("Error al inicializar un mutex");
         free_system();
     }
 }
 
+void safe_mutex_lock(pthread_mutex_t* mutex){
+
+    if(pthread_mutex_lock(mutex) != 0){
+        log_syscall_error("Error al intentar tomar el lock del mutex");
+        free_system();
+    }
+}
+
+void safe_mutex_unlock(pthread_mutex_t* mutex){
+
+    if(pthread_mutex_unlock(mutex) != 0){
+        log_syscall_error("Error al intentar liberar el lock del mutex");
+        free_system();
+    }
+}
+
 void safe_mutex_destroy(pthread_mutex_t* mutex){
+
+    safe_mutex_unlock(mutex); // Si el lock está tomado, lo libero para poder destruirlo
+
     if(pthread_mutex_destroy(mutex) != 0){
         log_syscall_error("Error al destruir un mutex");
         free_system();
@@ -68,15 +89,6 @@ void safe_thread_cancel(pthread_t thread){
     }
 
     free(message);
-}
-
-void safe_thread_detach(pthread_t thread){
-    if(pthread_detach(thread) != 0){
-        char* message = string_from_format("Error al detachar el hilo %u", process_get_thread_id());
-        log_syscall_error(message);
-        free(message);
-        free_system();
-    }
 }
 
 void safe_thread_pointer_cancel(pthread_t* thread){

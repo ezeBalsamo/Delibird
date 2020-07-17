@@ -50,7 +50,6 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
     safe_thread_join(*reconnection_thread);
 
     stop_considering_garbage(reconnection_thread);
-    safe_thread_pointer_cancel(reconnection_thread);
 }
 
 t_request* subscribe_me_request_for(uint32_t operation_queue){
@@ -140,7 +139,7 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
 void* subscriber_thread(void* queue_operation_identifier){
 
     t_connection_information* connection_information = subscribe_to_broker_queue(queue_operation_identifier);
-    sem_post(&subscriber_threads_request_sent);
+    safe_sem_post(&subscriber_threads_request_sent);
 
     while (!is_global_goal_accomplished()){
         consume_messages_considering_reconnections_with(connection_information, queue_operation_identifier);
@@ -163,9 +162,9 @@ void subscribe_to_queues(){
     localized_queue_tid = subscribe_to_queue(LOCALIZED_POKEMON);
     caught_queue_tid = subscribe_to_queue(CAUGHT_POKEMON);
 
-    sem_wait(&subscriber_threads_request_sent);
-    sem_wait(&subscriber_threads_request_sent);
-    sem_wait(&subscriber_threads_request_sent);
+    safe_sem_wait(&subscriber_threads_request_sent);
+    safe_sem_wait(&subscriber_threads_request_sent);
+    safe_sem_wait(&subscriber_threads_request_sent);
 }
 
 void join_to_queues(){
