@@ -49,7 +49,6 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), new_pokemon -> pokemon_name);
-	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata); //En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado.
 
     t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
 	t_request* appeared_request;
@@ -92,7 +91,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
     sleep(operation_delay_time_getter());
     write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
-    //remove_from_open_files(pokemon_metadata_path);
+    remove_from_open_files(pokemon_metadata_path);
     free_metadata_file(metadata_file_information);
 	free(pokemon_metadata_path);
 

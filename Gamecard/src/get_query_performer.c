@@ -44,8 +44,6 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
 
     t_request* localized_request;
     if(exists_file_at(pokemon_metadata_path)) {
-    	//En caso de que se corte la ejecución, nos aseguramos que el archivo metadata sea cerrado, en caso de q exista.
-    	consider_as_garbage(pokemon_metadata_path, (void (*) (void*)) close_metadata);
 
         //Leo el archivo de metadata
         t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
@@ -65,7 +63,7 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
 
         //Cerrar archivo metadata
         close_metadata(pokemon_metadata_path);
-        //remove_from_open_files(pokemon_metadata_path);
+        remove_from_open_files(pokemon_metadata_path);
         stop_considering_garbage(blocks_information);
 
         localized_request = get_localized_request(pokemon_name, positions_amount, positions_list);

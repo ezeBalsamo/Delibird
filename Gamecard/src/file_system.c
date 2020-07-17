@@ -130,7 +130,7 @@ t_file_metadata* read_file_metadata(char* file_path){
     config_destroy(metadata_config);
 
     set_open(file_pointer); //Una vez que sali del loop tengo que escribir la Y en el open
-    //add_to_open_files(file_path);
+    add_to_open_files(file_path);
     fclose(file_pointer); //La escritura del flag OPEN se realiza al cerrar el file_pointer
 
     flock(file_descriptor,LOCK_UN);
@@ -157,6 +157,8 @@ t_list* read_block(char* file_path){
         final_path = create_block_path(block_pointer);
 
         file_pointer = fopen(final_path, "r");
+
+        free(final_path);
 
         while(can_read_line(line, maximum_length_of_line, file_pointer)){
 
