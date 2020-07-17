@@ -17,7 +17,7 @@
 #include <general_logs.h>
 
 pthread_t thread_pool[THREAD_POOL_SIZE];
-pthread_mutex_t queue_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t queue_mutex;
 sem_t client_sockets_amount_in_queue;
 t_queue* queue;
 
@@ -355,8 +355,10 @@ t_receive_information* receive_structure(int socket_fd){
 }
 
 void start_multithreaded_server(char* port, void* (*handle_connection_function) (void*)){
+
     queue = queue_create();
     sem_initialize(&client_sockets_amount_in_queue);
+    safe_mutex_initialize(&queue_mutex);
 
     void* _thread_function(){
         for ever{
@@ -404,6 +406,9 @@ void free_and_close_connection(void* socket_fd){
 }
 
 void free_multithreaded_server(){
+
+    sem_destroy(&client_sockets_amount_in_queue);
+    pthread_mutex_destroy(&queue_mutex);
     queue_destroy_and_destroy_elements(queue, free);
 
     for(int i = 0; i < THREAD_POOL_SIZE; i++){
