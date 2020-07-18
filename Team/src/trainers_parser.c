@@ -18,21 +18,13 @@ void parsed_localized_object_positions(t_localizable_object* localizable_trainer
 
 void parse_current_pokemons_for(t_trainer* trainer, char* current_pokemons){
 
-    if(can_continue_parsing_current_pokemons){
-        if(current_pokemons == NULL){
+    char** splitted_current_pokemons = string_split(current_pokemons, "|");
 
-            can_continue_parsing_current_pokemons = false;
-        }else{
-
-            char** splitted_current_pokemons = string_split(current_pokemons, "|");
-
-            for(int i = 0; splitted_current_pokemons[i]; i++){
-                list_add(trainer -> current_pokemons, (void*) splitted_current_pokemons[i]);
-            }
-
-            free(splitted_current_pokemons);
-        }
+    for(int i = 0; splitted_current_pokemons[i]; i++){
+        list_add(trainer -> current_pokemons, (void*) splitted_current_pokemons[i]);
     }
+
+    free(splitted_current_pokemons);
 }
 
 void parse_required_pokemons_for(t_trainer* trainer, char* required_pokemons){
@@ -56,6 +48,20 @@ t_trainer* new_trainer_with_sequential_number(int sequential_number){
     return trainer;
 }
 
+void consider_parsing_current_pokemons(char** current_pokemons, t_trainer* trainer, int trainer_index){
+
+    if(*current_pokemons != NULL && can_continue_parsing_current_pokemons){
+
+        char* current_trainer_pokemons = current_pokemons[trainer_index];
+
+        if (current_trainer_pokemons == NULL){
+            can_continue_parsing_current_pokemons = false;
+        }else{
+            parse_current_pokemons_for(trainer, current_trainer_pokemons);
+        }
+    }
+}
+
 t_list* parsed_trainers(){
 
     t_list* trainers = list_create();
@@ -68,10 +74,7 @@ t_list* parsed_trainers(){
 
         t_trainer* trainer = new_trainer_with_sequential_number(i + 1);
 
-        if(*current_pokemons != NULL){
-            parse_current_pokemons_for(trainer, current_pokemons[i]);
-        }
-
+        consider_parsing_current_pokemons(current_pokemons, trainer, i);
         parse_required_pokemons_for(trainer, required_pokemons[i]);
 
         t_localizable_object* localizable_trainer = safe_malloc(sizeof(t_localizable_object));
