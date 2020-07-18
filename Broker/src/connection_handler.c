@@ -39,8 +39,7 @@ void* main_thread_handler(void* connection_fd){
     t_receive_information* receive_information = receive_structure(cast_connection_fd);
     log_succesful_connection_of_a_process();
 
-    if(receive_information -> receive_was_successful){
-        consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
+    if(receive_information -> receive_was_successful) {
 
         t_deserialization_information* deserialization_information =
                 deserialization_information_of(receive_information -> serialization_information -> serialized_request);
@@ -51,9 +50,9 @@ void* main_thread_handler(void* connection_fd){
                 create_connection_deserialization_information(cast_connection_fd, deserialization_information);
 
         attend_with_message_role(connection_deserialization_information);
-    }else{
-        free_receive_information(receive_information);
     }
+
+    free_receive_information(receive_information);
 
     return NULL;
 }
