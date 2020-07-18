@@ -12,10 +12,7 @@ void gameboy_config_updater(t_config* config);
 
 char** config_arguments;
 
-int main(int arguments_amount, char* arguments[]) {
-
-    char line[50]; //por poner 50
-    FILE *file;
+int main(int arguments_amount, char* arguments[]){
 
     if (arguments_amount != 2) {
         printf("Se ingresó una cantidad de argumentos incorrecta!\n");
@@ -23,14 +20,14 @@ int main(int arguments_amount, char* arguments[]) {
     }
 
     config_arguments = arguments;
-    char *process_name = config_arguments[1];
-    char *executable_path = getcwd(NULL, 0);
+    char* process_name = config_arguments[1];
+    char* executable_path = getcwd(NULL, 0);
 
-    char *reversed_path_for_split = string_reverse(executable_path);
-    char **reversed_path_splitted = string_n_split(reversed_path_for_split, 3, "/");
-    char *config_absolute_path = string_reverse(reversed_path_splitted[2]);
+    char* reversed_path_for_split = string_reverse(executable_path);
+    char** reversed_path_splitted = string_n_split(reversed_path_for_split, 3, "/");
+    char* config_absolute_path = string_reverse(reversed_path_splitted[2]);
 
-    char *config_name = string_duplicate(process_name);
+    char* config_name = string_duplicate(process_name);
     string_append(&config_name, ".config");
 
     string_capitalized(process_name);
@@ -41,28 +38,11 @@ int main(int arguments_amount, char* arguments[]) {
 
     string_append(&config_absolute_path, config_name);
 
-    char *config_description = string_from_format("Este es el archivo config del proceso: %s:", process_name);
+    char* config_description = string_from_format("Este es el archivo config del proceso: %s", config_name);
 
     printf("%s\n", config_description);
 
-    file = fopen(config_absolute_path, "r+");
-
-    char *read_line = string_new();
-
-    if (file == NULL) {
-        printf("\nError de apertura del archivo de config. \n\n");
-    } else {
-        while (fscanf(file, "%s", line) != 0) {
-
-            if (string_equals_ignore_case(line, read_line)) {
-                break;
-            }
-            strcpy(read_line, line);
-            printf("%s\n", read_line);
-        }
-    }
-
-    t_config *config = config_create(config_absolute_path);
+    t_config* config = config_create(config_absolute_path);
 
     if (string_equals_ignore_case(process_name, "Broker")) {
         broker_config_updater(config);
@@ -83,7 +63,7 @@ int main(int arguments_amount, char* arguments[]) {
 
 void broker_config_updater(t_config* config){
 
-    char *scanned_line = string_new();
+    char* scanned_line = string_new();
 
     printf("Ingrese de la siguiente manera los siguientes comandos: Numero-ValorDeseado\n");
     printf("Ingrese 1 y su nuevo valor para cambiar el tamaño de la memoria\n");
