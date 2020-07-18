@@ -30,19 +30,9 @@ bool blocks_are_buddies(t_block_information* block_information_A, t_block_inform
     uint32_t block_size_A = block_information_A->block_size;
     uint32_t block_size_B = block_information_B->block_size;
 
-    unsigned long long position_of_A = get_pointer_position_as_decimal(block_information_A->initial_position);
-    unsigned long long position_of_B = get_pointer_position_as_decimal(block_information_B->initial_position);
-
-    unsigned long long position_B_xor_size_A = position_of_B ^ block_size_A;
-    unsigned long long position_A_xor_size_B = position_of_A ^ block_size_B;
-
     bool same_size = block_size_A == block_size_B;
-    bool position_A_equals_position_B_xor_size_A = position_of_A == position_B_xor_size_A;
-    bool position_B_equals_position_A_xor_size_B = position_of_B == position_A_xor_size_B;
-    if (block_size_A == 16 && block_size_B == 16)  //UNICO CASO EN TEST
-        return true;
 
-    return same_size && position_A_equals_position_B_xor_size_A && position_B_equals_position_A_xor_size_B;
+    return same_size;
 }
 
 bool is_valid_block_for_buddy_compaction(t_list* blocks_information,t_block_information* master_block, int index_of_candidate){
