@@ -1,5 +1,5 @@
 SHARED_MODULE = Utils
-MODULES = Team Broker Gamecard Gameboy
+MODULES = Team Broker Gamecard Gameboy Config_updater
 
 .PHONY: $(SHARED_MODULE) $(MODULES)
 
@@ -19,6 +19,9 @@ Gamecard: Utils
 
 Gameboy: Utils
 	$(MAKE) -C $@
+
+Config_updater: Utils
+    $(MAKE) -C $@
 
 clean:
 	$(MAKE) -C $(SHARED_MODULE) clean
