@@ -21,12 +21,13 @@
 #include "../../Utils/include/paths.h"
 #include "../../Utils/include/t_list_extension.h"
 #include "open_files_structure.h"
+#include "../../Utils/include/pthread_wrapper.h"
 
 
 t_bitarray* bitmap;
 t_file_system_metadata* file_system_metadata;
 
-sem_t bitmap_mutex;
+pthread_mutex_t bitmap_mutex;
 
 uint32_t maximum_length_of_line = 40;
 
@@ -277,7 +278,7 @@ char* get_new_block(){
 	char* block_number_string_format;
 	uint32_t index = 0;
 
-	safe_sem_wait(&bitmap_mutex);
+    safe_mutex_lock(&bitmap_mutex);
 	//<-------region critica-------->
 	while(bitarray_test_bit(bitmap,index)){
 		index++;
@@ -285,7 +286,7 @@ char* get_new_block(){
 
 	bitarray_set_bit(bitmap, index);
     //<-------region critica-------->
-    safe_sem_post(&bitmap_mutex);
+    safe_mutex_unlock(&bitmap_mutex);
 
 	block_number_string_format = string_from_format("%d",index);
 	return block_number_string_format;
@@ -294,11 +295,11 @@ char* get_new_block(){
 void free_block_number(char* block_name){
 	uint32_t index = atoi(block_name);
 
-    safe_sem_wait(&bitmap_mutex);
+    safe_mutex_lock(&bitmap_mutex);
     //<-------region critica-------->
 	bitarray_clean_bit(bitmap,index);
     //<-------region critica-------->
-    safe_sem_post(&bitmap_mutex);
+    safe_mutex_unlock(&bitmap_mutex);
 }
 
 bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* total_size){
@@ -491,12 +492,12 @@ void initialize_file_system(){
 
     initialize_files_information();
     initialize_metadata();
-    sem_init(&bitmap_mutex, 0, 1);
-    consider_as_garbage(&bitmap_mutex, (void (*)) safe_sem_destroy);
+    safe_mutex_initialize(&bitmap_mutex);
  	initialize_bitmap();
 }
 
 void free_file_system(){
+    safe_mutex_destroy(&bitmap_mutex);
     munmap(bitmap -> bitarray, bitmap -> size);
     bitarray_destroy(bitmap);
     free_file_system_metadata(file_system_metadata);
