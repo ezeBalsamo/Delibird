@@ -133,7 +133,7 @@ void log_update_of_message_id_received_for(t_subscriber_context* subscriber_cont
     free(message);
 }
 
-void log_succesful_eliminating_message_of_a_queue(uint32_t message_id, char* reason){
+void log_succesful_deleting_message_of_a_queue(uint32_t message_id, char* reason){
     char* message = string_from_format("Se quitó de la cola el mensaje con id: %d correctamente! Motivo de borrado: %s", message_id, reason);
     log_succesful_message(process_execution_logger(), message);
     free(message);

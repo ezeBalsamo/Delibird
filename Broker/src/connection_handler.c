@@ -1,13 +1,17 @@
 #include <messages_roles.h>
 #include <semaphore.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/operation_deserialization.h"
+#include "../../Utils/include/pthread_wrapper.h"
+#include <signal.h>
 
 uint32_t message_id = 0;
+pthread_t multithreaded_server_tid;
 
 char* port(){
     return config_get_string_at("PUERTO_BROKER");
@@ -54,12 +58,27 @@ void* main_thread_handler(void* connection_fd){
     return NULL;
 }
 
+void commit_suicide(){
+    pthread_exit(NULL);
+}
+
 void* initialize_connection_handler(){
 
     log_server_initial_status();
+    handle_signal(SIGUSR2, commit_suicide);
     start_multithreaded_server(port(), main_thread_handler);
 
     return NULL;
+}
+
+void execute_main_thread(){
+    multithreaded_server_tid = default_safe_thread_create(initialize_connection_handler, NULL);
+    safe_thread_join(multithreaded_server_tid);
+}
+
+void free_main_thread(){
+
+    pthread_kill(multithreaded_server_tid, SIGUSR2);
 }
 
 void free_connection_handler(){

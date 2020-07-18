@@ -31,7 +31,7 @@ void log_succesful_get_and_update_subscribers_to_send(uint32_t message_id);
 
 void log_update_of_message_id_received_for(t_subscriber_context* subscriber_context);
 
-void log_succesful_eliminating_message_of_a_queue(uint32_t message_id, char* reason);
+void log_succesful_deleting_message_of_a_queue(uint32_t message_id, char* reason);
 
 void log_invalid_operation_to_message_role_identifier_error(uint32_t operation);
 
@@ -48,8 +48,6 @@ void log_cache_dump_information(char* cache_information);
 void log_message_status_not_found_in_queue_error(uint32_t message_id);
 
 void log_no_subscribers_for_message_with_id(uint32_t message_id);
-
-void free_broker_logs_manager();
 
 void log_invalid_operation_to_save_message_error();
 
@@ -70,5 +68,7 @@ void log_succesful_memory_compaction_as_buddies(void* master_block_position,void
 void log_invalid_memory_size_for_buddy_system_error();
 
 void log_block_information_with_id_not_found(uint32_t message_id);
+
+void free_broker_logs_manager();
 
 #endif //DELIBIRD_BROKER_LOGS_MANAGER_H
