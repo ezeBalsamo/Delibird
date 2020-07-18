@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include "memory_compaction_algorithm.h"
 #include "../../Utils/include/t_list_extension.h"
+#include "../../Utils/include/configuration_manager.h"
 
 
-//esta funcion reposiciona un bloque dado, al final de la memoria y de la lista administrativa.
+/*//esta funcion reposiciona un bloque dado, al final de la memoria y de la lista administrativa.
 //Mover un bloque en memoria implica ajustar la posicion de todos los siguientes al dado "1 bloque para atras" y attacheando el dado a la posicion del ultimo (luego de reajustarlo)
 void reposition_free_block_to_end(t_block_information *block_to_reposition, t_list *blocks_information,int block_index){
     void* initial_position_to_occupy_for_next_block = block_to_reposition->initial_position;
@@ -58,4 +59,107 @@ void memory_compaction_algorithm(t_list* blocks_information){
     }
     //Combinar particiones vacias contiguas a 1 sola particion vacia de mayor tamaño
     combine_all_free_partitions(blocks_information);
+}*/
+
+int next_occupied_block_information_index_using(int free_block_information_index, t_list* blocks_information){
+
+    if(list_size(blocks_information) == free_block_information_index){
+        return free_block_information_index;
+    }
+
+    int next_occupied_block_information_index = free_block_information_index;
+    t_block_information* block_information = list_get(blocks_information, free_block_information_index + 1);
+
+    while(block_information -> is_free){
+        next_occupied_block_information_index += 1;
+        block_information = list_get(blocks_information, next_occupied_block_information_index);
+    }
+
+    return next_occupied_block_information_index;
+}
+
+void* reposition_block_information(void* initial_position, t_block_information* block_information){
+    block_information -> initial_position = initial_position;
+    return block_information -> initial_position + block_information -> block_size;
+}
+
+bool is_free(t_block_information* block_information){
+    return block_information -> is_free;
+}
+
+void find_and_load_first_free_block_information(t_list* blocks_information,
+                                                int* first_free_block_information_index,
+                                                t_block_information** first_free_block_information){
+
+    bool found = false;
+
+    for(int i = 0; !found; i++){
+
+        t_block_information* block_information = list_get(blocks_information, i);
+
+        if(is_free(block_information)){
+            *first_free_block_information_index = i;
+            *first_free_block_information = block_information;
+            found = true;
+        }
+    }
+}
+
+void reposition_occupied_blocks_information(int first_free_block_information_index,
+                                            void* next_initial_position,
+                                            int* occupied_blocks_size,
+                                            t_list* blocks_information){
+
+    for (int i = first_free_block_information_index; i < list_size(blocks_information); i++) {
+
+        int next_occupied_block_information_index =
+                next_occupied_block_information_index_using(i, blocks_information);
+
+        t_block_information* occupied_block_information =
+                list_get(blocks_information, next_occupied_block_information_index);
+
+        next_initial_position =
+                reposition_block_information(next_initial_position, occupied_block_information);
+
+        *occupied_blocks_size += occupied_block_information -> block_size;
+        i = next_occupied_block_information_index;
+    }
+}
+
+void build_and_add_free_partition_block_information(void* next_initial_position,
+                                                    int occupied_blocks_size,
+                                                    t_list* blocks_information){
+
+    int total_memory_size = config_get_int_at("TAMANO_MEMORIA");
+
+    t_block_information* free_block_information = safe_malloc(sizeof(t_block_information));
+    free_block_information -> is_free = true;
+    free_block_information -> initial_position = next_initial_position;
+    free_block_information -> memory_block = NULL;
+    free_block_information -> block_size = total_memory_size - occupied_blocks_size;
+
+    list_add(blocks_information, free_block_information);
+}
+
+void memory_compaction_algorithm(t_list* blocks_information) {
+
+    int occupied_blocks_size = 0;
+
+    int first_free_block_information_index;
+    t_block_information* first_free_block_information;
+
+    find_and_load_first_free_block_information(blocks_information,
+                                               &first_free_block_information_index,
+                                               &first_free_block_information);
+
+    void* next_initial_position = first_free_block_information -> initial_position;
+
+    reposition_occupied_blocks_information(first_free_block_information_index,
+                                           next_initial_position,
+                                           &occupied_blocks_size,
+                                           blocks_information);
+
+    list_remove_and_destroy_all_by_condition(blocks_information, (bool (*)(void *)) is_free, free);
+
+    build_and_add_free_partition_block_information(next_initial_position, occupied_blocks_size, blocks_information);
 }

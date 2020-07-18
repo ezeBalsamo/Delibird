@@ -120,6 +120,23 @@ void list_remove_all_by_condition(t_list* self, bool (*comparer) (void*)){
     list_destroy(elements_to_remove);
 }
 
+void list_remove_and_destroy_all_by_condition(t_list* self, bool (*comparer) (void*), void (*sanitizer) (void*)){
+
+    t_list* elements_to_remove = list_filter(self, comparer);
+
+    void _remove_it(void* element_to_remove){
+
+        bool _are_equals(void* element_to_compare){
+            return element_to_compare == element_to_remove;
+        }
+
+        list_remove_and_destroy_by_condition(self, _are_equals, sanitizer);
+    }
+
+    list_iterate(elements_to_remove, _remove_it);
+    list_destroy(elements_to_remove);
+}
+
 bool is_valid_index(t_list* self, int index){
     return (list_size(self) > index) && (index >= 0);
 }

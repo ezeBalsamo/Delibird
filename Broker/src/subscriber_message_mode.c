@@ -33,7 +33,7 @@ void subscriber_mode_attending_message_function(t_connection_deserialization_inf
     send_ack_message(true, socket_fd);
     send_all_messages(subscriber_context);
 
-//    consider_as_garbage(request, (void (*)(void *)) free_request);
+    consider_as_garbage(request, (void (*)(void *)) free_request);
     free_connection_deserialization_information(connection_deserialization_information);
 }
 
