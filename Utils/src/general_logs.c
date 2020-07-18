@@ -10,7 +10,7 @@
 void log_succesful_start_up(){
     char* message = string_new();
     string_append(&message, get_program_name());
-    string_append(&message," se ha inicializado correctamente!\n");=
+    string_append(&message," se ha inicializado correctamente!\n");
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

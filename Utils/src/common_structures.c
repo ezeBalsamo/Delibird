@@ -37,7 +37,7 @@ void initialize_signal_handler(){
 
 void* safe_malloc(size_t size){
     void* pointer = malloc(size);
-    if(pointer == NULL && size < 0){
+    if(pointer == NULL && size != 0){
         log_syscall_error("Error al guardar espacio de memoria con safe_malloc");
         free_system();
     }

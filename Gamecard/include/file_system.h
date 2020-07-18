@@ -12,8 +12,8 @@ enum File_Types {
 };
 
 typedef struct Pokemon_block_line{
-    int32_t position_x;
-    int32_t position_y;
+    uint32_t position_x;
+    uint32_t position_y;
     uint32_t quantity;
 }t_pokemon_block_line;
 
