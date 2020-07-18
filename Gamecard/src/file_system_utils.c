@@ -1,12 +1,32 @@
 #include "../include/file_system_utils.h"
 #include "../include/gamecard_configuration_manager.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/configuration_manager.h"
 #include <commons/string.h>
 #include <commons/config.h>
 #include <string.h>
+#include <stdlib.h>
 #include <sys/file.h>
 #include <unistd.h>
+
+void list_destroy_and_free_elements(t_list* list){
+	list_destroy_and_destroy_elements(list,free);
+}
+
+char* get_pokemon_name_from_path(char* pokemon_path){
+
+    char** path_array = string_split(pokemon_path, "/");
+
+    uint32_t path_array_length = sizeof(path_array);
+
+    char* pokemon_name = path_array[path_array_length];
+    free(path_array);
+
+    return pokemon_name;
+}
+
+char* block_line_to_string(t_pokemon_block_line *line){
+    return string_from_format("%d-%d=%d\n",line -> position_x, line -> position_y, line -> quantity);
+}
 
 char* create_block_path(char block_pointer[]){
     return string_from_format("%s/Blocks/%s.bin", tallgrass_mount_point(), block_pointer);
@@ -84,9 +104,9 @@ t_file_system_metadata* read_file_system_metadata_from_config(t_config* metadata
 
     t_file_system_metadata* file_system_metadata = safe_malloc(sizeof(t_file_system_metadata));
 
-    file_system_metadata -> block_size = config_get_int_at("BLOCK_SIZE");
-    file_system_metadata -> blocks = config_get_int_at("BLOCKS");
-    file_system_metadata -> magic_number = config_get_string_at("MAGIC_NUMBER");
+    file_system_metadata -> block_size = config_get_int_value(metadata_config, "BLOCK_SIZE");
+    file_system_metadata -> blocks = config_get_int_value(metadata_config, "BLOCKS");
+    file_system_metadata -> magic_number = string_duplicate(config_get_string_value(metadata_config, "MAGIC_NUMBER"));
 
     return file_system_metadata;
 }
@@ -95,10 +115,10 @@ t_file_metadata* read_file_metadata_from_config(t_config* metadata_config){
 
     t_file_metadata* file_metadata = safe_malloc(sizeof(t_file_metadata));
 
-    file_metadata -> directory = config_get_string_value(metadata_config, "DIRECTORY");
+    file_metadata -> directory = string_duplicate(config_get_string_value(metadata_config, "DIRECTORY"));
     file_metadata -> size = config_get_int_value(metadata_config, "SIZE");
-    file_metadata -> blocks = config_get_string_value(metadata_config, "BLOCKS");
-    file_metadata -> open = config_get_string_value(metadata_config, "OPEN");
+    file_metadata -> blocks = string_duplicate(config_get_string_value(metadata_config, "BLOCKS"));
+    file_metadata -> open = string_duplicate(config_get_string_value(metadata_config, "OPEN"));
 
     return file_metadata;
 }
@@ -107,4 +127,9 @@ void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds)
     flock(file_descriptor,LOCK_UN);
     sleep(time_in_seconds);
     flock(file_descriptor,LOCK_SH);
+}
+
+void free_metadata_file(t_file_metadata* file_metadata_path){
+    free(file_metadata_path -> blocks);
+    free(file_metadata_path);
 }

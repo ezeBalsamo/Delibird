@@ -13,7 +13,8 @@ set(SOURCES
         src/broker_connection_handler.c
         src/new_query_performer.c
         src/catch_query_performer.c
-        src/get_query_performer.c)
+        src/get_query_performer.c
+        src/open_files_structure.c)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/target")
 add_executable(gamecard ${SOURCES})

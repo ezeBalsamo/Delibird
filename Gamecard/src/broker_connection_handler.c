@@ -7,15 +7,30 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
-#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <commons/string.h>
+#include <commons/collections/queue.h>
 
 pthread_t new_queue_tid;
 pthread_t catch_queue_tid;
 pthread_t get_queue_tid;
 
+pthread_t gamecard_thread_pool[THREAD_POOL_SIZE];
+t_queue* deserialized_request_queue;
+pthread_mutex_t deserialized_request_queue_mutex;
+sem_t deserialized_request_in_queue_semaphore;
+
 char* gamecard_process_description;
+
+void sleep_for(int reconnection_time_in_seconds){
+    struct timespec deadline;
+    deadline.tv_sec = reconnection_time_in_seconds;
+    deadline.tv_nsec = 0;
+    if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
+        log_thread_sleep_time_configuration_error_from_gamecard();
+        free_system();
+    }
+}
 
 void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker_from_gamecard();
@@ -118,11 +133,9 @@ void send_structure_considering_ack(t_request* request, t_connection_information
     }
 }
 
-void* performer_thread(void* deserialized_request){
+void performer_thread(t_request* deserialized_request){
 
-    t_request* cast_deserialized_request = (t_request*) deserialized_request;
-
-    t_identified_message* response_message = gamecard_query_perform(cast_deserialized_request);
+    t_identified_message* response_message = gamecard_query_perform(deserialized_request);
 
     t_request* request = safe_malloc(sizeof(t_request));
     request -> operation = IDENTIFIED_MESSAGE;
@@ -140,8 +153,22 @@ void* performer_thread(void* deserialized_request){
     free_and_close_connection_information(connection_information);
     free_request(deserialized_request);
     free_request(request);
+}
 
-    return NULL;
+void notify_request_reception(t_request* deserialized_request, int socket_fd){
+
+    t_identified_message* identified_message = deserialized_request -> structure;
+    send_ack_message(identified_message -> message_id, socket_fd);
+
+    log_request_received(deserialized_request);
+}
+
+void push_deserialized_request_in_queue(t_request* deserialized_request){
+
+    pthread_mutex_lock(&deserialized_request_queue_mutex);
+    queue_push(deserialized_request_queue, deserialized_request);
+    sem_post(&deserialized_request_in_queue_semaphore);
+    pthread_mutex_unlock(&deserialized_request_queue_mutex);
 }
 
 void consume_messages_considering_reconnections_with(t_connection_information* connection_information,
@@ -155,11 +182,8 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
     }else{
         t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
-        t_identified_message* identified_message = deserialized_request -> structure;
-        send_ack_message(identified_message -> message_id, current_active_socket_fd);
-
-        log_request_received(process_execution_logger(), deserialized_request);
-        default_safe_thread_create(performer_thread, deserialized_request);
+        notify_request_reception(deserialized_request, current_active_socket_fd);
+        push_deserialized_request_in_queue(deserialized_request);
     }
 
     free_receive_information(receive_information);
@@ -190,29 +214,68 @@ void subscribe_to_queues(){
     get_queue_tid = subscribe_to_queue(GET_POKEMON);
 }
 
-void join_to_queues(){
-
-    safe_thread_join(new_queue_tid);
-    safe_thread_join(catch_queue_tid);
-    safe_thread_join(get_queue_tid);
-}
-
 void initialize_gamecard_process_description(){
     t_list* config_values = all_config_values();
     gamecard_process_description = process_description_for("GAMECARD", config_values);
     list_destroy_and_destroy_elements(config_values, free);
 }
 
-void* initialize_gamecard_broker_connection_handler(){
+void* deserialized_request_thread_function(){
+
+    for ever{
+        sem_wait(&deserialized_request_in_queue_semaphore);
+        pthread_mutex_lock(&deserialized_request_queue_mutex);
+        t_request* deserialized_request = queue_pop(deserialized_request_queue);
+        pthread_mutex_unlock(&deserialized_request_queue_mutex);
+
+        performer_thread (deserialized_request);
+    }
+}
+
+void initialize_gamecard_thread_pool(){
+
+    deserialized_request_queue = queue_create();
+
+    for(int i = 0; i < THREAD_POOL_SIZE; i++){
+        if(pthread_create(&gamecard_thread_pool[i], NULL, deserialized_request_thread_function, NULL) != 0){
+            log_syscall_error("Error al crear hilos que atienden clientes");
+            free_system();
+        }
+    }
+}
+
+void initialize_gamecard_broker_connection_handler(){
+
+    sem_initialize(&deserialized_request_in_queue_semaphore);
+    safe_mutex_initialize(&deserialized_request_queue_mutex);
 
     initialize_gamecard_process_description();
-
+    initialize_gamecard_thread_pool();
     subscribe_to_queues();
-    join_to_queues();
+}
 
-    return NULL;
+void cancel_all_broker_connection_handler_threads(){
+    safe_thread_cancel(new_queue_tid);
+    safe_thread_cancel(catch_queue_tid);
+    safe_thread_cancel(get_queue_tid);
+}
+
+void free_gamecard_thread_pool(){
+
+    queue_destroy_and_destroy_elements(deserialized_request_queue, (void (*)(void *)) free_request);
+
+    for(int i = 0; i < THREAD_POOL_SIZE; i++){
+        pthread_t thread = gamecard_thread_pool[i];
+        safe_thread_cancel(thread);
+    }
+
+    sem_destroy(&deserialized_request_in_queue_semaphore);
+    pthread_mutex_destroy(&deserialized_request_queue_mutex);
 }
 
 void free_gamecard_broker_connection_handler(){
+
     free(gamecard_process_description);
+    free_gamecard_thread_pool();
+    cancel_all_broker_connection_handler_threads();
 }

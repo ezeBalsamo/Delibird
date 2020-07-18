@@ -9,6 +9,7 @@
 #include "../../Utils/include/pretty_printer.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "open_files_structure.h"
 
 void free_system(){
 
@@ -18,6 +19,7 @@ void free_system(){
     free_gamecard_broker_connection_handler();
     free_gamecard_query_performers();
     free_files_information();
+    close_open_files();
 
     free_garbage_collector();
     free_configuration_manager();

@@ -116,6 +116,15 @@ void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_
     synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
 }
 
+void notify_request_reception(t_request* deserialized_request, int socket_fd){
+
+    t_identified_message* correlative_identified_message = deserialized_request -> structure;
+    send_ack_message(correlative_identified_message -> message_id, socket_fd);
+
+    log_request_received(main_logger(), deserialized_request);
+    log_request_received(process_execution_logger(), deserialized_request);
+}
+
 void consume_messages_considering_reconnections_with(t_connection_information* connection_information,
                                                      void* queue_operation_identifier){
 
@@ -127,11 +136,7 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
     }else{
         t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
-        t_identified_message* correlative_identified_message = deserialized_request -> structure;
-        send_ack_message(correlative_identified_message -> message_id, current_active_socket_fd);
-
-        log_request_received(main_logger(), deserialized_request);
-        log_request_received(process_execution_logger(), deserialized_request);
+        notify_request_reception(deserialized_request, current_active_socket_fd);
         query_perform(deserialized_request);
 
         free_request(deserialized_request);

@@ -36,10 +36,8 @@ void* main_thread_handler(void* connection_fd){
     return NULL;
 }
 
-void* initialize_gamecard_gameboy_connection_handler(){
+void initialize_gamecard_gameboy_connection_handler(){
     start_multithreaded_server(port(), main_thread_handler);
-
-    return NULL;
 }
 
 void free_gameboy_connection_handler(){
