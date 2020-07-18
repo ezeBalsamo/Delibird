@@ -31,7 +31,6 @@ t_request* catch_caught_request(uint32_t caught_status){
 }
 
 t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
-    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     	t_catch_pokemon* catch_pokemon = identified_message->request->structure;
@@ -44,8 +43,7 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
     	if(exists_file_at(pokemon_metadata_path)) {
     		//Leo el archivo de metadata
-    		t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
-    		metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
+    		t_file_metadata* metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
     		//Leo bloques del archivo
     		t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
@@ -60,9 +58,6 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 				write_pokemon_metadata(metadata_file_information,pokemon_metadata_path);
 
-				list_destroy_and_free_elements(blocks_information);
-				stop_considering_garbage(blocks_information);
-
 				caught_status = 1;
     		}
     		else{//fallo, existe el pokemon pero no en la posicion pedida
@@ -70,6 +65,9 @@ t_identified_message* catch_query_performer_function(t_identified_message* ident
 
 			    caught_status = 0;
     		}
+
+    		list_destroy_and_destroy_elements(blocks_information, free);
+
     		remove_from_open_files(pokemon_metadata_path);
             free_metadata_file(metadata_file_information);
     	}

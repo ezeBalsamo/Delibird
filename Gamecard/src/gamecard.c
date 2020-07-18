@@ -15,11 +15,11 @@ int main(void) {
 
     initialize_signal_handler();
     initialize_garbage_collector();
+    initialize_gamecard_configuration_manager();
 
     initialize_gamecard_logs_manager();
     initialize_pretty_printer();
     initialize_gamecard_serializable_objects();
-    initialize_gamecard_configuration_manager();
     initialize_gamecard_query_performers();
     initialize_file_system();
     initialize_open_files_list();

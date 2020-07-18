@@ -33,7 +33,6 @@ t_request* get_localized_request(char* pokemon_name, uint32_t quantity, t_list* 
 }
 
 t_identified_message* get_query_performer_function(t_identified_message* identified_message){
-    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     t_get_pokemon* get_pokemon = identified_message->request->structure;
@@ -44,13 +43,12 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
     if(exists_file_at(pokemon_metadata_path)) {
 
         //Leo el archivo de metadata
-        t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
-        metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
+        t_file_metadata* metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
         //Leo bloques del archivo
         t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-        free(metadata_file_information);
+        free_metadata_file(metadata_file_information);
 
         //Crear listado de posiciones
         t_list* positions_list = create_positions_list(blocks_information);
@@ -62,7 +60,7 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
         //Cerrar archivo metadata
         close_metadata(pokemon_metadata_path);
         remove_from_open_files(pokemon_metadata_path);
-        stop_considering_garbage(blocks_information);
+        list_destroy_and_destroy_elements(blocks_information, free);
 
         localized_request = get_localized_request(pokemon_name, positions_amount, positions_list);
 

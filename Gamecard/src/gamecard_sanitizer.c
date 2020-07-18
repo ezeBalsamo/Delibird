@@ -20,6 +20,7 @@ void free_system(){
     free_gamecard_query_performers();
     free_files_information();
     close_open_files();
+    free_file_system();
 
     free_garbage_collector();
     free_configuration_manager();

@@ -47,20 +47,19 @@ t_request* new_appeared_request(t_new_pokemon* new_pokemon){
 void initialize_metadata_file_information(t_file_metadata* metadata_file_information){
     char* new_block_number = get_new_block();
     metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
-    metadata_file_information -> directory = "N";
-    metadata_file_information -> open = "N";
+    metadata_file_information -> directory = string_duplicate("N");
+    metadata_file_information -> open = string_duplicate("N");
     free(new_block_number);
 }
 
 t_identified_message* new_query_performer_function(t_identified_message* identified_message){
 
-    log_succesful_reception_of_message(identified_message);
-
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), new_pokemon -> pokemon_name);
 
-    t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
+    t_file_metadata* metadata_file_information;
+
 	t_request* appeared_request;
 
 	if(exists_file_at(pokemon_metadata_path)) {
@@ -75,8 +74,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		//tengo que usar contenido file metadata para tomar el primer bloque y compactar
 		write_pokemon_blocks(blocks_information, metadata_file_information);
 
-		list_destroy_and_free_elements(blocks_information);
-		stop_considering_garbage(blocks_information);
+        list_destroy_and_destroy_elements(blocks_information, free);
 	}
 	else{//el archivo no existe, hay que crearlo
 		create_pokemon_metadata(new_pokemon -> pokemon_name);
@@ -87,7 +85,9 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		write_pokemon_metadata(metadata_with_open_flag,pokemon_metadata_path);
 		free(metadata_with_open_flag);
 
+        metadata_file_information = safe_malloc(sizeof(t_file_metadata));
 		initialize_metadata_file_information(metadata_file_information);
+
         t_list* line_to_write = data_to_write(new_pokemon);//creo una lista con la linea que quiero escribir en blocks
 		write_pokemon_blocks(line_to_write, metadata_file_information);
 		list_destroy_and_destroy_elements(line_to_write, free);

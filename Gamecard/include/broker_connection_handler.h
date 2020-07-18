@@ -3,6 +3,7 @@
 
 void sleep_for(int reconnection_time_in_seconds);
 void initialize_gamecard_broker_connection_handler();
+void performer_thread(t_request* deserialized_request);
 void* subscriber_thread(void* queue_operation_identifier);
 void free_gamecard_broker_connection_handler();
 

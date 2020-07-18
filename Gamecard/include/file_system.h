@@ -44,5 +44,6 @@ void update_pokemon_line_to(t_list* blocks_information, t_new_pokemon* pokemon_t
 t_list* data_to_write(t_new_pokemon* new_pokemon);
 void create_pokemon_metadata(char* pokemon_name);
 char* get_new_block();
+void free_file_system();
 
 #endif //DELIBIRD_FILE_SYSTEM_H
