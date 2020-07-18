@@ -21,7 +21,7 @@ Gameboy: Utils
 	$(MAKE) -C $@
 
 Config_updater: Utils
-    $(MAKE) -C $@
+	$(MAKE) -C $@
 
 clean:
 	$(MAKE) -C $(SHARED_MODULE) clean
