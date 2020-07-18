@@ -38,7 +38,7 @@ void delete_message(uint32_t operation_message, uint32_t message_id, char* reaso
     if(message_status == NULL){
         log_message_status_not_found_in_queue_error(message_id);    //PUEDE PASAR QUE SE QUIERA BORRAR ALGO QUE YA SE BORRO DE LA LISTA DE SUBSCRIPTORES POR HABERSE ENVIADO A TODOS
     }else{
-        log_succesful_eliminating_message_of_a_queue(message_id, reason);
+        log_succesful_deleting_message_of_a_queue(message_id, reason);
         free_message_status(message_status);
     }
 }
