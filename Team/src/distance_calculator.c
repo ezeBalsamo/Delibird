@@ -19,7 +19,7 @@ t_trainer_thread_context* closest_trainer_thread_context_to_localizable_object(t
     uint32_t localizable_trainer_distance = distance_between(localizable_trainer, localizable_object);
     uint32_t another_localizable_trainer_distance = distance_between(another_localizable_trainer, localizable_object);
 
-    return localizable_trainer_distance < another_localizable_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
+    return localizable_trainer_distance <= another_localizable_trainer_distance ? trainer_thread_context : another_trainer_thread_context;
 }
 
 t_trainer_thread_context* trainer_thread_context_closest_to_localizable_object(t_list* trainer_thread_contexts, t_localizable_object* localizable_object){
