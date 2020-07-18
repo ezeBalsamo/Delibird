@@ -277,7 +277,7 @@ char* get_new_block(){
 	char* block_number_string_format;
 	uint32_t index = 0;
 
-	sem_wait(&bitmap_mutex);
+	safe_sem_wait(&bitmap_mutex);
 	//<-------region critica-------->
 	while(bitarray_test_bit(bitmap,index)){
 		index++;
@@ -285,7 +285,7 @@ char* get_new_block(){
 
 	bitarray_set_bit(bitmap, index);
     //<-------region critica-------->
-    sem_post(&bitmap_mutex);
+    safe_sem_post(&bitmap_mutex);
 
 	block_number_string_format = string_from_format("%d",index);
 	return block_number_string_format;
@@ -294,11 +294,11 @@ char* get_new_block(){
 void free_block_number(char* block_name){
 	uint32_t index = atoi(block_name);
 
-    sem_wait(&bitmap_mutex);
+    safe_sem_wait(&bitmap_mutex);
     //<-------region critica-------->
 	bitarray_clean_bit(bitmap,index);
     //<-------region critica-------->
-    sem_post(&bitmap_mutex);
+    safe_sem_post(&bitmap_mutex);
 }
 
 bool write_until_full(char* block_path, t_list* pokemon_data_list, uint32_t* total_size){
@@ -492,6 +492,6 @@ void initialize_file_system(){
     initialize_files_information();
     initialize_metadata();
     sem_init(&bitmap_mutex, 0, 1);
-    consider_as_garbage(&bitmap_mutex, (void (*)) sem_destroy);
+    consider_as_garbage(&bitmap_mutex, (void (*)) safe_sem_destroy);
  	initialize_bitmap();
 }

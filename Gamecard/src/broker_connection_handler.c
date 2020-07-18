@@ -7,6 +7,7 @@
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/logger.h"
 #include <stdlib.h>
 #include <commons/string.h>
 #include <commons/collections/queue.h>
@@ -160,15 +161,15 @@ void notify_request_reception(t_request* deserialized_request, int socket_fd){
     t_identified_message* identified_message = deserialized_request -> structure;
     send_ack_message(identified_message -> message_id, socket_fd);
 
-    log_request_received(deserialized_request);
+    log_request_received(process_execution_logger(), deserialized_request);
 }
 
 void push_deserialized_request_in_queue(t_request* deserialized_request){
 
-    pthread_mutex_lock(&deserialized_request_queue_mutex);
+    safe_mutex_lock(&deserialized_request_queue_mutex);
     queue_push(deserialized_request_queue, deserialized_request);
-    sem_post(&deserialized_request_in_queue_semaphore);
-    pthread_mutex_unlock(&deserialized_request_queue_mutex);
+    safe_sem_post(&deserialized_request_in_queue_semaphore);
+    safe_mutex_unlock(&deserialized_request_queue_mutex);
 }
 
 void consume_messages_considering_reconnections_with(t_connection_information* connection_information,
@@ -223,10 +224,10 @@ void initialize_gamecard_process_description(){
 void* deserialized_request_thread_function(){
 
     for ever{
-        sem_wait(&deserialized_request_in_queue_semaphore);
-        pthread_mutex_lock(&deserialized_request_queue_mutex);
+        safe_sem_wait(&deserialized_request_in_queue_semaphore);
+        safe_mutex_lock(&deserialized_request_queue_mutex);
         t_request* deserialized_request = queue_pop(deserialized_request_queue);
-        pthread_mutex_unlock(&deserialized_request_queue_mutex);
+        safe_mutex_unlock(&deserialized_request_queue_mutex);
 
         performer_thread (deserialized_request);
     }
@@ -246,7 +247,7 @@ void initialize_gamecard_thread_pool(){
 
 void initialize_gamecard_broker_connection_handler(){
 
-    sem_initialize(&deserialized_request_in_queue_semaphore);
+    safe_sem_initialize(&deserialized_request_in_queue_semaphore);
     safe_mutex_initialize(&deserialized_request_queue_mutex);
 
     initialize_gamecard_process_description();
@@ -269,8 +270,8 @@ void free_gamecard_thread_pool(){
         safe_thread_cancel(thread);
     }
 
-    sem_destroy(&deserialized_request_in_queue_semaphore);
-    pthread_mutex_destroy(&deserialized_request_queue_mutex);
+    safe_sem_destroy(&deserialized_request_in_queue_semaphore);
+    safe_mutex_destroy(&deserialized_request_queue_mutex);
 }
 
 void free_gamecard_broker_connection_handler(){
