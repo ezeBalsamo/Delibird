@@ -89,6 +89,7 @@ void execute_to_blocked_transition_function(t_trainer_thread_context* trainer_th
 void blocked_to_blocked_transition_function(t_trainer_thread_context* trainer_thread_context){
 
     log_trainer_remains_blocked(trainer_thread_context);
+    consider_deadlock_occurred_according_to(trainer_thread_context);
 }
 
 void load_new_state_transition(uint32_t from_state, uint32_t to_state, void (*state_function) (t_trainer_thread_context*)){
