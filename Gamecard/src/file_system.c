@@ -148,7 +148,6 @@ t_list* read_block(char* file_path){
     uint32_t blocks_quantity;
     char* final_path;
     t_list* blocks_data = list_create();
-    consider_as_garbage(blocks_data,(void (*) (void*)) list_destroy_and_free_elements);
 
     uint32_t i = 1;
     do{
@@ -232,6 +231,7 @@ bool subtract_pokemon_from(t_list* blocks_information, t_catch_pokemon* pokemon_
 	else{
 		if(there_are_no_more_pokemons_in(pokemon_line)){
 			remove_pokemon_line_with_index(blocks_information, index);
+			free(pokemon_line);
 		}
 		else{
             pokemon_line -> quantity -= 1;
@@ -441,40 +441,35 @@ void* read_file_of_type(uint32_t file_type, char* file_name){
 
     t_file_information* file_information = file_information_with_code(file_type);
 
-    return (*(file_information -> reader_function)) (file_name);
+    return file_information -> reader_function (file_name);
+}
+
+void create_bitmap_using(FILE* bitmap_file, uint32_t bitmap_size_in_bytes){
+    int file_descriptor = fileno(bitmap_file);
+
+    ftruncate(file_descriptor, bitmap_size_in_bytes);
+
+    char* bitmap_buffer = mmap(NULL, bitmap_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, file_descriptor, 0);
+
+    bitmap = bitarray_create_with_mode(bitmap_buffer, bitmap_size_in_bytes, LSB_FIRST);
 }
 
 void initialize_bitmap(){
 
     char* bitmap_path = string_from_format("%s/Metadata/Bitmap.bin", tallgrass_mount_point());
-    uint32_t bitmap_size_in_bytes = (file_system_metadata -> blocks)/8;
+    uint32_t bitmap_size_in_bytes = (file_system_metadata -> blocks) / 8;
     FILE* bitmap_file;
-	int file_descriptor;
-	char* bitmap_buffer;
 
 	if(exists_file_at(bitmap_path)){
+
 		bitmap_file = fopen(bitmap_path, "r+");
         free(bitmap_path);
-
-        file_descriptor = fileno(bitmap_file);
-
-        ftruncate(file_descriptor, bitmap_size_in_bytes);
-
-        bitmap_buffer = mmap(NULL, bitmap_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, file_descriptor, 0);
-
-		//Guardo en bitmap el t_bitarray con los datos correspondientes
-		bitmap = bitarray_create_with_mode(bitmap_buffer, bitmap_size_in_bytes, LSB_FIRST);
+        create_bitmap_using(bitmap_file, bitmap_size_in_bytes);
 	}else{
+
 		bitmap_file = fopen(bitmap_path, "w+");
         free(bitmap_path);
-
-        file_descriptor = fileno(bitmap_file);
-
-        ftruncate(file_descriptor, bitmap_size_in_bytes);
-
-        bitmap_buffer = mmap(NULL, bitmap_size_in_bytes, PROT_READ | PROT_WRITE, MAP_SHARED, file_descriptor, 0);
-
-		bitmap = bitarray_create_with_mode(bitmap_buffer, bitmap_size_in_bytes, LSB_FIRST);
+        create_bitmap_using(bitmap_file, bitmap_size_in_bytes);
 
 		for(uint32_t i = 0; i < file_system_metadata -> blocks; i++){
 			bitarray_clean_bit(bitmap, i);
@@ -499,4 +494,10 @@ void initialize_file_system(){
     sem_init(&bitmap_mutex, 0, 1);
     consider_as_garbage(&bitmap_mutex, (void (*)) sem_destroy);
  	initialize_bitmap();
+}
+
+void free_file_system(){
+    munmap(bitmap -> bitarray, bitmap -> size);
+    bitarray_destroy(bitmap);
+    free_file_system_metadata(file_system_metadata);
 }

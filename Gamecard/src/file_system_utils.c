@@ -134,6 +134,11 @@ void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds)
     flock(file_descriptor,LOCK_SH);
 }
 
+void free_file_system_metadata(t_file_system_metadata* file_system_metadata){
+    free(file_system_metadata -> magic_number);
+    free(file_system_metadata);
+}
+
 void free_metadata_file(t_file_metadata* file_metadata_path){
     free(file_metadata_path -> directory);
     free(file_metadata_path -> blocks);

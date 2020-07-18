@@ -23,26 +23,18 @@ sem_t deserialized_request_in_queue_semaphore;
 
 char* gamecard_process_description;
 
-void sleep_for(int reconnection_time_in_seconds){
-    struct timespec deadline;
-    deadline.tv_sec = reconnection_time_in_seconds;
-    deadline.tv_nsec = 0;
-    if(clock_nanosleep(CLOCK_MONOTONIC, 0, &deadline, NULL) != 0){
-        log_thread_sleep_time_configuration_error_from_gamecard();
-        free_system();
-    }
-}
-
 void* retry_connection_thread(void* connection_information){
     log_initiating_communication_retry_process_with_broker_from_gamecard();
+    t_connection_information* cast_connection_information = (t_connection_information*) connection_information;
     int reconnection_time_in_seconds = operation_retry_time_getter();
 
-    if(reconnect((t_connection_information*) connection_information) == -1){
+    if(reconnect(cast_connection_information) == -1){
         log_failed_retry_of_communication_with_broker_from_gamecard();
         sleep_for(reconnection_time_in_seconds);
         retry_connection_thread(connection_information);
     }
     else{
+        cast_connection_information -> connection_was_succesful = true;
         log_succesful_retry_of_communication_with_broker_from_gamecard();
     }
 
@@ -57,6 +49,8 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
 
     *reconnection_thread = default_safe_thread_create(retry_connection_thread, (void *) connection_information);
     safe_thread_join(*reconnection_thread);
+
+    stop_considering_garbage(reconnection_thread);
 }
 
 t_request* subscribe_me_request_for(uint32_t operation_queue){
@@ -99,7 +93,6 @@ t_connection_information* subscribe_to_broker_queue(void* queue_operation_identi
         connection_information = subscribe_to_broker_queue(queue_operation_identifier);
     }else{
         log_succesful_suscription_to(process_execution_logger(), operation_queue);
-        stop_considering_garbage(connection_information);
     }
 
     free_request(request);
@@ -111,11 +104,8 @@ t_connection_information* subscribe_to_broker_queue(void* queue_operation_identi
 void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_information* connection_information){
 
     log_broker_disconnection_using(process_execution_logger());
-    consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
 
     t_connection_information* current_active_connection_information = subscribe_to_broker_queue(queue_operation_identifier);
-
-    stop_considering_garbage(connection_information);
     synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
 }
 
@@ -192,8 +182,6 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
 
 void* subscriber_thread(void* queue_operation_identifier){
 
-    consider_as_garbage(queue_operation_identifier, free);
-
     t_connection_information* connection_information = subscribe_to_broker_queue(queue_operation_identifier);
 
     for ever{
@@ -205,6 +193,7 @@ pthread_t subscribe_to_queue(uint32_t queue_code){
     uint32_t* pokemon_operation_queue_code = safe_malloc(sizeof(uint32_t));
     *pokemon_operation_queue_code = queue_code;
 
+    consider_as_garbage(pokemon_operation_queue_code, free);
     return thread_create(subscriber_thread, (void*) pokemon_operation_queue_code, log_queue_thread_create_error_from_gamecard);
 }
 

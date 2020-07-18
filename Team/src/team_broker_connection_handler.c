@@ -95,7 +95,6 @@ t_connection_information* subscribe_to_broker_queue(void* queue_operation_identi
     }else{
         log_succesful_suscription_to(main_logger(), operation_queue);
         log_succesful_suscription_to(process_execution_logger(), operation_queue);
-        stop_considering_garbage(connection_information);
     }
 
     free_request(request);
@@ -108,11 +107,8 @@ void resubscribe_to_broker_queue(void* queue_operation_identifier, t_connection_
 
     log_broker_disconnection_using(main_logger());
     log_broker_disconnection_using(process_execution_logger());
-    consider_as_garbage(connection_information, (void (*)(void *)) free_and_close_connection_information);
 
     t_connection_information* current_active_connection_information = subscribe_to_broker_queue(queue_operation_identifier);
-
-    stop_considering_garbage(connection_information);
     synchronize_connection_information_closing_old(connection_information, current_active_connection_information);
 }
 

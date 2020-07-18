@@ -11,14 +11,6 @@
 #include <stdlib.h>
 #include "open_files_structure.h"
 
-#include "../../Utils/include/pthread_wrapper.h"
-
-void* free_system_debugging_thread(){
-    sleep_for(45);
-    free_system();
-    return NULL;
-}
-
 int main(void) {
 
     initialize_signal_handler();
@@ -35,9 +27,6 @@ int main(void) {
     log_succesful_start_up();
 
     initialize_gamecard_broker_connection_handler();
-
-    pthread_t debugging_tid = default_safe_thread_create(free_system_debugging_thread, NULL);
-
     initialize_gamecard_gameboy_connection_handler();
 
 	return EXIT_SUCCESS;

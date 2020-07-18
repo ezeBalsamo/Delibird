@@ -44,14 +44,11 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
     if(exists_file_at(pokemon_metadata_path)) {
 
         //Leo el archivo de metadata
-        t_file_metadata* metadata_file_information = safe_malloc(sizeof(t_file_metadata));
-        metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
-        consider_as_garbage(metadata_file_information, (void (*) (void*)) free_metadata_file);
+        t_file_metadata* metadata_file_information = read_file_of_type(FILE_METADATA, pokemon_metadata_path);
 
         //Leo bloques del archivo
         t_list* blocks_information = read_file_of_type(BLOCK, metadata_file_information -> blocks);
 
-        stop_considering_garbage(metadata_file_information);
         free_metadata_file(metadata_file_information);
 
         //Crear listado de posiciones
@@ -64,7 +61,6 @@ t_identified_message* get_query_performer_function(t_identified_message* identif
         //Cerrar archivo metadata
         close_metadata(pokemon_metadata_path);
         remove_from_open_files(pokemon_metadata_path);
-        stop_considering_garbage(blocks_information);
         list_destroy_and_destroy_elements(blocks_information, free);
 
         localized_request = get_localized_request(pokemon_name, positions_amount, positions_list);
