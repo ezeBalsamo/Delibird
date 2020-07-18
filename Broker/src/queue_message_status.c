@@ -60,8 +60,7 @@ void delete_message_if_necessary(t_message_status* message_status, t_list* acks)
 
     if (can_be_erased){
         uint32_t operation = message_status -> operation_queue;
-        delete_message(operation, message_status -> message_id,
-                       "Se le envió a todos los suscriptores de la cola.");
+        delete_message(operation, message_status -> message_id, "Se le envió a todos los suscriptores de la cola.");
     }
 }
 
@@ -74,7 +73,7 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
 
     uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
 
-    if (cast_subscriber_ack == FAILED_ACK){
+    if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
         log_failed_to_receive_ack_error(subscriber_context);
         log_subscriber_disconnection(subscriber_context);
         set_inactive_connection_for(subscriber_context);

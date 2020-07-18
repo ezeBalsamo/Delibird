@@ -9,7 +9,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 
 t_message_role* publisher_message_mode;
-pthread_mutex_t mutex_for_id_and_allocation;
+pthread_mutex_t message_treatment_mutex;
 pthread_mutex_t message_status_mutex;
 
 t_message_role* publisher_mode(){
@@ -24,7 +24,7 @@ void publisher_mode_attending_message_function(t_connection_deserialization_info
 
     t_deserialization_information* deserialization_information = connection_deserialization_information -> deserialization_information;
 
-    safe_mutex_lock(&mutex_for_id_and_allocation);
+    safe_mutex_lock(&message_treatment_mutex);
     uint32_t message_id = update_and_get_message_id();
     allocate_message_using(message_id, deserialization_information);
 
@@ -32,7 +32,7 @@ void publisher_mode_attending_message_function(t_connection_deserialization_info
     t_message_status* message_status = create_message_status_using(message_id, deserialization_information);
 
     push_to_queue(message_status);
-    safe_mutex_unlock(&mutex_for_id_and_allocation);
+    safe_mutex_unlock(&message_treatment_mutex);
 
     free_connection_deserialization_information(connection_deserialization_information);
 }
@@ -42,7 +42,7 @@ void initialize_publisher_message_mode(){
     publisher_message_mode -> can_handle_function  = publisher_mode_can_handle;
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 
-    safe_mutex_initialize(&mutex_for_id_and_allocation);
+    safe_mutex_initialize(&message_treatment_mutex);
     safe_mutex_initialize(&message_status_mutex);
-//    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
+    consider_as_garbage(&message_treatment_mutex, (void (*)(void *)) safe_mutex_destroy);
 }

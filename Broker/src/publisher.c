@@ -169,6 +169,7 @@ void publish(t_message_status* message_status) {
             log_succesful_message_sent_to_suscribers(message_status -> message_id);
 
             join_subscribers_ack_threads(waiting_for_ack_subscribers_threads);
+            free_serialization_information(serialization_information);
         }
 }
 

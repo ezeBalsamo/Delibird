@@ -21,7 +21,7 @@ t_block_information* initialize_first_block_information(){
     initial_block_information->initial_position = safe_malloc(memory_size);
     initial_block_information->memory_block = NULL;
 
-//    consider_as_garbage(initial_block_information -> initial_position, free);
+    consider_as_garbage(initial_block_information -> initial_position, free);
     return initial_block_information;
 }
 

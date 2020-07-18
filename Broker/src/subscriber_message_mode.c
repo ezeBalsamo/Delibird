@@ -10,8 +10,7 @@
 #include "../../Utils/include/pthread_wrapper.h"
 
 t_message_role* subscriber_message_mode;
-extern pthread_mutex_t mutex_for_id_and_allocation;
-pthread_mutex_t suscribe_client_mutex;
+extern pthread_mutex_t message_treatment_mutex;
 
 t_message_role* subscriber_mode(){
     return subscriber_message_mode;
@@ -31,19 +30,17 @@ void subscriber_mode_attending_message_function(t_connection_deserialization_inf
     t_subscribe_me* subscribe_me = request -> structure;
     t_subscriber_context* subscriber_context = create_subscriber_context(socket_fd, subscribe_me);
 
-    safe_mutex_lock(&mutex_for_id_and_allocation);
+    safe_mutex_lock(&message_treatment_mutex);
     subscribe_client_to_queue(subscriber_context);
     send_ack_message(true, socket_fd);
     send_all_messages(subscriber_context);
-    safe_mutex_unlock(&mutex_for_id_and_allocation);
+    safe_mutex_unlock(&message_treatment_mutex);
 
-//    consider_as_garbage(request, (void (*)(void *)) free_request);
+    consider_as_garbage(request, (void (*)(void *)) free_request);
     free_connection_deserialization_information(connection_deserialization_information);
 }
 
 void initialize_subscriber_message_mode(){
-
-    safe_mutex_initialize(&suscribe_client_mutex);
 
     subscriber_message_mode = safe_malloc(sizeof(t_message_role));
     subscriber_message_mode -> can_handle_function  = subscriber_mode_can_handle;
