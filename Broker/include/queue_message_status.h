@@ -16,8 +16,9 @@ typedef struct Message_status {
 t_message_status* create_message_status_using(uint32_t message_id, t_deserialization_information* deserialization_information);
 void move_subscriber_to_ACK(t_message_status* message_status, t_subscriber_context* subscriber_context);
 void* receive_ack_thread(void* subscriber_fd);
-void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context, t_message_status* message_status, t_queue_context* queue_context);
+void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context, t_message_status* message_status);
 void delete_message(uint32_t operation_message, uint32_t message_id, char* reason);
+void delete_message_if_necessary(t_message_status* message_status, t_list* acks);
 
 void free_message_status(t_message_status* message_status);
 

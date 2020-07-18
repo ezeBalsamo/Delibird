@@ -24,18 +24,27 @@ void free_subscriber_ack_thread(t_subscriber_ack_thread* subscriber_ack_thread){
     free(subscriber_ack_thread);
 }
 
-void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads, t_queue_context* queue_context){
+void join_subscribers_ack_threads(t_list* waiting_for_ack_subscribers_threads){
+
+    t_list* acks = list_create();
 
     for(int i = 0; i < list_size(waiting_for_ack_subscribers_threads); i++){
 
         t_subscriber_ack_thread* subscriber_ack_thread = (t_subscriber_ack_thread*) list_get(waiting_for_ack_subscribers_threads, i);
         pthread_t waiting_for_ack_thread = subscriber_ack_thread -> subscriber_thread;
 
-        void* ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status, queue_context);
-        free(ack);
+        void* ack = join_reception_for_ack_thread(waiting_for_ack_thread, subscriber_ack_thread -> subscriber_context, subscriber_ack_thread -> message_status);
+        list_add(acks, ack);
     }
-    list_destroy_and_destroy_elements(waiting_for_ack_subscribers_threads,
-                                      (void (*)(void *)) free_subscriber_ack_thread);
+
+    t_subscriber_ack_thread* any_subscriber_ack_thread = list_first(waiting_for_ack_subscribers_threads);
+
+    delete_message_if_necessary(any_subscriber_ack_thread -> message_status, acks);
+
+    list_destroy_and_destroy_elements(waiting_for_ack_subscribers_threads, (void (*)(void *)) free_subscriber_ack_thread);
+
+    list_destroy_and_destroy_elements(acks, free);
+
 }
 
 t_serialization_information* create_serialization_information_of_identified_message_with_correlative_id_from(t_memory_block* memory_block){
@@ -125,7 +134,7 @@ t_serialization_information* create_serialization_information_from(t_memory_bloc
     return create_serialization_information_of_identified_message_from(memory_block);
 }
 
-void publish(t_message_status* message_status, t_queue_context* queue_context) {
+void publish(t_message_status* message_status) {
 
     t_list* subscribers = message_status -> subscribers_to_send;
 
@@ -152,7 +161,6 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
                 subscriber_ack_thread -> message_status = message_status;
 
                 list_add(waiting_for_ack_subscribers_threads, subscriber_ack_thread);
-                free_serialization_information(serialization_information);
             }
 
             t_list* subscribers_with_connection_active = list_filter(subscribers, (bool (*)(void *)) has_active_connection);
@@ -160,7 +168,7 @@ void publish(t_message_status* message_status, t_queue_context* queue_context) {
             list_destroy(subscribers_with_connection_active);
             log_succesful_message_sent_to_suscribers(message_status -> message_id);
 
-            join_subscribers_ack_threads(waiting_for_ack_subscribers_threads, queue_context);
+            join_subscribers_ack_threads(waiting_for_ack_subscribers_threads);
         }
 }
 
@@ -176,5 +184,5 @@ void push_to_queue(t_message_status* message_status){
     queue_context -> queue_context_operations -> add_message_status_to_queue_function (queue_context, message_status);
     log_succesful_new_message_pushed_to_a_queue(message_status -> message_id, queue_context -> operation);
 
-    publish(message_status, queue_context);
+    publish(message_status);
 }

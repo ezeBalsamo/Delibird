@@ -10,6 +10,7 @@
 
 t_message_role* publisher_message_mode;
 pthread_mutex_t mutex_for_id_and_allocation;
+pthread_mutex_t message_status_mutex;
 
 t_message_role* publisher_mode(){
     return publisher_message_mode;
@@ -42,5 +43,6 @@ void initialize_publisher_message_mode(){
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 
     safe_mutex_initialize(&mutex_for_id_and_allocation);
+    safe_mutex_initialize(&message_status_mutex);
 //    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
 }

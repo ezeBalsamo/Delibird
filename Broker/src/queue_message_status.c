@@ -12,7 +12,10 @@
 #include "../../Utils/include/queue_code_name_associations.h"
 #include "../../Utils/include/operation_deserialization.h"
 #include "../../Utils/include/serializable_objects.h"
+#include "../../Utils/include/pthread_wrapper.h"
 #include <deserialization_information_content_provider.h>
+
+extern pthread_mutex_t message_status_mutex;
 
 t_message_status* create_message_status_using(uint32_t message_id, t_deserialization_information* deserialization_information){
 
@@ -33,7 +36,9 @@ void delete_message(uint32_t operation_message, uint32_t message_id, char* reaso
         return message_status -> message_id  == message_id;
     }
 
+    safe_mutex_lock(&message_status_mutex);
     t_message_status* message_status = list_remove_by_condition(queue_context -> messages, (bool (*) (void*)) _message_status_with_message_id);
+    safe_mutex_unlock(&message_status_mutex);
 
     if(message_status == NULL){
         log_message_status_not_found_in_queue_error(message_id);    //PUEDE PASAR QUE SE QUIERA BORRAR ALGO QUE YA SE BORRO DE LA LISTA DE SUBSCRIPTORES POR HABERSE ENVIADO A TODOS
@@ -43,27 +48,24 @@ void delete_message(uint32_t operation_message, uint32_t message_id, char* reaso
     }
 }
 
-void delete_message_if_necessary(t_message_status* message_status,t_queue_context* queue_context) {
-    t_list *subscribers_message_who_received = message_status->subscribers_who_received;
-    t_list *subscribers_queue = queue_context->subscribers;
-    bool have_the_same_subscriber = true;
+void delete_message_if_necessary(t_message_status* message_status, t_list* acks){
 
-    if (list_size(subscribers_message_who_received) == list_size(subscribers_queue)) {
-        for (int i = 0; i < list_size(subscribers_message_who_received) && have_the_same_subscriber; i++) {
-            have_the_same_subscriber = list_includes(subscribers_queue, list_get(subscribers_message_who_received, i),
-                                                     (bool (*)(void *, void *)) are_equivalent_subscribers);
-        }
+
+    bool _is_not_a_failed_ack(void* ack){
+        uint32_t cast_ack = *((uint32_t *) ack);
+        return cast_ack != FAILED_ACK;
     }
 
-    if (have_the_same_subscriber) {
+    bool can_be_erased = list_all_satisfy(acks, _is_not_a_failed_ack);
+
+    if (can_be_erased){
         uint32_t operation = message_status -> operation_queue;
         delete_message(operation, message_status -> message_id,
                        "Se le envió a todos los suscriptores de la cola.");
     }
 }
 
-void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context,
-        t_message_status* message_status, t_queue_context* queue_context){
+void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscriber_context* subscriber_context, t_message_status* message_status){
 
     void *subscriber_ack;
     pthread_join(waiting_for_ack_thread, &subscriber_ack);
@@ -72,7 +74,7 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
 
     uint32_t cast_subscriber_ack = *((uint32_t *) subscriber_ack);
 
-    if (cast_subscriber_ack == FAILED_ACK || cast_subscriber_ack != expected_ack){
+    if (cast_subscriber_ack == FAILED_ACK){
         log_failed_to_receive_ack_error(subscriber_context);
         log_subscriber_disconnection(subscriber_context);
         set_inactive_connection_for(subscriber_context);
@@ -81,7 +83,6 @@ void* join_reception_for_ack_thread(pthread_t waiting_for_ack_thread, t_subscrib
         subscriber_context -> last_message_id_received = expected_ack;
         move_subscriber_to_ACK(message_status, subscriber_context);
         log_succesful_message_received_by(subscriber_context, message_status -> message_id);
-        delete_message_if_necessary(message_status, queue_context);
     }
 
     return subscriber_ack;
