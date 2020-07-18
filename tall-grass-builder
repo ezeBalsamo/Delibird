@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd $1
+mkdir tall-grass
+cd tall-grass/
+mkdir Blocks
+mkdir Files
+mkdir Metadata
+cd Metadata/
+echo "BLOCKS_SIZE=$2" >> Metadata.bin
+echo "BLOCKS=$3" >> Metadata.bin
+echo "MAGIC_NUMBER=TALL_GRASS" >> Metadata.bin
+cd $HOME/tp-2020-1c-El-Kuelgue/
