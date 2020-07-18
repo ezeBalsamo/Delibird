@@ -17,12 +17,6 @@ void log_initiating_communication_retry_process_with_broker_from_gamecard(){
     log_succesful_message(process_execution_logger(), message);
 }
 
-void log_succesful_reception_of_message(t_identified_message* identified_message){
-    char* message = string_from_format("Se recibio el mensaje con operación: %s con id = %d\n", queue_name_of(internal_operation_in(identified_message)) ,identified_message -> message_id);
-    log_succesful_message(process_execution_logger(), message);
-    free(message);
-}
-
 void log_succesful_retry_of_communication_with_broker_from_gamecard(){
     char* message = "El proceso de reintento de comunicación con el Broker ha sido exitoso.";
     log_succesful_message(process_execution_logger(), message);

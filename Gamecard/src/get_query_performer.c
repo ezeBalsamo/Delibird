@@ -33,7 +33,6 @@ t_request* get_localized_request(char* pokemon_name, uint32_t quantity, t_list* 
 }
 
 t_identified_message* get_query_performer_function(t_identified_message* identified_message){
-    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     t_get_pokemon* get_pokemon = identified_message->request->structure;

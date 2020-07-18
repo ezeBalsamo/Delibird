@@ -31,7 +31,6 @@ t_request* catch_caught_request(uint32_t caught_status){
 }
 
 t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
-    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     	t_catch_pokemon* catch_pokemon = identified_message->request->structure;

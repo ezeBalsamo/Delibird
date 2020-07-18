@@ -54,8 +54,6 @@ void initialize_metadata_file_information(t_file_metadata* metadata_file_informa
 
 t_identified_message* new_query_performer_function(t_identified_message* identified_message){
 
-    log_succesful_reception_of_message(identified_message);
-
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
 	char* pokemon_metadata_path = string_from_format("%s/Files/%s/Metadata.bin", tallgrass_mount_point(), new_pokemon -> pokemon_name);

@@ -10,31 +10,25 @@
 void log_succesful_start_up(){
     char* message = string_new();
     string_append(&message, get_program_name());
-    string_append(&message," se ha inicializado correctamente!\n");
-    char* blue_message = change_message_colour(message, blue_colour());
-    log_succesful_message(process_execution_logger(), blue_message);
+    string_append(&message," se ha inicializado correctamente!\n");=
+    log_succesful_message(process_execution_logger(), message);
     free(message);
-    free(blue_message);
 }
 
 void log_successful_execution(){
-    char *message = string_new();
+    char* message = string_new();
     string_append(&message, get_program_name());
     string_append(&message, " ha ejecutado exitosamente!\n");
-    char* blue_message = change_message_colour(message, blue_colour());
-    log_succesful_message(process_execution_logger(), blue_message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
-    free(blue_message);
 }
 
 void log_successful_clean_up(){
     char *message = string_new();
     string_append(&message, get_program_name());
     string_append(&message, " ha liberado toda la memoria ocupada exitosamente!\n");
-    char* blue_message = change_message_colour(message, blue_colour());
-    log_succesful_message(process_execution_logger(), blue_message);
+    log_succesful_message(process_execution_logger(), message);
     free(message);
-    free(blue_message);
 }
 
 void log_succesful_initialize_pretty_printer(){
