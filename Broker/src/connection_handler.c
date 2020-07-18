@@ -40,7 +40,7 @@ void* main_thread_handler(void* connection_fd){
     log_succesful_connection_of_a_process();
 
     if(receive_information -> receive_was_successful){
-        consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
+//        consider_as_garbage(receive_information, (void (*)(void *)) free_receive_information);
 
         t_deserialization_information* deserialization_information =
                 deserialization_information_of(receive_information -> serialization_information -> serialized_request);

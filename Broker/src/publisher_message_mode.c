@@ -26,12 +26,12 @@ void publisher_mode_attending_message_function(t_connection_deserialization_info
     safe_mutex_lock(&mutex_for_id_and_allocation);
     uint32_t message_id = update_and_get_message_id();
     allocate_message_using(message_id, deserialization_information);
-    safe_mutex_unlock(&mutex_for_id_and_allocation);
 
     send_ack_message(message_id, connection_deserialization_information -> socket_fd);
     t_message_status* message_status = create_message_status_using(message_id, deserialization_information);
 
     push_to_queue(message_status);
+    safe_mutex_unlock(&mutex_for_id_and_allocation);
 
     free_connection_deserialization_information(connection_deserialization_information);
 }
@@ -42,5 +42,5 @@ void initialize_publisher_message_mode(){
     publisher_message_mode -> attending_message_function = publisher_mode_attending_message_function;
 
     safe_mutex_initialize(&mutex_for_id_and_allocation);
-    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
+//    consider_as_garbage(&mutex_for_id_and_allocation, (void (*)(void *)) safe_mutex_destroy);
 }

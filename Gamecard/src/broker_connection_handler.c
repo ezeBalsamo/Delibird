@@ -138,6 +138,7 @@ void performer_thread(t_request* deserialized_request){
 
     if(connection_information -> connection_was_succesful){
         send_structure_considering_ack(request, connection_information);
+        log_request_sent(request);
     } else {
         apply_default_action();
     }

@@ -7,8 +7,10 @@
 #include "../../Utils/include/queue_code_name_associations.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/garbage_collector.h"
+#include "../../Utils/include/pthread_wrapper.h"
 
 t_message_role* subscriber_message_mode;
+extern pthread_mutex_t mutex_for_id_and_allocation;
 
 t_message_role* subscriber_mode(){
     return subscriber_message_mode;
@@ -31,9 +33,11 @@ void subscriber_mode_attending_message_function(t_connection_deserialization_inf
     subscribe_client_to_queue(subscriber_context);
 
     send_ack_message(true, socket_fd);
+    safe_mutex_lock(&mutex_for_id_and_allocation);
     send_all_messages(subscriber_context);
+    safe_mutex_unlock(&mutex_for_id_and_allocation);
 
-    consider_as_garbage(request, (void (*)(void *)) free_request);
+//    consider_as_garbage(request, (void (*)(void *)) free_request);
     free_connection_deserialization_information(connection_deserialization_information);
 }
 
