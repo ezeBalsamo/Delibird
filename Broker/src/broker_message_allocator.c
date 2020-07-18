@@ -50,7 +50,7 @@ int block_index_position(t_block_information* block_to_find,t_list* blocks_infor
 
 t_memory_block* build_memory_block_from(uint32_t message_id, uint32_t message_size, t_deserialization_information* deserialization_information, t_block_information* block_information) {
 
-    t_memory_block *memory_block_to_save = safe_malloc(sizeof(t_memory_block));
+    t_memory_block* memory_block_to_save = safe_malloc(sizeof(t_memory_block));
 
     memory_block_to_save -> message_id = message_id;
     memory_block_to_save -> correlative_message_id = correlative_message_id_using(deserialization_information);
