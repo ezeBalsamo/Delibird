@@ -42,7 +42,7 @@ t_log* logger_named(char* log_name){
 
 void create_log_named(char* log_name){
     char* log_absolute_path = absolute_path_for_log_named(log_name);
-    t_log* logger = log_create(log_absolute_path, program_name, true, LOG_LEVEL_DEBUG);
+    t_log* logger = log_create(log_absolute_path, program_name, false, LOG_LEVEL_DEBUG);
     dictionary_put(loggers_by_name, log_name, (void*) logger);
 
     free(log_absolute_path);
