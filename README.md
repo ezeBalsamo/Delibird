@@ -1,9 +1,9 @@
 # tp-2020-1c-El-Kuelgue
 # **GUIA APB**
 
-- ssh utnso@host_name -p port
-- git clone repo
-- cd repo
+- ssh utnso@host_name -p port **: conexión a servidor remoto.**
+- git clone repo **clonar repositorio de Git.**
+- cd repo **moverse al directorio.**
 
 ***A PARTIR DE AHORA LOS COMANDOS SE CORREN PARADOS EN ESTA RUTA***
 1. sudo ./deploy **: importa las commons. También existe el ./undeploy, que se encarga de eliminarlas en caso que fuera necesario.**
