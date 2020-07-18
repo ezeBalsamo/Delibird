@@ -9,7 +9,12 @@
 #include <unistd.h>
 
 void list_destroy_and_free_elements(t_list* list){
-	list_destroy_and_destroy_elements(list,free);
+	if(list_is_empty(list)) {
+        list_destroy(list);
+	}
+	else{
+	    list_destroy_and_destroy_elements(list,free);
+	}
 }
 
 char* get_pokemon_name_from_path(char* pokemon_path){
@@ -18,8 +23,8 @@ char* get_pokemon_name_from_path(char* pokemon_path){
 
     uint32_t path_array_length = sizeof(path_array);
 
-    char* pokemon_name = path_array[path_array_length];
-    free(path_array);
+    char* pokemon_name = string_duplicate(path_array[path_array_length]);
+    free_char_array(path_array);
 
     return pokemon_name;
 }
@@ -130,6 +135,8 @@ void unlock_file_during_time(uint32_t file_descriptor, uint32_t time_in_seconds)
 }
 
 void free_metadata_file(t_file_metadata* file_metadata_path){
+    free(file_metadata_path -> directory);
     free(file_metadata_path -> blocks);
+    free(file_metadata_path -> open);
     free(file_metadata_path);
 }

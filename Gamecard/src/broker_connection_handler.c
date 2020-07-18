@@ -5,6 +5,7 @@
 #include "../../Utils/include/general_logs.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/socket.h"
+#include "../../Utils/include/logger.h"
 #include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/garbage_collector.h"
 #include <stdlib.h>
@@ -160,7 +161,7 @@ void notify_request_reception(t_request* deserialized_request, int socket_fd){
     t_identified_message* identified_message = deserialized_request -> structure;
     send_ack_message(identified_message -> message_id, socket_fd);
 
-    log_request_received(deserialized_request);
+    log_request_received(process_execution_logger(), deserialized_request);
 }
 
 void push_deserialized_request_in_queue(t_request* deserialized_request){
@@ -246,7 +247,7 @@ void initialize_gamecard_thread_pool(){
 
 void initialize_gamecard_broker_connection_handler(){
 
-    sem_initialize(&deserialized_request_in_queue_semaphore);
+    safe_sem_initialize(&deserialized_request_in_queue_semaphore);
     safe_mutex_initialize(&deserialized_request_queue_mutex);
 
     initialize_gamecard_process_description();

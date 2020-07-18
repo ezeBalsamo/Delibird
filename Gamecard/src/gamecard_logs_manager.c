@@ -9,6 +9,7 @@
 
 void initialize_gamecard_logs_manager(){
     initialize_logger_for("Gamecard");
+    create_main_logger_from_config();
     create_process_execution_logger();
 }
 
@@ -30,6 +31,7 @@ void log_succesful_retry_of_communication_with_broker_from_gamecard(){
 
 void log_failed_attempt_to_communicate_with_broker_from_gamecard(char* default_action){
     char* message = string_from_format("Falló la comunicación con Broker. Por defecto, %s.", default_action);
+    log_errorful_message(main_logger(), message);
     log_errorful_message(process_execution_logger(), message);
     free(message);
 }

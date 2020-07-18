@@ -352,6 +352,8 @@ void write_pokemon_metadata(t_file_metadata* metadata_file_information, char* po
 		remove(pokemon_path);
 		char* pokemon_name = get_pokemon_name_from_path(pokemon_path);
 		log_pokemon_file_destroyed(pokemon_name);
+		free(pokemon_path);
+		free(pokemon_name);
 
 	} else{
 
@@ -389,8 +391,11 @@ void write_pokemon_blocks(t_list* pokemon_data_list, t_file_metadata* metadata_f
 
 	if(list_is_empty(pokemon_data_list)){
         free_block_number(block_name);
-		remove(create_block_path(block_name));
-		metadata_file_information -> blocks = "[]";
+		char* block_path = create_block_path(block_name);
+		remove(block_path);
+		free(block_path);
+		free(metadata_file_information -> blocks);
+		metadata_file_information -> blocks = string_duplicate("[]");
 		return;
 	}
 

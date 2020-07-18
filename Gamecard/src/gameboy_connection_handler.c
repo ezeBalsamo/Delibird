@@ -1,5 +1,6 @@
 #include "../include/gameboy_connection_handler.h"
 #include "../include/gamecard_query_performers.h"
+#include "../include/broker_connection_handler.h"
 #include "../../Utils/include/socket.h"
 #include "../../Utils/include/configuration_manager.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -25,9 +26,8 @@ void* main_thread_handler(void* connection_fd){
 
         //Realizar lógica
         //En este punto tambien debo armar un mensaje con el mismo id que me llego para publicar en la cola corresp
-        gamecard_query_perform(deserialized_request);
+        performer_thread(deserialized_request);
 
-        free(deserialized_request);
     }
 
     free_and_close_connection(connection_fd);
