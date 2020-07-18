@@ -1,5 +1,6 @@
 #include "../include/gamecard_logs_manager.h"
 #include "../../Utils/include/logger.h"
+#include "../../Utils/include/queue_code_name_associations.h"
 #include <commons/string.h>
 #include <errno.h>
 #include <string.h>
@@ -14,6 +15,12 @@ void initialize_gamecard_logs_manager(){
 void log_initiating_communication_retry_process_with_broker_from_gamecard(){
     char* message = "Inicio del proceso de reintento de comunicación con el Broker.";
     log_succesful_message(process_execution_logger(), message);
+}
+
+void log_succesful_reception_of_message(t_identified_message* identified_message){
+    char* message = string_from_format("Se recibio el mensaje con operación: %s con id = %d\n", queue_name_of(internal_operation_in(identified_message)) ,identified_message -> message_id);
+    log_succesful_message(process_execution_logger(), message);
+    free(message);
 }
 
 void log_succesful_retry_of_communication_with_broker_from_gamecard(){
@@ -82,7 +89,7 @@ void log_file_metadata_info(t_file_metadata* pointer_file_metadata){
 }
 
 void log_block_metadata_info(int32_t x, int32_t y, int32_t quantity){
-    char* message = string_from_format("Leida linea con Pos X: %d, Pos Y: %d, Cantidad: %d\n", x, y, quantity);
+    char* message = string_from_format("Se leyo una linea con Pos X: %d, Pos Y: %d, Cantidad: %d\n", x, y, quantity);
     log_succesful_message(process_execution_logger(), message);
     free(message);
 }

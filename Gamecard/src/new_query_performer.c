@@ -10,6 +10,7 @@
 #include <string.h>
 #include <commons/string.h>
 #include <unistd.h>
+#include <gamecard_logs_manager.h>
 #include "../../Utils/include/garbage_collector.h"
 #include "open_files_structure.h"
 
@@ -38,13 +39,22 @@ t_request* new_appeared_request(t_new_pokemon* new_pokemon){
     t_request* localized_request = safe_malloc(sizeof(t_request));
     localized_request -> operation = APPEARED_POKEMON;
     localized_request -> structure = appeared_structure;
-    localized_request -> sanitizer_function = (void (*)(void *)) free_appeared_pokemon;
+    localized_request -> sanitizer_function = free;
 
     return localized_request;
 }
 
+void initialize_metadata_file_information(t_file_metadata* metadata_file_information){
+    char* new_block_number = get_new_block();
+    metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
+    metadata_file_information -> directory = "N";
+    metadata_file_information -> open = "N";
+    free(new_block_number);
+}
+
 t_identified_message* new_query_performer_function(t_identified_message* identified_message){
-    printf("Se recibio el mensaje NEW_POKEMON con id = %d\n", identified_message -> message_id);
+
+    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
 	t_new_pokemon* new_pokemon = identified_message->request->structure;
@@ -77,11 +87,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 		write_pokemon_metadata(metadata_with_open_flag,pokemon_metadata_path);
 		free(metadata_with_open_flag);
 
-		char* new_block_number = get_new_block();
-		metadata_file_information -> blocks = string_from_format("[%s]", new_block_number);
-		metadata_file_information -> directory = "N";
-		metadata_file_information -> open = "N";
-		free(new_block_number);
+		initialize_metadata_file_information(metadata_file_information);
         t_list* line_to_write = data_to_write(new_pokemon);//creo una lista con la linea que quiero escribir en blocks
 		write_pokemon_blocks(line_to_write, metadata_file_information);
 		list_destroy_and_destroy_elements(line_to_write, free);
@@ -98,6 +104,7 @@ t_identified_message* new_query_performer_function(t_identified_message* identif
 	appeared_request = new_appeared_request(new_pokemon);
 
 	//Armado de la estructura de mensaje
+
 	t_identified_message* appeared_message = safe_malloc(sizeof(t_identified_message));
 	appeared_message -> message_id = identified_message -> message_id;
 	appeared_message -> request = appeared_request;

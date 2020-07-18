@@ -11,6 +11,7 @@ void log_succesful_retry_of_communication_with_broker_from_gamecard();
 void log_failed_retry_of_communication_with_broker_from_gamecard();
 void log_thread_sleep_time_configuration_error_from_gamecard();
 void log_queue_thread_create_error_from_gamecard();
+void log_succesful_reception_of_message(t_identified_message* identified_message);
 void log_query_performer_not_found_error_from_gamecard_for(uint32_t operation);
 void log_file_system_metadata_info(t_file_system_metadata* pointer_file_system_metadata);
 void log_file_metadata_info(t_file_metadata* pointer_file_metadata);

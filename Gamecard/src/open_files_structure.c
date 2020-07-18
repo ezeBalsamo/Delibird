@@ -6,7 +6,6 @@
 #include <commons/string.h>
 #include <commons/process.h>
 
-
 pthread_mutex_t open_files_mutex;
 t_list* open_files_list;
 
@@ -14,7 +13,6 @@ void free_structure_and_close_file(char* metadata_path){
 	close_metadata(metadata_path);
 	free(metadata_path);
 }
-
 
 void add_to_open_files(char* metadata_path){
 	pthread_mutex_lock(&open_files_mutex);

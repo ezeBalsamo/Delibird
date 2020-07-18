@@ -105,8 +105,6 @@ void free_request(t_request* request);
 void free_identified_message(t_identified_message* identified_message);
 void free_serialization_information(t_serialization_information* serialization_information);
 void free_localized_pokemon(t_localized_pokemon* localized_pokemon);
-void free_appeared_pokemon(t_appeared_pokemon* appeared_pokemon);
-void free_caught_pokemon(t_caught_pokemon* caught_pokemon);
 void free_subscribe_me(t_subscribe_me* subscribe_me);
 void free_char_array(char**);
 

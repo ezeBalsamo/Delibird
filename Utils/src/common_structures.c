@@ -115,14 +115,6 @@ void free_localized_pokemon(t_localized_pokemon* localized_pokemon){
     free(localized_pokemon);
 }
 
-void free_appeared_pokemon(t_appeared_pokemon* appeared_pokemon){
-	free(appeared_pokemon);
-}
-
-void free_caught_pokemon(t_caught_pokemon* caught_pokemon){
-	free(caught_pokemon);
-}
-
 void free_subscribe_me(t_subscribe_me* subscribe_me){
     free(subscribe_me -> process_description);
     free(subscribe_me);

@@ -3,12 +3,11 @@
 #include "file_system_utils.h"
 #include "gamecard_query_performers.h"
 #include "gamecard_configuration_manager.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/paths.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <commons/string.h>
 #include <unistd.h>
+#include <gamecard_logs_manager.h>
 #include "../../Utils/include/garbage_collector.h"
 #include "open_files_structure.h"
 
@@ -26,13 +25,13 @@ t_request* catch_caught_request(uint32_t caught_status){
     t_request* caught_request = safe_malloc(sizeof(t_request));
     caught_request -> operation = CAUGHT_POKEMON;
     caught_request -> structure = caught_structure;
-    caught_request -> sanitizer_function = (void (*)(void *)) free_caught_pokemon;
+    caught_request -> sanitizer_function = free;
 
     return caught_request;
 }
 
 t_identified_message* catch_query_performer_function(t_identified_message* identified_message){
-    printf("Se recibio el mensaje CATCH_POKEMON con id = %d\n", identified_message -> message_id);
+    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     	t_catch_pokemon* catch_pokemon = identified_message->request->structure;

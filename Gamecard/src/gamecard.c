@@ -1,7 +1,6 @@
 #include "../../Utils/include/garbage_collector.h"
 #include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/pretty_printer.h"
-#include "../../Utils/include/pthread_wrapper.h"
 #include "../../Utils/include/general_logs.h"
 #include "../include/gamecard_logs_manager.h"
 #include "../include/gamecard_serializable_objects.h"

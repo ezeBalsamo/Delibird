@@ -3,15 +3,13 @@
 #include "gamecard_configuration_manager.h"
 #include "file_system.h"
 #include "file_system_utils.h"
-#include "../../Utils/include/common_structures.h"
 #include "../../Utils/include/paths.h"
 #include <stdlib.h>
-#include <stdio.h>
 #include <commons/string.h>
 #include <unistd.h>
+#include <gamecard_logs_manager.h>
 #include "../../Utils/include/garbage_collector.h"
 #include "open_files_structure.h"
-
 
 t_gamecard_query_performer *get_pokemon_query_performer;
 
@@ -35,7 +33,7 @@ t_request* get_localized_request(char* pokemon_name, uint32_t quantity, t_list* 
 }
 
 t_identified_message* get_query_performer_function(t_identified_message* identified_message){
-    printf("Se recibio el mensaje GET_POKEMON con id = %d\n", identified_message -> message_id);
+    log_succesful_reception_of_message(identified_message);
 
     //Armo el path del metadata para el Pokemon recibido
     t_get_pokemon* get_pokemon = identified_message->request->structure;
