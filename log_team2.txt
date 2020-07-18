@@ -1,0 +1,346 @@
+[INFO] 16:42:49:899 Team/(17713:17714): El entrenador 1, ubicado en (2, 3) fue agregado a la cola de nuevos.
+[INFO] 16:42:49:899 Team/(17713:17714): El entrenador 2, ubicado en (6, 5) fue agregado a la cola de nuevos.
+[INFO] 16:42:49:899 Team/(17713:17714): El entrenador 3, ubicado en (9, 9) fue agregado a la cola de nuevos.
+[INFO] 16:42:49:899 Team/(17713:17714): El entrenador 4, ubicado en (9, 2) fue agregado a la cola de nuevos.
+[INFO] 16:42:49:899 Team/(17713:17714): El entrenador 5, ubicado en (2, 9) fue agregado a la cola de nuevos.
+[INFO] 16:42:50:902 Team/(17713:17747): Suscripción exitosa a la cola APPEARED_POKEMON
+[INFO] 16:42:50:902 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 8
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 4
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Flareon, pos_x: 4, pos_y: 6
+[INFO] 16:42:50:902 Team/(17713:17747): El entrenador 2, ubicado en (6, 5) fue movido a la cola de listos. Motivo: Moverse en dirección a un Flareon, ubicado en (4, 6).
+[INFO] 16:42:50:902 Team/(17713:17747): El entrenador 2, ubicado en (6, 5) fue puesto en ejecución. Motivo: Moverse en dirección a un Flareon, ubicado en (4, 6).
+[INFO] 16:42:50:902 Team/(17713:17716): El entrenador 2 se desplazó a (5, 5).
+[INFO] 16:42:50:902 Team/(17713:17716): El entrenador 2, ubicado en (5, 5) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:42:50:902 Team/(17713:17716): El entrenador 2, ubicado en (5, 5) fue puesto en ejecución. Motivo: Moverse en dirección a un Flareon, ubicado en (4, 6).
+[INFO] 16:42:50:902 Team/(17713:17749): Suscripción exitosa a la cola CAUGHT_POKEMON
+[INFO] 16:42:50:903 Team/(17713:17748): Suscripción exitosa a la cola LOCALIZED_POKEMON
+[INFO] 16:42:50:907 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 11
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 10
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Vaporeon, cantidad: 0, Posiciones: 
+[INFO] 16:42:50:907 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 10
+[INFO] 16:42:55:258 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 13
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 9
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Squirtle, cantidad: 1, Posición: (5, 2)
+[INFO] 16:42:55:258 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 9
+[INFO] 16:42:55:903 Team/(17713:17716): El entrenador 2 se desplazó a (4, 5).
+[INFO] 16:42:55:903 Team/(17713:17716): El entrenador 2, ubicado en (4, 5) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:42:55:903 Team/(17713:17716): El entrenador 2, ubicado en (4, 5) fue puesto en ejecución. Motivo: Moverse en dirección a un Flareon, ubicado en (4, 6).
+[INFO] 16:43:00:260 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 16
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 12
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Pikachu, cantidad: 1, Posición: (9, 9)
+[INFO] 16:43:00:260 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 12
+[INFO] 16:43:00:260 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 17
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 15
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Gengar, cantidad: 0, Posiciones: 
+[INFO] 16:43:00:260 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 15
+[INFO] 16:43:00:903 Team/(17713:17716): El entrenador 2 se desplazó a (4, 6).
+[INFO] 16:43:00:903 Team/(17713:17716): El entrenador 2, ubicado en (4, 6) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:43:00:903 Team/(17713:17716): El entrenador 2, ubicado en (4, 6) fue puesto en ejecución. Motivo: Moverse en dirección a un Flareon, ubicado en (4, 6).
+[INFO] 16:43:00:909 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 19
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 14
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Jolteon, cantidad: 1, Posición: (2, 2)
+[INFO] 16:43:00:909 Team/(17713:17748): El entrenador 1, ubicado en (2, 3) fue movido a la cola de listos. Motivo: Moverse en dirección a un Jolteon, ubicado en (2, 2).
+[INFO] 16:43:05:265 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 22
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 20
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Onix, cantidad: 0, Posiciones: 
+[INFO] 16:43:05:265 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 20
+[INFO] 16:43:05:903 Team/(17713:17716): Acción a realizar por el entrenador 2: Atrapar un Flareon, ubicado en (4, 6).
+[INFO] 16:43:05:905 Team/(17713:17716): El entrenador 2, ubicado en (4, 6) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:43:05:905 Team/(17713:17716): El entrenador 1, ubicado en (2, 3) fue puesto en ejecución. Motivo: Moverse en dirección a un Jolteon, ubicado en (2, 2).
+[INFO] 16:43:05:905 Team/(17713:17715): El entrenador 1 se desplazó a (2, 2).
+[INFO] 16:43:05:905 Team/(17713:17715): El entrenador 1, ubicado en (2, 2) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:43:05:905 Team/(17713:17715): El entrenador 2, ubicado en (4, 6) fue puesto en ejecución. Motivo: Atrapar un Flareon, ubicado en (4, 6).
+[INFO] 16:43:05:909 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 25
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 18
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Flareon, cantidad: 1, Posición: (4, 6)
+[INFO] 16:43:05:909 Team/(17713:17748): Se procederá a ignorar Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Flareon, cantidad: 1, Posición: (4, 6) debido a ocurrencias previas del pokemon
+
+[INFO] 16:43:05:910 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 26
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 24
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Umbreon, cantidad: 0, Posiciones: 
+[INFO] 16:43:05:910 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 24
+[INFO] 16:43:10:269 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 27
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 21
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:43:10:270 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 21
+[INFO] 16:43:10:905 Team/(17713:17716): El entrenador 2, ubicado en (4, 6) fue movido a la cola de bloqueados. Motivo: Esperar el resultado de atrapar un Flareon, ubicado en (4, 6) con el id de mensaje 23.
+[INFO] 16:43:10:905 Team/(17713:17716): El entrenador 1, ubicado en (2, 2) fue puesto en ejecución. Motivo: Moverse en dirección a un Jolteon, ubicado en (2, 2).
+[INFO] 16:43:10:912 Team/(17713:17748): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 29
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 28
+		   -> Operación: LOCALIZED_POKEMON
+Argumentos: Pokemon: Espeon, cantidad: 0, Posiciones: 
+[INFO] 16:43:10:912 Team/(17713:17748): Ningún entrenador está esperando la respuesta de un LOCALIZED_POKEMON con id de mensaje 28
+[INFO] 16:43:15:905 Team/(17713:17715): Acción a realizar por el entrenador 1: Atrapar un Jolteon, ubicado en (2, 2).
+[INFO] 16:43:15:908 Team/(17713:17715): El entrenador 1, ubicado en (2, 2) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:43:15:908 Team/(17713:17715): El entrenador 1, ubicado en (2, 2) fue puesto en ejecución. Motivo: Atrapar un Jolteon, ubicado en (2, 2).
+[INFO] 16:43:15:909 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 31
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 23
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:43:15:909 Team/(17713:17716): un Flareon, ubicado en (4, 6), fue atrapado exitosamente
+[INFO] 16:43:15:909 Team/(17713:17716): El entrenador 2, ubicado en (4, 6) permanece en la cola de bloqueados. Motivo: Esperar la resolución de uno o más intercambios.
+Pokemones requeridos y no capturados: Jolteon.
+Pokemones en exceso: Flareon.
+[INFO] 16:43:15:909 Team/(17713:17716): El algoritmo de detección de Deadlock ha comenzado.
+[INFO] 16:43:15:909 Team/(17713:17716): El algoritmo de detección de Deadlock ha finalizado. Resultado: El sistema puede continuar operando.
+[INFO] 16:43:20:908 Team/(17713:17715): El entrenador 1, ubicado en (2, 2) fue movido a la cola de bloqueados. Motivo: Esperar el resultado de atrapar un Jolteon, ubicado en (2, 2) con el id de mensaje 30.
+[INFO] 16:43:20:913 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 32
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 30
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:43:20:914 Team/(17713:17715): un Jolteon, ubicado en (2, 2), fue atrapado exitosamente
+[INFO] 16:43:20:914 Team/(17713:17715): El entrenador 1, ubicado en (2, 2) permanece en la cola de bloqueados. Motivo: Esperar la resolución de uno o más intercambios.
+Pokemones requeridos y no capturados: Vaporeon.
+Pokemones en exceso: Jolteon.
+[INFO] 16:43:20:914 Team/(17713:17715): El algoritmo de detección de Deadlock ha comenzado.
+[INFO] 16:43:20:914 Team/(17713:17715): El algoritmo de detección de Deadlock ha finalizado. Resultado: El sistema puede continuar operando.
+[INFO] 16:44:20:286 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 34
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 33
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:44:20:286 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 33
+[INFO] 16:45:34:602 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 41
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 35
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Onix, pos_x: 2, pos_y: 8
+[INFO] 16:45:34:604 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 42
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 36
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Gengar, pos_x: 6, pos_y: 6
+[INFO] 16:45:34:604 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 43
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 37
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Squirtle, pos_x: 5, pos_y: 5
+[INFO] 16:45:34:604 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 44
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 38
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Umbreon, pos_x: 10, pos_y: 6
+[INFO] 16:45:34:605 Team/(17713:17747): El entrenador 3, ubicado en (9, 9) fue movido a la cola de listos. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:45:34:605 Team/(17713:17747): El entrenador 3, ubicado en (9, 9) fue puesto en ejecución. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:45:34:605 Team/(17713:17717): El entrenador 3 se desplazó a (10, 9).
+[INFO] 16:45:34:605 Team/(17713:17717): El entrenador 3, ubicado en (10, 9) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:34:605 Team/(17713:17717): El entrenador 3, ubicado en (10, 9) fue puesto en ejecución. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:45:34:608 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 45
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 39
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Espeon, pos_x: 7, pos_y: 1
+[INFO] 16:45:34:608 Team/(17713:17747): El entrenador 4, ubicado en (9, 2) fue movido a la cola de listos. Motivo: Moverse en dirección a un Espeon, ubicado en (7, 1).
+[INFO] 16:45:34:610 Team/(17713:17747): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 46
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 40
+		   -> Operación: APPEARED_POKEMON
+Argumentos: Pokemon: Vaporeon, pos_x: 4, pos_y: 10
+[INFO] 16:45:34:610 Team/(17713:17747): El entrenador 5, ubicado en (2, 9) fue movido a la cola de listos. Motivo: Moverse en dirección a un Vaporeon, ubicado en (4, 10).
+[INFO] 16:45:39:605 Team/(17713:17717): El entrenador 3 se desplazó a (10, 8).
+[INFO] 16:45:39:605 Team/(17713:17717): El entrenador 3, ubicado en (10, 8) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:39:605 Team/(17713:17717): El entrenador 4, ubicado en (9, 2) fue puesto en ejecución. Motivo: Moverse en dirección a un Espeon, ubicado en (7, 1).
+[INFO] 16:45:39:605 Team/(17713:17718): El entrenador 4 se desplazó a (8, 2).
+[INFO] 16:45:39:605 Team/(17713:17718): El entrenador 4, ubicado en (8, 2) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:39:605 Team/(17713:17718): El entrenador 5, ubicado en (2, 9) fue puesto en ejecución. Motivo: Moverse en dirección a un Vaporeon, ubicado en (4, 10).
+[INFO] 16:45:39:605 Team/(17713:17719): El entrenador 5 se desplazó a (3, 9).
+[INFO] 16:45:39:605 Team/(17713:17719): El entrenador 5, ubicado en (3, 9) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:39:605 Team/(17713:17719): El entrenador 3, ubicado en (10, 8) fue puesto en ejecución. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:45:44:605 Team/(17713:17717): El entrenador 3 se desplazó a (10, 7).
+[INFO] 16:45:44:605 Team/(17713:17717): El entrenador 3, ubicado en (10, 7) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:44:605 Team/(17713:17717): El entrenador 4, ubicado en (8, 2) fue puesto en ejecución. Motivo: Moverse en dirección a un Espeon, ubicado en (7, 1).
+[INFO] 16:45:49:605 Team/(17713:17718): El entrenador 4 se desplazó a (7, 2).
+[INFO] 16:45:49:606 Team/(17713:17718): El entrenador 4, ubicado en (7, 2) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:49:606 Team/(17713:17718): El entrenador 5, ubicado en (3, 9) fue puesto en ejecución. Motivo: Moverse en dirección a un Vaporeon, ubicado en (4, 10).
+[INFO] 16:45:54:607 Team/(17713:17719): El entrenador 5 se desplazó a (4, 9).
+[INFO] 16:45:54:607 Team/(17713:17719): El entrenador 5, ubicado en (4, 9) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:54:607 Team/(17713:17719): El entrenador 3, ubicado en (10, 7) fue puesto en ejecución. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:45:59:607 Team/(17713:17717): El entrenador 3 se desplazó a (10, 6).
+[INFO] 16:45:59:608 Team/(17713:17717): El entrenador 3, ubicado en (10, 6) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:45:59:608 Team/(17713:17717): El entrenador 4, ubicado en (7, 2) fue puesto en ejecución. Motivo: Moverse en dirección a un Espeon, ubicado en (7, 1).
+[INFO] 16:46:04:608 Team/(17713:17718): El entrenador 4 se desplazó a (7, 1).
+[INFO] 16:46:04:609 Team/(17713:17718): El entrenador 4, ubicado en (7, 1) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:46:04:609 Team/(17713:17718): El entrenador 5, ubicado en (4, 9) fue puesto en ejecución. Motivo: Moverse en dirección a un Vaporeon, ubicado en (4, 10).
+[INFO] 16:46:09:609 Team/(17713:17719): El entrenador 5 se desplazó a (4, 10).
+[INFO] 16:46:09:610 Team/(17713:17719): El entrenador 5, ubicado en (4, 10) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:46:09:610 Team/(17713:17719): El entrenador 3, ubicado en (10, 6) fue puesto en ejecución. Motivo: Moverse en dirección a un Umbreon, ubicado en (10, 6).
+[INFO] 16:46:09:619 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 48
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 47
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:46:09:619 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 47
+[INFO] 16:46:14:610 Team/(17713:17717): Acción a realizar por el entrenador 3: Atrapar un Umbreon, ubicado en (10, 6).
+[INFO] 16:46:14:612 Team/(17713:17717): El entrenador 3, ubicado en (10, 6) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:46:14:612 Team/(17713:17717): El entrenador 4, ubicado en (7, 1) fue puesto en ejecución. Motivo: Moverse en dirección a un Espeon, ubicado en (7, 1).
+[INFO] 16:46:19:613 Team/(17713:17718): Acción a realizar por el entrenador 4: Atrapar un Espeon, ubicado en (7, 1).
+[INFO] 16:46:19:615 Team/(17713:17718): El entrenador 4, ubicado en (7, 1) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:46:19:615 Team/(17713:17718): El entrenador 5, ubicado en (4, 10) fue puesto en ejecución. Motivo: Moverse en dirección a un Vaporeon, ubicado en (4, 10).
+[INFO] 16:46:19:619 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 51
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 49
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:46:19:619 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 49
+[INFO] 16:46:24:615 Team/(17713:17719): Acción a realizar por el entrenador 5: Atrapar un Vaporeon, ubicado en (4, 10).
+[INFO] 16:46:24:618 Team/(17713:17719): El entrenador 5, ubicado en (4, 10) fue movido a la cola de listos. Motivo: Quantum agotado
+[INFO] 16:46:24:618 Team/(17713:17719): El entrenador 3, ubicado en (10, 6) fue puesto en ejecución. Motivo: Atrapar un Umbreon, ubicado en (10, 6).
+[INFO] 16:46:24:623 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 53
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 50
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:46:24:623 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 50
+[INFO] 16:46:29:618 Team/(17713:17717): El entrenador 3, ubicado en (10, 6) fue movido a la cola de bloqueados. Motivo: Esperar el resultado de atrapar un Umbreon, ubicado en (10, 6) con el id de mensaje 49.
+[INFO] 16:46:29:618 Team/(17713:17717): El entrenador 4, ubicado en (7, 1) fue puesto en ejecución. Motivo: Atrapar un Espeon, ubicado en (7, 1).
+[INFO] 16:46:29:626 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 54
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 52
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:46:29:626 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 52
+[INFO] 16:46:34:618 Team/(17713:17718): El entrenador 4, ubicado en (7, 1) fue movido a la cola de bloqueados. Motivo: Esperar el resultado de atrapar un Espeon, ubicado en (7, 1) con el id de mensaje 50.
+[INFO] 16:46:34:618 Team/(17713:17718): El entrenador 5, ubicado en (4, 10) fue puesto en ejecución. Motivo: Atrapar un Vaporeon, ubicado en (4, 10).
+[INFO] 16:46:39:619 Team/(17713:17719): El entrenador 5, ubicado en (4, 10) fue movido a la cola de bloqueados. Motivo: Esperar el resultado de atrapar un Vaporeon, ubicado en (4, 10) con el id de mensaje 52.
+[INFO] 16:46:39:625 Team/(17713:17749): Pedido recibido:
+Operación: CORRELATIVE_IDENTIFIED_MESSAGE
+Argumentos:
+	-> message_id: 56
+	-> Operación: IDENTIFIED_MESSAGE
+	   Argumentos:
+		   -> message_id: 55
+		   -> Operación: CAUGHT_POKEMON
+Argumentos: caught_status: OK
+[INFO] 16:46:39:626 Team/(17713:17749): Ningún entrenador está esperando la respuesta de un CAUGHT_POKEMON con id de mensaje 55
+[WARNING] 16:54:06:421 Team/(17713:17748): Se cayó la conexión con el broker!
+[WARNING] 16:54:06:421 Team/(17713:17749): Se cayó la conexión con el broker!
+[WARNING] 16:54:06:421 Team/(17713:17747): Se cayó la conexión con el broker!
+[WARNING] 16:54:07:423 Team/(17713:17749): Falló la comunicación con Broker. Por defecto, se procederá a reintentar.
+[WARNING] 16:54:07:423 Team/(17713:17748): Falló la comunicación con Broker. Por defecto, se procederá a reintentar.
+[WARNING] 16:54:07:423 Team/(17713:17747): Falló la comunicación con Broker. Por defecto, se procederá a reintentar.
+[INFO] 16:54:07:423 Team/(17713:17866): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 16:54:07:423 Team/(17713:17867): Inicio del proceso de reintento de comunicación con el Broker.
+[INFO] 16:54:07:423 Team/(17713:17864): Inicio del proceso de reintento de comunicación con el Broker.
+[ERROR] 16:54:07:424 Team/(17713:17866): Falló el reintento de comunicación con el Broker.
+[ERROR] 16:54:07:424 Team/(17713:17867): Falló el reintento de comunicación con el Broker.
+[ERROR] 16:54:07:424 Team/(17713:17864): Falló el reintento de comunicación con el Broker.
