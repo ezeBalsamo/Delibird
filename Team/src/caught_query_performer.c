@@ -3,9 +3,12 @@
 #include <waiting_actions.h>
 #include <dispatcher.h>
 #include <team_logs_manager.h>
+#include <stdlib.h>
 #include "caught_query_performer.h"
+#include "../../Utils/include/garbage_collector.h"
 
 t_query_performer* caught_pokemon_query_performer;
+t_list* caught_identified_messages_responses;
 
 t_query_performer* caught_query_performer(){
     return caught_pokemon_query_performer;
@@ -40,6 +43,15 @@ t_trainer_thread_context* blocked_trainer_thread_context_waiting_for(int message
     return trainer_thread_context_found;
 }
 
+t_identified_message* arrival_identified_message_of(int ack){
+
+    bool _is_for(t_identified_message* identified_message){
+        return identified_message -> message_id == ack;
+    }
+
+    return list_find(caught_identified_messages_responses, _is_for);
+}
+
 void caught_query_performer_function(t_identified_message* correlative_identified_message){
 
     t_identified_message* identified_message = internal_object_in(correlative_identified_message);
@@ -57,7 +69,7 @@ void caught_query_performer_function(t_identified_message* correlative_identifie
         waiting_catch_response_action -> caught_succeeded = caught_pokemon -> caught_status;
         safe_sem_post(&trainer_thread_context_found -> semaphore);
     }else{
-        log_message_id_not_required(CAUGHT_POKEMON, message_id);
+        list_add(caught_identified_messages_responses, identified_message);
     }
 }
 
@@ -65,9 +77,16 @@ bool caught_query_performer_can_handle(uint32_t operation){
     return operation == CAUGHT_POKEMON;
 }
 
+void destroy_responses(){
+    list_destroy_and_destroy_elements(caught_identified_messages_responses, free);
+}
+
 void initialize_caught_query_performer(){
+    caught_identified_messages_responses = list_create();
     caught_pokemon_query_performer = safe_malloc(sizeof(t_query_performer));
     caught_pokemon_query_performer -> can_handle_function = caught_query_performer_can_handle;
     caught_pokemon_query_performer -> perform_function = caught_query_performer_function;
+
+    consider_as_garbage(caught_identified_messages_responses, destroy_responses);
 }
 

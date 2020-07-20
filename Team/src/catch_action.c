@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <team_logs_manager.h>
 #include <event_notifier.h>
+#include <waiting_actions.h>
+#include <caught_query_performer.h>
 
 t_catch_pokemon* catch_pokemon_for(t_trainer_thread_context* trainer_thread_context){
 
@@ -26,6 +28,21 @@ void apply_default_catch_action_for(t_trainer_thread_context* trainer_thread_con
     catch_action_completed_successfully_by(trainer_thread_context);
 }
 
+void search_if_message_has_already_arrived(t_trainer_thread_context* trainer_thread_context, int ack){
+
+     t_identified_message* identified_message = arrival_identified_message_of(ack);
+
+     if(identified_message != NULL){
+         t_waiting_catch_response_action* waiting_catch_response_action =
+                 internal_thread_action_in(trainer_thread_context);
+
+         t_caught_pokemon* caught_pokemon = internal_object_in(identified_message);
+
+         waiting_catch_response_action -> caught_succeeded = caught_pokemon -> caught_status;
+         safe_sem_post(&trainer_thread_context -> semaphore);
+     }
+}
+
 void apply_catch_action_when_connection_success(t_request* request,
                                                 t_connection_information* connection_information,
                                                 t_trainer_thread_context* trainer_thread_context){
@@ -43,6 +60,7 @@ void apply_catch_action_when_connection_success(t_request* request,
         apply_default_catch_action_for(trainer_thread_context);
     }else{
         catch_action_blocked_in_wait_of_response(trainer_thread_context, ack);
+        search_if_message_has_already_arrived(trainer_thread_context, ack);
     }
 }
 
