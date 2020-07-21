@@ -1,6 +1,7 @@
 #include <commons/string.h>
 #include <stdlib.h>
 #include <subscriber_context_provider.h>
+#include "../include/buddy_system_message_allocator.h"
 #include "../include/broker_logs_manager.h"
 #include "../../Utils/include/logger.h"
 #include "../../Utils/include/pretty_printer.h"
@@ -54,8 +55,8 @@ void log_succesful_message_received_by(t_subscriber_context* subscriber_context,
 void log_succesful_save_message_to_cache(uint32_t message_id, uint32_t message_size, void* message_position){
 
     char* message =
-            string_from_format("Se guardó correctamente el mensaje con id: %lu, de tamaño %lu, en la posicion de memoria: %p",
-                                       message_id, message_size, message_position);
+            string_from_format("Se guardó correctamente el mensaje con id: %lu, de tamaño %lu, en la posicion de memoria: %lu",
+                                       message_id, message_size, decimal_position_in_memory(message_position));
 
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
@@ -63,7 +64,7 @@ void log_succesful_save_message_to_cache(uint32_t message_id, uint32_t message_s
 }
 
 void log_succesful_free_partition_to_cache(void* message_position,uint32_t message_id){
-    char* message = string_from_format("Se liberó correctamente el mensaje con id:'%d' en la posicion de memoria: %p",message_id, message_position);
+    char* message = string_from_format("Se liberó correctamente el mensaje con id:'%d' en la posicion de memoria: %lu",message_id, decimal_position_in_memory(message_position));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);
@@ -78,7 +79,7 @@ void log_succesful_memory_compaction(int amount_of_partitions_compacted) {
 }
 
 void log_succesful_memory_compaction_as_buddies(void* master_block_position, void* buddy_block_position){
-    char* message = string_from_format("Se asoció correctamente los bloques buddy en la posicion de memoria: '%p' con '%p' ",master_block_position, buddy_block_position);
+    char* message = string_from_format("Se asoció correctamente los bloques buddy en la posicion de memoria: '%lu' con '%lu' ", decimal_position_in_memory(master_block_position), decimal_position_in_memory(buddy_block_position));
     log_succesful_message(main_logger(), message);
     log_succesful_message(process_execution_logger(), message);
     free(message);

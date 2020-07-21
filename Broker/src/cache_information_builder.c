@@ -4,10 +4,7 @@
 #include <broker_memory_manager.h>
 #include <commons/string.h>
 #include <stdlib.h>
-
-char* pointer_address_as_string(void* block_position_pointer){
-    return string_from_format("%p",block_position_pointer);
-}
+#include <buddy_system_message_allocator.h>
 
 char* memory_block_as_string(t_memory_block* memory_block){
 
@@ -42,9 +39,9 @@ char* block_information_as_string(t_block_information* block_information){
 
     char* symbol = block_information_availabity_as_string(block_information);
 
-    char* initial_address_position = pointer_address_as_string(block_information->initial_position);
+    uint32_t initial_address_position_in_decimal = decimal_position_in_memory(block_information->initial_position);
 
-    char* last_address_position = pointer_address_as_string(block_information->initial_position+block_information->block_size);
+    uint32_t last_address_position_in_decimal = decimal_position_in_memory(block_information->initial_position+block_information->block_size);
 
     char* block_size = string_itoa(block_information->block_size);
 
@@ -60,10 +57,8 @@ char* block_information_as_string(t_block_information* block_information){
         free(memory_block);
     }
 
-    char* block_info = string_from_format("%s - %s %s %s%s",initial_address_position,last_address_position,symbol,block_size_info,memory_block_info);
+    char* block_info = string_from_format("%lu - %lu %s %s%s",initial_address_position_in_decimal,last_address_position_in_decimal,symbol,block_size_info,memory_block_info);
 
-    free(initial_address_position);
-    free(last_address_position);
     free(block_size_info);
     free(memory_block_info);
 

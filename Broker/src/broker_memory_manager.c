@@ -12,13 +12,16 @@
 
 t_list* blocks_information;
 
+void* initial_position;
+
 t_block_information* initialize_first_block_information(){
     uint32_t memory_size = config_get_int_at("TAMANO_MEMORIA");
 
     t_block_information* initial_block_information = safe_malloc(sizeof(t_block_information));
     initial_block_information->is_free = true;
     initial_block_information->block_size = memory_size;
-    initial_block_information->initial_position = safe_malloc(memory_size);
+    initial_position = safe_malloc(memory_size);
+    initial_block_information->initial_position = initial_position;
     initial_block_information->memory_block = NULL;
 
     consider_as_garbage(initial_block_information -> initial_position, free);

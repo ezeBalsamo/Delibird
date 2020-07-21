@@ -13,6 +13,7 @@
 #include <deserialization_information_content_provider.h>
 
 t_message_allocator* buddy_system_message_allocator;
+extern void* initial_position;
 
 unsigned long long get_pointer_position_as_decimal(void* pointer){
     char* pointer_as_string = string_from_format("%p",pointer);
@@ -23,6 +24,10 @@ unsigned long long get_pointer_position_as_decimal(void* pointer){
     free(pointer_as_string);
     free(pointer_as_hexadecimal);
     return pointer_position_as_decimal;
+}
+
+uint32_t decimal_position_in_memory(void* pointer){
+    return get_pointer_position_as_decimal(pointer) - get_pointer_position_as_decimal(initial_position);
 }
 
 //CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
