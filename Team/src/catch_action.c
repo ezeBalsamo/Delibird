@@ -30,14 +30,14 @@ void apply_catch_action_when_connection_success(t_request* request,
                                                 t_connection_information* connection_information,
                                                 t_trainer_thread_context* trainer_thread_context){
 
+    notify_with_argument(EXECUTION_CYCLE_CONSUMED_BY_TRAINER,
+                         trainer_from_thread_context(trainer_thread_context));
+
     int ack =
             serialize_and_send_structure_and_wait_for_ack(
                     request,
                     connection_information -> socket_fd,
                     ack_timeout());
-
-    notify_with_argument(EXECUTION_CYCLE_CONSUMED_BY_TRAINER,
-                         trainer_from_thread_context(trainer_thread_context));
 
     if (ack == FAILED_ACK){
         apply_default_catch_action_for(trainer_thread_context);
