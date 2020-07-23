@@ -73,7 +73,7 @@ void reposition_occupied_blocks_information(int first_free_block_information_ind
 
             *next_initial_position =
                     reposition_block_information(*next_initial_position, occupied_block_information);
-
+//el problema es que se toma lo usado a partir del primero libre que se encuentra, se pierde lo anterior.
             *occupied_blocks_size += occupied_block_information -> block_size;
             block_index = next_occupied_block_information_index;
         }else{
@@ -97,6 +97,14 @@ void build_and_add_free_partition_block_information(void* next_initial_position,
     list_add(blocks_information, free_block_information);
 }
 
+void update_occupied_blocks_size_before_first_free_block_information(t_list* blocks_information, int first_free_block_information_index, int* occupied_blocks_size){
+
+    for(int i = 0; i < first_free_block_information_index; i++){
+        t_block_information* block_information_occupied = list_get(blocks_information, i);
+        *occupied_blocks_size += block_information_occupied -> block_size;
+    }
+}
+
 void memory_compaction_algorithm(t_list* blocks_information) {
 
     int occupied_blocks_size = 0;
@@ -107,6 +115,8 @@ void memory_compaction_algorithm(t_list* blocks_information) {
     find_and_load_first_free_block_information(blocks_information,
                                                &first_free_block_information_index,
                                                &first_free_block_information);
+
+    update_occupied_blocks_size_before_first_free_block_information(blocks_information, first_free_block_information_index, &occupied_blocks_size);
 
     void* next_initial_position = first_free_block_information -> initial_position;
 

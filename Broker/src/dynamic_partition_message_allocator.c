@@ -88,7 +88,7 @@ t_block_information* save_memory_block_in_block_information(t_block_information*
     block_information_found->memory_block = memory_block_to_save;
     block_information_found->block_size = block_size_to_allocate;
 
-    uint32_t memory_size_left = memory_size_to_partition - block_information_found->block_size;
+    uint32_t memory_size_left = memory_size_to_partition - block_size_to_allocate;
 
     t_block_information* new_block_information = NULL;
     if (memory_size_left > 0){
