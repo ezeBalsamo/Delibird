@@ -204,7 +204,7 @@ void apply_get_action_when_connection_success(t_request* request, t_connection_i
     }
     else{
         prepare_get_response(ack, pokemon_name);
-	notify(EXECUTION_CYCLE_CONSUMED);
+        notify(EXECUTION_CYCLE_CONSUMED);
     }
 }
 
