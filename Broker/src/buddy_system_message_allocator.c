@@ -60,40 +60,37 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
         if(master_block -> initial_position + master_block -> block_size == middle_memory_position){
             right_is_buddy = true;
             update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index + 1);
+            continue;
         }
 
         if(master_block ->initial_position + master_block ->block_size == last_memory_position){
             left_is_buddy = true;
             update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+            continue;
         }
 
         if(master_block_current_index == 0 || master_block -> initial_position == middle_memory_position){
             left_is_buddy = false;
         } else {
             t_block_information* previous_block = list_get(blocks_information, master_block_current_index - 1);
-            if(previous_block == NULL){
-                continue;
-            }
             if(have_the_same_size(master_block,previous_block) && previous_block -> initial_position == initial_position && is_a_free_block(previous_block)){
 
                 left_is_buddy = true;
                 update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
-
+                continue;
             } else {
                 left_is_buddy = false;
             }
 
             if(master_block_current_index >= 2){
                 t_block_information* previous_from_previous_block = list_get(blocks_information, master_block_current_index - 2);
-                if(previous_from_previous_block == NULL){
-                    continue;
-                }
                 if(have_the_same_size(previous_block, previous_from_previous_block) && previous_from_previous_block -> initial_position == initial_position){
                     left_is_buddy = false;
                 } else {
                     if(have_the_same_size(master_block, previous_block) && is_a_free_block(previous_block)){
                         left_is_buddy = true;
                         update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+                        continue;
                     }
                 }
             }
@@ -103,22 +100,16 @@ void associate_with_buddies(t_list* blocks_information,t_block_information* mast
             right_is_buddy = false;
         } else {
             t_block_information* next_block = list_get(blocks_information, master_block_current_index + 1);
-            if(next_block == NULL){
-                continue;
-            }
             if(have_the_same_size(master_block,next_block) && next_block -> initial_position + next_block -> block_size == last_memory_position && is_a_free_block(next_block)){
-
                 right_is_buddy = true;
                 update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+                continue;
             } else {
                 right_is_buddy = false;
             }
 
             if(master_block_current_index + 2 < list_size(blocks_information)){
                 t_block_information* next_from_next_block = list_get(blocks_information, master_block_current_index + 2);
-                if(next_from_next_block == NULL){
-                    continue;
-                }
                 if(have_the_same_size(next_block, next_from_next_block) && (next_from_next_block -> initial_position + next_from_next_block -> block_size) == last_memory_position){
                     right_is_buddy = false;
                 } else {
