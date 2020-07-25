@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -Wextra --coverage
+CFLAGS = -g -Wall -Wextra
 LIBS = -lrt -lcommons -lutils
 
 SOURCE_DIR = src
