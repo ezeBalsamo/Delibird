@@ -3,7 +3,6 @@
 mkdir -p Gameboy/target
 cd Gameboy/target/
 git clone https://github.com/sisoputnfrba/delibird-pruebas
-cd delibird-pruebas
-mv *.sh ../
+mv delibird-pruebas/* .
 rm -r -f delibird-pruebas
 cd $HOME/tp-2020-1c-El-Kuelgue
