@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm -r -f $HOME/tall-grass/Blocks/*
+rm -r -f $HOME/tall-grass/Files/*
+rm -f $HOME/tall-grass/Metadata/Bitmap.bin
