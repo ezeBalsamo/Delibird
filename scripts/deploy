@@ -4,4 +4,4 @@ cd $HOME
 git clone https://github.com/sisoputnfrba/so-commons-library
 cd so-commons-library
 make install
-cd ../tp-2020-1c-El-Kuelgue/
+cd ../tp-2020-1c-El-Kuelgue/scripts
