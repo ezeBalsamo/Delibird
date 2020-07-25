@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cd ./Gameboy/target/
+git clone https://github.com/sisoputnfrba/delibird-pruebas
+cd ./delibird-pruebas
+mv *.sh ..
+cd ..
+rm -r -f delibird-pruebas
