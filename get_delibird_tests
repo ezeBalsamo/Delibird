@@ -1,8 +1,9 @@
 #!/bin/bash
 
-cd ./Gameboy/target/
+mkdir -p Gameboy/target
+cd Gameboy/target/
 git clone https://github.com/sisoputnfrba/delibird-pruebas
-cd ./delibird-pruebas
-mv *.sh ..
-cd ..
+cd delibird-pruebas
+mv *.sh ../
 rm -r -f delibird-pruebas
+cd $HOME/tp-2020-1c-El-Kuelgue
