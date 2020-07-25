@@ -196,13 +196,12 @@ void apply_get_action_when_connection_success(t_request* request, t_connection_i
     int ack =
             serialize_and_send_structure_and_wait_for_ack(request, connection_information -> socket_fd, ack_timeout());
 
-    notify(EXECUTION_CYCLE_CONSUMED);
-
     if(ack == FAILED_ACK){
         apply_default_get_action_for(pokemon_name);
     }
     else{
         prepare_get_response(ack, pokemon_name);
+	notify(EXECUTION_CYCLE_CONSUMED);
     }
 }
 
