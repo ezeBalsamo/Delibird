@@ -51,6 +51,7 @@ void execute_retry_connection_strategy(t_connection_information* connection_info
     safe_thread_join(*reconnection_thread);
 
     stop_considering_garbage(reconnection_thread);
+    free(reconnection_thread);
 }
 
 t_request* subscribe_me_request_for(uint32_t operation_queue){
@@ -128,7 +129,9 @@ void consume_messages_considering_reconnections_with(t_connection_information* c
     t_receive_information* receive_information = receive_structure(current_active_socket_fd);
 
     if(!receive_information -> receive_was_successful){
+        consider_as_garbage(receive_information, free);
         resubscribe_to_broker_queue(queue_operation_identifier, connection_information);
+        stop_considering_garbage(receive_information);
     }else{
         t_request* deserialized_request = deserialize(receive_information -> serialization_information -> serialized_request);
 
