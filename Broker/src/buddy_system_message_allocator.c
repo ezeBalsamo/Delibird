@@ -14,6 +14,8 @@
 
 t_message_allocator* buddy_system_message_allocator;
 extern void* initial_position;
+void* middle_memory_position;
+void* last_memory_position;
 
 unsigned long long get_pointer_position_as_decimal(void* pointer){
     char* pointer_as_string = string_from_format("%p",pointer);
@@ -30,63 +32,95 @@ uint32_t decimal_position_in_memory(void* pointer){
     return get_pointer_position_as_decimal(pointer) - get_pointer_position_as_decimal(initial_position);
 }
 
-//CONDICION BUDDIES: PosA == DirB XOR TamA   && PosB == DirA XOR TamB (PPTS NATASHA)
-bool blocks_are_buddies(t_block_information* block_information_A, t_block_information* block_information_B){
-    uint32_t block_size_A = block_information_A->block_size;
-    uint32_t block_size_B = block_information_B->block_size;
-
-    bool same_size = block_size_A == block_size_B;
-
-    return same_size;
+bool have_the_same_size(t_block_information* block_information, t_block_information* another_block_information){
+    return block_information -> block_size == another_block_information -> block_size;
 }
 
-bool is_valid_block_for_buddy_compaction(t_list* blocks_information,t_block_information* master_block, int index_of_candidate){
-   bool valid_index = is_valid_index(blocks_information,index_of_candidate);
-    bool block_is_free = false;
-    bool block_is_buddy = false;
-
-   if (valid_index)
-       block_is_free = is_free_block_in_index(blocks_information,index_of_candidate);
-
-   if (valid_index && block_is_free){
-       t_block_information* block_candidate_for_buddy_compaction = (t_block_information*) list_get(blocks_information, index_of_candidate);
-       block_is_buddy = blocks_are_buddies(master_block,block_candidate_for_buddy_compaction);
-   }
-   return valid_index && block_is_free && block_is_buddy;
+bool is_a_free_block(t_block_information* block_information){
+    return block_information -> is_free;
 }
+
+void update_and_consolidate_blocks(t_list* blocks_information, t_block_information* master_block, int candidate_index) {
+
+    void* master_block_position = master_block->initial_position;
+    t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, candidate_index);
+    void* buddy_block_position = buddy_block->initial_position;
+    consolidate_block_with(master_block,buddy_block);
+    log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
+}
+
 //unify block with buddies if possible
 void associate_with_buddies(t_list* blocks_information,t_block_information* master_block){
     bool left_is_buddy = true;
     bool right_is_buddy = true;
 
     while(left_is_buddy || right_is_buddy){
-
         int master_block_current_index = block_index_position(master_block,blocks_information);
 
-        if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index-1)){
-            void* master_block_position = master_block->initial_position;
-            t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index-1);
-            void* buddy_block_position = buddy_block->initial_position;
-            consolidate_block_with(master_block,buddy_block);
-            left_is_buddy = true;
-            log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
-            }else{
-            left_is_buddy = false;
+        if(master_block -> initial_position + master_block -> block_size == middle_memory_position){
+            right_is_buddy = true;
+            update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index + 1);
+            continue;
         }
 
-        if (is_valid_block_for_buddy_compaction(blocks_information,master_block,master_block_current_index+1)){
-            void* master_block_position = master_block->initial_position;
-            t_block_information* buddy_block = (t_block_information*) list_remove(blocks_information, master_block_current_index+1);
-            void* buddy_block_position = buddy_block->initial_position;
-            consolidate_block_with(master_block,buddy_block);
-            right_is_buddy = true;
-            log_succesful_memory_compaction_as_buddies(master_block_position, buddy_block_position);
+        if(master_block ->initial_position + master_block ->block_size == last_memory_position){
+            left_is_buddy = true;
+            update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+            continue;
+        }
 
-        }else{
+        if(master_block_current_index == 0 || master_block -> initial_position == middle_memory_position){
+            left_is_buddy = false;
+        } else {
+            t_block_information* previous_block = list_get(blocks_information, master_block_current_index - 1);
+            if(have_the_same_size(master_block,previous_block) && previous_block -> initial_position == initial_position && is_a_free_block(previous_block)){
+
+                left_is_buddy = true;
+                update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+                continue;
+            } else {
+                left_is_buddy = false;
+            }
+
+            if(master_block_current_index >= 2){
+                t_block_information* previous_from_previous_block = list_get(blocks_information, master_block_current_index - 2);
+                if(have_the_same_size(previous_block, previous_from_previous_block) && previous_from_previous_block -> initial_position == initial_position){
+                    left_is_buddy = false;
+                } else {
+                    if(have_the_same_size(master_block, previous_block) && is_a_free_block(previous_block)){
+                        left_is_buddy = true;
+                        update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+                        continue;
+                    }
+                }
+            }
+        }
+
+        if(master_block_current_index == (list_size(blocks_information) - 1) || (master_block -> initial_position + master_block -> block_size) == middle_memory_position) {
             right_is_buddy = false;
+        } else {
+            t_block_information* next_block = list_get(blocks_information, master_block_current_index + 1);
+            if(have_the_same_size(master_block,next_block) && next_block -> initial_position + next_block -> block_size == last_memory_position && is_a_free_block(next_block)){
+                right_is_buddy = true;
+                update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index - 1);
+                continue;
+            } else {
+                right_is_buddy = false;
+            }
+
+            if(master_block_current_index + 2 < list_size(blocks_information)){
+                t_block_information* next_from_next_block = list_get(blocks_information, master_block_current_index + 2);
+                if(have_the_same_size(next_block, next_from_next_block) && (next_from_next_block -> initial_position + next_from_next_block -> block_size) == last_memory_position){
+                    right_is_buddy = false;
+                } else {
+                    if(have_the_same_size(master_block, next_block) && is_a_free_block(next_block)){
+                        right_is_buddy = true;
+                        update_and_consolidate_blocks(blocks_information, master_block, master_block_current_index + 1);
+                    }
+                }
+            }
         }
     }
-
 }
 
 //split block to buddies if possible, recursively
@@ -205,6 +239,9 @@ t_message_allocator* initialize_buddy_system_message_allocator(){
     buddy_system_message_allocator->available_partition_search_algorithm = get_available_partition_search_algorithm(); //FF/BF
     buddy_system_message_allocator->partition_free_algorithm = get_partition_free_algorithm(); //FIFO/LRU
     buddy_system_message_allocator->memory_compaction_algorithm = memory_compaction_algorithm;
+
+    middle_memory_position = initial_position + (buddy_system_message_allocator -> max_partition_size / 2);
+    last_memory_position = initial_position + buddy_system_message_allocator -> max_partition_size;
 
     return buddy_system_message_allocator;
 }
